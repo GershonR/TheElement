@@ -14,9 +14,9 @@
 
 
 ## A succesful outcome is when the user will be able to do the following:
-- ### Listen to music
-- ### Importing music
-- ### Organizing music
-- ### Create accounts and customize them
-- ### Ability to share music
-- ### Have music recommended to the user
+### - Listen to music
+### - Importing music
+### - Organizing music
+### - Create accounts and customize them
+### - Ability to share music
+### - Have music recommended to the user

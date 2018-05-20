@@ -4,7 +4,7 @@
 ## The Element is a music player that provides an easy way to share and find new music.  
 
 
-### The Element is a music listening platform that allows users to find new music other users are listening to, share their own playlists and favourite songs and manage their music collections.  
+### The Element is a music listening platform that allows users to play music, find new music other users are listening to, share their own playlists and favourite songs and manage their music collections.  
 
 
 ### We think that music is a universal language, and that people deserve a platform that allows them to communicate more effectively. Our goal is to make sharing, finding, organizing and commenting  

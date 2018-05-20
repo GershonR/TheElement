@@ -2,6 +2,8 @@
 
 The Element is a music listening platform that allows users to play music on their mobile phone. This application allows user to find new music other users are listening to, share their own playlists and favourite songs, and manage their music collections. 
 
+This application will be primarily designed for people of all ages who want to play and listen to music. For non-technical users, the application will be kept simple as-is without having to change any settings to play music. Experienced or more advanced users will have the option to configure the music player to their liking, such as adding themes or creating a profile for themselves. 
+
 We think that music is a universal language, and that people deserve a platform that allows them to communicate more effectively. Our goal is to make sharing, finding, organizing and commenting music an easy thing to do.
 
 

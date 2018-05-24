@@ -14,7 +14,7 @@ Users will be able to create accounts so they may keep their own music collectio
 The Element will allow the user to create their own playlists by choosing individual songs, or they can allow the app to create a playlist based on genre, mood, or the activity they are doing and more. These playlists will be highly configurable and allow the user to add, modify, sort and remove them at will.
 
 
-This application is designed for people of all ages who want to listen to music. For non-technical users, the application will be intuitive and easy to use without any hassle. More experienced and advanced users will have the option to configure the music player to their liking, such as customizing the theme of the player or creating a profile for themselves to express their favourite songs and playlists for others to enjoy. 
+This application is designed for people of all ages who want to listen to music. For non-technical users, the application will be kept simple as-is without having to change any settings to play music. More experienced and advanced users will have the option to configure the music player to their liking, such as customizing the theme of the player or creating a profile for themselves to express their favourite songs and playlists for others to enjoy. 
 
 
 We think that music is a universal language and that people deserve an ad-free, intuitive music listening experience. The application aims to provide anyone, regardless of technical skills, the ability to play and discover new music that suits their unique tastes. We aim to help people get exposed to new music through The Element by providing an easy way to explore other people’s music and discover new music through suggestions made by the application.

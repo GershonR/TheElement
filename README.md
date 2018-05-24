@@ -5,7 +5,7 @@
 The Element is a music listening platform that allows users to play music on their mobile device. This application allows people to find new music other peers are listening to, creating their own playlists, and customize the music player using colourful themes.
 
 
-The application will be able to play music and allow the user robust controls over how and what music is played. The app will feature the ability to play/pause music, skip over music, seek through the current music being played, adjust volume levels, and shuffling songs playing order. All of these user actions will be readily available and performed instantly for the user as they listen to their music.
+The application will be able to play music and allow the user control over how and what music is played. The app will feature the ability to play/pause music, skip over music, seek through the current music being played, adjust volume levels, and shuffling songs playing order. All of these user actions will be readily available and performed instantly for the user as they listen to their music.
 
 
 Users will be able to create accounts so they may keep their own music collections organized and separate from other users. These accounts will allow for users to create and customize their own music playlists, view a history of their recently played music, and offer the ability to personalize the theme to change the look of the app. Users will also be able to view other user accounts and check out the music that they listen too, provided that the other user has allowed this feature.

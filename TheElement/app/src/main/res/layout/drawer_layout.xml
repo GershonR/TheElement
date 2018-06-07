@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:fitsSystemWindows="true"
 android:layout_width="match_parent"
 android:layout_height="match_parent">
+
 
 <android.support.v4.widget.DrawerLayout
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -31,9 +33,24 @@ android:layout_height="match_parent">
 <!-- Replace the default action bar -->
 <android.support.v7.widget.Toolbar
     android:id="@+id/toolbar"
+    android:layout_height="wrap_content"
     android:layout_width="match_parent"
-    android:layout_height="?attr/actionBarSize"
+    android:minHeight="?attr/actionBarSize"
     android:background="@color/colorPrimary"
-    android:theme="@style/ThemeOverlay.AppCompat.ActionBar" />
+    android:theme="@style/ThemeOverlay.AppCompat.ActionBar">
 
+    <LinearLayout
+        android:fitsSystemWindows="true"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="The Element"
+            android:id="@+id/Title"
+            android:textColor="@android:color/white" />
+    </LinearLayout>
+</android.support.v7.widget.Toolbar>
 </FrameLayout>

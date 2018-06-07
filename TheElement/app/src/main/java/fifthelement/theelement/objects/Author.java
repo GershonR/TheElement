@@ -1,10 +1,12 @@
+package fifthelement.theelement.objects;
+
 public class Author{
 
     private int id;
     private String name;
 
 
-    public Author(int id; String name){
+    public Author(int id, String name){
 
         this.id = id;
         this.name = name;
@@ -14,7 +16,7 @@ public class Author{
         return name;
     }
 
-    public String getId(){
+    public int getId(){
         return id;
     }
 

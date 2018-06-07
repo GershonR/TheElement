@@ -1,3 +1,7 @@
+package fifthelement.theelement.objects;
+
+import java.util.ArrayList;
+
 public class Album{
     private int albumId;
     private String albumName;
@@ -15,7 +19,7 @@ public class Album{
         return albumName;
     }
 
-    public String getId(){
+    public int getId(){
         return albumId;
     }
 
@@ -27,12 +31,12 @@ public class Album{
         return songs;
     }
 
-    public void setName(String Newname){
+    public void setName(String newName){
         this.albumName = newName;
     }
 
     public void setId(int newId){
-        this.albumId  = neweId;
+        this.albumId  = newId;
     }
 
     public void setAuthors(ArrayList<Author>authorList){
@@ -40,7 +44,7 @@ public class Album{
     }
     //OR
 
-    public void addAuthor(Song newAuthor){//to add a single author
+    public void addAuthor(Author newAuthor){//to add a single author
         this.authors.add(newAuthor);
     }
 
@@ -52,7 +56,5 @@ public class Album{
     public void addSong(Song newSong){
         this.songs.add(newSong);
     }
-
-
 
 }

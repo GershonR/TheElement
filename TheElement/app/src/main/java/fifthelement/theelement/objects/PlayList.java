@@ -1,39 +1,44 @@
-public class PlayList{
+package fifthelement.theelement.objects;
+
+import java.util.ArrayList;
+
+public class PlayList {
     private int listId;
     private String listName;
-    private ArrayList<Song>songs;
+    private ArrayList<Song> songs;
 
-    public PlayList(int id, String name){
+    public PlayList(int id, String name) {
         this.listId = id;
         this.listName = name;
-        song = new ArrayList<Songs>();
+        this.songs = new ArrayList<Song>();
     }
 
-    public String getName(){
+    public String getName() {
         return listName;
     }
 
-    public String getId(){
+    public int getId() {
         return listId;
     }
 
-    public ArrayList<Song> getSongs(){
+    public ArrayList<Song> getSongs() {
         return songs;
     }
 
-    public void setName(String newName){
+    public void setName(String newName) {
         this.listName = newName;
     }
 
-    public void setId(int newId){
-        this.listId  = newId;
+    public void setId(int newId) {
+        this.listId = newId;
     }
 
-     public void setSongs(ArrayList<Song>songList){
-        this.songs =  songList;
+    public void setSongs(ArrayList<Song> songList) {
+        this.songs = songList;
     }
     //OR
 
-    public void addSong(Song newSong){
+    public void addSong(Song newSong) {
         this.songs.add(newSong);
     }
+}

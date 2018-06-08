@@ -5,12 +5,14 @@ import java.util.ArrayList;
 public class Song{
     private int songId;
     private String songName;
+    private String path;
     private ArrayList<Author>authors;//might not include this 
     private ArrayList<Album> albums; //might not include this
 
-    public Song(int id, String name){
+    public Song(int id, String name, String path){
         this.songId = id;
         this.songName = name;
+        this.path = path;
         albums = new ArrayList<Album>();
         authors = new ArrayList<Author>();
     }
@@ -39,23 +41,27 @@ public class Song{
         this.songId  = newId;
     }
 
-     public void setAuthors(ArrayList<Author>authorList){
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
+
+    public void setAuthors(ArrayList<Author>authorList){
         this.authors =  authorList;
     }
-    //OR
 
     public void addAuthor(Author newAuthor){//to add a single author
         this.authors.add(newAuthor);
     }
 
-      public void setAlbums(ArrayList<Album>albumList){
+    public void setAlbums(ArrayList<Album>albumList){
         this.albums =  albumList;
     }
-    //OR
 
     public void addAlbum(Album newAlbum){//to add a single album
         this.albums.add(newAlbum);
     }
-    
-
 }

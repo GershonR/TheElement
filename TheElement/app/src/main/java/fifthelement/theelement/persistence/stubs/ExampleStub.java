@@ -1,5 +1,4 @@
 package fifthelement.theelement.persistence.stubs;
-
 public class ExampleStub {
 }
 

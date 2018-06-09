@@ -79,7 +79,7 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
         try{
             player.setDataSource(path);
         } catch(Exception e) {
-            //Handle exception
+            //TODO: Handle exceptions
         }
 
         player.prepareAsync();

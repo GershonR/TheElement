@@ -14,14 +14,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.MediaController;
 
 import fifthelement.theelement.R;
 import fifthelement.theelement.presentation.MusicService.MusicBinder;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements MediaController.MediaPlayerControl {
 
     private DrawerLayout mDrawerLayout;
     private MusicService musicService;
+    private MusicController musicController;
     private Intent playIntent;
     private boolean musicBound = false;
 
@@ -81,6 +83,8 @@ public class MainActivity extends AppCompatActivity {
         ActionBar actionbar = getSupportActionBar();
         actionbar.setDisplayHomeAsUpEnabled(true);
         actionbar.setHomeAsUpIndicator(R.drawable.ic_menu);
+
+        setMusicController();
     }
 
     @Override
@@ -124,5 +128,84 @@ public class MainActivity extends AppCompatActivity {
         stopService(playIntent);
         musicService = null;
         super.onDestroy();
+    }
+
+    private void setMusicController(){
+        //Helper method to set up music controller multiple times
+        musicController = new MusicController(this);
+        musicController.setPrevNextListeners(null, null); //TODO: Add play next/prev functionality
+        musicController.setMediaPlayer(this);
+        //musicController.setAnchorView(findViewById(R.id.song_list));
+        musicController.setEnabled(true);
+    }
+
+    @Override
+    public void start() {
+        musicService.resumePlayer();
+    }
+
+    @Override
+    public void pause() {
+        musicService.pausePlayer();
+    }
+
+    @Override
+    public int getDuration() {
+        if(musicService != null && musicBound && musicService.isPlaying()){
+            return musicService.getSongDuration();
+        }
+        else {
+            return 0;
+        }
+    }
+
+    @Override
+    public int getCurrentPosition() {
+        if(musicService != null && musicBound && musicService.isPlaying()){
+            return musicService.getSongPosition();
+        }
+        else {
+            return 0;
+        }
+    }
+
+    @Override
+    public void seekTo(int pos) {
+        musicService.seekTo(pos);
+    }
+
+    @Override
+    public boolean isPlaying() {
+        if(musicService != null && musicBound){
+            return musicService.isPlaying();
+        }
+        else {
+            return false;
+        }
+    }
+
+    @Override
+    public int getBufferPercentage() {
+        return 0;
+    }
+
+    @Override
+    public boolean canPause() {
+        return true;
+    }
+
+    @Override
+    public boolean canSeekBackward() {
+        return true;
+    }
+
+    @Override
+    public boolean canSeekForward() {
+        return true;
+    }
+
+    @Override
+    public int getAudioSessionId() {
+        return 0;
     }
 }

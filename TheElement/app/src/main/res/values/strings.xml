@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">The Element</string>
 
-    <string name="import_photo">Import Photo</string>
+    <string name="song_list">Song List</string>
     <string name="gallery">View Gallery</string>
     <string name="slideshow">View Slideshow</string>
     <string name="tools">Edit Settings</string>

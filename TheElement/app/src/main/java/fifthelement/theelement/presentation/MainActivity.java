@@ -1,5 +1,6 @@
 package fifthelement.theelement.presentation;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -11,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import fifthelement.theelement.R;
+import fifthelement.theelement.application.Main;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -80,6 +82,9 @@ public class MainActivity extends AppCompatActivity {
             case android.R.id.home:
                 mDrawerLayout.openDrawer(GravityCompat.START);
                 return true;
+            case R.id.song_list:
+                startActivity(new Intent(MainActivity.this, SongListActivity.class));
+                break;
         }
         return super.onOptionsItemSelected(item);
     }

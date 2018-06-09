@@ -6,14 +6,14 @@ import fifthelement.theelement.objects.Song;
 
 public interface SongPersistence {
 
-    List<Song> getAllSongs();      // some unordered list.
+    List<Song> getAllSongs(); // some unordered list.
 
-    Song getSongByID(int ID);
+    Song getSongByID(int ID); // get a song by ID
 
-    Song storeSong(Song song);        // checks & ignores duplicates
+    Song storeSong(Song song); // checks & ignores duplicates
 
-    Song updateSong(Song song);       // replaces old item with new one
+    Song updateSong(Song song); // replaces old song with new one
 
-    boolean deleteSong(Song song);           // delete's using ID
+    boolean deleteSong(Song song); // delete's using ID
 
 }

@@ -31,9 +31,8 @@ public class SongPersistenceStub implements SongPersistence {
     @Override
     public Song getSongByID(final int ID) {
         for(Song s : this.songList)
-            if(s.getId() == ID) {
+            if(s.getId() == ID)
                 return s;
-            }
         return null;
     }
 
@@ -43,20 +42,16 @@ public class SongPersistenceStub implements SongPersistence {
             throw new ArrayStoreException();
         this.songList.add(song);
         return song;
-
     }
 
     @Override
     public Song updateSong(Song song) {
         if(song == null)
             throw new IllegalArgumentException("Cannot update a null song");
-        for(int index = 0; index < songList.size(); index++) {
-            if(songList.get(index).getId() == song.getId()) {
+        for(int index = 0; index < songList.size(); index++)
+            if(songList.get(index).getId() == song.getId())
                 this.songList.set(index, song);
-            }
-        }
         return song;
-
     }
 
     @Override
@@ -71,7 +66,6 @@ public class SongPersistenceStub implements SongPersistence {
             }
         }
         return removed;
-
     }
 
     private boolean songExists(Song song) {
@@ -82,6 +76,5 @@ public class SongPersistenceStub implements SongPersistence {
                 break;
             }
         return exists;
-
     }
 }

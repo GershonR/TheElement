@@ -135,7 +135,7 @@ public class MainActivity extends AppCompatActivity implements MediaController.M
         musicController = new MusicController(this);
         musicController.setPrevNextListeners(null, null); //TODO: Add play next/prev functionality
         musicController.setMediaPlayer(this);
-        //musicController.setAnchorView(findViewById(R.id.song_list));
+        musicController.setAnchorView(findViewById(R.id.drawer_layout));
         musicController.setEnabled(true);
     }
 

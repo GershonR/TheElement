@@ -37,7 +37,7 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
 
     @Override
     public void onCompletion(MediaPlayer mediaPlayer) {
-
+        //TODO: This is where we would do autoplay stuff
     }
 
     @Override
@@ -58,6 +58,7 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
     }
 
     public void initMusicPlayer() {
+        //Sets up the MediaPlayer to continue playing in the background + listeners
         if(player != null) {
             player.setWakeMode(getApplicationContext(), PowerManager.PARTIAL_WAKE_LOCK);
             player.setAudioStreamType(AudioManager.STREAM_MUSIC);

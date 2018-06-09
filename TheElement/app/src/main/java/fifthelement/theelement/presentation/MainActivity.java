@@ -137,6 +137,7 @@ public class MainActivity extends AppCompatActivity implements MediaController.M
         musicController.setMediaPlayer(this);
         musicController.setAnchorView(findViewById(R.id.drawer_layout));
         musicController.setEnabled(true);
+        musicController.show(0);
     }
 
     @Override

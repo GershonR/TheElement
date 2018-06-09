@@ -11,7 +11,7 @@ import android.os.PowerManager;
 import fifthelement.theelement.objects.Song;
 
 /**
- * This MusicService will allow for a MusicPlayer instance to
+ * This MusicService will allow for a MediaPlayer instance to
  * play music in the background of the app and be controlled
  * by various UI elements in the app.
  */

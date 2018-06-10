@@ -9,7 +9,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        <!-- This used to be AppTheme for styles.xml, but had to add NoActionBar since its replaced
+
+        <!--
+             This used to be AppTheme for styles.xml, but had to add NoActionBar since its replaced
              by Toolbar.
              We need to re-use AppTheme for global styles
         -->

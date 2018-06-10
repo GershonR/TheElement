@@ -129,6 +129,14 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
+    public MusicService getMusicService(){
+        return musicService;
+    }
+
+    public boolean musicServiceBound(){
+        return musicBound;
+    }
+
     @Override
     protected void onStart() {
         super.onStart();

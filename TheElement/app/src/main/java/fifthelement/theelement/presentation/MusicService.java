@@ -1,12 +1,15 @@
 package fifthelement.theelement.presentation;
 
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Binder;
 import android.os.IBinder;
 import android.os.PowerManager;
+import android.widget.MediaController;
 
 import fifthelement.theelement.objects.Song;
 
@@ -17,10 +20,10 @@ import fifthelement.theelement.objects.Song;
  */
 
 public class MusicService extends Service implements MediaPlayer.OnPreparedListener,
-        MediaPlayer.OnErrorListener, MediaPlayer.OnCompletionListener{
+        MediaPlayer.OnErrorListener, MediaPlayer.OnCompletionListener, MediaController.MediaPlayerControl{
 
     private MediaPlayer player;
-    private Song currSong;
+    private boolean playerPrepared;
     private final IBinder musicBind = new MusicBinder();
 
     @Override
@@ -47,8 +50,8 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
 
     @Override
     public void onPrepared(MediaPlayer mediaPlayer) {
-        //Start playing song
-        mediaPlayer.start();
+        //Code to run when media player is prepared to play
+        playerPrepared = true;
     }
 
     public void onCreate() {
@@ -68,51 +71,99 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
         }
     }
 
-    public void setCurrSong(Song song) {
-        currSong = song;
-    }
+    public void setCurrSongPath(String songPath) {
+        System.out.println("Attempting to set new path: " + songPath);
 
-    public void playSong() {
-        //Try to open current song from path and prepare to play
         player.reset();
-        String path = currSong.getPath();
+        Context context = getBaseContext();
+        Uri uri = Uri.parse(songPath);
 
         try{
-            player.setDataSource(path);
+            player.setDataSource(context, uri);
         } catch(Exception e) {
             //TODO: Handle exceptions
+            e.printStackTrace();
         }
 
+        playerPrepared = false;
         player.prepareAsync();
     }
 
-    public int getSongPosition(){
-        return player.getCurrentPosition();
+    public void reset() {
+        player.reset();
     }
 
-    public int getSongDuration(){
-        return player.getDuration();
+    @Override
+    public void start() {
+        if(playerPrepared && !player.isPlaying()) {
+            player.start();
+        }
     }
 
-    public boolean isPlaying(){
-        return player.isPlaying();
-    }
-
-    public void pausePlayer(){
-        if(player.isPlaying()) {
+    @Override
+    public void pause() {
+        if(playerPrepared && player.isPlaying()){
             player.pause();
         }
     }
 
-    public void seekTo(int posn){
-        player.seekTo(posn);
-    }
-
-    public void resumePlayer(){
-        if(!player.isPlaying()) {
-            player.start();
+    @Override
+    public int getDuration() {
+        if(playerPrepared) {
+            return player.getDuration();
+        }
+        else {
+            return 0;
         }
     }
+
+    @Override
+    public int getCurrentPosition() {
+        if(playerPrepared) {
+            return player.getCurrentPosition();
+        }
+        else {
+            return 0;
+        }
+    }
+
+    @Override
+    public void seekTo(int pos) {
+        if(playerPrepared) {
+            player.seekTo(pos);
+        }
+    }
+
+    @Override
+    public boolean isPlaying() {
+        return player.isPlaying();
+    }
+
+    @Override
+    public int getBufferPercentage() {
+        return 0;
+    }
+
+    @Override
+    public boolean canPause() {
+        return true;
+    }
+
+    @Override
+    public boolean canSeekBackward() {
+        return true;
+    }
+
+    @Override
+    public boolean canSeekForward() {
+        return true;
+    }
+
+    @Override
+    public int getAudioSessionId() {
+        return 0;
+    }
+
 
     public class MusicBinder extends Binder {
         MusicService getService() {

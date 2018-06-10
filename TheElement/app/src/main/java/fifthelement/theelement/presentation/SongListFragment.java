@@ -24,12 +24,12 @@ import fifthelement.theelement.objects.SongsListAdapter;
 public class SongListFragment extends Fragment {
 
     public static final String TAG = "MainActivity";
-    public static final int MEDIA_RES_ID = R.raw.jazz_in_paris;
+    public static final String MEDIA_RES_PATH = "android.resource://fifthelement.theelement/raw/jazz_in_paris";
 
     private TextView mTextDebug;
     private SeekBar mSeekbarAudio;
     private ScrollView mScrollContainer;
-    private PlayerAdapter mPlayerAdapter;
+    private MusicService musicService;
     private View view;
     private boolean mUserIsSeeking = false;
 
@@ -53,84 +53,81 @@ public class SongListFragment extends Fragment {
         ListView listView = (ListView) view.findViewById(R.id.song_list_view);
         SongsListAdapter songListAdapter = new SongsListAdapter(getActivity(), songs);
         listView.setAdapter(songListAdapter);
+        musicService = ((MainActivity)getActivity()).getMusicService();
+        musicService.setCurrSongPath(MEDIA_RES_PATH);
         initializeUI();
         initializeSeekbar();
-        initializePlaybackController();
+        //initializePlaybackController();
         Log.d(TAG, "onCreate: finished");
         return view;
     }
 
-    @Override
-    public void onStop() {
-        super.onStop();
-        mPlayerAdapter.release();
-        Log.d(TAG, "onStop: release MediaPlayer");
+    private void initializeUI() {
+        Button mPlayButton = (Button) view.findViewById(R.id.button_play);
+        Button mPauseButton = (Button) view.findViewById(R.id.button_pause);
+        //Button mResetButton = (Button) view.findViewById(R.id.button_reset);
+        mSeekbarAudio = (SeekBar) view.findViewById(R.id.seekbar_audio);
+        //mScrollContainer = (ScrollView) view.findViewById(R.id.scroll_container);
+
+        mPauseButton.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        System.out.println("Called Pause Button");
+                        musicService.pause();
+                    }
+                });
+        mPlayButton.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        System.out.println("Called Play Button");
+                        musicService.start();
+                    }
+                });
+//        mResetButton.setOnClickListener(
+//                new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View view) {
+//                        System.out.println("Called Reset Button");
+//                        musicService.reset();
+//                    }
+//                });
     }
 
-        private void initializeUI() {
-            Button mPlayButton = (Button) view.findViewById(R.id.button_play);
-            Button mPauseButton = (Button) view.findViewById(R.id.button_pause);
-            Button mResetButton = (Button) view.findViewById(R.id.button_reset);
-            mSeekbarAudio = (SeekBar) view.findViewById(R.id.seekbar_audio);
-            //mScrollContainer = (ScrollView) view.findViewById(R.id.scroll_container);
+//    private void initializePlaybackController() {
+//        MediaPlayerHolder mMediaPlayerHolder = new MediaPlayerHolder(getActivity());
+//        Log.d(TAG, "initializePlaybackController: created MediaPlayerHolder");
+//        mMediaPlayerHolder.setPlaybackInfoListener(new PlaybackListener());
+//        mPlayerAdapter = mMediaPlayerHolder;
+//        mPlayerAdapter.loadMedia(MEDIA_RES_ID);
+//        Log.d(TAG, "initializePlaybackController: MediaPlayerHolder progress callback set");
+//    }
 
-            mPauseButton.setOnClickListener(
-                    new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            mPlayerAdapter.pause();
-                        }
-                    });
-            mPlayButton.setOnClickListener(
-                    new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            System.out.println("Called Play Button");
-                            mPlayerAdapter.play();
-                        }
-                    });
-            mResetButton.setOnClickListener(
-                    new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            mPlayerAdapter.reset();
-                        }
-                    });
-        }
+    private void initializeSeekbar() {
+        mSeekbarAudio.setOnSeekBarChangeListener(
+                new SeekBar.OnSeekBarChangeListener() {
+                    int userSelectedPosition = 0;
 
-        private void initializePlaybackController() {
-            MediaPlayerHolder mMediaPlayerHolder = new MediaPlayerHolder(getActivity());
-            Log.d(TAG, "initializePlaybackController: created MediaPlayerHolder");
-            //mMediaPlayerHolder.setPlaybackInfoListener(new PlaybackListener());
-            mPlayerAdapter = mMediaPlayerHolder;
-            mPlayerAdapter.loadMedia(MEDIA_RES_ID);
-            Log.d(TAG, "initializePlaybackController: MediaPlayerHolder progress callback set");
-        }
+                    @Override
+                    public void onStartTrackingTouch(SeekBar seekBar) {
+                        mUserIsSeeking = true;
+                    }
 
-        private void initializeSeekbar() {
-            mSeekbarAudio.setOnSeekBarChangeListener(
-                    new SeekBar.OnSeekBarChangeListener() {
-                        int userSelectedPosition = 0;
-
-                        @Override
-                        public void onStartTrackingTouch(SeekBar seekBar) {
-                            mUserIsSeeking = true;
+                    @Override
+                    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                        if (fromUser) {
+                            userSelectedPosition = progress;
                         }
+                    }
 
-                        @Override
-                        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                            if (fromUser) {
-                                userSelectedPosition = progress;
-                            }
-                        }
-
-                        @Override
-                        public void onStopTrackingTouch(SeekBar seekBar) {
-                            mUserIsSeeking = false;
-                            mPlayerAdapter.seekTo(userSelectedPosition);
-                        }
-                    });
-        }
+                    @Override
+                    public void onStopTrackingTouch(SeekBar seekBar) {
+                        mUserIsSeeking = false;
+                        musicService.seekTo(userSelectedPosition);
+                    }
+                });
+    }
 
      public class PlaybackListener extends PlaybackInfoListener {
 
@@ -156,22 +153,6 @@ public class SongListFragment extends Fragment {
 
         @Override
         public void onPlaybackCompleted() {
-        }
-
-        @Override
-        public void onLogUpdated(String message) {
-            if (mTextDebug != null) {
-                mTextDebug.append(message);
-                mTextDebug.append("\n");
-                // Moves the scrollContainer focus to the end.
-                mScrollContainer.post(
-                        new Runnable() {
-                            @Override
-                            public void run() {
-                                mScrollContainer.fullScroll(ScrollView.FOCUS_DOWN);
-                            }
-                        });
-            }
         }
     }
 }

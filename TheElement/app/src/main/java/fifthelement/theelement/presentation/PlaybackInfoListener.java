@@ -6,8 +6,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 /**
- * Allows {@link MediaPlayerHolder} to report media playback duration and progress updates to
- * the {@link MainActivity}.
+ * Allows {@link MusicService} to report media playback duration and progress updates to
+ * the {@link SongListFragment}.
  */
 public abstract class PlaybackInfoListener {
 

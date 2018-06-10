@@ -1,7 +1,7 @@
 package fifthelement.theelement.presentation;
 
 /**
- * Allows {@link MainActivity} to control media playback of {@link MediaPlayerHolder}.
+ * Allows {@link SongListFragment} to control media playback of {@link MusicService}.
  */
 public interface PlayerAdapter {
 

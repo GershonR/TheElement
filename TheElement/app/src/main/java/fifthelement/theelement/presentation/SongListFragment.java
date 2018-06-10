@@ -54,10 +54,10 @@ public class SongListFragment extends Fragment {
         SongsListAdapter songListAdapter = new SongsListAdapter(getActivity(), songs);
         listView.setAdapter(songListAdapter);
         musicService = ((MainActivity)getActivity()).getMusicService();
-        musicService.setCurrSongPath(MEDIA_RES_PATH);
         initializeUI();
         initializeSeekbar();
-        //initializePlaybackController();
+        initializePlaybackController();
+        musicService.setCurrSongPath(MEDIA_RES_PATH);
         Log.d(TAG, "onCreate: finished");
         return view;
     }
@@ -95,14 +95,9 @@ public class SongListFragment extends Fragment {
 //                });
     }
 
-//    private void initializePlaybackController() {
-//        MediaPlayerHolder mMediaPlayerHolder = new MediaPlayerHolder(getActivity());
-//        Log.d(TAG, "initializePlaybackController: created MediaPlayerHolder");
-//        mMediaPlayerHolder.setPlaybackInfoListener(new PlaybackListener());
-//        mPlayerAdapter = mMediaPlayerHolder;
-//        mPlayerAdapter.loadMedia(MEDIA_RES_ID);
-//        Log.d(TAG, "initializePlaybackController: MediaPlayerHolder progress callback set");
-//    }
+    private void initializePlaybackController() {
+        musicService.setPlaybackInfoListener(new PlaybackListener());
+    }
 
     private void initializeSeekbar() {
         mSeekbarAudio.setOnSeekBarChangeListener(
@@ -134,25 +129,15 @@ public class SongListFragment extends Fragment {
         @Override
         public void onDurationChanged(int duration) {
             mSeekbarAudio.setMax(duration);
-            Log.d(TAG, String.format("setPlaybackDuration: setMax(%d)", duration));
+            System.out.println(String.format("setPlaybackDuration: setMax(%d)", duration));
         }
 
         @Override
         public void onPositionChanged(int position) {
             if (!mUserIsSeeking) {
                 mSeekbarAudio.setProgress(position);
-                Log.d(TAG, String.format("setPlaybackPosition: setProgress(%d)", position));
+                System.out.println(String.format("setPlaybackPosition: setProgress(%d)", position));
             }
-        }
-
-        @Override
-        public void onStateChanged(@State int state) {
-            String stateToString = PlaybackInfoListener.convertStateToString(state);
-            onLogUpdated(String.format("onStateChanged(%s)", stateToString));
-        }
-
-        @Override
-        public void onPlaybackCompleted() {
         }
     }
 }

@@ -11,7 +11,9 @@ import android.os.IBinder;
 import android.os.PowerManager;
 import android.widget.MediaController;
 
-import fifthelement.theelement.objects.Song;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 /**
  * This MusicService will allow for a MediaPlayer instance to
@@ -22,9 +24,14 @@ import fifthelement.theelement.objects.Song;
 public class MusicService extends Service implements MediaPlayer.OnPreparedListener,
         MediaPlayer.OnErrorListener, MediaPlayer.OnCompletionListener, MediaController.MediaPlayerControl{
 
+    public static final int PLAYBACK_POSITION_REFRESH_INTERVAL_MS = 500;
+
     private MediaPlayer player;
     private boolean playerPrepared;
     private final IBinder musicBind = new MusicBinder();
+    private PlaybackInfoListener mPlaybackInfoListener;
+    private ScheduledExecutorService mExecutor;
+    private Runnable mSeekbarPositionUpdateTask;
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -80,23 +87,27 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
 
         try{
             player.setDataSource(context, uri);
+            player.prepare();
         } catch(Exception e) {
             //TODO: Handle exceptions
             e.printStackTrace();
         }
 
         playerPrepared = false;
-        player.prepareAsync();
+        initializeProgressCallback();
+
     }
 
     public void reset() {
         player.reset();
+        stopUpdatingCallbackWithPosition(true);
     }
 
     @Override
     public void start() {
         if(playerPrepared && !player.isPlaying()) {
             player.start();
+            startUpdatingCallbackWithPosition();
         }
     }
 
@@ -104,6 +115,7 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
     public void pause() {
         if(playerPrepared && player.isPlaying()){
             player.pause();
+            stopUpdatingCallbackWithPosition(false);
         }
     }
 
@@ -164,6 +176,59 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
         return 0;
     }
 
+    public void setPlaybackInfoListener(PlaybackInfoListener listener) {
+        mPlaybackInfoListener = listener;
+    }
+
+    private void startUpdatingCallbackWithPosition() {
+        if (mExecutor == null) {
+            mExecutor = Executors.newSingleThreadScheduledExecutor();
+        }
+        if (mSeekbarPositionUpdateTask == null) {
+            mSeekbarPositionUpdateTask = new Runnable() {
+                @Override
+                public void run() {
+                    updateProgressCallbackTask();
+                }
+            };
+        }
+        mExecutor.scheduleAtFixedRate(
+                mSeekbarPositionUpdateTask,
+                0,
+                PLAYBACK_POSITION_REFRESH_INTERVAL_MS,
+                TimeUnit.MILLISECONDS
+        );
+    }
+
+    // Reports media playback position to mPlaybackProgressCallback.
+    private void stopUpdatingCallbackWithPosition(boolean resetUIPlaybackPosition) {
+        if (mExecutor != null) {
+            mExecutor.shutdownNow();
+            mExecutor = null;
+            mSeekbarPositionUpdateTask = null;
+            if (resetUIPlaybackPosition && mPlaybackInfoListener != null) {
+                mPlaybackInfoListener.onPositionChanged(0);
+            }
+        }
+    }
+
+    private void updateProgressCallbackTask() {
+        if (player != null && player.isPlaying()) {
+            int currentPosition = player.getCurrentPosition();
+            if (mPlaybackInfoListener != null) {
+                mPlaybackInfoListener.onPositionChanged(currentPosition);
+            }
+        }
+    }
+
+    public void initializeProgressCallback() {
+        final int duration = player.getDuration();
+        if (mPlaybackInfoListener != null) {
+            mPlaybackInfoListener.onDurationChanged(duration);
+            mPlaybackInfoListener.onPositionChanged(0);
+            System.out.println("onDurationChanged duration: " + duration);
+        }
+    }
 
     public class MusicBinder extends Binder {
         MusicService getService() {

@@ -1,7 +1,12 @@
 package fifthelement.theelement.presentation;
 
 
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -25,8 +30,6 @@ public class MainActivity extends AppCompatActivity {
 
     // Make sure to be using android.support.v7.app.ActionBarDrawerToggle version.
 // The android.support.v4.app.ActionBarDrawerToggle has been deprecated.
-    private ActionBarDrawerToggle drawerToggle;
-    private DrawerLayout mDrawerLayout;
     private MusicService musicService;
     private Intent playIntent;
     private boolean musicBound = false;

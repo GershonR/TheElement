@@ -13,10 +13,10 @@ public class SongPersistenceStub implements SongPersistence {
     public SongPersistenceStub() {
         this.songList = new ArrayList<>();
 
-        this.storeSong(new Song(10001, "Song1"));
-        this.storeSong(new Song(10002, "Song2"));
-        this.storeSong(new Song(10003, "Song3"));
-        this.storeSong(new Song(10004, "Song4"));
+        this.storeSong(new Song(10001, "Song1", "test"));
+        this.storeSong(new Song(10002, "Song2", "test"));
+        this.storeSong(new Song(10003, "Song3", "test"));
+        this.storeSong(new Song(10004, "Song4", "test"));
     }
 
     public SongPersistenceStub(List<Song> songList) {

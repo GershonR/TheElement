@@ -29,7 +29,7 @@ public class SongListFragment extends Fragment {
         String[] authorNames = {"Drake", "Drake", "Childish Gambino", "Lil Baby & Drake", "Ariana Grande" };
         ArrayList<Song> songs = new ArrayList<Song>();
         for(int i = 0; i < 12; i++) {
-            Song song = new Song(i, songName[i%5]);
+            Song song = new Song(i, songName[i%5], "test");
             song.addAlbum(new Album(i, songName[i%5]));
             song.addAuthor(new Author(i, authorNames[i%5]));
             songs.add(song);

@@ -11,7 +11,7 @@ import android.os.PowerManager;
 import fifthelement.theelement.objects.Song;
 
 /**
- * This MusicService will allow for a MusicPlayer instance to
+ * This MusicService will allow for a MediaPlayer instance to
  * play music in the background of the app and be controlled
  * by various UI elements in the app.
  */
@@ -37,7 +37,7 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
 
     @Override
     public void onCompletion(MediaPlayer mediaPlayer) {
-
+        //TODO: This is where we would do autoplay stuff
     }
 
     @Override
@@ -58,6 +58,7 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
     }
 
     public void initMusicPlayer() {
+        //Sets up the MediaPlayer to continue playing in the background + listeners
         if(player != null) {
             player.setWakeMode(getApplicationContext(), PowerManager.PARTIAL_WAKE_LOCK);
             player.setAudioStreamType(AudioManager.STREAM_MUSIC);
@@ -79,7 +80,7 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
         try{
             player.setDataSource(path);
         } catch(Exception e) {
-            //Handle exception
+            //TODO: Handle exceptions
         }
 
         player.prepareAsync();

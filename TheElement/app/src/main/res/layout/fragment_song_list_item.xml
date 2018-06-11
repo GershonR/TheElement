@@ -26,4 +26,5 @@
         android:text="TextView2"
         android:textColor="@android:color/black"
         android:textSize="18dp" />
+
 </FrameLayout>

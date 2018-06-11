@@ -1,10 +1,16 @@
 package fifthelement.theelement.presentation;
 
 
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -12,8 +18,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
 
 import fifthelement.theelement.R;
+import fifthelement.theelement.presentation.MusicService.MusicBinder;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -23,7 +31,9 @@ public class MainActivity extends AppCompatActivity {
 
     // Make sure to be using android.support.v7.app.ActionBarDrawerToggle version.
 // The android.support.v4.app.ActionBarDrawerToggle has been deprecated.
-    private ActionBarDrawerToggle drawerToggle;
+    private MusicService musicService;
+    private Intent playIntent;
+    private boolean musicBound = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,9 +102,7 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        // Insert the fragment by replacing any existing fragment
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.flContent, fragment).commit();
+        createFragment(R.id.flContent, fragment);
 
         // Highlight the selected item has been done by NavigationView
         menuItem.setChecked(true);
@@ -102,5 +110,59 @@ public class MainActivity extends AppCompatActivity {
         setTitle(menuItem.getTitle());
         // Close the navigation drawer
         mDrawer.closeDrawers();
+    }
+
+    private void createFragment(int id, Fragment fragment) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        transaction.replace(id, fragment);
+
+        transaction.commit();
+    }
+
+    private ServiceConnection musicConnection = new ServiceConnection() {
+
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            MusicBinder binder = (MusicBinder)service;
+            //get service
+            musicService = binder.getService();
+            musicBound = true;
+
+            SeekerFragment seeker = new SeekerFragment();//create the fragment instance
+            createFragment(R.id.music_seeker, seeker);
+
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            musicBound = false;
+        }
+    };
+
+    public MusicService getMusicService(){
+        return musicService;
+    }
+
+    public boolean musicServiceBound(){
+        return musicBound;
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if(playIntent == null){
+            playIntent = new Intent(this, MusicService.class);
+            bindService(playIntent, musicConnection, Context.BIND_AUTO_CREATE);
+            startService(playIntent);
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        stopService(playIntent);
+        musicService = null;
+        super.onDestroy();
     }
 }

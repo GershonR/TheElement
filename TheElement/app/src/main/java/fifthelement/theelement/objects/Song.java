@@ -3,25 +3,27 @@ package fifthelement.theelement.objects;
 import java.util.ArrayList;
 import java.util.List;
 
-// TODO: implement proper stuff here
-public class Song {
+public class Song{
     private int songId;
     private String songName;
     private List<Author> authors;//might not include this
     private List<Album> albums; //might not include this
+    private String path;
 
-    public Song(int id, String name){
+    public Song(int id, String name, String path){
         this.songId = id;
         this.songName = name;
-        albums = new ArrayList<>();
-        authors = new ArrayList<>();
+        this.path = path;
+        this.albums = new ArrayList<>();
+        this.authors = new ArrayList<>();
     }
 
-    public Song(int id, String name, List<Author> authorList) {
+    public Song(int id, String name, String path, List<Album> albums, List<Author> authors){
         this.songId = id;
         this.songName = name;
-        albums = new ArrayList<>();
-        authors = new ArrayList<>();
+        this.path = path;
+        this.albums = albums;
+        this.authors = authors;
     }
 
     public String getName(){
@@ -48,10 +50,17 @@ public class Song {
         this.songId  = newId;
     }
 
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
+
     public void setAuthors(List<Author> authorList) {
         this.authors =  authorList;
     }
-    //OR
 
     public void addAuthor(Author newAuthor){//to add a single author
         this.authors.add(newAuthor);
@@ -60,11 +69,8 @@ public class Song {
     public void setAlbums(List<Album> albumList) {
         this.albums =  albumList;
     }
-    //OR
 
     public void addAlbum(Album newAlbum){//to add a single album
         this.albums.add(newAlbum);
     }
-    
-
 }

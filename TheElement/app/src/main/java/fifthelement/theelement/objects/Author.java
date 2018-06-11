@@ -65,4 +65,12 @@ public class Author {
     public void addSong(Song song) {
         this.songs.add(song);
     }
+
+    public void deleteSong(Song song) {
+        for( int i = 0; i < songs.size(); i++ ) {
+            if( songs.get(i).getId() == song.getId() ) {
+                songs.remove(i);
+            }
+        }
+    }
 }

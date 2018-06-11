@@ -1,5 +1,6 @@
 package fifthelement.theelement.business;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import fifthelement.theelement.application.Services;
@@ -8,6 +9,7 @@ import fifthelement.theelement.objects.Author;
 import fifthelement.theelement.objects.Song;
 import fifthelement.theelement.persistence.AlbumPersistence;
 import fifthelement.theelement.persistence.AuthorPersistence;
+import fifthelement.theelement.persistence.PlayListPersistence;
 import fifthelement.theelement.persistence.SongPersistence;
 
 public class Delete {
@@ -25,76 +27,93 @@ public class Delete {
 
     public void deleteSong(Song songToRemove) {
 
-        Song song = songPersistence.getSongByID(songToRemove.getId());
+        Song song = songPersistence.getSongById(songToRemove.getId());
         if( song == null ) {
             throw new IllegalArgumentException("Cannot delete unknown song");
         }
 
-        // check if there are still songs in the album/s
+        List<Album> albumList = song.getAlbums();
+        List<Author> authorList = song.getAuthors();
+
         for( Album a : song.getAlbums() ) {
             a.deleteSong(song);
-            checkAlbumValidity(a);
         }
 
-        // check if there are still songs in the author/s
         for( Author a : song.getAuthors() ) {
             a.deleteSong(song);
-            checkAuthorValidity(a);
         }
 
         songPersistence.deleteSong(song);
+        validateAlbumList(song.getAlbums());
+        validateAuthorList(song.getAuthors());
     }
 
-    // can't delete when there are songs contained in it. so it is a private method
-    private void checkAlbumValidity(Album albumToRemove) {
-
-        Album album = albumPersistence.getAlbumByID(albumToRemove.getId());
-        if( album == null ) {
-            throw new IllegalArgumentException("Unknown album");
-        }
-
-        if( album.getSongs().size() == 0 ) {
-            albumPersistence.deleteAlbum(album);
+    private void validateAlbumList(List<Album> albumList) {
+        for( Album a : albumList ) {
+            if( a.getSongs().size() == 0 ) {
+                albumPersistence.deleteAlbum(a);
+            }
         }
     }
 
-    private void checkAuthorValidity(Author authorToRemove) {
-
-        Author author = authorPersistence.getAuthorByID(authorToRemove.getId());
-        if( author == null ) {
-            throw new IllegalArgumentException("Unknown author");
-        }
-
-        if( author.getSongs().size() == 0 ) {
-            authorPersistence.deleteAuthor(author);
+    private void validateAuthorList(List<Author> authorList) {
+        for( Author a : authorList ) {
+            if( a.getSongs().size() == 0 ) {
+                authorPersistence.deleteAuthor(a);
+            }
         }
     }
 
     public void deleteAuthorAndSongs(Author authorToRemove) {
 
-        Author author = authorPersistence.getAuthorByID(authorToRemove.getId());
+        Author author = authorPersistence.getAuthorById(authorToRemove.getId());
         if( author == null ) {
             throw new IllegalArgumentException("Cannot delete null author");
         }
 
-        // should delete the author and albums in the end
-        // redundant and slow. might need some optimizing
+        List<Album> albumList = new ArrayList<>();
+        List<Author> authorList = new ArrayList<>();
+
         for( Song s : author.getSongs() ) {
-            this.deleteSong(s);
+            for( Album a : s.getAlbums() ) {
+                a.deleteSong(s);
+                albumList.add(a);
+            }
+            for( Author a : s.getAuthors() ) {
+                a.deleteSong(s);
+                authorList.add(a);
+            }
+            songPersistence.deleteSong(s);
         }
 
+        validateAlbumList(albumList);
+        validateAuthorList(authorList);
     }
 
     public void deleteAlbumAndSongs(Album albumToRemove) {
 
-        Album album = albumPersistence.getAlbumByID(albumToRemove.getId());
+        Album album = albumPersistence.getAlbumById(albumToRemove.getId());
         if( album == null ) {
             throw new IllegalArgumentException("Unknown album");
         }
 
+        List<Album> albumList = new ArrayList<>();
+        List<Author> authorList = new ArrayList<>();
+
         for( Song s : album.getSongs() ) {
-            this.deleteSong(s);
+            for( Album a : s.getAlbums() ) {
+                a.deleteSong(s);
+                albumList.add(a);
+            }
+            for( Author a : s.getAuthors() ) {
+                a.deleteSong(s);
+                authorList.add(a);
+            }
+            songPersistence.deleteSong(s);
         }
+
+        validateAlbumList(albumList);
+        validateAuthorList(authorList);
     }
 }
 

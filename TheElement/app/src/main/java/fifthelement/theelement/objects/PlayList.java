@@ -50,4 +50,12 @@ public class PlayList {
     public void addSong(Song newSong) {
         this.songs.add(newSong);
     }
+
+    public void deleteSong(Song song) {
+        for( int i = 0; i < songs.size(); i++ ) {
+            if( songs.get(i).getId() == song.getId() ) {
+                songs.remove(i);
+            }
+        }
+    }
 }

@@ -8,12 +8,12 @@ public interface AuthorPersistence {
 
     List<Author> getAllAuthors(); // some unordered list.
 
-    Author getAuthorByID(int ID); // get a author by ID
+    Author getAuthorById(int Id); // get a author by Id
 
     Author storeAuthor(Author song); // checks & ignores duplicates
 
     Author updateAuthor(Author song); // replaces old author with new one
 
-    boolean deleteAuthor(Author song); // delete's using ID
+    boolean deleteAuthor(Author song); // delete's using Id
 
 }

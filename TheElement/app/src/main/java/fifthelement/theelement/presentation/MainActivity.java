@@ -10,6 +10,7 @@ import android.os.IBinder;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -101,9 +102,15 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
+        SeekerFragment seeker = new SeekerFragment();//create the fragment instance for the middle fragment
+
         // Insert the fragment by replacing any existing fragment
         FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.flContent, fragment).commit();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.replace(R.id.flContent, fragment);
+        transaction.replace(R.id.music_seeker, seeker);
+
+        transaction.commit();
 
         // Highlight the selected item has been done by NavigationView
         menuItem.setChecked(true);

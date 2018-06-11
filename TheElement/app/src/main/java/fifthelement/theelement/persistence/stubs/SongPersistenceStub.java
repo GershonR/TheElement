@@ -17,6 +17,7 @@ public class SongPersistenceStub implements SongPersistence {
         this.storeSong(new Song(10002, "Song2", "test"));
         this.storeSong(new Song(10003, "Song3", "test"));
         this.storeSong(new Song(10004, "Song4", "test"));
+
     }
 
     public SongPersistenceStub(List<Song> songList) {

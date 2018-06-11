@@ -29,9 +29,9 @@ public class AuthorPersistenceStub implements AuthorPersistence {
     }
 
     @Override
-    public Author getAuthorByID(int ID) {
+    public Author getAuthorById(int Id) {
         for(Author a : this.authorList)
-            if(a.getId() == ID)
+            if( a.getId() == Id )
                 return a;
         return null;
     }
@@ -51,9 +51,10 @@ public class AuthorPersistenceStub implements AuthorPersistence {
         for(int index = 0; index < authorList.size(); index++) {
             if(authorList.get(index).getId() == author.getId()) {
                 this.authorList.set(index, author);
+                return author;
             }
         }
-        return author;
+        return null;
     }
 
     @Override
@@ -65,18 +66,13 @@ public class AuthorPersistenceStub implements AuthorPersistence {
             if(authorList.get(index).getId() == author.getId()) {
                 this.authorList.remove(index);
                 removed = true;
+                break;
             }
         }
         return removed;
     }
 
     private boolean authorExists(Author author) {
-        boolean exists = false;
-        for(Author a : this.authorList)
-            if(a.getId() == author.getId()) {
-                exists = true;
-                break;
-            }
-        return exists;
+        return getAuthorById(author.getId()) != null;
     }
 }

@@ -1,18 +1,27 @@
 package fifthelement.theelement.objects;
 
 import java.util.ArrayList;
+import java.util.List;
 
+// TODO: implement proper stuff here
 public class PlayList {
     private int listId;
     private String listName;
-    private ArrayList<Song> songs;
+    private List<Song> songs;
 
     public PlayList(int id, String name) {
         this.listId = id;
         this.listName = name;
-        this.songs = new ArrayList<Song>();
+        this.songs = new ArrayList<>();
     }
 
+    public PlayList(int id, String name, List<Song> songs) {
+        this.listId = id;
+        this.listName = name;
+        this.songs = songs;
+    }
+
+    // getters
     public String getName() {
         return listName;
     }
@@ -21,10 +30,11 @@ public class PlayList {
         return listId;
     }
 
-    public ArrayList<Song> getSongs() {
+    public List<Song> getSongs() {
         return songs;
     }
 
+    // setters
     public void setName(String newName) {
         this.listName = newName;
     }
@@ -33,10 +43,9 @@ public class PlayList {
         this.listId = newId;
     }
 
-    public void setSongs(ArrayList<Song> songList) {
+    public void setSongs(List<Song> songList) {
         this.songs = songList;
     }
-    //OR
 
     public void addSong(Song newSong) {
         this.songs.add(newSong);

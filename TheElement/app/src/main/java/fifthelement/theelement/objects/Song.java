@@ -1,18 +1,27 @@
 package fifthelement.theelement.objects;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class Song{
+// TODO: implement proper stuff here
+public class Song {
     private int songId;
     private String songName;
-    private ArrayList<Author>authors;//might not include this 
-    private ArrayList<Album> albums; //might not include this
+    private List<Author> authors;//might not include this
+    private List<Album> albums; //might not include this
 
     public Song(int id, String name){
         this.songId = id;
         this.songName = name;
-        albums = new ArrayList<Album>();
-        authors = new ArrayList<Author>();
+        albums = new ArrayList<>();
+        authors = new ArrayList<>();
+    }
+
+    public Song(int id, String name, List<Author> authorList) {
+        this.songId = id;
+        this.songName = name;
+        albums = new ArrayList<>();
+        authors = new ArrayList<>();
     }
 
     public String getName(){
@@ -23,11 +32,11 @@ public class Song{
         return songId;
     }
 
-    public ArrayList<Author> getAuthors(){
+    public List<Author> getAuthors() {
         return authors;
     }
-    
-    public ArrayList<Album> getAlbums(){
+
+    public List<Album> getAlbums() {
         return albums;
     }
 
@@ -39,7 +48,7 @@ public class Song{
         this.songId  = newId;
     }
 
-     public void setAuthors(ArrayList<Author>authorList){
+    public void setAuthors(List<Author> authorList) {
         this.authors =  authorList;
     }
     //OR
@@ -48,7 +57,7 @@ public class Song{
         this.authors.add(newAuthor);
     }
 
-      public void setAlbums(ArrayList<Album>albumList){
+    public void setAlbums(List<Album> albumList) {
         this.albums =  albumList;
     }
     //OR

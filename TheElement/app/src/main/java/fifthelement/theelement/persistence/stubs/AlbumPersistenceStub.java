@@ -30,9 +30,9 @@ public class AlbumPersistenceStub implements AlbumPersistence {
     }
 
     @Override
-    public Album getAlbumByID(int ID) {
+    public Album getAlbumById(int Id) {
         for(Album a : this.albumList)
-            if(a.getId() == ID)
+            if( a.getId() == Id )
                 return a;
         return null;
     }
@@ -52,9 +52,10 @@ public class AlbumPersistenceStub implements AlbumPersistence {
         for(int index = 0; index < albumList.size(); index++) {
             if(albumList.get(index).getId() == album.getId()) {
                 this.albumList.set(index, album);
+                return album;
             }
         }
-        return album;
+        return null;
     }
 
     @Override
@@ -66,18 +67,13 @@ public class AlbumPersistenceStub implements AlbumPersistence {
             if(albumList.get(index).getId() == album.getId()) {
                 this.albumList.remove(index);
                 removed = true;
+                break;
             }
         }
         return removed;
     }
 
     private boolean albumExists(Album album) {
-        boolean exists = false;
-        for(Album a : this.albumList)
-            if(a.getId() == album.getId()) {
-                exists = true;
-                break;
-            }
-        return exists;
+        return getAlbumById(album.getId()) != null;
     }
 }

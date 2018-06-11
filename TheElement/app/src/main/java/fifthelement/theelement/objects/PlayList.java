@@ -12,9 +12,16 @@ public class PlayList {
     public PlayList(int id, String name) {
         this.listId = id;
         this.listName = name;
-        songs = new ArrayList<>();
+        this.songs = new ArrayList<>();
     }
 
+    public PlayList(int id, String name, List<Song> songs) {
+        this.listId = id;
+        this.listName = name;
+        this.songs = songs;
+    }
+
+    // getters
     public String getName() {
         return listName;
     }
@@ -27,6 +34,7 @@ public class PlayList {
         return songs;
     }
 
+    // setters
     public void setName(String newName) {
         this.listName = newName;
     }
@@ -38,7 +46,6 @@ public class PlayList {
     public void setSongs(List<Song> songList) {
         this.songs = songList;
     }
-    //OR
 
     public void addSong(Song newSong) {
         this.songs.add(newSong);

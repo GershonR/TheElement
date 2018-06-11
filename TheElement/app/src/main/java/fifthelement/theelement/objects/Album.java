@@ -1,9 +1,7 @@
-
 package fifthelement.theelement.objects;
 
 import java.util.ArrayList;
 import java.util.List;
-// TODO: implement proper stuff here
 
 public class Album {
     private int albumId;
@@ -14,10 +12,18 @@ public class Album {
     public Album(int id, String name) {
         this.albumId = id;
         this.albumName = name;
-        authors = new ArrayList<>();
-        songs = new ArrayList<>();
+        this.authors = new ArrayList<>();
+        this.songs = new ArrayList<>();
     }
 
+    public Album(int id, String name, List<Author> authors, List<Song> songs) {
+        this.albumId = id;
+        this.albumName = name;
+        this.authors = authors;
+        this.songs = songs;
+    }
+
+    // getters
     public String getName(){
         return albumName;
     }
@@ -30,10 +36,11 @@ public class Album {
         return authors;
     }
 
-    public List<Song> getsongs() {
+    public List<Song> getSongs() {
         return songs;
     }
 
+    // setters
     public void setName(String newName) {
         this.albumName = newName;
     }
@@ -45,7 +52,6 @@ public class Album {
     public void setAuthors(List<Author> authorList) {
         this.authors =  authorList;
     }
-    //OR
 
     public void addAuthor(Author newAuthor){//to add a single author
         this.authors.add(newAuthor);
@@ -54,11 +60,8 @@ public class Album {
     public void setSongs(List<Song> songList) {
         this.songs = songList;
     }
-    //OR
 
     public void addSong(Song newSong){
         this.songs.add(newSong);
     }
-
-
 }

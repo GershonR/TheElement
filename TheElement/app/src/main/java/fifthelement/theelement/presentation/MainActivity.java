@@ -102,15 +102,7 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        SeekerFragment seeker = new SeekerFragment();//create the fragment instance for the middle fragment
-
-        // Insert the fragment by replacing any existing fragment
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.replace(R.id.flContent, fragment);
-        transaction.replace(R.id.music_seeker, seeker);
-
-        transaction.commit();
+        createFragment(R.id.flContent, fragment);
 
         // Highlight the selected item has been done by NavigationView
         menuItem.setChecked(true);
@@ -118,6 +110,15 @@ public class MainActivity extends AppCompatActivity {
         setTitle(menuItem.getTitle());
         // Close the navigation drawer
         mDrawer.closeDrawers();
+    }
+
+    private void createFragment(int id, Fragment fragment) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        transaction.replace(id, fragment);
+
+        transaction.commit();
     }
 
     private ServiceConnection musicConnection = new ServiceConnection() {
@@ -128,6 +129,10 @@ public class MainActivity extends AppCompatActivity {
             //get service
             musicService = binder.getService();
             musicBound = true;
+
+            SeekerFragment seeker = new SeekerFragment();//create the fragment instance
+            createFragment(R.id.music_seeker, seeker);
+
         }
 
         @Override

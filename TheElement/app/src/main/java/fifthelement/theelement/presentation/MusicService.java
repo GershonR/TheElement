@@ -9,7 +9,6 @@ import android.net.Uri;
 import android.os.Binder;
 import android.os.IBinder;
 import android.os.PowerManager;
-import android.widget.MediaController;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -22,7 +21,7 @@ import java.util.concurrent.TimeUnit;
  */
 
 public class MusicService extends Service implements MediaPlayer.OnPreparedListener,
-        MediaPlayer.OnErrorListener, MediaPlayer.OnCompletionListener, MediaController.MediaPlayerControl{
+        MediaPlayer.OnErrorListener, MediaPlayer.OnCompletionListener {
 
     public static final int PLAYBACK_POSITION_REFRESH_INTERVAL_MS = 500;
 
@@ -33,11 +32,19 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
     private ScheduledExecutorService mExecutor;
     private Runnable mSeekbarPositionUpdateTask;
 
+    /**
+     * onBind
+     *  This function is called when the service is bound, it will return a MusicBinder instance
+     */
     @Override
     public IBinder onBind(Intent intent) {
         return musicBind;
     }
 
+    /**
+     * onUnbind
+     *  This function is called when the service is unbound, it will clean up the MediaPlayer
+     */
     @Override
     public boolean onUnbind(Intent intent) {
         player.stop();
@@ -45,28 +52,58 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
         return false;
     }
 
-    @Override
-    public void onCompletion(MediaPlayer mediaPlayer) {
-        //TODO: This is where we would do autoplay stuff
-    }
-
-    @Override
-    public boolean onError(MediaPlayer mediaPlayer, int i, int i1) {
-        return false;
-    }
-
-    @Override
-    public void onPrepared(MediaPlayer mediaPlayer) {
-        //Code to run when media player is prepared to play
-        playerPrepared = true;
-    }
-
+    /**
+     * onCreate
+     *  This function is called when the service is created, it will initialize the MediaPlayer
+     */
     public void onCreate() {
         super.onCreate();
         player = new MediaPlayer();
         initMusicPlayer();
     }
 
+    /**
+     * onCompletion
+     *  This function acts as a callback that occurs when the private MediaPlayer instance completes
+     *  playback of a music file.
+     * @param mediaPlayer - MediaPlayer instance that triggered the callback
+     */
+    @Override
+    public void onCompletion(MediaPlayer mediaPlayer) {
+        //TODO: This is where we would do autoplay stuff
+    }
+
+    /**
+     * onError
+     *  This function acts as a callback that occurs when the private MediaPlayer instance runs into
+     *  an error.
+     * @param mediaPlayer - MediaPlayer instance that triggered the callback
+     * @param what - Type of error that has occured
+     * @param extra - Extra code to specify the error further
+     * @return boolean - Should be true if the error was handled, false if not
+     */
+    @Override
+    public boolean onError(MediaPlayer mediaPlayer, int what, int extra) {
+        return false;
+    }
+
+    /**
+     * onPrepared
+     *  This function acts as a callback that occurs when the private MediaPlayer instance has fully
+     *  prepared.
+     * @param mediaPlayer - MediaPlayer instance that triggered the callback
+     */
+    @Override
+    public void onPrepared(MediaPlayer mediaPlayer) {
+        //Code to run when media player is prepared to play
+        playerPrepared = true;
+    }
+
+    /**
+     * initMusicPlayer
+     *  This function will initialize the private MediaPlayer member to play music in the background
+     *  and sets up the 3 listener methods above.
+     */
     public void initMusicPlayer() {
         //Sets up the MediaPlayer to continue playing in the background + listeners
         if(player != null) {
@@ -78,7 +115,14 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
         }
     }
 
-    public void setCurrSongPath(String songPath) {
+
+    /**
+     * setCurrSongPath:
+     *  This function will attempt to set the media player up to play the music file located at songPath.
+     * @param songPath - File path of the music file to play
+     * @return boolean - Indicator if the music file path was set successfully
+     */
+    public boolean setCurrSongPath(String songPath) {
         System.out.println("Attempting to set new path: " + songPath);
 
         player.reset();
@@ -91,19 +135,27 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
         } catch(Exception e) {
             //TODO: Handle exceptions
             e.printStackTrace();
+            return false;
         }
 
         playerPrepared = false;
         initializeProgressCallback();
-
+        return true;
     }
 
+    /**
+     * reset
+     *  This function will reset the MediaPlayer instance and reset seekbar UI positions to start.
+     */
     public void reset() {
         player.reset();
         stopUpdatingCallbackWithPosition(true);
     }
 
-    @Override
+    /**
+     * start
+     *  This function will start the private MediaPlayer instance (equivalent to 'Play').
+     */
     public void start() {
         if(playerPrepared && !player.isPlaying()) {
             player.start();
@@ -111,7 +163,10 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
         }
     }
 
-    @Override
+    /**
+     * pause
+     *  This function pauses the playback of the private MediaPlayer instance.
+     */
     public void pause() {
         if(playerPrepared && player.isPlaying()){
             player.pause();
@@ -119,7 +174,11 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
         }
     }
 
-    @Override
+    /**
+     * getDuration
+     *  This function will return the duration of the currently loaded music file.
+     * @return int - length of the loaded music file in milliseconds
+     */
     public int getDuration() {
         if(playerPrepared) {
             return player.getDuration();
@@ -129,7 +188,11 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
         }
     }
 
-    @Override
+    /**
+     * getCurrentPosition
+     *  This function will return the current position of playback in ms.
+     * @return int - current position of playback in ms
+     */
     public int getCurrentPosition() {
         if(playerPrepared) {
             return player.getCurrentPosition();
@@ -139,47 +202,41 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
         }
     }
 
-    @Override
+    /**
+     * seekTo
+     *  This function will have the MediaPlayer seek to a position of playback in ms.
+     * @param pos - millisecond position to seek to
+     */
     public void seekTo(int pos) {
         if(playerPrepared) {
             player.seekTo(pos);
         }
     }
 
-    @Override
+    /**
+     * isPlaying
+     *  This function will return a boolean indicating if playback is currently going on.
+     * @return boolean - indicator if playback is currently going
+     */
     public boolean isPlaying() {
         return player.isPlaying();
     }
 
-    @Override
-    public int getBufferPercentage() {
-        return 0;
-    }
 
-    @Override
-    public boolean canPause() {
-        return true;
-    }
-
-    @Override
-    public boolean canSeekBackward() {
-        return true;
-    }
-
-    @Override
-    public boolean canSeekForward() {
-        return true;
-    }
-
-    @Override
-    public int getAudioSessionId() {
-        return 0;
-    }
-
+    /**
+     * setPlaybackInfoListener
+     *  This function will set a PlaybackInfoListener for this service, which is used by seekbars in
+     *  the UI to update the current position of playback.
+     * @param listener - PlaybackInfoListener to use during playback
+     */
     public void setPlaybackInfoListener(PlaybackInfoListener listener) {
         mPlaybackInfoListener = listener;
     }
 
+    /**
+     * startUpdatingCallbackWithPosition
+     *  This function will spawn a scheduled executor to call a UI update function at a set interval.
+     */
     private void startUpdatingCallbackWithPosition() {
         if (mExecutor == null) {
             mExecutor = Executors.newSingleThreadScheduledExecutor();
@@ -200,7 +257,13 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
         );
     }
 
-    // Reports media playback position to mPlaybackProgressCallback.
+
+    /**
+     * stopUpdatingCallbackWithPosition
+     *  This function will stop the scheduled executor from calling UI update function and uses a
+     *  boolean parameter to determine if seekbar UI elements reporting playback must reset to 0.
+     * @param resetUIPlaybackPosition - indicator of if seekbars should reset to position 0
+     */
     private void stopUpdatingCallbackWithPosition(boolean resetUIPlaybackPosition) {
         if (mExecutor != null) {
             mExecutor.shutdownNow();
@@ -212,6 +275,11 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
         }
     }
 
+    /**
+     * updateProgressCallbackTask
+     *  This function will call the onPositionChanged function of the PlaybackInfoListener with the
+     *  current position of playback, which will update the seekbars that are using the listener.
+     */
     private void updateProgressCallbackTask() {
         if (player != null && player.isPlaying()) {
             int currentPosition = player.getCurrentPosition();
@@ -221,6 +289,11 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
         }
     }
 
+    /**
+     * initializeProgressCallback
+     *  This function will initialize seekbars using the PlaybackInfoListener with current playback
+     *  data.
+     */
     public void initializeProgressCallback() {
         final int duration = player.getDuration();
         if (mPlaybackInfoListener != null) {
@@ -230,6 +303,7 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
         }
     }
 
+    //Public helper class for binding this service to an activity
     public class MusicBinder extends Binder {
         MusicService getService() {
             return MusicService.this;

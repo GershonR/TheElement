@@ -1,4 +1,4 @@
-package fifthelement.theelement.objects;
+package fifthelement.theelement.persistence;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -7,16 +7,18 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import fifthelement.theelement.R;
+import fifthelement.theelement.objects.Author;
+import fifthelement.theelement.objects.Song;
 
 public class SongsListAdapter extends BaseAdapter {
     Context context;
-    ArrayList<Song> songs;
+    List<Song> songs;
     LayoutInflater inflater;
 
-    public SongsListAdapter(Context context, ArrayList<Song> songs) {
+    public SongsListAdapter(Context context, List<Song> songs) {
         this.context = context;
         this.songs = songs;
         inflater = (LayoutInflater.from(context));
@@ -43,7 +45,7 @@ public class SongsListAdapter extends BaseAdapter {
         TextView songName = (TextView) view.findViewById(R.id.song_name_list);
         TextView albumName = (TextView) view.findViewById(R.id.album_name_list);
         Song printSong = songs.get(i);
-        ArrayList<Author> author = printSong.getAuthors();
+        List<Author> author = printSong.getAuthors();
         String albums = "";
         for(int j = 0; j < author.size(); j++){
             albums += author.get(j).getName();

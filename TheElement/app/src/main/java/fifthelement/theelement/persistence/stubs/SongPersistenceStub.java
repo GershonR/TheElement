@@ -3,6 +3,7 @@ package fifthelement.theelement.persistence.stubs;
 import java.util.ArrayList;
 import java.util.List;
 
+import fifthelement.theelement.objects.Author;
 import fifthelement.theelement.objects.Song;
 import fifthelement.theelement.persistence.SongPersistence;
 
@@ -17,11 +18,20 @@ public class SongPersistenceStub implements SongPersistence {
             Tife just change the song path here, the SongService
             calls this constructor
          */
-        this.storeSong(new Song(10001, "Song1", "test"));
-        this.storeSong(new Song(10002, "Song2", "test"));
-        this.storeSong(new Song(10003, "Song3", "test"));
-        this.storeSong(new Song(10004, "Song4", "test"));
+        Song song = new Song(10001, "Nice For What", "test");
+        song.addAuthor(new Author(20001, "Drake"));
+        this.storeSong(song);
 
+        song = new Song(10002, "Girls Like You", "test");
+        this.storeSong(song);
+
+        song = new Song(10003, "This Is America", "test");
+        song.addAuthor(new Author(20003, "Childish Gambino"));
+        this.storeSong(song);
+
+        song = new Song(10004, "All Mine", "test");
+        song.addAuthor(new Author(20004, "Kanye West"));
+        this.storeSong(song);
     }
 
     public SongPersistenceStub(List<Song> songList) {

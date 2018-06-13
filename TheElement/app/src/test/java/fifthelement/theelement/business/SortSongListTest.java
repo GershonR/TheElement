@@ -7,13 +7,13 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import fifthelement.theelement.objects.Song;
 
 @RunWith(JUnit4.class)
 public class SortSongListTest {
-    private List<Song> sortedList;
     private List<Song> toBeSortedList;
 
     @Test
@@ -27,8 +27,7 @@ public class SortSongListTest {
         toBeSortedList.add(new Song(4, "Purity", "Path"));
 
         //sort list
-        SortSongList sortList = new SortSongList(toBeSortedList);
-        sortList.sortListByName();
+        Collections.sort(toBeSortedList);
 
         Assert.assertTrue("Size of list after sorting != 5", toBeSortedList.size() == 5);
     }
@@ -44,8 +43,7 @@ public class SortSongListTest {
         toBeSortedList.add(new Song(4, "Purity", "Path"));
 
         //sort list
-        SortSongList sortList = new SortSongList(toBeSortedList);
-        sortList.sortListByName();
+        Collections.sort(toBeSortedList);
 
         Assert.assertTrue("List after sort doesn't match to the sorted list", toBeSortedList.get(0).getName().equals("Geyser"));
         Assert.assertTrue("List after sort doesn't match to the sorted list", toBeSortedList.get(1).getName().equals("Nice For What"));

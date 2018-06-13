@@ -2,7 +2,7 @@ package fifthelement.theelement.objects;
 
 import java.util.ArrayList;
 
-public class Song{
+public class Song implements Comparable<Song>{
     private int songId;
     private String songName;
     private String path;
@@ -63,5 +63,10 @@ public class Song{
 
     public void addAlbum(Album newAlbum){//to add a single album
         this.albums.add(newAlbum);
+    }
+
+    @Override
+    public int compareTo(Song song){
+        return songName.compareTo(song.getName());
     }
 }

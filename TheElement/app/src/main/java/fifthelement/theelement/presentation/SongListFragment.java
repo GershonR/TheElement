@@ -33,7 +33,7 @@ public class SongListFragment extends Fragment {
         final SongsListAdapter songListAdapter = new SongsListAdapter(getActivity(), songs);
         String[] songName = {"Nice For What", "God's Plan", "This Is America", "Yes Indeed", "No Tears Left To Cry"};
         String[] authorNames = {"Drake", "Drake", "Childish Gambino", "Lil Baby & Drake", "Ariana Grande" };
-        for(int i = 0; i < 30; i++) {
+        for(int i = 0; i < 50; i++) {
             Song song = new Song(i, songName[i%5], "test");
             song.addAlbum(new Album(i, songName[i%5]));
             song.addAuthor(new Author(i, authorNames[i%5]));

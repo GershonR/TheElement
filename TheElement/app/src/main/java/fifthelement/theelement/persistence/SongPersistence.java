@@ -10,9 +10,9 @@ public interface SongPersistence {
 
     Song getSongByID(int ID); // get a song by ID
 
-    Song storeSong(Song song); // checks & ignores duplicates
+    boolean storeSong(Song song); // checks & ignores duplicates
 
-    Song updateSong(Song song); // replaces old song with new one
+    boolean updateSong(Song song); // replaces old song with new one
 
     boolean deleteSong(Song song); // delete's using ID
 

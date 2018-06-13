@@ -45,6 +45,7 @@ public class SongListFragment extends Fragment {
         buttonOrganize.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v) {
                 Collections.sort(songs);
+                songService.sort(songs);
                 songListAdapter.notifyDataSetChanged();
             }
         });

@@ -17,10 +17,10 @@ public class SongPersistenceStub implements SongPersistence {
             Tife just change the song path here, the SongService
             calls this constructor
          */
-        this.storeSong(new Song(10001, "Song1", "test"));
-        this.storeSong(new Song(10002, "Song2", "test"));
-        this.storeSong(new Song(10003, "Song3", "test"));
-        this.storeSong(new Song(10004, "Song4", "test"));
+        this.storeSong(new Song(10001, "Nice For What", "test"));
+        this.storeSong(new Song(10002, "Girls Like You", "test"));
+        this.storeSong(new Song(10003, "This Is America", "test"));
+        this.storeSong(new Song(10004, "All Mine", "test"));
 
     }
 

@@ -27,7 +27,6 @@ public class SongsListAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-
         return songs.size();
     }
 
@@ -49,15 +48,17 @@ public class SongsListAdapter extends BaseAdapter {
         TextView authorName = (TextView) view.findViewById(R.id.author_name_list);
         Song printSong = songs.get(i);
         List<Author> author = printSong.getAuthors();
-        String albums = "";
-        for(int j = 0; j < author.size(); j++){
-            albums += author.get(j).getName();
-            if(j < author.size()-1) {
-                albums += ", ";
-            }
-        }
+        String authors = "";
+       if(author != null) {
+           for(int j = 0; j < author.size(); j++){
+               authors += author.get(j).getName();
+               if(j < author.size()-1) {
+                   authors += ", ";
+               }
+           }
+       }
         songName.setText(printSong.getName());
-        authorName.setText(albums);
+        authorName.setText(authors);
         return view;
     }
 }

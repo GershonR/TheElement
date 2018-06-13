@@ -1,5 +1,7 @@
 package fifthelement.theelement.business.Services;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import fifthelement.theelement.application.Services;
@@ -37,9 +39,9 @@ public class SongService {
         return songPersistence.deleteSong(song);
     }
 
-    /*
-        Navjots Sort Songs Here
-     */
+    public void sortSongs(List<Song> songs) {
+        Collections.sort(songs);
+    }
 
     /*
         Tristans Delete Song Stuff Here

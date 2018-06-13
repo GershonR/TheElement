@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
     private NavigationView nvDrawer;
 
     // Make sure to be using android.support.v7.app.ActionBarDrawerToggle version.
-// The android.support.v4.app.ActionBarDrawerToggle has been deprecated.
+    // The android.support.v4.app.ActionBarDrawerToggle has been deprecated.
     private MusicService musicService;
     private Intent playIntent;
     private boolean musicBound = false;

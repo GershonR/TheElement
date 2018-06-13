@@ -7,7 +7,7 @@ import java.lang.annotation.RetentionPolicy;
 
 /**
  * Allows {@link MusicService} to report media playback duration and progress updates to
- * the {@link SongListFragment}.
+ * the {@link SeekerFragment}.
  */
 public abstract class PlaybackInfoListener {
 
@@ -44,9 +44,6 @@ public abstract class PlaybackInfoListener {
                 stateString = "N/A";
         }
         return stateString;
-    }
-
-    void onLogUpdated(String formattedMessage) {
     }
 
     void onDurationChanged(int duration) {

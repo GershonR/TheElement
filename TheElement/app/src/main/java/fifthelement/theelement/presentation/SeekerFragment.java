@@ -34,7 +34,7 @@ public class SeekerFragment extends Fragment {
         initializeUI();
         initializeSeekbar();
         initializePlaybackController();
-        musicService.setCurrSongPath(MEDIA_RES_PATH);
+        musicService.setCurrSongPath(MEDIA_RES_PATH); //TODO: Remove when music selection is working
         Log.d(TAG, "onCreate: finished");
         return view;
     }
@@ -91,6 +91,7 @@ public class SeekerFragment extends Fragment {
                 });
     }
 
+    //Listener that will help seekbars update with the progressing of music playback
     public class PlaybackListener extends PlaybackInfoListener {
 
         @Override

@@ -13,6 +13,10 @@ public class SongPersistenceStub implements SongPersistence {
     public SongPersistenceStub() {
         this.songList = new ArrayList<>();
 
+        /*
+            Tife just change the song path here, the SongService
+            calls this constructor
+         */
         this.storeSong(new Song(10001, "Song1", "test"));
         this.storeSong(new Song(10002, "Song2", "test"));
         this.storeSong(new Song(10003, "Song3", "test"));
@@ -38,21 +42,21 @@ public class SongPersistenceStub implements SongPersistence {
     }
 
     @Override
-    public Song storeSong(Song song) {
+    public boolean storeSong(Song song) {
         if(songExists(song))
             throw new ArrayStoreException();
         this.songList.add(song);
-        return song;
+        return true;
     }
 
     @Override
-    public Song updateSong(Song song) {
+    public boolean updateSong(Song song) {
         if(song == null)
             throw new IllegalArgumentException("Cannot update a null song");
         for(int index = 0; index < songList.size(); index++)
             if(songList.get(index).getId() == song.getId())
                 this.songList.set(index, song);
-        return song;
+        return true;
     }
 
     @Override

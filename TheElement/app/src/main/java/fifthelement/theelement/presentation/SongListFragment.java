@@ -4,6 +4,8 @@ import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -14,6 +16,9 @@ import android.widget.TextView;
 
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 
 import fifthelement.theelement.R;
 import fifthelement.theelement.objects.Album;
@@ -30,21 +35,38 @@ public class SongListFragment extends Fragment {
         System.out.println("Im in a SongList Fragment Page");
 
         view = inflater.inflate(R.layout.song_list_fragment, container, false);
-
+        final ArrayList<Song> songs = new ArrayList<Song>();
+        ListView listView = (ListView) view.findViewById(R.id.song_list_view);
+        final SongsListAdapter songListAdapter = new SongsListAdapter(getActivity(), songs);
         String[] songName = {"Nice For What", "God's Plan", "This Is America", "Yes Indeed", "No Tears Left To Cry"};
         String[] authorNames = {"Drake", "Drake", "Childish Gambino", "Lil Baby & Drake", "Ariana Grande" };
-        ArrayList<Song> songs = new ArrayList<Song>();
-        for(int i = 0; i < 30; i++) {
+        for(int i = 0; i < 50; i++) {
             Song song = new Song(i, songName[i%5], "test");
             song.addAlbum(new Album(i, songName[i%5]));
             song.addAuthor(new Author(i, authorNames[i%5]));
             songs.add(song);
         }
 
-        ListView listView = (ListView) view.findViewById(R.id.song_list_view);
-        SongsListAdapter songListAdapter = new SongsListAdapter(getActivity(), songs);
+        Button buttonOrganize = view.findViewById(R.id.button_organize_list);
+        buttonOrganize.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v) {
+                sortListByName(songs);
+                songListAdapter.notifyDataSetChanged();
+            }
+        });
+
+
         listView.setAdapter(songListAdapter);
         return view;
+    }
+
+    private void sortListByName(ArrayList<Song> songs) {
+        Collections.sort(songs, new Comparator<Song>() {
+            @Override
+            public int compare(Song one, Song two) {
+                return one.getName().compareTo(two.getName());
+            }
+        });
     }
 
 }

@@ -5,16 +5,17 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import fifthelement.theelement.R;
+import fifthelement.theelement.business.SortSongList;
 import fifthelement.theelement.objects.Album;
 import fifthelement.theelement.objects.Author;
 import fifthelement.theelement.objects.Song;
@@ -45,23 +46,15 @@ public class SongListFragment extends Fragment {
         Button buttonOrganize = view.findViewById(R.id.button_organize_list);
         buttonOrganize.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v) {
-                sortListByName();
+                SortSongList nameSorted = new SortSongList(songs);
+                nameSorted.sortListByName();
                 songListAdapter.notifyDataSetChanged();
             }
         });
 
-
         listView.setAdapter(songListAdapter);
-        return view;
-    }
 
-    private void sortListByName() {
-        Collections.sort(songs, new Comparator<Song>() {
-            @Override
-            public int compare(Song one, Song two) {
-                return one.getName().compareTo(two.getName());
-            }
-        });
+        return view;
     }
 
 }

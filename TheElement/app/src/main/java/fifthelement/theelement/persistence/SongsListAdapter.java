@@ -24,8 +24,10 @@ public class SongsListAdapter extends BaseAdapter {
         inflater = (LayoutInflater.from(context));
     }
 
+
     @Override
     public int getCount() {
+
         return songs.size();
     }
 
@@ -36,6 +38,7 @@ public class SongsListAdapter extends BaseAdapter {
 
     @Override
     public long getItemId(int position) {
+
         return position;
     }
 
@@ -43,7 +46,7 @@ public class SongsListAdapter extends BaseAdapter {
     public View getView(int i, View view, ViewGroup viewGroup) {
         view = inflater.inflate(R.layout.fragment_song_list_item, null);
         TextView songName = (TextView) view.findViewById(R.id.song_name_list);
-        TextView albumName = (TextView) view.findViewById(R.id.album_name_list);
+        TextView authorName = (TextView) view.findViewById(R.id.author_name_list);
         Song printSong = songs.get(i);
         List<Author> author = printSong.getAuthors();
         String albums = "";
@@ -54,7 +57,7 @@ public class SongsListAdapter extends BaseAdapter {
             }
         }
         songName.setText(printSong.getName());
-        albumName.setText(albums);
+        authorName.setText(albums);
         return view;
     }
 }

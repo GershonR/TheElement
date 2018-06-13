@@ -9,14 +9,10 @@ import android.widget.Button;
 import android.widget.ListView;
 
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import fifthelement.theelement.R;
 import fifthelement.theelement.business.Services.SongService;
-import fifthelement.theelement.objects.Album;
-import fifthelement.theelement.objects.Author;
 import fifthelement.theelement.objects.Song;
 import fifthelement.theelement.persistence.SongsListAdapter;
 

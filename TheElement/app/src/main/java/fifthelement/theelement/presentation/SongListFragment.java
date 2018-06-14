@@ -53,9 +53,9 @@ public class SongListFragment extends Fragment {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view,
                                         int position, long id) {
-                    // TODO Auto-generated method stub
-                    musicService.playSongAsynch(songs.get(position).getPath());
-                    Toast.makeText(getContext(), "Now Playing: " + songs.get(position).getName(), Toast.LENGTH_SHORT).show();
+                    boolean result = musicService.playSongAsynch(songs.get(position).getPath());
+                    if(result)
+                        Toast.makeText(getContext(), "Now Playing: " + songs.get(position).getName(), Toast.LENGTH_SHORT).show();
                 }
             });
 

@@ -35,7 +35,7 @@ public class SongService {
 
     // TODO: Try-Catch
     public boolean deleteSong(Song song) {
-        return songPersistence.deleteSong(song);
+        return songPersistence.deleteSong(song.getUUID());
     }
 
     public void sortSongs(List<Song> songs) {

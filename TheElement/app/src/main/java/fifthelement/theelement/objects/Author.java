@@ -22,6 +22,8 @@ public class Author{
         return uuid;
     }
 
+    public void setUUID(UUID uuid) { this.uuid = uuid; }
+
     public void setName(String newName){
         this.name = newName;
     }

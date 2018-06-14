@@ -20,9 +20,9 @@ public class Album{
         return albumName;
     }
 
-    public UUID getUUID(){
-        return uuid;
-    }
+    public UUID getUUID() { return uuid; }
+
+    public void setUUID(UUID uuid) { this.uuid = uuid; }
 
     public ArrayList<Author> getAuthors(){
         return authors;

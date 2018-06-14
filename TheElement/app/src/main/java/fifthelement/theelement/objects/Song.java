@@ -26,6 +26,8 @@ public class Song implements Comparable<Song>{
         return uuid;
     }
 
+    public void setUUID(UUID uuid) { this.uuid = uuid; }
+
     public ArrayList<Author> getAuthors(){
         return authors;
     }

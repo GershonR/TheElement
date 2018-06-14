@@ -27,11 +27,11 @@ public class SongServiceTest {
     public void sortSongListSize() {
         this.toBeSortedList = new ArrayList<Song>();
         //adding songs unsorted
-        toBeSortedList.add(new Song(3, "Pristine", "Path"));
-        toBeSortedList.add(new Song(5, "This is America", "Path"));
-        toBeSortedList.add(new Song(2, "Nice For What", "Path"));
-        toBeSortedList.add(new Song(1, "Geyser", "Path"));
-        toBeSortedList.add(new Song(4, "Purity", "Path"));
+        toBeSortedList.add(new Song("Pristine", "Path"));
+        toBeSortedList.add(new Song("This is America", "Path"));
+        toBeSortedList.add(new Song("Nice For What", "Path"));
+        toBeSortedList.add(new Song("Geyser", "Path"));
+        toBeSortedList.add(new Song("Purity", "Path"));
 
         //sort list
        classUnderTest.sortSongs(toBeSortedList);
@@ -43,11 +43,11 @@ public class SongServiceTest {
     public void sortSongOrderTest() {
         this.toBeSortedList = new ArrayList<Song>();
         //adding songs unsorted
-        toBeSortedList.add(new Song(3, "Pristine", "Path"));
-        toBeSortedList.add(new Song(5, "This is America", "Path"));
-        toBeSortedList.add(new Song(2, "Nice For What", "Path"));
-        toBeSortedList.add(new Song(1, "Geyser", "Path"));
-        toBeSortedList.add(new Song(4, "Purity", "Path"));
+        toBeSortedList.add(new Song("Pristine", "Path"));
+        toBeSortedList.add(new Song("This is America", "Path"));
+        toBeSortedList.add(new Song("Nice For What", "Path"));
+        toBeSortedList.add(new Song("Geyser", "Path"));
+        toBeSortedList.add(new Song("Purity", "Path"));
 
         //sort list
         classUnderTest.sortSongs(toBeSortedList);

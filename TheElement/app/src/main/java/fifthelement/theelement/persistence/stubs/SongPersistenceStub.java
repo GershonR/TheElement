@@ -74,12 +74,12 @@ public class SongPersistenceStub implements SongPersistence {
     }
 
     @Override
-    public boolean deleteSong(Song song) {
+    public boolean deleteSong(UUID uuid) {
         boolean removed = false;
-        if(song == null)
-            throw new IllegalArgumentException("Cannot delete a null song");
+        if(uuid == null)
+            throw new IllegalArgumentException("Cannot delete with a null UUID");
         for(int index = 0; index < songList.size(); index++) {
-            if(songList.get(index).getUUID().compareTo(song.getUUID()) == 0) {
+            if(songList.get(index).getUUID().compareTo(uuid) == 0) {
                 this.songList.remove(index);
                 removed = true;
             }

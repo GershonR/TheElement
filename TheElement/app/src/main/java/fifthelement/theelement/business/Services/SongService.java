@@ -1,7 +1,10 @@
 package fifthelement.theelement.business.Services;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import fifthelement.theelement.application.Services;
 import fifthelement.theelement.objects.Album;
@@ -97,6 +100,8 @@ public class SongService {
                 authorPersistence.updateAuthor(author);
             }
 
+            // deletes songs from existing PlayList if it's there
+            // implementation for this hasn't been fully decided. this is a STUB
             for( PlayList p : playListPersistence.getAllPlayLists() ) {
                 if( p.contains(song) ) {
                     p.removeSong(song);

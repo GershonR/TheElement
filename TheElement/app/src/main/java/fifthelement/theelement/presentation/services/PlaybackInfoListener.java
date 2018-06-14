@@ -8,16 +8,13 @@ import java.lang.annotation.RetentionPolicy;
 import fifthelement.theelement.presentation.fragments.SeekerFragment;
 import fifthelement.theelement.presentation.services.MusicService;
 
-/**
- * Allows {@link MusicService} to report media playback duration and progress updates to
- * the {@link SeekerFragment}.
- */
-public abstract class PlaybackInfoListener {
 
+// Allows MusicService to report media playback duration and progress updates to
+// the SeekerFragment.
+public abstract class PlaybackInfoListener {
     @IntDef({State.INVALID, State.PLAYING, State.PAUSED, State.RESET, State.COMPLETED})
     @Retention(RetentionPolicy.SOURCE)
     @interface State {
-
         int INVALID = -1;
         int PLAYING = 0;
         int PAUSED = 1;

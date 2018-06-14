@@ -93,7 +93,6 @@ public class SongService {
                 break;
             }
         }
-
         return toReturn;
     }
 
@@ -117,7 +116,6 @@ public class SongService {
                 }
             }
         }
-
         return matchesList;
     }
 

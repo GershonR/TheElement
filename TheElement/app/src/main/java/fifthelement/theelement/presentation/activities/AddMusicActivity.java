@@ -102,7 +102,7 @@ public class AddMusicActivity extends AppCompatActivity {
         try {
             //art = metaRetriver.getEmbeddedPicture();
             //Bitmap songImage = BitmapFactory
-             //       .decodeByteArray(art, 0, art.length);
+            //       .decodeByteArray(art, 0, art.length);
             songName = metaRetriver.extractMetadata(MediaMetadataRetriever.METADATA_KEY_TITLE);
             if(songName == null)
                     songName = PathUtil.getFileName(getContentResolver(), path); // Use the filename if no metadata

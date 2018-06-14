@@ -68,7 +68,7 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view,
                                         int position, long id) {
-                    boolean result = musicService.playSongAsynch(songs.get(position).getPath());
+                    boolean result = musicService.playSongAsync(songs.get(position).getPath());
                     if(result)
                         Toast.makeText(getContext(), "Now Playing: " + songs.get(position).getName(), Toast.LENGTH_SHORT).show();
                 }

@@ -87,10 +87,6 @@ public class SongsListAdapter extends BaseAdapter {
         return view;
     }
 
-    public void filterResults() {
-        //grab all the songs
-    }
-
     public void notifyDataSetChanged() {
         super.notifyDataSetChanged();
     }

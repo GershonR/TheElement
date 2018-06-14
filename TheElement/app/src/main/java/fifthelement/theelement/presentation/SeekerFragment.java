@@ -34,7 +34,7 @@ public class SeekerFragment extends Fragment {
         initializeUI();
         initializeSeekbar();
         initializePlaybackController();
-        musicService.setCurrSongPath(MEDIA_RES_PATH); //TODO: Remove when music selection is working
+        //musicService.setCurrSongPath(MEDIA_RES_PATH); //TODO: Remove when music selection is working
         Log.d(TAG, "onCreate: finished");
         return view;
     }

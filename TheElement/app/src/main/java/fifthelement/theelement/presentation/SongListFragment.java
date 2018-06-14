@@ -5,8 +5,10 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 
 import java.util.List;
@@ -19,12 +21,15 @@ import fifthelement.theelement.persistence.SongsListAdapter;
 public class SongListFragment extends Fragment {
     private View view;
     private SongService songService;
+    private MusicService musicService;
     List<Song> songs;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         songService = new SongService();
+        musicService = ((MainActivity)getActivity()).getMusicService();
+
         view = inflater.inflate(R.layout.song_list_fragment, container, false);
         ListView listView = (ListView) view.findViewById(R.id.song_list_view);
 
@@ -42,6 +47,18 @@ public class SongListFragment extends Fragment {
             });
 
             listView.setAdapter(songListAdapter);
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener()
+            {
+
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view,
+                                        int position, long id) {
+                    // TODO Auto-generated method stub
+                    musicService.setCurrSongPath(songs.get(position).getPath());
+                    Toast.makeText(getContext(), "Now Playing: " + songs.get(position).getName(), Toast.LENGTH_SHORT).show();
+                    musicService.start();
+                }
+            });
 
         } else {
 

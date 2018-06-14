@@ -26,15 +26,21 @@ public class SongService {
         return songPersistence.getAllSongs();
     }
 
-    public boolean insertSong(Song song) {
+    public boolean insertSong(Song song) throws ArrayStoreException, IllegalArgumentException {
+        if(song == null)
+            throw new IllegalArgumentException();
         return songPersistence.storeSong(song);
     }
 
-    public boolean updateSong(Song song) {
+    public boolean updateSong(Song song) throws IllegalArgumentException {
+        if(song == null)
+            throw new IllegalArgumentException();
         return songPersistence.updateSong(song);
     }
 
-    public boolean deleteSong(Song song) {
+    public boolean deleteSong(Song song) throws IllegalArgumentException {
+        if(song == null)
+            throw new IllegalArgumentException();
         return songPersistence.deleteSong(song.getUUID());
     }
 

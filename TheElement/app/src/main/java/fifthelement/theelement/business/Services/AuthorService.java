@@ -32,13 +32,13 @@ public class AuthorService {
         return authorPersistence.storeAuthor(author);
     }
 
-    public boolean updateAuthor(Author author) {
+    public boolean updateAuthor(Author author) throws  IllegalArgumentException {
         if(author == null)
             throw new IllegalArgumentException();
         return authorPersistence.updateAuthor(author);
     }
 
-    public boolean deleteAuthor(Author author) {
+    public boolean deleteAuthor(Author author) throws IllegalArgumentException {
         if(author == null)
             throw new IllegalArgumentException();
         return authorPersistence.deleteAuthor(author.getUUID());

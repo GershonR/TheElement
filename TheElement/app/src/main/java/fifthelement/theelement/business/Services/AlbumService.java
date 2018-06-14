@@ -25,15 +25,21 @@ public class AlbumService {
         return albumPersistence.getAllAlbums();
     }
 
-    public boolean insertAlbum(Album album) {
+    public boolean insertAlbum(Album album) throws ArrayStoreException, IllegalArgumentException {
+        if(album == null)
+            throw new IllegalArgumentException();
         return albumPersistence.storeAlbum(album);
     }
 
-    public boolean updateAlbum(Album album) {
+    public boolean updateAlbum(Album album) throws IllegalArgumentException {
+        if(album == null)
+            throw new IllegalArgumentException();
         return albumPersistence.updateAlbum(album);
     }
 
-    public boolean deleteAlbum(Album album) {
+    public boolean deleteAlbum(Album album) throws IllegalArgumentException {
+        if(album == null)
+            throw new IllegalArgumentException();
         return albumPersistence.deleteAlbum(album.getUUID());
     }
 

@@ -1,14 +1,16 @@
 package fifthelement.theelement.objects;
 
+import java.util.UUID;
+
 public class Author{
 
-    private int id;
+    private UUID uuid;
     private String name;
 
 
-    public Author(int id, String name){
+    public Author(String name){
 
-        this.id = id;
+        this.uuid = UUID.randomUUID();
         this.name = name;
     }
 
@@ -16,17 +18,14 @@ public class Author{
         return name;
     }
 
-    public int getId(){
-        return id;
+    public UUID getUUID(){
+        return uuid;
     }
 
     public void setName(String newName){
         this.name = newName;
     }
 
-    public void setId(int newId){
-        this.id  = newId;
-    }
 
 
 

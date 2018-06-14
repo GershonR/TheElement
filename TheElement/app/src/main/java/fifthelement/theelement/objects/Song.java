@@ -14,10 +14,11 @@ public class Song implements Comparable<Song>{
         this.uuid = UUID.randomUUID();
         this.songName = name;
         this.path = path;
-        albums = new ArrayList<Album>();
-        authors = new ArrayList<Author>();
+        albums = new ArrayList<>();
+        authors = new ArrayList<>();
     }
 
+    // getters
     public String getName(){
         return songName;
     }
@@ -26,14 +27,17 @@ public class Song implements Comparable<Song>{
         return uuid;
     }
 
-    public void setUUID(UUID uuid) { this.uuid = uuid; }
-
     public ArrayList<Author> getAuthors(){
         return authors;
     }
     
     public ArrayList<Album> getAlbums(){
         return albums;
+    }
+
+    // setters
+    public void setUUID(UUID uuid) {
+        this.uuid = uuid;
     }
 
     public void setName(String newName){
@@ -52,12 +56,12 @@ public class Song implements Comparable<Song>{
         this.authors =  authorList;
     }
 
-    public void addAuthor(Author newAuthor){//to add a single author
-        this.authors.add(newAuthor);
-    }
-
     public void setAlbums(ArrayList<Album>albumList){
         this.albums =  albumList;
+    }
+
+    public void addAuthor(Author newAuthor){//to add a single author
+        this.authors.add(newAuthor);
     }
 
     public void addAlbum(Album newAlbum){//to add a single album
@@ -67,5 +71,10 @@ public class Song implements Comparable<Song>{
     @Override
     public int compareTo(Song song){
         return songName.compareTo(song.getName());
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        return object instanceof Song && ((Song) object).getUUID() == this.getUUID();
     }
 }

@@ -12,17 +12,18 @@ public class Album{
     public Album(String name){
         this.uuid = UUID.randomUUID();
         this.albumName = name;
-        authors = new ArrayList<Author>();
-        songs = new ArrayList<Song>();
+        authors = new ArrayList<>();
+        songs = new ArrayList<>();
     }
 
+    // getters
     public String getName(){
         return albumName;
     }
 
-    public UUID getUUID() { return uuid; }
-
-    public void setUUID(UUID uuid) { this.uuid = uuid; }
+    public UUID getUUID() {
+        return uuid;
+    }
 
     public ArrayList<Author> getAuthors(){
         return authors;
@@ -32,6 +33,11 @@ public class Album{
         return songs;
     }
 
+    // setters
+    public void setUUID(UUID uuid) {
+        this.uuid = uuid;
+    }
+
     public void setName(String newName){
         this.albumName = newName;
     }
@@ -39,7 +45,6 @@ public class Album{
     public void setAuthors(ArrayList<Author>authorList){
         this.authors =  authorList;
     }
-    //OR
 
     public void addAuthor(Author newAuthor){//to add a single author
         this.authors.add(newAuthor);
@@ -48,10 +53,17 @@ public class Album{
     public void setSongs(ArrayList<Song>songList){
         this.songs = songList;
     }
-    //OR
 
     public void addSong(Song newSong){
         this.songs.add(newSong);
     }
 
+    public void deleteSong(Song song) {
+        this.songs.remove(song);
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        return object instanceof Album && ((Album) object).getUUID() == this.getUUID();
+    }
 }

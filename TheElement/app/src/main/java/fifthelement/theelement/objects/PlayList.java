@@ -2,23 +2,23 @@ package fifthelement.theelement.objects;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
-// TODO: implement proper stuff here
 public class PlayList {
-    private int listId;
+    private UUID uuid;
     private String listName;
-    private List<Song> songs;
+    private List<UUID> songList;
 
-    public PlayList(int id, String name) {
-        this.listId = id;
+    public PlayList(String name) {
+        this.uuid = UUID.randomUUID();
         this.listName = name;
-        this.songs = new ArrayList<>();
+        this.songList = new ArrayList<>();
     }
 
-    public PlayList(int id, String name, List<Song> songs) {
-        this.listId = id;
+    public PlayList(String name, List<UUID> songList) {
+        this.uuid = UUID.randomUUID();
         this.listName = name;
-        this.songs = songs;
+        this.songList = songList;
     }
 
     // getters
@@ -26,12 +26,12 @@ public class PlayList {
         return listName;
     }
 
-    public int getId() {
-        return listId;
+    public UUID getUUID() {
+        return uuid;
     }
 
-    public List<Song> getSongs() {
-        return songs;
+    public List<UUID> getSongs() {
+        return songList;
     }
 
     // setters
@@ -39,23 +39,28 @@ public class PlayList {
         this.listName = newName;
     }
 
-    public void setId(int newId) {
-        this.listId = newId;
+    public void setId(UUID uuid) {
+        this.uuid = uuid;
     }
 
-    public void setSongs(List<Song> songList) {
-        this.songs = songList;
+    public void setSongs(List<UUID> songList) {
+        this.songList = songList;
     }
 
     public void addSong(Song newSong) {
-        this.songs.add(newSong);
+        this.songList.add(newSong.getUUID());
     }
 
-    public void deleteSong(Song song) {
-        for( int i = 0; i < songs.size(); i++ ) {
-            if( songs.get(i).getId() == song.getId() ) {
-                songs.remove(i);
-            }
-        }
+    public void removeSong(Song song) {
+        this.songList.remove(song.getUUID());
+    }
+
+    public boolean contains(Song song) {
+        return songList.contains(song.getUUID());
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        return object instanceof PlayList && ((PlayList) object).getUUID() == this.getUUID();
     }
 }

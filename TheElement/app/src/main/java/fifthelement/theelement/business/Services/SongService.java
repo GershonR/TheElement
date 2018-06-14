@@ -3,6 +3,7 @@ package fifthelement.theelement.business.Services;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -28,6 +29,10 @@ public class SongService {
         albumPersistence = Services.getAlbumPersistence();
         authorPersistence = Services.getAuthorPersistence();
         playListPersistence = Services.getPlayListPersistence();
+    }
+
+    public Song getSongByUUID(UUID uuid) {
+        return songPersistence.getSongByUUID(uuid);
     }
 
     public List<Song> getSongs() {
@@ -73,6 +78,8 @@ public class SongService {
                     playListPersistence.updatePlayList(p);
                 }
             }
+
+            songPersistence.deleteSong(song);
 
             validateAlbum(song.getAlbums());
             validateAuthor(song.getAuthors());

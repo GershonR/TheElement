@@ -52,7 +52,7 @@ public class AlbumServiceTest {
     }
 
     @Test(expected = ArrayStoreException.class)
-    public void insertAuthorDuplicateTest() {
+    public void insertAlbumDuplicateTest() {
         Album albumOne = new Album("21");
         albumOne.setUUID(UUID.fromString("493410b3-dd0b-4b78-97bf-289f50f6e74f"));
         Album albumTwo = new Album("Gold");

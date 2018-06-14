@@ -70,6 +70,8 @@ public class SongPersistenceStub implements SongPersistence {
 
     @Override
     public boolean deleteSong(Song song) throws IllegalArgumentException {
+        if(song == null)
+            throw new IllegalArgumentException();
         return deleteSong(song.getUUID());
     }
 

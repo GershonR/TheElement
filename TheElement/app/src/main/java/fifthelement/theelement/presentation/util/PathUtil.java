@@ -15,7 +15,12 @@ import java.net.URISyntaxException;
 
 public class PathUtil {
 
-
+    /**
+     * This method gives you the name of a file using its URI
+     * @param resolver
+     * @param uri
+     * @return
+     */
     public static String getFileName(ContentResolver resolver, Uri uri) {
         Cursor returnCursor =
                 resolver.query(uri, null, null, null, null);

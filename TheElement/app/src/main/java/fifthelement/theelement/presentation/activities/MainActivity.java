@@ -1,4 +1,4 @@
-package fifthelement.theelement.presentation;
+package fifthelement.theelement.presentation.activities;
 
 
 import android.content.ComponentName;
@@ -21,11 +21,12 @@ import android.view.MenuItem;
 
 import fifthelement.theelement.R;
 import fifthelement.theelement.business.Services.SongService;
+import fifthelement.theelement.presentation.services.MusicService;
 import fifthelement.theelement.presentation.fragments.HomeFragment;
 import fifthelement.theelement.presentation.fragments.SearchFragment;
+import fifthelement.theelement.presentation.fragments.SeekerFragment;
 import fifthelement.theelement.presentation.fragments.SongListFragment;
-import fifthelement.theelement.presentation.MusicService.MusicBinder;
-import fifthelement.theelement.presentation.activities.AddMusicActivity;
+import fifthelement.theelement.presentation.services.MusicService.MusicBinder;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -167,9 +168,6 @@ public class MainActivity extends AppCompatActivity {
         return musicService;
     }
 
-    public boolean musicServiceBound(){
-        return musicBound;
-    }
 
     @Override
     protected void onStart() {

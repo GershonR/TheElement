@@ -16,9 +16,9 @@ import java.util.List;
 import fifthelement.theelement.R;
 import fifthelement.theelement.business.Services.SongService;
 import fifthelement.theelement.objects.Song;
-import fifthelement.theelement.presentation.MainActivity;
-import fifthelement.theelement.presentation.MusicService;
-import fifthelement.theelement.presentation.SongsListAdapter;
+import fifthelement.theelement.presentation.activities.MainActivity;
+import fifthelement.theelement.presentation.services.MusicService;
+import fifthelement.theelement.presentation.adapters.SongsListAdapter;
 
 public class SongListFragment extends Fragment {
     private View view;

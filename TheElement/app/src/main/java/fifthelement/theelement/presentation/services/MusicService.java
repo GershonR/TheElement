@@ -1,7 +1,6 @@
-package fifthelement.theelement.presentation;
+package fifthelement.theelement.presentation.services;
 
 import android.app.Service;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
@@ -119,33 +118,6 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
         }
     }
 
-
-    /**
-     * setCurrSongPath:
-     *  This function will attempt to set the media player up to play the music file located at songPath.
-     * @param songPath - File path of the music file to play
-     * @return boolean - Indicator if the music file path was set successfully
-     */
-    public boolean setCurrSongPath(String songPath) {
-        Uri uri = Uri.parse(songPath);
-
-        try{
-            player.setDataSource(getApplication(), uri);
-            player.prepare();
-        } catch(Exception e) {
-            Toast toast = Toast.makeText(this, "Invalid Song!", Toast.LENGTH_LONG);
-            View view = toast.getView();
-            view.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.SRC_IN);
-            toast.show();
-            e.printStackTrace();
-            return false;
-        }
-
-        playerPrepared = false;
-        initializeProgressCallback();
-        return true;
-    }
-
     /**
      *  playSongAsynch:
      *  This function will attempt to set the media player up asynchronously and play the media.
@@ -156,7 +128,7 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
         reset();
         Uri uri = Uri.parse(songPath);
 
-        try{
+        try {
             player.setDataSource(getApplication(), uri);
             player.prepareAsync();
         } catch(Exception e) {
@@ -344,7 +316,7 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
 
     //Public helper class for binding this service to an activity
     public class MusicBinder extends Binder {
-        MusicService getService() {
+        public MusicService getService() {
             return MusicService.this;
         }
     }

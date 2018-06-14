@@ -1,4 +1,4 @@
-package fifthelement.theelement.presentation;
+package fifthelement.theelement.presentation.adapters;
 
 import android.app.Activity;
 import android.content.Context;
@@ -10,7 +10,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,6 +18,7 @@ import java.util.List;
 import fifthelement.theelement.R;
 import fifthelement.theelement.objects.Author;
 import fifthelement.theelement.objects.Song;
+import fifthelement.theelement.presentation.activities.MainActivity;
 
 public class SongsListAdapter extends BaseAdapter {
     Context context;
@@ -69,18 +69,13 @@ public class SongsListAdapter extends BaseAdapter {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                System.out.println("Clicked Button");
                 PopupMenu popup = new PopupMenu(context, v, Gravity.LEFT);
                 Activity act = (MainActivity)context;
                 activity.getMenuInflater().inflate(R.menu.song_list_item_menu, popup.getMenu());
                 //registering popup with OnMenuItemClickListener
                 popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     public boolean onMenuItemClick(MenuItem item) {
-                        Toast.makeText(
-                                context,
-                                "Deleted " + printSong.getName(),
-                                Toast.LENGTH_SHORT
-                        ).show();
+                        Toast.makeText(context, "Deleted " + printSong.getName(), Toast.LENGTH_SHORT).show();
                         activity.getSongService().deleteSong(printSong);
                         notifyDataSetChanged();
                         return true;

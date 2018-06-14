@@ -2,38 +2,22 @@ package fifthelement.theelement.presentation.activities;
 
 import android.Manifest;
 import android.content.ActivityNotFoundException;
-import android.content.ContentUris;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.content.res.AssetFileDescriptor;
-import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.media.MediaMetadataRetriever;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.DocumentsContract;
-import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.Toast;
 
-import java.net.URI;
-import java.net.URISyntaxException;
-
-import fifthelement.theelement.R;
 import fifthelement.theelement.business.Services.SongService;
 import fifthelement.theelement.objects.Album;
 import fifthelement.theelement.objects.Author;
 import fifthelement.theelement.objects.Song;
-import fifthelement.theelement.presentation.MainActivity;
 import fifthelement.theelement.presentation.util.PathUtil;
 
 

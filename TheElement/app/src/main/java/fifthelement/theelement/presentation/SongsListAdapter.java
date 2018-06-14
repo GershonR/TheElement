@@ -24,7 +24,6 @@ public class SongsListAdapter extends BaseAdapter {
         inflater = (LayoutInflater.from(context));
     }
 
-
     @Override
     public int getCount() {
         return songs.size();
@@ -32,13 +31,12 @@ public class SongsListAdapter extends BaseAdapter {
 
     @Override
     public Object getItem(int position) {
-        return null;
+        return songs.get(position);
     }
 
     @Override
     public long getItemId(int position) {
-
-        return position;
+        return songs.get(position).getUUID().getMostSignificantBits();
     }
 
     @Override

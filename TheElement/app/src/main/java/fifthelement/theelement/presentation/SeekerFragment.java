@@ -1,4 +1,4 @@
-package fifthelement.theelement.presentation.Fragments;
+package fifthelement.theelement.presentation;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;

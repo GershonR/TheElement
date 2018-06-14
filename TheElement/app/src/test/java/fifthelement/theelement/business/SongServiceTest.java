@@ -26,11 +26,11 @@ public class SongServiceTest {
 
         classUnderTest = new SongService();
         this.songsList = new ArrayList<Song>();
-        songsList.add(new Song(3, "Pristine", "Path"));
-        songsList.add(new Song(5, "This is America", "Path"));
-        songsList.add(new Song(2, "Nice For What", "Path"));
-        songsList.add(new Song(1, "Geyser", "Path"));
-        songsList.add(new Song(4, "Purity", "Path"));
+        songsList.add(new Song( "Pristine", "Path"));
+        songsList.add(new Song( "This is America", "Path"));
+        songsList.add(new Song( "Nice For What", "Path"));
+        songsList.add(new Song( "Geyser", "Path"));
+        songsList.add(new Song( "Purity", "Path"));
     }
     @Test
     public void sortSongListSize() {
@@ -59,7 +59,7 @@ public class SongServiceTest {
 
         searchResults = classUnderTest.search(regex);
 
-        assert(searchResults.size()==4);
+        Assert.assertTrue("Normal search, should find 4 songs", searchResults.size() == 4);
     }
 
     @Test
@@ -69,19 +69,7 @@ public class SongServiceTest {
 
         searchResults = classUnderTest.search(regex);
 
-        assert(searchResults.size()==0);
-    }
-
-    @Test
-    public void searchTest_noSongsInStartingSongList() {
-        List<Song> searchResults;
-        String regex = "i";
-        songsList = new ArrayList<>();
-
-        searchResults = classUnderTest.search(regex);
-
-        assert(songsList.size() == 0);
-        assert(searchResults.size()==0);
+        Assert.assertTrue("Empty search, should be 4 | Actual size = "+searchResults.size(), searchResults.size() == 4);
     }
 
     @Test
@@ -91,7 +79,7 @@ public class SongServiceTest {
 
         searchResults = classUnderTest.search(regex);
 
-        assert(searchResults.size()==0);
+        Assert.assertTrue("Invalid Regex string,", searchResults.size()==0);
     }
 
     @Test
@@ -101,6 +89,6 @@ public class SongServiceTest {
 
         searchResults = classUnderTest.search(regex);
 
-        assert(searchResults.size()==0);
+        Assert.assertTrue("Invalid Regex single special character", searchResults.size()==0);
     }
 }

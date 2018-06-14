@@ -2,6 +2,7 @@ package fifthelement.theelement.persistence.stubs;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import fifthelement.theelement.objects.Album;
 import fifthelement.theelement.persistence.AlbumPersistence;
@@ -13,10 +14,10 @@ public class AlbumPersistenceStub implements AlbumPersistence {
     public AlbumPersistenceStub() {
         this.albumList = new ArrayList<>();
 
-        this.albumList.add(new Album(01001, "Album1"));
-        this.albumList.add(new Album(01002, "Album2"));
-        this.albumList.add(new Album(01003, "Album3"));
-        this.albumList.add(new Album(01004, "Album4"));
+        this.albumList.add(new Album("Album1"));
+        this.albumList.add(new Album("Album2"));
+        this.albumList.add(new Album("Album3"));
+        this.albumList.add(new Album("Album4"));
 
     }
 
@@ -30,16 +31,16 @@ public class AlbumPersistenceStub implements AlbumPersistence {
     }
 
     @Override
-    public Album getAlbumByID(int ID) {
+    public Album getAlbumByUUID(UUID uuid) {
         for(Album a : this.albumList)
-            if(a.getId() == ID)
+            if(a.getUUID().compareTo(uuid) == 0)
                 return a;
         return null;
     }
 
     @Override
     public Album storeAlbum(Album album) {
-        if(albumExists(album))
+        if(albumExists(album.getUUID()))
             throw new ArrayStoreException();
         this.albumList.add(album);
         return album;
@@ -50,7 +51,7 @@ public class AlbumPersistenceStub implements AlbumPersistence {
         if(album == null)
             throw new IllegalArgumentException("Cannot update a null song");
         for(int index = 0; index < albumList.size(); index++) {
-            if(albumList.get(index).getId() == album.getId()) {
+            if(albumList.get(index).getUUID().compareTo(album.getUUID()) == 0) {
                 this.albumList.set(index, album);
             }
         }
@@ -63,7 +64,7 @@ public class AlbumPersistenceStub implements AlbumPersistence {
         if(album == null)
             throw new IllegalArgumentException("Cannot delete a null song");
         for(int index = 0; index < albumList.size(); index++) {
-            if(albumList.get(index).getId() == album.getId()) {
+            if(albumList.get(index).getUUID().compareTo(album.getUUID()) == 0) {
                 this.albumList.remove(index);
                 removed = true;
             }
@@ -71,10 +72,11 @@ public class AlbumPersistenceStub implements AlbumPersistence {
         return removed;
     }
 
-    private boolean albumExists(Album album) {
+    @Override
+    public boolean albumExists(UUID uuid) {
         boolean exists = false;
         for(Album a : this.albumList)
-            if(a.getId() == album.getId()) {
+            if(a.getUUID().compareTo(uuid) == 0) {
                 exists = true;
                 break;
             }

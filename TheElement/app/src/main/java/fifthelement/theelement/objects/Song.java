@@ -1,16 +1,17 @@
 package fifthelement.theelement.objects;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class Song implements Comparable<Song>{
-    private int songId;
+    private UUID uuid;
     private String songName;
     private String path;
     private ArrayList<Author>authors;//might not include this 
     private ArrayList<Album> albums; //might not include this
 
-    public Song(int id, String name, String path){
-        this.songId = id;
+    public Song(String name, String path){
+        this.uuid = UUID.randomUUID();
         this.songName = name;
         this.path = path;
         albums = new ArrayList<Album>();
@@ -21,9 +22,11 @@ public class Song implements Comparable<Song>{
         return songName;
     }
 
-    public int getId(){
-        return songId;
+    public UUID getUUID(){
+        return uuid;
     }
+
+    public void setUUID(UUID uuid) { this.uuid = uuid; }
 
     public ArrayList<Author> getAuthors(){
         return authors;
@@ -35,10 +38,6 @@ public class Song implements Comparable<Song>{
 
     public void setName(String newName){
         this.songName = newName;
-    }
-
-    public void setId(int newId){
-        this.songId  = newId;
     }
 
     public String getPath() {

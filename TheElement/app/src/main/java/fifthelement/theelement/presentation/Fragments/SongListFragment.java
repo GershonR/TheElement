@@ -1,4 +1,4 @@
-package fifthelement.theelement.presentation;
+package fifthelement.theelement.presentation.Fragments;
 
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -16,7 +16,7 @@ import java.util.List;
 import fifthelement.theelement.R;
 import fifthelement.theelement.business.Services.SongService;
 import fifthelement.theelement.objects.Song;
-import fifthelement.theelement.persistence.SongsListAdapter;
+import fifthelement.theelement.presentation.SongsListAdapter;
 
 public class SongListFragment extends Fragment {
     private View view;

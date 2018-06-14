@@ -20,6 +20,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import fifthelement.theelement.R;
+import fifthelement.theelement.presentation.Fragments.HomeFragment;
+import fifthelement.theelement.presentation.Fragments.SearchFragment;
+import fifthelement.theelement.presentation.Fragments.SongListFragment;
 import fifthelement.theelement.presentation.MusicService.MusicBinder;
 import fifthelement.theelement.presentation.activities.AddMusicActivity;
 
@@ -99,6 +102,9 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.song_list:
                 fragmentClass = SongListFragment.class;
+                break;
+            case R.id.search_view_fragment:
+                fragmentClass = SearchFragment.class;
                 break;
             default:
                 fragmentClass = HomeFragment.class;

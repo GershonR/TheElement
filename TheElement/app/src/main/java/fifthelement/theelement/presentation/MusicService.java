@@ -153,6 +153,7 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
      * @return boolean - Indicator if the music file path was set successfully
      */
     public boolean playSongAsynch(String songPath) {
+        reset();
         Uri uri = Uri.parse(songPath);
 
         try{

@@ -6,7 +6,7 @@
     android:id="@+id/home_page"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".presentation.Fragments.SongListFragment">
+    tools:context=".presentation.fragments.SongListFragment">
 
     <TextView
         android:layout_weight="1"

@@ -1,24 +1,23 @@
-package fifthelement.theelement.presentation.Fragments;
+package fifthelement.theelement.presentation.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.app.SearchManager;
-import android.util.Log;
-import android.widget.BaseAdapter;
+import android.widget.AdapterView;
 import android.widget.SearchView;
 import android.widget.SearchView.OnQueryTextListener;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.List;
-import java.util.logging.Logger;
 
 import fifthelement.theelement.R;
 import fifthelement.theelement.business.Services.SongService;
 import fifthelement.theelement.objects.Song;
+import fifthelement.theelement.presentation.MainActivity;
+import fifthelement.theelement.presentation.MusicService;
 import fifthelement.theelement.presentation.SongsListAdapter;
 
 public class SearchFragment extends Fragment implements SearchView.OnQueryTextListener {
@@ -26,6 +25,7 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
     private ListView mListView;
     private View view;
     private SongService songService;
+    private MusicService musicService;
     List<Song> songs;
     private SongsListAdapter songsListAdapter;
     private SearchView.OnQueryTextListener onQueryTextListener;
@@ -42,6 +42,7 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         songService = new SongService();
+        musicService = ((MainActivity)getActivity()).getMusicService();
         view = inflater.inflate(R.layout.search_fragment, container, false);
         ListView listView = view.findViewById(R.id.search_song_list_view_item);
         mSearchView = view.findViewById(R.id.search_view_item);
@@ -61,6 +62,17 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
         if(songs != null) {
             final SongsListAdapter songListAdapter = new SongsListAdapter(getActivity(), songs);
             listView.setAdapter(songListAdapter);
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener()
+            {
+
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view,
+                                        int position, long id) {
+                    boolean result = musicService.playSongAsynch(songs.get(position).getPath());
+                    if(result)
+                        Toast.makeText(getContext(), "Now Playing: " + songs.get(position).getName(), Toast.LENGTH_SHORT).show();
+                }
+            });
 
         } else {
 

@@ -1,4 +1,4 @@
-package fifthelement.theelement.presentation.Fragments;
+package fifthelement.theelement.presentation.fragments;
 
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -16,6 +16,8 @@ import java.util.List;
 import fifthelement.theelement.R;
 import fifthelement.theelement.business.Services.SongService;
 import fifthelement.theelement.objects.Song;
+import fifthelement.theelement.presentation.MainActivity;
+import fifthelement.theelement.presentation.MusicService;
 import fifthelement.theelement.presentation.SongsListAdapter;
 
 public class SongListFragment extends Fragment {

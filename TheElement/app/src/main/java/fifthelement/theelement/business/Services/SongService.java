@@ -7,15 +7,27 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import fifthelement.theelement.application.Services;
+import fifthelement.theelement.objects.Album;
+import fifthelement.theelement.objects.Author;
+import fifthelement.theelement.objects.PlayList;
 import fifthelement.theelement.objects.Song;
+import fifthelement.theelement.persistence.AlbumPersistence;
+import fifthelement.theelement.persistence.AuthorPersistence;
+import fifthelement.theelement.persistence.PlayListPersistence;
 import fifthelement.theelement.persistence.SongPersistence;
 
 public class SongService {
 
     private SongPersistence songPersistence;
+    private AlbumPersistence albumPersistence;
+    private AuthorPersistence authorPersistence;
+    private PlayListPersistence playListPersistence;
 
     public SongService() {
         songPersistence = Services.getSongPersistence();
+        albumPersistence = Services.getAlbumPersistence();
+        authorPersistence = Services.getAuthorPersistence();
+        playListPersistence = Services.getPlayListPersistence();
     }
 
     public List<Song> getSongs() {
@@ -34,10 +46,39 @@ public class SongService {
         return songPersistence.updateSong(song);
     }
 
-    public boolean deleteSong(Song song) throws IllegalArgumentException {
-        if(song == null)
+    public boolean deleteSong(Song songToRemove) throws IllegalArgumentException {
+        if(songToRemove == null)
             throw new IllegalArgumentException();
-        return songPersistence.deleteSong(song.getUUID());
+        Song song = songPersistence.getSongByUUID(songToRemove.getUUID());
+
+        if( song != null ) {
+
+            for( Album a : song.getAlbums() ) {
+                Album album = albumPersistence.getAlbumByUUID(a.getUUID());
+                album.deleteSong(song);
+                albumPersistence.updateAlbum(album);
+            }
+
+            for( Author a : song.getAuthors() ) {
+                Author author = authorPersistence.getAuthorByUUID(a.getUUID());
+                author.deleteSong(song);
+                authorPersistence.updateAuthor(author);
+            }
+
+            // deletes songs from existing PlayList if it's there
+            // implementation for this hasn't been fully decided. this is a STUB
+            for( PlayList p : playListPersistence.getAllPlayLists() ) {
+                if( p.contains(song) ) {
+                    p.removeSong(song);
+                    playListPersistence.updatePlayList(p);
+                }
+            }
+
+            validateAlbum(song.getAlbums());
+            validateAuthor(song.getAuthors());
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -92,5 +133,26 @@ public class SongService {
         if (matcher.find() == false)
             result = true;
         return result;
+    }
+
+    private void validateAlbum(List<Album> albumList) {
+        for( Album a : albumList ) {
+            if( albumPersistence.getAlbumByUUID(a.getUUID()).getSongs().size() == 0 ) {
+                albumPersistence.deleteAlbum(a.getUUID());
+
+                // delete album from Author
+                Author author = authorPersistence.getAuthorByUUID(a.getUUID());
+                author.deleteAlbum(a);
+                authorPersistence.updateAuthor(author);
+            }
+        }
+    }
+
+    private void validateAuthor(List<Author> authorList) {
+        for( Author a : authorList ) {
+            if( authorPersistence.getAuthorByUUID(a.getUUID()).getSongList().size() == 0 ) {
+                authorPersistence.deleteAuthor(a.getUUID());
+            }
+        }
     }
 }

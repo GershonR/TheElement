@@ -4,12 +4,14 @@ import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 
 import java.util.logging.Logger;
-
+import fifthelement.theelement.objects.PlayList;
 import fifthelement.theelement.persistence.AlbumPersistence;
 import fifthelement.theelement.persistence.AuthorPersistence;
+import fifthelement.theelement.persistence.PlayListPersistence;
 import fifthelement.theelement.persistence.SongPersistence;
 import fifthelement.theelement.persistence.stubs.AlbumPersistenceStub;
 import fifthelement.theelement.persistence.stubs.AuthorPersistenceStub;
+import fifthelement.theelement.persistence.stubs.PlayListPersistenceStub;
 import fifthelement.theelement.persistence.stubs.SongPersistenceStub;
 import fifthelement.theelement.presentation.services.DrawerService;
 import fifthelement.theelement.presentation.services.FragmentService;
@@ -19,6 +21,7 @@ public class Services {
     private static SongPersistence songPersistence = null;
     private static AlbumPersistence albumPersistence = null;
     private static AuthorPersistence authorPersistence = null;
+    private static PlayListPersistence playListPersistence = null;
 
     private static ToastService toastService = null;
     private static DrawerService drawerService = null;
@@ -77,5 +80,14 @@ public class Services {
     }
 
 
+
+    public static synchronized PlayListPersistence getPlayListPersistence() {
+
+        if( playListPersistence == null ) {
+            playListPersistence = new PlayListPersistenceStub();
+        }
+
+        return playListPersistence;
+    }
 
 }

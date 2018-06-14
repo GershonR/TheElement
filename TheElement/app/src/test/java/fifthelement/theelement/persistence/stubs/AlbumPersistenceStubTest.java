@@ -105,7 +105,9 @@ public class AlbumPersistenceStubTest {
     @Test(expected = IllegalArgumentException.class)
     public void testInvalidUpdateAlbum() {
         Album album = null;
-        Album a = classUnderTest.updateAlbum(album);
+        if( classUnderTest.updateAlbum(album) ) {
+            Album a = album;
+        }
     }
 
     @Test
@@ -136,7 +138,8 @@ public class AlbumPersistenceStubTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testInvalidDeleteAlbum() {
-        boolean result = classUnderTest.deleteAlbum(null);
+        Album a = null;
+        boolean result = classUnderTest.deleteAlbum(a);
     }
 
     private static ArrayList<Album> getAlbumList() {

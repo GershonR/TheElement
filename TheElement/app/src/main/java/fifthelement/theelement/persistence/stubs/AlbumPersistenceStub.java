@@ -58,6 +58,11 @@ public class AlbumPersistenceStub implements AlbumPersistence {
     }
 
     @Override
+    public boolean deleteAlbum(Album album) throws IllegalArgumentException {
+        return this.deleteAlbum(album.getUUID());
+    }
+
+    @Override
     public boolean deleteAlbum(UUID uuid) throws IllegalArgumentException  {
         boolean removed = false;
         if(uuid == null)
@@ -69,6 +74,11 @@ public class AlbumPersistenceStub implements AlbumPersistence {
             }
         }
         return removed;
+    }
+
+    @Override
+    public boolean albumExists(Album album) {
+        return albumExists(album.getUUID());
     }
 
     @Override

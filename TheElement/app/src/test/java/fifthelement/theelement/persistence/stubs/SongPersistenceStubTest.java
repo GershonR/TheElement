@@ -129,7 +129,8 @@ public class SongPersistenceStubTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testInvalidDeleteSong() {
-        boolean result = classUnderTest.deleteSong(null);
+        Song s = null;
+        boolean result = classUnderTest.deleteSong(s);
     }
 
     private static ArrayList<Song> getSongList() {

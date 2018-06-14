@@ -1,5 +1,7 @@
 package fifthelement.theelement.persistence.stubs;
 
+import android.view.animation.AnimationUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -59,6 +61,11 @@ public class AuthorPersistenceStub implements AuthorPersistence {
     }
 
     @Override
+    public boolean deleteAuthor(Author author) throws IllegalArgumentException {
+        return this.deleteAuthor(author.getUUID());
+    }
+
+    @Override
     public boolean deleteAuthor(UUID uuid) throws IllegalArgumentException {
         boolean removed = false;
         if(uuid == null)
@@ -70,6 +77,11 @@ public class AuthorPersistenceStub implements AuthorPersistence {
             }
         }
         return removed;
+    }
+
+    @Override
+    public boolean authorExists(Author author) {
+        return this.authorExists(author.getUUID());
     }
 
     @Override

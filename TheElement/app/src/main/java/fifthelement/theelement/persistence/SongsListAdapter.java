@@ -36,7 +36,7 @@ public class SongsListAdapter extends BaseAdapter {
 
     @Override
     public long getItemId(int position) {
-        return songs.get(position).getId();
+        return(long) getItem(position).hashCode();
     }
 
     @Override

@@ -30,12 +30,12 @@ public class AuthorService {
     }
 
     // TODO: updateSong Try-Catch
-    public boolean updateAlbum(Author author) {
+    public boolean updateAuthor(Author author) {
         return authorPersistence.updateAuthor(author);
     }
 
     // TODO: deleteSong Try-Catch
-    public boolean deleteAlbum(Author author) {
+    public boolean deleteAuthor(Author author) {
         return authorPersistence.deleteAuthor(author.getUUID());
     }
 

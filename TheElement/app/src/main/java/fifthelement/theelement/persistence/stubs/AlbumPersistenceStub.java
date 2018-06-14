@@ -39,32 +39,35 @@ public class AlbumPersistenceStub implements AlbumPersistence {
     }
 
     @Override
-    public Album storeAlbum(Album album) {
+    public boolean storeAlbum(Album album) throws ArrayStoreException {
         if(albumExists(album.getUUID()))
             throw new ArrayStoreException();
         this.albumList.add(album);
-        return album;
+        return true;
     }
 
     @Override
-    public Album updateAlbum(Album album) {
+    public boolean updateAlbum(Album album) throws IllegalArgumentException {
+        boolean found = false;
         if(album == null)
-            throw new IllegalArgumentException("Cannot update a null song");
+            throw new IllegalArgumentException("Cannot update a null album");
         for(int index = 0; index < albumList.size(); index++) {
             if(albumList.get(index).getUUID().compareTo(album.getUUID()) == 0) {
                 this.albumList.set(index, album);
+                found = true;
+                break;
             }
         }
-        return album;
+        return found;
     }
 
     @Override
-    public boolean deleteAlbum(Album album) {
+    public boolean deleteAlbum(UUID uuid) throws IllegalArgumentException  {
         boolean removed = false;
-        if(album == null)
-            throw new IllegalArgumentException("Cannot delete a null song");
+        if(uuid == null)
+            throw new IllegalArgumentException("Cannot delete a null album");
         for(int index = 0; index < albumList.size(); index++) {
-            if(albumList.get(index).getUUID().compareTo(album.getUUID()) == 0) {
+            if(albumList.get(index).getUUID().compareTo(uuid) == 0) {
                 this.albumList.remove(index);
                 removed = true;
             }

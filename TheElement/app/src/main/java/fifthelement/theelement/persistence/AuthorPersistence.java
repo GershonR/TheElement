@@ -9,13 +9,13 @@ public interface AuthorPersistence {
 
     List<Author> getAllAuthors(); // some unordered list.
 
-    Author getAuthorByUUID(UUID ID); // get a author by UUID
+    Author getAuthorByUUID(UUID uuid); // get a author by UUID
 
-    Author storeAuthor(Author song); // checks & ignores duplicates
+    boolean storeAuthor(Author author); // checks & ignores duplicates
 
-    Author updateAuthor(Author song); // replaces old author with new one
+    boolean updateAuthor(Author author); // replaces old author with new one
 
-    boolean deleteAuthor(Author song); // delete's using UUID
+    boolean deleteAuthor(UUID uuid); // delete's using UUID
 
     boolean authorExists(UUID uuid); // sees if a author exists by UUID
 

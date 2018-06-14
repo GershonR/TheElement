@@ -31,7 +31,7 @@ public class AuthorServiceTest {
     public void getAllAuthorsTest() {
         List<Author> authors = classUnderTest.getAuthors(); // Stub creates 3
 
-        Assert.assertTrue("getAllAuthorsTest: song size != 3", authors.size() == 3);
+        Assert.assertTrue("getAllAuthorsTest: author size != 3", authors.size() == 3);
     }
 
     @Test
@@ -39,7 +39,7 @@ public class AuthorServiceTest {
         Author author = new Author("Jim Bob");
         classUnderTest.insertAuthor(author);
 
-        Assert.assertTrue("insertAuthorValidTest: song size != 4", classUnderTest.getAuthors().size() == 4);
+        Assert.assertTrue("insertAuthorValidTest: author size != 4", classUnderTest.getAuthors().size() == 4);
     }
 
 
@@ -68,14 +68,14 @@ public class AuthorServiceTest {
         authorTwo.setUUID(UUID.fromString("493410b3-dd0b-4b78-97bf-289f50f6e74f"));
 
         boolean insertReturn = classUnderTest.insertAuthor(authorOne);
-        boolean updateReturn =classUnderTest.updateAuthor(authorTwo);
+        boolean updateReturn = classUnderTest.updateAuthor(authorTwo);
 
         Assert.assertTrue("updateAuthorValidTest: insertReturn != true", insertReturn);
         Assert.assertTrue("updateAuthorValidTest: updateReturn != true", updateReturn);
         Assert.assertTrue("updateAuthorValidTest: song size != 4", classUnderTest.getAuthors().size() == 4);
 
         Author author = classUnderTest.getAuthorByUUID(UUID.fromString("493410b3-dd0b-4b78-97bf-289f50f6e74f"));
-        Assert.assertTrue("updateAuthorValidTest: song name != Changed Song Name", "Bob Jim".equals(author.getName()));
+        Assert.assertTrue("updateAuthorValidTest: song name != Changed Author Name", "Bob Jim".equals(author.getName()));
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -89,7 +89,7 @@ public class AuthorServiceTest {
         Author author = new Author("Jim Bob");
         boolean result = classUnderTest.updateAuthor(author);
         Assert.assertFalse("updateAuthorNotExistTest: result != false", result);
-        Assert.assertTrue("updateAuthorNotExistTest: song size != 3", classUnderTest.getAuthors().size() == 3);
+        Assert.assertTrue("updateAuthorNotExistTest: author size != 3", classUnderTest.getAuthors().size() == 3);
 
     }
 
@@ -101,11 +101,11 @@ public class AuthorServiceTest {
 
         boolean insertReturn = classUnderTest.insertAuthor(authorOne);
         Assert.assertTrue("deleteAuthorValidTest: insertReturn != true", insertReturn);
-        Assert.assertTrue("deleteAuthorValidTest: song size != 4", classUnderTest.getAuthors().size() == 4);
+        Assert.assertTrue("deleteAuthorValidTest: author size != 4", classUnderTest.getAuthors().size() == 4);
 
         boolean deleteReturn = classUnderTest.deleteAuthor(authorOne);
         Assert.assertTrue("deleteAuthorValidTest: deleteReturn != true", deleteReturn);
-        Assert.assertTrue("deleteAuthorValidTest: song size != 3", classUnderTest.getAuthors().size() == 3);
+        Assert.assertTrue("deleteAuthorValidTest: author size != 3", classUnderTest.getAuthors().size() == 3);
 
         Author deletedAuthor = classUnderTest.getAuthorByUUID(authorUUID);
         Assert.assertNull("deleteAuthorValidTest: deletedAuthor != null", deletedAuthor);
@@ -122,7 +122,7 @@ public class AuthorServiceTest {
         Author author = new Author("Pepe");
         boolean result = classUnderTest.deleteAuthor(author);
         Assert.assertFalse("deleteAuthorNotExistTest: result != false", result);
-        Assert.assertTrue("deleteAuthorNotExistTest: song size != 3", classUnderTest.getAuthors().size() == 3);
+        Assert.assertTrue("deleteAuthorNotExistTest: author size != 3", classUnderTest.getAuthors().size() == 3);
     }
 
 }

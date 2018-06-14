@@ -3,15 +3,17 @@ package fifthelement.theelement;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
-// Example import
-//import fifthelement.theelement.application.ApplicationTest;
+import fifthelement.theelement.business.AuthorServiceTest;
+import fifthelement.theelement.business.SongServiceTest;
+import fifthelement.theelement.persistence.stubs.SongPersistenceStubTest;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-        //Add tests here
-        // Ex
-        // ApplicationTest.class
+        SongPersistenceStubTest.class,
+        SongServiceTest.class,
+        AuthorServiceTest.class
 })
 
 public class AllTests {
+
 }

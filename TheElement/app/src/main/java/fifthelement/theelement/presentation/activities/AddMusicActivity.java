@@ -30,7 +30,6 @@ public class AddMusicActivity extends AppCompatActivity {
 
     SongService songService;
     MediaMetadataRetriever metaRetriver;
-    byte[] art;
 
 
     @Override
@@ -58,7 +57,8 @@ public class AddMusicActivity extends AppCompatActivity {
                     Services.getToastService(getApplicationContext()).sendToast("Permission Granted");
 
                 } else {
-
+                    Intent intent = new Intent(AddMusicActivity.this, MainActivity.class);
+                    AddMusicActivity.this.startActivity(intent);
                     Services.getToastService(getApplicationContext()).sendToast("Permission Denied", "RED");
                 }
                 return;
@@ -72,8 +72,6 @@ public class AddMusicActivity extends AppCompatActivity {
             case PICKFILE_RESULT_CODE:
                 if (resultCode == RESULT_OK) {
                     String FilePath = data.getData().getPath();
-                    System.out.println(FilePath);
-
                     getMusicData(data.getData());
                 }
         }

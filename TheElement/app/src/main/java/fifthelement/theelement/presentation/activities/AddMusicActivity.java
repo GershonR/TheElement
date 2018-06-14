@@ -123,12 +123,13 @@ public class AddMusicActivity extends AppCompatActivity {
             //Bitmap songImage = BitmapFactory
              //       .decodeByteArray(art, 0, art.length);
             songName = metaRetriver.extractMetadata(MediaMetadataRetriever.METADATA_KEY_TITLE);
+            if(songName == null)
+                    songName = PathUtil.getFileName(getContentResolver(), path); // Use the filename if no metadata
             songAlbum = metaRetriver.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ALBUM);
             songArtist = metaRetriver.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ARTIST);
             songGenre = metaRetriver.extractMetadata(MediaMetadataRetriever.METADATA_KEY_GENRE);
         } catch (Exception e) {
             System.out.println(e.getMessage());
-
         }
 
         if(!songService.pathExists(path.getPath())) {
@@ -140,8 +141,10 @@ public class AddMusicActivity extends AppCompatActivity {
             }
 
             Song song = new Song(songName, realPath);
-            song.addAuthor(new Author(songArtist));
-            song.addAlbum(new Album(songAlbum));
+            if(songArtist != null)
+                 song.addAuthor(new Author(songArtist));
+            if(songAlbum != null)
+                 song.addAlbum(new Album(songAlbum));
             songService.insertSong(song);
         } else {
             Toast toast = Toast.makeText(this, "This Song Already Exists!", Toast.LENGTH_LONG);

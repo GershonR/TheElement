@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import fifthelement.theelement.application.Services;
 import fifthelement.theelement.business.Services.SongService;
 import fifthelement.theelement.objects.Album;
 import fifthelement.theelement.objects.Author;
@@ -29,7 +30,6 @@ public class AddMusicActivity extends AppCompatActivity {
 
     SongService songService;
     MediaMetadataRetriever metaRetriver;
-    byte[] art;
 
 
     @Override
@@ -54,13 +54,12 @@ public class AddMusicActivity extends AppCompatActivity {
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
                     openFileExplorer();
-                    Toast.makeText(getApplicationContext(), "Permission granted", Toast.LENGTH_SHORT).show();
+                    Services.getToastService(getApplicationContext()).sendToast("Permission Granted");
 
                 } else {
-
                     Intent intent = new Intent(AddMusicActivity.this, MainActivity.class);
                     AddMusicActivity.this.startActivity(intent);
-                    Toast.makeText(getApplicationContext(), "Permission denied", Toast.LENGTH_SHORT).show();
+                    Services.getToastService(getApplicationContext()).sendToast("Permission Denied", "RED");
                 }
                 return;
             }
@@ -73,8 +72,6 @@ public class AddMusicActivity extends AppCompatActivity {
             case PICKFILE_RESULT_CODE:
                 if (resultCode == RESULT_OK) {
                     String FilePath = data.getData().getPath();
-                    System.out.println(FilePath);
-
                     getMusicData(data.getData());
                 }
         }
@@ -131,11 +128,7 @@ public class AddMusicActivity extends AppCompatActivity {
                  song.addAlbum(new Album(songAlbum));
             songService.insertSong(song);
         } else {
-            Toast toast = Toast.makeText(this, "This Song Already Exists!", Toast.LENGTH_LONG);
-            View view = toast.getView();
-
-            view.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.SRC_IN);
-            toast.show();
+            Services.getToastService(getApplicationContext()).sendToast("This Song Already Exists!", "RED");
         }
     }
 

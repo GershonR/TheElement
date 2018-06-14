@@ -16,6 +16,7 @@ import android.widget.Toast;
 import java.util.List;
 
 import fifthelement.theelement.R;
+import fifthelement.theelement.application.Services;
 import fifthelement.theelement.objects.Author;
 import fifthelement.theelement.objects.Song;
 import fifthelement.theelement.presentation.activities.MainActivity;
@@ -72,10 +73,9 @@ public class SongsListAdapter extends BaseAdapter {
                 PopupMenu popup = new PopupMenu(context, v, Gravity.LEFT);
                 Activity act = (MainActivity)context;
                 activity.getMenuInflater().inflate(R.menu.song_list_item_menu, popup.getMenu());
-                //registering popup with OnMenuItemClickListener
                 popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     public boolean onMenuItemClick(MenuItem item) {
-                        Toast.makeText(context, "Deleted " + printSong.getName(), Toast.LENGTH_SHORT).show();
+                        Services.getToastService(context).sendToast("Deleted " + printSong.getName());
                         activity.getSongService().deleteSong(printSong);
                         notifyDataSetChanged();
                         return true;

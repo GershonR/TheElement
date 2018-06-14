@@ -17,6 +17,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+import fifthelement.theelement.application.Services;
+
 /**
  * This MusicService will allow for a MediaPlayer instance to
  * play music in the background of the app and be controlled
@@ -132,10 +134,7 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
             player.setDataSource(getApplication(), uri);
             player.prepareAsync();
         } catch(Exception e) {
-            Toast toast = Toast.makeText(this, "Invalid Song!", Toast.LENGTH_LONG);
-            View view = toast.getView();
-            view.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.SRC_IN);
-            toast.show();
+            Services.getToastService(getApplicationContext()).sendToast("Invalid Song!", "RED");
             e.printStackTrace();
             return false;
         }
@@ -171,6 +170,8 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
         if(playerPrepared && !player.isPlaying()) {
             player.start();
             startUpdatingCallbackWithPosition();
+        } else if(!playerPrepared) {
+            Services.getToastService(getApplicationContext()).sendToast("No Song Selected!", "RED");
         }
     }
 

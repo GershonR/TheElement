@@ -166,14 +166,15 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
             e.printStackTrace();
             return false;
         }
-
         playerPrepared = false;
-        initializeProgressCallback();
+
         player.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
 
             @Override
             public void onPrepared(MediaPlayer player) {
-                player.start();
+                playerPrepared = true;
+                initializeProgressCallback();
+                start();
             }
 
         });

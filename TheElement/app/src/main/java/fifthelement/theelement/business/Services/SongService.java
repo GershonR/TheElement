@@ -58,18 +58,6 @@ public class SongService {
 
         if( song != null ) {
 
-            for( Album a : song.getAlbums() ) {
-                Album album = albumPersistence.getAlbumByUUID(a.getUUID());
-                album.deleteSong(song);
-                albumPersistence.updateAlbum(album);
-            }
-
-            for( Author a : song.getAuthors() ) {
-                Author author = authorPersistence.getAuthorByUUID(a.getUUID());
-                author.deleteSong(song);
-                authorPersistence.updateAuthor(author);
-            }
-
             // deletes songs from existing PlayList if it's there
             // implementation for this hasn't been fully decided. this is a STUB
             for( PlayList p : playListPersistence.getAllPlayLists() ) {
@@ -80,7 +68,6 @@ public class SongService {
             }
 
             songPersistence.deleteSong(song);
-
             validateAlbum(song.getAlbums());
             validateAuthor(song.getAuthors());
             return true;
@@ -137,6 +124,7 @@ public class SongService {
         return result;
     }
 
+    // Checks if Album is still valid (contains >1 song)
     private void validateAlbum(List<Album> albumList) {
         for( Album a : albumList ) {
             if( albumPersistence.getAlbumByUUID(a.getUUID()).getSongs().size() == 0 ) {
@@ -150,6 +138,7 @@ public class SongService {
         }
     }
 
+    // Checks if Author is still valid (contains >1 song)
     private void validateAuthor(List<Author> authorList) {
         for( Author a : authorList ) {
             if( authorPersistence.getAuthorByUUID(a.getUUID()).getSongList().size() == 0 ) {

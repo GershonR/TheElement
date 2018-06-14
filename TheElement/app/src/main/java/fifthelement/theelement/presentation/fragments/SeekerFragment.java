@@ -1,4 +1,4 @@
-package fifthelement.theelement.presentation;
+package fifthelement.theelement.presentation.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -12,9 +12,9 @@ import android.widget.TextView;
 
 
 import fifthelement.theelement.R;
-import fifthelement.theelement.presentation.MainActivity;
-import fifthelement.theelement.presentation.MusicService;
-import fifthelement.theelement.presentation.PlaybackInfoListener;
+import fifthelement.theelement.presentation.activities.MainActivity;
+import fifthelement.theelement.presentation.services.MusicService;
+import fifthelement.theelement.presentation.services.PlaybackInfoListener;
 
 public class SeekerFragment extends Fragment {
 

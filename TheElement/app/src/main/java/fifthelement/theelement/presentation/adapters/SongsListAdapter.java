@@ -1,17 +1,24 @@
-package fifthelement.theelement.presentation;
+package fifthelement.theelement.presentation.adapters;
 
+import android.app.Activity;
 import android.content.Context;
+import android.support.v7.widget.AppCompatImageButton;
+import android.support.v7.widget.PopupMenu;
+import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
 import fifthelement.theelement.R;
 import fifthelement.theelement.objects.Author;
 import fifthelement.theelement.objects.Song;
+import fifthelement.theelement.presentation.activities.MainActivity;
 
 public class SongsListAdapter extends BaseAdapter {
     Context context;
@@ -41,10 +48,11 @@ public class SongsListAdapter extends BaseAdapter {
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
+        final MainActivity activity = (MainActivity)context;
         view = inflater.inflate(R.layout.fragment_song_list_item, null);
         TextView songName = (TextView) view.findViewById(R.id.song_name_list);
         TextView authorName = (TextView) view.findViewById(R.id.author_name_list);
-        Song printSong = songs.get(i);
+        final Song printSong = songs.get(i);
         List<Author> author = printSong.getAuthors();
         String authors = "";
        if(author != null) {
@@ -57,6 +65,25 @@ public class SongsListAdapter extends BaseAdapter {
        }
         songName.setText(printSong.getName());
         authorName.setText(authors);
+        AppCompatImageButton button = view.findViewById(R.id.popup_button);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PopupMenu popup = new PopupMenu(context, v, Gravity.LEFT);
+                Activity act = (MainActivity)context;
+                activity.getMenuInflater().inflate(R.menu.song_list_item_menu, popup.getMenu());
+                //registering popup with OnMenuItemClickListener
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    public boolean onMenuItemClick(MenuItem item) {
+                        Toast.makeText(context, "Deleted " + printSong.getName(), Toast.LENGTH_SHORT).show();
+                        activity.getSongService().deleteSong(printSong);
+                        notifyDataSetChanged();
+                        return true;
+                    }
+                });
+                popup.show();
+            }
+        });
         return view;
     }
 

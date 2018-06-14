@@ -1,75 +1,57 @@
 package fifthelement.theelement.objects;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.UUID;
 
-public class Album {
-    private int albumId;
+public class Album{
+    private UUID uuid;
     private String albumName;
-    private List<Author> authors;
-    private List<Song> songs;
+    private ArrayList<Author> authors;
+    private ArrayList<Song> songs;
 
-    public Album(int id, String name) {
-        this.albumId = id;
+    public Album(String name){
+        this.uuid = UUID.randomUUID();
         this.albumName = name;
-        this.authors = new ArrayList<>();
-        this.songs = new ArrayList<>();
+        authors = new ArrayList<Author>();
+        songs = new ArrayList<Song>();
     }
 
-    public Album(int id, String name, List<Author> authors, List<Song> songs) {
-        this.albumId = id;
-        this.albumName = name;
-        this.authors = authors;
-        this.songs = songs;
-    }
-
-    // getters
     public String getName(){
         return albumName;
     }
 
-    public int getId(){
-        return albumId;
-    }
+    public UUID getUUID() { return uuid; }
 
-    public List<Author> getAuthors() {
+    public void setUUID(UUID uuid) { this.uuid = uuid; }
+
+    public ArrayList<Author> getAuthors(){
         return authors;
     }
-
-    public List<Song> getSongs() {
+    
+    public ArrayList<Song> getsongs(){
         return songs;
     }
 
-    // setters
-    public void setName(String newName) {
+    public void setName(String newName){
         this.albumName = newName;
     }
 
-    public void setId(int newId) {
-        this.albumId = newId;
-    }
-
-    public void setAuthors(List<Author> authorList) {
+    public void setAuthors(ArrayList<Author>authorList){
         this.authors =  authorList;
     }
+    //OR
 
     public void addAuthor(Author newAuthor){//to add a single author
         this.authors.add(newAuthor);
     }
 
-    public void setSongs(List<Song> songList) {
+    public void setSongs(ArrayList<Song>songList){
         this.songs = songList;
     }
+    //OR
 
     public void addSong(Song newSong){
         this.songs.add(newSong);
     }
 
-    public void deleteSong(Song song) {
-        for( int i = 0; i < songs.size(); i++ ) {
-            if( songs.get(i).getId() == song.getId() ) {
-                songs.remove(i);
-            }
-        }
-    }
 }

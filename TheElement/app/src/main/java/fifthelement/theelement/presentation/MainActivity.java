@@ -15,13 +15,13 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
 import fifthelement.theelement.R;
 import fifthelement.theelement.presentation.MusicService.MusicBinder;
+import fifthelement.theelement.presentation.activities.AddMusicActivity;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
     private NavigationView nvDrawer;
 
     // Make sure to be using android.support.v7.app.ActionBarDrawerToggle version.
-// The android.support.v4.app.ActionBarDrawerToggle has been deprecated.
+    // The android.support.v4.app.ActionBarDrawerToggle has been deprecated.
     private MusicService musicService;
     private Intent playIntent;
     private boolean musicBound = false;
@@ -58,9 +58,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.header_view, menu);
+        return true;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // The action bar home/up action should open or close the drawer.
         switch (item.getItemId()) {
+            case R.id.add_song:
+                Intent myIntent = new Intent(MainActivity.this, AddMusicActivity.class);
+                MainActivity.this.startActivity(myIntent);
+                return true;
             case android.R.id.home:
                 mDrawer.openDrawer(GravityCompat.START);
                 return true;

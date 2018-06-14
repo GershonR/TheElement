@@ -1,4 +1,4 @@
-# [![path](Artboard 1ldpi.png "path")](https://code.cs.umanitoba.ca/comp3350-summer2018/FifthElement/blob/master/Artboard%201xxxhdpi.png "path") The Element Architecture 
+# [![path](Assets/Artboard 1ldpi.png "path")](https://code.cs.umanitoba.ca/comp3350-summer2018/FifthElement/blob/master/Assets/Artboard 1ldpi.png "path") The Element Architecture 
 
 
 The element application was designed using the 3-tier architecture structure. 
@@ -66,4 +66,4 @@ The application package initialises the persistence stubs and any other objects 
 ### Architectural Diagram 
 Below is a visual representation of the layout and structure of our application.
 
-[![path](architecture.png "path")](https://code.cs.umanitoba.ca/comp3350-summer2018/FifthElement/blob/master/architecture.png "path")
+[![path](Assets/architecture.png "path")](https://code.cs.umanitoba.ca/comp3350-summer2018/FifthElement/blob/master/Assets/architecture.png "path")

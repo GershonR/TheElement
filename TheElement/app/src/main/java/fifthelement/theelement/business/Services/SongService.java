@@ -88,11 +88,8 @@ public class SongService {
         return false;
     }
 
-    /**
-     * This method checks if any song already has the same path
-     * @param path  The path to check
-     * @return  True if there exists a song with the same path
-     */
+    // Method checks if any song already has the same path
+    // and returns true if a songs exists with the same path
     public boolean pathExists(String path) {
         List<Song> songs = getSongs();
         boolean toReturn = false;
@@ -112,7 +109,7 @@ public class SongService {
     }
 
     public List<Song> search(String query) {
-        List<Song> allSongs = songPersistence.getAllSongs();
+        List<Song> allSongs = getSongs();
         ArrayList<Song> matchesList = new ArrayList<>();
         Matcher matcher;
 

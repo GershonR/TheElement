@@ -1,12 +1,5 @@
 ## Coding Standards | Fifth Element
 
-        class Something {
-                 //Instance variables
-                 //Static variables
-                 //Class-level constants
-                 //Constructors
-                 //static and instance methods
-        }
 #### General
 
 * Single blank lines to seperate code.
@@ -15,6 +8,16 @@
 * Use reasonable variable names, camelCase.
 
 #### Code
+* Try to follow the following:
+
+        class Something {
+                 //Instance variables
+                 //Static variables
+                 //Class-level constants
+                 //Constructors
+                 //static and instance methods
+        }
+
 * Use single tabs (converted to 4 spaces) to indicate depth lines in methods.
 * Use consistent indentation to clarify control structures (e.g., loops and if constructs). Levels of indentation should clearly indicate the depth of nesting. For example:
 

@@ -20,6 +20,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import fifthelement.theelement.R;
+import fifthelement.theelement.business.Services.SongService;
 import fifthelement.theelement.presentation.fragments.HomeFragment;
 import fifthelement.theelement.presentation.fragments.SearchFragment;
 import fifthelement.theelement.presentation.fragments.SongListFragment;
@@ -31,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
     private DrawerLayout mDrawer;
     private Toolbar toolbar;
     private NavigationView nvDrawer;
+    private SongService songService;
 
     // Make sure to be using android.support.v7.app.ActionBarDrawerToggle version.
     // The android.support.v4.app.ActionBarDrawerToggle has been deprecated.
@@ -42,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        songService = new SongService();
 
         // Set a Toolbar to replace the ActionBar.
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -79,6 +82,10 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public SongService getSongService() {
+        return songService;
     }
 
     private void setupDrawerContent(NavigationView navigationView) {

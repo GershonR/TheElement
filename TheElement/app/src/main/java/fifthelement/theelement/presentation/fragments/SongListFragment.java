@@ -29,7 +29,7 @@ public class SongListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        songService = new SongService();
+        songService = ((MainActivity)getActivity()).getSongService();
         musicService = ((MainActivity)getActivity()).getMusicService();
 
         view = inflater.inflate(R.layout.song_list_fragment, container, false);

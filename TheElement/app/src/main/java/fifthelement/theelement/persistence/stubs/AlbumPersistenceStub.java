@@ -21,10 +21,6 @@ public class AlbumPersistenceStub implements AlbumPersistence {
 
     }
 
-    public AlbumPersistenceStub(List<Album> albumList) {
-        this.albumList = albumList;
-    }
-
     @Override
     public List<Album> getAllAlbums() {
         return albumList;

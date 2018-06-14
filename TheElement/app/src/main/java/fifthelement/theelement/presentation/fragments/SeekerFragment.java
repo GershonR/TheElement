@@ -18,13 +18,9 @@ import fifthelement.theelement.presentation.services.PlaybackInfoListener;
 
 public class SeekerFragment extends Fragment {
 
-    public static final String TAG = "MainActivity";
-    public static final String MEDIA_RES_PATH = "android.resource://fifthelement.theelement/raw/jazz_in_paris";
-
     private SeekBar mSeekbarAudio;
     private MusicService musicService;
     private View view;
-    TextView textView;
     private boolean mUserIsSeeking = false;
 
     @Override
@@ -37,21 +33,18 @@ public class SeekerFragment extends Fragment {
         initializeUI();
         initializeSeekbar();
         initializePlaybackController();
-//        musicService.setCurrSongPath(MEDIA_RES_PATH); //TODO: Remove when music selection is working
-        Log.d(TAG, "onCreate: finished");
         return view;
     }
 
     private void initializeUI() {
-        Button mPlayButton = (Button) view.findViewById(R.id.button_play);
-        Button mPauseButton = (Button) view.findViewById(R.id.button_pause);
-        mSeekbarAudio = (SeekBar) view.findViewById(R.id.seekbar_audio);
+        Button mPlayButton = view.findViewById(R.id.button_play);
+        Button mPauseButton = view.findViewById(R.id.button_pause);
+        mSeekbarAudio = view.findViewById(R.id.seekbar_audio);
 
         mPauseButton.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        System.out.println("Called Pause Button");
                         musicService.pause();
                     }
                 });
@@ -59,7 +52,6 @@ public class SeekerFragment extends Fragment {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        System.out.println("Called Play Button");
                         musicService.start();
                     }
                 });
@@ -99,13 +91,11 @@ public class SeekerFragment extends Fragment {
 
         public void onDurationChanged(int duration) {
             mSeekbarAudio.setMax(duration);
-            System.out.println(String.format("setPlaybackDuration: setMax(%d)", duration));
         }
 
         public void onPositionChanged(int position) {
             if (!mUserIsSeeking) {
                 mSeekbarAudio.setProgress(position);
-                System.out.println(String.format("setPlaybackPosition: setProgress(%d)", position));
             }
         }
     }

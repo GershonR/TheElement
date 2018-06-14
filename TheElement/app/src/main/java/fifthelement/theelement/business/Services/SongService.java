@@ -10,10 +10,6 @@ import fifthelement.theelement.application.Services;
 import fifthelement.theelement.objects.Song;
 import fifthelement.theelement.persistence.SongPersistence;
 
-
-// TODO: Our MainActivity Initializes This - Fragments Will Call
-//       these Methods!
-// TODO: TESTS!
 public class SongService {
 
     private SongPersistence songPersistence;
@@ -97,8 +93,4 @@ public class SongService {
             result = true;
         return result;
     }
-
-    /*
-        Tristans Delete Song Stuff Here
-     */
 }

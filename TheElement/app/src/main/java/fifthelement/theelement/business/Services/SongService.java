@@ -45,18 +45,41 @@ public class SongService {
         return songPersistence.updateSong(song);
     }
 
-    // TODO: Try-Catch
-//    public boolean deleteSong(Song song) {
-//        return songPersistence.deleteSong(song.getUUID());
-//    }
-
     public void sortSongs(List<Song> songs) {
         Collections.sort(songs);
     }
 
-    /*
-        Tristans Delete Song Stuff Here
-     */
+    public List<Song> search(String query) {
+        List<Song> allSongs = songPersistence.getAllSongs();
+        ArrayList<Song> matchesList = new ArrayList<>();
+        Matcher matcher;
+
+        if (validateRegex(query)){
+            String regex = query;
+            Pattern pattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
+
+            for (Song s: allSongs) {
+                matcher = pattern.matcher(s.getName());
+                if ( matcher.find()){
+                    matchesList.add(s);
+                }
+            }
+        }
+
+        return matchesList;
+    }
+
+    // Making sure the regex pattern doesn't contain special
+    // characters, which screws up regex compiling
+    private boolean validateRegex(String regexPattern){
+        boolean result = false;
+        Pattern special = Pattern.compile ("[!@#$%&*()_+=|<>?{}\\[\\]~-]");
+        Matcher matcher = special.matcher(regexPattern);
+        if (matcher.find() == false)
+            result = true;
+        return result;
+    }
+
     public boolean deleteSong(Song songToRemove) {
         Song song = songPersistence.getSongByUUID(songToRemove.getUUID());
 
@@ -108,9 +131,4 @@ public class SongService {
             }
         }
     }
-
-
-    /*
-        Jeremys Search Here
-     */
 }

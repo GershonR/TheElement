@@ -19,19 +19,18 @@ public class SongPersistenceStub implements SongPersistence {
             Tife just change the song path here, the SongService
             calls this constructor
          */
-        Song song = new Song("Nice For What", "test");
-        song.addAuthor(new Author("Drake"));
-        this.storeSong(song);
-
-        song = new Song("Girls Like You", "test");
-        this.storeSong(song);
-
-        song = new Song("This Is America", "test");
+        Song song = new Song("This Is America", "android.resource://fifthelement.theelement/raw/childish_gambino_this_is_america");
         song.addAuthor(new Author("Childish Gambino"));
         this.storeSong(song);
 
-        song = new Song("All Mine", "test");
-        song.addAuthor(new Author("Kanye West"));
+        song = new Song("Classical Music", "android.resource://fifthelement.theelement/raw/classical_music");
+        this.storeSong(song);
+
+        song = new Song("Adventure of a Lifetime", "android.resource://fifthelement.theelement/raw/coldplay_adventure_of_a_lifetime");
+        song.addAuthor(new Author("Coldplay"));
+        this.storeSong(song);
+
+        song = new Song("Hall of Fame", "android.resource://fifthelement.theelement/raw/hall_of_fame");
         this.storeSong(song);
     }
 

@@ -1,5 +1,6 @@
 package fifthelement.theelement.application;
 
+import java.util.logging.Logger;
 import fifthelement.theelement.objects.PlayList;
 import fifthelement.theelement.persistence.AlbumPersistence;
 import fifthelement.theelement.persistence.AuthorPersistence;

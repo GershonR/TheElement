@@ -1,6 +1,7 @@
 package fifthelement.theelement.business.Services;
 
 import java.util.List;
+import java.util.UUID;
 
 import fifthelement.theelement.application.Services;
 import fifthelement.theelement.objects.Album;
@@ -20,12 +21,14 @@ public class AuthorService {
         authorPersistence = Services.getAuthorPersistence();
     }
 
+    public Author getAuthorByUUID(UUID uuid) { return authorPersistence.getAuthorByUUID(uuid); }
+
     public List<Author> getAuthors() {
         return authorPersistence.getAllAuthors();
     }
 
     // TODO: insertSong Try-Catch
-    public boolean insertAuthor(Author author) {
+    public boolean insertAuthor(Author author) throws ArrayStoreException, IllegalArgumentException {
         return authorPersistence.storeAuthor(author);
     }
 

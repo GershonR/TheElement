@@ -14,10 +14,9 @@ public class AuthorPersistenceStub implements AuthorPersistence {
     public AuthorPersistenceStub() {
         this.authorList = new ArrayList<>();
 
-        this.authorList.add(new Author("Author1"));
-        this.authorList.add(new Author("Author2"));
-        this.authorList.add(new Author("Author3"));
-        this.authorList.add(new Author("Author4"));
+        this.authorList.add(new Author("Bob Marley"));
+        this.authorList.add(new Author("Led Zepplin"));
+        this.authorList.add(new Author("Justin Bieber"));
     }
 
     public AuthorPersistenceStub(List<Author> authorList) {
@@ -38,7 +37,9 @@ public class AuthorPersistenceStub implements AuthorPersistence {
     }
 
     @Override
-    public boolean storeAuthor(Author author) throws ArrayStoreException {
+    public boolean storeAuthor(Author author) throws ArrayStoreException, IllegalArgumentException {
+        if(author == null)
+            throw new IllegalArgumentException("Cannot insert a null author");
         if(authorExists(author.getUUID()))
             throw new ArrayStoreException();
         this.authorList.add(author);

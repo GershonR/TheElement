@@ -14,7 +14,7 @@ import java.util.UUID;
 import fifthelement.theelement.objects.Album;
 
 @RunWith(JUnit4.class)
-public class AlbumPersistenceStubTest {
+public class AlbumPersistenceTest {
 
     private AlbumPersistenceStub classUnderTest;
     private ArrayList<Album> albumList;

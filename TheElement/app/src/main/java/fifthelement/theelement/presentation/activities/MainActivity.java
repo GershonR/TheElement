@@ -8,9 +8,6 @@ import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -23,10 +20,7 @@ import fifthelement.theelement.R;
 import fifthelement.theelement.application.Services;
 import fifthelement.theelement.business.Services.SongService;
 import fifthelement.theelement.presentation.services.MusicService;
-import fifthelement.theelement.presentation.fragments.HomeFragment;
-import fifthelement.theelement.presentation.fragments.SearchFragment;
 import fifthelement.theelement.presentation.fragments.SeekerFragment;
-import fifthelement.theelement.presentation.fragments.SongListFragment;
 import fifthelement.theelement.presentation.services.MusicService.MusicBinder;
 
 

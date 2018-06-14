@@ -59,6 +59,8 @@ public class AlbumPersistenceStub implements AlbumPersistence {
 
     @Override
     public boolean deleteAlbum(Album album) throws IllegalArgumentException {
+        if (album == null)
+            throw new IllegalArgumentException("Cannot delete a null album");
         return this.deleteAlbum(album.getUUID());
     }
 

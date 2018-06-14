@@ -1,5 +1,7 @@
 package fifthelement.theelement.application;
 
+import android.content.Context;
+
 import java.util.logging.Logger;
 
 import fifthelement.theelement.persistence.AlbumPersistence;
@@ -8,11 +10,14 @@ import fifthelement.theelement.persistence.SongPersistence;
 import fifthelement.theelement.persistence.stubs.AlbumPersistenceStub;
 import fifthelement.theelement.persistence.stubs.AuthorPersistenceStub;
 import fifthelement.theelement.persistence.stubs.SongPersistenceStub;
+import fifthelement.theelement.presentation.services.ToastService;
 
 public class Services {
     private static SongPersistence songPersistence = null;
     private static AlbumPersistence albumPersistence = null;
     private static AuthorPersistence authorPersistence = null;
+
+    private static ToastService toastService = null;
 
     public static synchronized SongPersistence getSongPersistence() {
 
@@ -39,6 +44,15 @@ public class Services {
         }
 
         return authorPersistence;
+    }
+
+    public static synchronized ToastService getToastService(Context context) {
+
+        if (toastService == null) {
+            toastService = new ToastService(context);
+        }
+
+        return toastService;
     }
 
 }

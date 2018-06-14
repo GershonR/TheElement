@@ -12,6 +12,9 @@ import android.widget.TextView;
 
 
 import fifthelement.theelement.R;
+import fifthelement.theelement.presentation.MainActivity;
+import fifthelement.theelement.presentation.MusicService;
+import fifthelement.theelement.presentation.PlaybackInfoListener;
 
 public class SeekerFragment extends Fragment {
 
@@ -94,13 +97,11 @@ public class SeekerFragment extends Fragment {
     //Listener that will help seekbars update with the progressing of music playback
     public class PlaybackListener extends PlaybackInfoListener {
 
-        @Override
         public void onDurationChanged(int duration) {
             mSeekbarAudio.setMax(duration);
             System.out.println(String.format("setPlaybackDuration: setMax(%d)", duration));
         }
 
-        @Override
         public void onPositionChanged(int position) {
             if (!mUserIsSeeking) {
                 mSeekbarAudio.setProgress(position);

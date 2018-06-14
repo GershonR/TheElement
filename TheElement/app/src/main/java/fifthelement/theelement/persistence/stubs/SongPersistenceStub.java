@@ -61,12 +61,15 @@ public class SongPersistenceStub implements SongPersistence {
 
     @Override
     public boolean updateSong(Song song) {
+        boolean found = false;
         if(song == null)
             throw new IllegalArgumentException("Cannot update a null song");
         for(int index = 0; index < songList.size(); index++)
-            if(songList.get(index).getId() == song.getId())
+            if(songList.get(index).getId() == song.getId()) {
                 this.songList.set(index, song);
-        return true;
+                found = true;
+            }
+        return found;
     }
 
     @Override

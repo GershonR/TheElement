@@ -3,12 +3,16 @@ package fifthelement.theelement.presentation;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Binder;
 import android.os.IBinder;
 import android.os.PowerManager;
+import android.view.View;
+import android.widget.Toast;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -123,23 +127,57 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
      * @return boolean - Indicator if the music file path was set successfully
      */
     public boolean setCurrSongPath(String songPath) {
-        System.out.println("Attempting to set new path: " + songPath);
-
-        player.reset();
-        Context context = getBaseContext();
         Uri uri = Uri.parse(songPath);
 
         try{
-            player.setDataSource(context, uri);
+            player.setDataSource(getApplication(), uri);
             player.prepare();
         } catch(Exception e) {
-            //TODO: Handle exceptions
+            Toast toast = Toast.makeText(this, "Invalid Song!", Toast.LENGTH_LONG);
+            View view = toast.getView();
+            view.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.SRC_IN);
+            toast.show();
             e.printStackTrace();
             return false;
         }
 
         playerPrepared = false;
         initializeProgressCallback();
+        return true;
+    }
+
+    /**
+     *  playSongAsynch:
+     *  This function will attempt to set the media player up asynchronously and play the media.
+     * @param songPath - File path of the music file to play
+     * @return boolean - Indicator if the music file path was set successfully
+     */
+    public boolean playSongAsynch(String songPath) {
+        Uri uri = Uri.parse(songPath);
+
+        try{
+            player.setDataSource(getApplication(), uri);
+            player.prepareAsync();
+        } catch(Exception e) {
+            Toast toast = Toast.makeText(this, "Invalid Song!", Toast.LENGTH_LONG);
+            View view = toast.getView();
+            view.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.SRC_IN);
+            toast.show();
+            e.printStackTrace();
+            return false;
+        }
+        playerPrepared = false;
+
+        player.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+
+            @Override
+            public void onPrepared(MediaPlayer player) {
+                playerPrepared = true;
+                initializeProgressCallback();
+                start();
+            }
+
+        });
         return true;
     }
 

@@ -19,9 +19,6 @@ public class AuthorPersistenceStub implements AuthorPersistence {
         this.authorList.add(new Author("Justin Bieber"));
     }
 
-    public AuthorPersistenceStub(List<Author> authorList) {
-        this.authorList = authorList;
-    }
 
     @Override
     public List<Author> getAllAuthors() {

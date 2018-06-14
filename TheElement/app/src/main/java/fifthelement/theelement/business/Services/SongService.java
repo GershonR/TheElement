@@ -26,17 +26,14 @@ public class SongService {
         return songPersistence.getAllSongs();
     }
 
-    // TODO: insertSong Try-Catch
     public boolean insertSong(Song song) {
         return songPersistence.storeSong(song);
     }
 
-    // TODO: updateSong Try-Catch
     public boolean updateSong(Song song) {
         return songPersistence.updateSong(song);
     }
 
-    // TODO: deleteSong Try-Catch
     public boolean deleteSong(Song song) {
         return songPersistence.deleteSong(song.getUUID());
     }

@@ -10,9 +10,6 @@ import fifthelement.theelement.persistence.AlbumPersistence;
 import fifthelement.theelement.persistence.AuthorPersistence;
 
 
-// TODO: Our MainActivity Initializes This - Fragments Will Call
-//       these Methods!
-// TODO: TESTS!
 public class AuthorService {
 
     private AuthorPersistence authorPersistence;
@@ -21,24 +18,29 @@ public class AuthorService {
         authorPersistence = Services.getAuthorPersistence();
     }
 
-    public Author getAuthorByUUID(UUID uuid) { return authorPersistence.getAuthorByUUID(uuid); }
+    public Author getAuthorByUUID(UUID uuid) {
+        return authorPersistence.getAuthorByUUID(uuid);
+    }
 
     public List<Author> getAuthors() {
         return authorPersistence.getAllAuthors();
     }
 
-    // TODO: insertSong Try-Catch
     public boolean insertAuthor(Author author) throws ArrayStoreException, IllegalArgumentException {
+        if(author == null)
+            throw new IllegalArgumentException();
         return authorPersistence.storeAuthor(author);
     }
 
-    // TODO: updateSong Try-Catch
     public boolean updateAuthor(Author author) {
+        if(author == null)
+            throw new IllegalArgumentException();
         return authorPersistence.updateAuthor(author);
     }
 
-    // TODO: deleteSong Try-Catch
     public boolean deleteAuthor(Author author) {
+        if(author == null)
+            throw new IllegalArgumentException();
         return authorPersistence.deleteAuthor(author.getUUID());
     }
 

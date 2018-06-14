@@ -13,9 +13,6 @@ import fifthelement.theelement.persistence.AlbumPersistence;
 import fifthelement.theelement.persistence.SongPersistence;
 
 
-// TODO: Our MainActivity Initializes This - Fragments Will Call
-//       these Methods!
-// TODO: TESTS!
 public class AlbumService {
 
     private AlbumPersistence albumPersistence;
@@ -28,17 +25,14 @@ public class AlbumService {
         return albumPersistence.getAllAlbums();
     }
 
-    // TODO: insertSong Try-Catch
     public boolean insertAlbum(Album album) {
         return albumPersistence.storeAlbum(album);
     }
 
-    // TODO: updateSong Try-Catch
     public boolean updateAlbum(Album album) {
         return albumPersistence.updateAlbum(album);
     }
 
-    // TODO: deleteSong Try-Catch
     public boolean deleteAlbum(Album album) {
         return albumPersistence.deleteAlbum(album.getUUID());
     }

@@ -20,6 +20,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import fifthelement.theelement.R;
+import fifthelement.theelement.application.Services;
 import fifthelement.theelement.business.Services.SongService;
 import fifthelement.theelement.presentation.services.MusicService;
 import fifthelement.theelement.presentation.fragments.HomeFragment;
@@ -38,6 +39,13 @@ public class MainActivity extends AppCompatActivity {
     private Intent playIntent;
     private boolean musicBound = false;
 
+    public SongService getSongService() {
+        return songService;
+    }
+    public MusicService getMusicService(){
+        return musicService;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,12 +61,7 @@ public class MainActivity extends AppCompatActivity {
         actionbar.setDisplayHomeAsUpEnabled(true);
         actionbar.setHomeAsUpIndicator(R.drawable.ic_menu);
 
-        // Find our drawer view
-        mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-
-        // Setup our drawer view
-        nvDrawer = (NavigationView) findViewById(R.id.nvView);
-        setupDrawerContent(nvDrawer);
+        mDrawer = Services.getDrawerService(this).getmDrawer();
     }
 
     @Override
@@ -82,65 +85,6 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public SongService getSongService() {
-        return songService;
-    }
-
-    private void setupDrawerContent(NavigationView navigationView) {
-        navigationView.setNavigationItemSelectedListener(
-                new NavigationView.OnNavigationItemSelectedListener() {
-                    @Override
-                    public boolean onNavigationItemSelected(MenuItem menuItem) {
-                        selectDrawerItem(menuItem);
-                        return true;
-                    }
-                });
-    }
-
-    public void selectDrawerItem(MenuItem menuItem) {
-        // Create a new fragment and specify the fragment to show based on nav item clicked
-        Fragment fragment = null;
-        Class fragmentClass = null;
-        switch(menuItem.getItemId()) {
-            case R.id.home_page:
-                fragmentClass = HomeFragment.class;
-                break;
-            case R.id.song_list:
-                fragmentClass = SongListFragment.class;
-                break;
-            case R.id.search_view_fragment:
-                fragmentClass = SearchFragment.class;
-                break;
-            default:
-                fragmentClass = HomeFragment.class;
-                break;
-        }
-
-        try {
-            fragment = (Fragment) fragmentClass.newInstance();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        createFragment(R.id.flContent, fragment);
-
-        // Highlight the selected item has been done by NavigationView
-        menuItem.setChecked(true);
-        // Set action bar title
-        setTitle(menuItem.getTitle());
-        // Close the navigation drawer
-        mDrawer.closeDrawers();
-    }
-
-    private void createFragment(int id, Fragment fragment) {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-        transaction.replace(id, fragment);
-
-        transaction.commit();
-    }
-
     private ServiceConnection musicConnection = new ServiceConnection() {
 
         @Override
@@ -150,8 +94,8 @@ public class MainActivity extends AppCompatActivity {
             musicService = binder.getService();
             musicBound = true;
 
-            SeekerFragment seeker = new SeekerFragment();//create the fragment instance
-            createFragment(R.id.music_seeker, seeker);
+            createSeeker();
+
 
         }
 
@@ -161,10 +105,10 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
-    public MusicService getMusicService(){
-        return musicService;
+    public void createSeeker() {
+        SeekerFragment seeker = new SeekerFragment();//create the fragment instance
+        Services.getFragmentService(this).createFragment(R.id.music_seeker, seeker);
     }
-
 
     @Override
     protected void onStart() {

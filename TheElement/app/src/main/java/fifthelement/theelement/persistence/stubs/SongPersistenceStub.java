@@ -19,7 +19,7 @@ public class SongPersistenceStub implements SongPersistence {
             Tife just change the song path here, the SongService
             calls this constructor
          */
-        Song song = new Song("Nice For What", "test");
+        Song song = new Song("Nice For What", "android.resource://fifthelement.theelement/raw/jazz_in_paris");
         song.addAuthor(new Author("Drake"));
         this.storeSong(song);
 

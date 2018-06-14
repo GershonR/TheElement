@@ -41,6 +41,25 @@ public class SongService {
         return songPersistence.deleteSong(song.getUUID());
     }
 
+    /**
+     * This method checks if any song already has the same path
+     * @param path  The path to check
+     * @return  True if there exists a song with the same path
+     */
+    public boolean pathExists(String path) {
+        List<Song> songs = getSongs();
+        boolean toReturn = false;
+
+        for(Song song : songs) {
+            if(song.getPath().equals(path)) {
+                toReturn = true;
+                break;
+            }
+        }
+
+        return toReturn;
+    }
+
     public void sortSongs(List<Song> songs) {
         Collections.sort(songs);
     }

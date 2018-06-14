@@ -28,7 +28,4 @@ public class Author{
         this.name = newName;
     }
 
-
-
-
 }

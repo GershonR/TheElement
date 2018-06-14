@@ -14,15 +14,11 @@ public class AuthorPersistenceStub implements AuthorPersistence {
     public AuthorPersistenceStub() {
         this.authorList = new ArrayList<>();
 
-        this.authorList.add(new Author("Author1"));
-        this.authorList.add(new Author("Author2"));
-        this.authorList.add(new Author("Author3"));
-        this.authorList.add(new Author("Author4"));
+        this.authorList.add(new Author("Bob Marley"));
+        this.authorList.add(new Author("Led Zepplin"));
+        this.authorList.add(new Author("Justin Bieber"));
     }
 
-    public AuthorPersistenceStub(List<Author> authorList) {
-        this.authorList = authorList;
-    }
 
     @Override
     public List<Author> getAllAuthors() {
@@ -38,32 +34,37 @@ public class AuthorPersistenceStub implements AuthorPersistence {
     }
 
     @Override
-    public Author storeAuthor(Author author) {
+    public boolean storeAuthor(Author author) throws ArrayStoreException, IllegalArgumentException {
+        if(author == null)
+            throw new IllegalArgumentException("Cannot insert a null author");
         if(authorExists(author.getUUID()))
             throw new ArrayStoreException();
         this.authorList.add(author);
-        return author;
+        return true;
     }
 
     @Override
-    public Author updateAuthor(Author author) {
+    public boolean updateAuthor(Author author) throws IllegalArgumentException {
+        boolean removed = false;
         if(author == null)
-            throw new IllegalArgumentException("Cannot update a null song");
+            throw new IllegalArgumentException("Cannot update a null author");
         for(int index = 0; index < authorList.size(); index++) {
             if(authorList.get(index).getUUID().compareTo(author.getUUID()) == 0) {
                 this.authorList.set(index, author);
+                removed = true;
+                break;
             }
         }
-        return author;
+        return removed;
     }
 
     @Override
-    public boolean deleteAuthor(Author author) {
+    public boolean deleteAuthor(UUID uuid) throws IllegalArgumentException {
         boolean removed = false;
-        if(author == null)
-            throw new IllegalArgumentException("Cannot delete a null song");
+        if(uuid == null)
+            throw new IllegalArgumentException("Cannot delete a null author");
         for(int index = 0; index < authorList.size(); index++) {
-            if(authorList.get(index).getUUID().compareTo(author.getUUID()) == 0) {
+            if(authorList.get(index).getUUID().compareTo(uuid) == 0) {
                 this.authorList.remove(index);
                 removed = true;
             }

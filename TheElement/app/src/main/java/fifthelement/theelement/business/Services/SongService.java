@@ -10,10 +10,6 @@ import fifthelement.theelement.application.Services;
 import fifthelement.theelement.objects.Song;
 import fifthelement.theelement.persistence.SongPersistence;
 
-
-// TODO: Our MainActivity Initializes This - Fragments Will Call
-//       these Methods!
-// TODO: TESTS!
 public class SongService {
 
     private SongPersistence songPersistence;
@@ -26,18 +22,21 @@ public class SongService {
         return songPersistence.getAllSongs();
     }
 
-    // TODO: insertSong Try-Catch
-    public boolean insertSong(Song song) {
+    public boolean insertSong(Song song) throws ArrayStoreException, IllegalArgumentException {
+        if(song == null)
+            throw new IllegalArgumentException();
         return songPersistence.storeSong(song);
     }
 
-    // TODO: updateSong Try-Catch
-    public boolean updateSong(Song song) {
+    public boolean updateSong(Song song) throws IllegalArgumentException {
+        if(song == null)
+            throw new IllegalArgumentException();
         return songPersistence.updateSong(song);
     }
 
-    // TODO: deleteSong Try-Catch
-    public boolean deleteSong(Song song) {
+    public boolean deleteSong(Song song) throws IllegalArgumentException {
+        if(song == null)
+            throw new IllegalArgumentException();
         return songPersistence.deleteSong(song.getUUID());
     }
 
@@ -94,8 +93,4 @@ public class SongService {
             result = true;
         return result;
     }
-
-    /*
-        Tristans Delete Song Stuff Here
-     */
 }

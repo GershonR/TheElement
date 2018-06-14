@@ -73,7 +73,7 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
      */
     @Override
     public void onCompletion(MediaPlayer mediaPlayer) {
-        //TODO: This is where we would do autoplay stuff
+
     }
 
     /**

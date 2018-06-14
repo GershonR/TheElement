@@ -89,9 +89,8 @@ public class AddMusicActivity extends AppCompatActivity {
         System.out.println(songAlbum);
         System.out.println(songArtist);
         System.out.println(songGenre);
-        int id = (int)(Math.random() * 1000 + 1);
-        Song song = new Song(id, songName, path.getPath());
-        song.addAuthor(new Author(id, songArtist));
+        Song song = new Song(songName, path.getPath());
+        song.addAuthor(new Author(songArtist));
         songService.insertSong(song);
     }
 }

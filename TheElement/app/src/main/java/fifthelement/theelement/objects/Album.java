@@ -1,15 +1,16 @@
 package fifthelement.theelement.objects;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class Album{
-    private int albumId;
+    private UUID uuid;
     private String albumName;
     private ArrayList<Author> authors;
     private ArrayList<Song> songs;
 
-    public Album(int id, String name){
-        this.albumId = id;
+    public Album(String name){
+        this.uuid = UUID.randomUUID();
         this.albumName = name;
         authors = new ArrayList<Author>();
         songs = new ArrayList<Song>();
@@ -19,9 +20,9 @@ public class Album{
         return albumName;
     }
 
-    public int getId(){
-        return albumId;
-    }
+    public UUID getUUID() { return uuid; }
+
+    public void setUUID(UUID uuid) { this.uuid = uuid; }
 
     public ArrayList<Author> getAuthors(){
         return authors;
@@ -33,10 +34,6 @@ public class Album{
 
     public void setName(String newName){
         this.albumName = newName;
-    }
-
-    public void setId(int newId){
-        this.albumId  = newId;
     }
 
     public void setAuthors(ArrayList<Author>authorList){

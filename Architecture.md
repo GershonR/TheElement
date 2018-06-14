@@ -66,4 +66,4 @@ The application package initialises the persistence stubs and any other objects 
 ### Architectural Diagram 
 Below is a visual representation of the layout and structure of our application.
 
-
+[![path](architecture.png "path")](https://code.cs.umanitoba.ca/comp3350-summer2018/FifthElement/blob/master/architecture.png "path")

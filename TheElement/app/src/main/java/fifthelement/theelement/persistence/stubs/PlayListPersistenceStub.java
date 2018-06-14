@@ -36,26 +36,26 @@ public class PlayListPersistenceStub implements PlayListPersistence {
     }
 
     @Override
-    public PlayList storePlayList(PlayList playList) {
+    public boolean storePlayList(PlayList playList) {
         if( playListExists(playList.getUUID()) ) {
             throw new ArrayStoreException();
         }
         playLists.add(playList);
-        return playList;
+        return true;
     }
 
     @Override
-    public PlayList updatePlayList(PlayList playList) {
+    public boolean updatePlayList(PlayList playList) {
         if( playList == null ) {
             throw new IllegalArgumentException("Cannot update a null playlist");
         }
         for( int i = 0; i < playLists.size(); i++ ) {
             if( playLists.get(i).getUUID() == playList.getUUID() ) {
                 playLists.set(i, playList);
-                return playList;
+                return true;
             }
         }
-        return null;
+        return false;
     }
 
     @Override

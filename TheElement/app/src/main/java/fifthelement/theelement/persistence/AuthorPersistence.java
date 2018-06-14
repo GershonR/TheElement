@@ -11,6 +11,7 @@ public interface AuthorPersistence {
 
     Author getAuthorByUUID(UUID uuid); // get a author by UUID
 
+    // using boolean since its a stub. would make changes when implementing db anyway
     boolean storeAuthor(Author author); // checks & ignores duplicates
 
     boolean updateAuthor(Author author); // replaces old author with new one

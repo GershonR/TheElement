@@ -1,5 +1,6 @@
 package fifthelement.theelement.objects;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -12,18 +13,26 @@ public class Author {
 
 
     public Author(String name) {
-
         this.uuid = UUID.randomUUID();
         this.name = name;
+        this.songList = new ArrayList<>();
+        this.albumList = new ArrayList<>();
+    }
+
+    public Author(String name, List<Song> songList, List<Album> albumList) {
+        this.uuid = UUID.randomUUID();
+        this.name = name;
+        this.songList = songList;
+        this.albumList = albumList;
     }
 
     // getters
-    public String getName() {
-        return name;
-    }
-
     public UUID getUUID() {
         return uuid;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public List<Song> getSongList() {

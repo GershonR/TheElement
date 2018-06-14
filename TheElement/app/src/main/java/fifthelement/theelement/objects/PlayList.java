@@ -22,12 +22,12 @@ public class PlayList {
     }
 
     // getters
-    public String getName() {
-        return listName;
-    }
-
     public UUID getUUID() {
         return uuid;
+    }
+
+    public String getName() {
+        return listName;
     }
 
     public List<Song> getSongs() {

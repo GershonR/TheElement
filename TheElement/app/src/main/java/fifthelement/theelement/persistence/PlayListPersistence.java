@@ -11,9 +11,10 @@ public interface PlayListPersistence {
 
     PlayList getPlayListByUUID(UUID uuid);
 
-    PlayList storePlayList(PlayList playList);
+    // using boolean since its a stub. would make changes when implementing db anyway
+    boolean storePlayList(PlayList playList);
 
-    PlayList updatePlayList(PlayList playList);
+    boolean updatePlayList(PlayList playList);
 
     boolean deletePlayList(PlayList playList);
 

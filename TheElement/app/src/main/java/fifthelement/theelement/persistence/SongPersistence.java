@@ -11,6 +11,7 @@ public interface SongPersistence {
 
     Song getSongByUUID(UUID ID); // get a song by UUID
 
+    // using boolean since its a stub. would make changes when implementing db anyway
     boolean storeSong(Song song); // checks & ignores duplicates
 
     boolean updateSong(Song song); // replaces old song with new one

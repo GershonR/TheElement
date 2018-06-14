@@ -1,36 +1,45 @@
 package fifthelement.theelement.objects;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.List;
 import java.util.UUID;
 
 public class Album{
     private UUID uuid;
     private String albumName;
-    private ArrayList<Author> authors;
-    private ArrayList<Song> songs;
+    private List<Song> songList;
+    private List<Author> authorList;
 
     public Album(String name){
         this.uuid = UUID.randomUUID();
         this.albumName = name;
-        authors = new ArrayList<>();
-        songs = new ArrayList<>();
+        this.songList = new ArrayList<>();
+        this.authorList = new ArrayList<>();
+    }
+
+    public Album(String name, List<Song> songList, List<Author> authorList){
+        this.uuid = UUID.randomUUID();
+        this.albumName = name;
+        this.songList = songList;
+        this.authorList = authorList;
     }
 
     // getters
-    public String getName(){
-        return albumName;
-    }
-
     public UUID getUUID() {
         return uuid;
     }
 
-    public ArrayList<Author> getAuthors(){
-        return authors;
+    public String getName() {
+        return albumName;
     }
-    
-    public ArrayList<Song> getsongs(){
-        return songs;
+
+    public List<Author> getAuthors() {
+        return authorList;
+    }
+
+    public List<Song> getSongs() {
+        return songList;
     }
 
     // setters
@@ -38,28 +47,28 @@ public class Album{
         this.uuid = uuid;
     }
 
-    public void setName(String newName){
+    public void setName(String newName) {
         this.albumName = newName;
     }
 
-    public void setAuthors(ArrayList<Author>authorList){
-        this.authors =  authorList;
+    public void setAuthors(List<Author> authorList) {
+        this.authorList =  authorList;
     }
 
-    public void addAuthor(Author newAuthor){//to add a single author
-        this.authors.add(newAuthor);
+    public void setSongs(List<Song>songList) {
+        this.songList = songList;
     }
 
-    public void setSongs(ArrayList<Song>songList){
-        this.songs = songList;
+    public void addAuthor(Author newAuthor) {
+        this.authorList.add(newAuthor);
     }
 
-    public void addSong(Song newSong){
-        this.songs.add(newSong);
+    public void addSong(Song newSong) {
+        this.songList.add(newSong);
     }
 
     public void deleteSong(Song song) {
-        this.songs.remove(song);
+        this.songList.remove(song);
     }
 
     @Override

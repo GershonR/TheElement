@@ -11,6 +11,7 @@ public interface AlbumPersistence {
 
     Album getAlbumByUUID(UUID uuid); // get a album by UUID
 
+    // using boolean since its a stub. would make changes when implementing db anyway
     boolean storeAlbum(Album album); // checks & ignores duplicates
 
     boolean updateAlbum(Album album); // replaces old album with new one

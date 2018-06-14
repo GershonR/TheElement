@@ -137,7 +137,7 @@ public class SongService {
 
     private void validateAlbum(List<Album> albumList) {
         for( Album a : albumList ) {
-            if( albumPersistence.getAlbumByUUID(a.getUUID()).getsongs().size() == 0 ) {
+            if( albumPersistence.getAlbumByUUID(a.getUUID()).getSongs().size() == 0 ) {
                 albumPersistence.deleteAlbum(a.getUUID());
 
                 // delete album from Author

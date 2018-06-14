@@ -16,7 +16,11 @@ public interface AuthorPersistence {
 
     boolean updateAuthor(Author author); // replaces old author with new one
 
+    boolean deleteAuthor(Author author); // delete's using UUID
+
     boolean deleteAuthor(UUID uuid); // delete's using UUID
+
+    boolean authorExists(Author author); // sees if a author exists by UUID
 
     boolean authorExists(UUID uuid); // sees if a author exists by UUID
 

@@ -59,11 +59,28 @@ public class PlayListPersistenceStub implements PlayListPersistence {
     }
 
     @Override
-    public boolean deletePlayList(PlayList playList) {
-        if( playList == null ) {
-            throw new IllegalArgumentException("Cannot delete a null song");
+    public boolean deletePlayList(PlayList playList) throws IllegalArgumentException {
+        return this.deletePlayList(playList.getUUID());
+    }
+
+    @Override
+    public boolean deletePlayList(UUID uuid) throws IllegalArgumentException {
+        boolean removed = false;
+        if(uuid == null)
+            throw new IllegalArgumentException("Cannot delete a null author");
+        for(int index = 0; index < playLists.size(); index++) {
+            if(playLists.get(index).getUUID().compareTo(uuid) == 0) {
+                this.playLists.remove(index);
+                removed = true;
+            }
         }
-        return playLists.remove(playList);
+        return removed;
+    }
+
+
+    @Override
+    public boolean playListExists(PlayList playList) {
+        return this.playListExists(playList.getUUID());
     }
 
     @Override

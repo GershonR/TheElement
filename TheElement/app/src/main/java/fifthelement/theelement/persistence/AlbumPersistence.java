@@ -16,7 +16,11 @@ public interface AlbumPersistence {
 
     boolean updateAlbum(Album album); // replaces old album with new one
 
+    boolean deleteAlbum(Album album); // delete's using UUID
+
     boolean deleteAlbum(UUID uuid); // delete's using UUID
+
+    boolean albumExists(Album album); // sees if an album exists by UUID
 
     boolean albumExists(UUID uuid); // sees if an album exists by UUID
 }

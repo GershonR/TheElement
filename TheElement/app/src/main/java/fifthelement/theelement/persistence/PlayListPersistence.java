@@ -18,5 +18,9 @@ public interface PlayListPersistence {
 
     boolean deletePlayList(PlayList playList);
 
+    boolean deletePlayList(UUID uuid);
+
+    boolean playListExists(PlayList playList);
+
     boolean playListExists(UUID uuid);
 }

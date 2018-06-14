@@ -16,7 +16,11 @@ public interface SongPersistence {
 
     boolean updateSong(Song song); // replaces old song with new one
 
+    boolean deleteSong(Song song);
+
     boolean deleteSong(UUID uuid); // delete's using UUID
+
+    boolean songExists(Song song); // sees if a song exists by UUID
 
     boolean songExists(UUID uuid); // sees if a song exists by UUID
 

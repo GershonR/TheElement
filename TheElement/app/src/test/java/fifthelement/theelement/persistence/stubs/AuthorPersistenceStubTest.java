@@ -105,7 +105,7 @@ public class AuthorPersistenceStubTest {
     @Test(expected = IllegalArgumentException.class)
     public void testInvalidUpdateAuthor() {
         Author author = null;
-        Author a = classUnderTest.updateAuthor(author);
+        Boolean b = classUnderTest.updateAuthor(author);
     }
 
     @Test
@@ -136,7 +136,8 @@ public class AuthorPersistenceStubTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testInvalidDeleteAuthor() {
-        boolean result = classUnderTest.deleteAuthor(null);
+        Author a = null;
+        boolean result = classUnderTest.deleteAuthor(a);
     }
 
     private static ArrayList<Author> getAuthorList() {

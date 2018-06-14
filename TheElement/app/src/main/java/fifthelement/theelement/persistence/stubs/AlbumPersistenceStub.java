@@ -49,7 +49,7 @@ public class AlbumPersistenceStub implements AlbumPersistence {
     @Override
     public Album updateAlbum(Album album) {
         if(album == null)
-            throw new IllegalArgumentException("Cannot update a null song");
+            throw new IllegalArgumentException("Cannot update a null album");
         for(int index = 0; index < albumList.size(); index++) {
             if(albumList.get(index).getUUID().compareTo(album.getUUID()) == 0) {
                 this.albumList.set(index, album);

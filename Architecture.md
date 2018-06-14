@@ -1,10 +1,13 @@
-[![path](Artboard 1xxxhdpi.png "path")](https://code.cs.umanitoba.ca/comp3350-summer2018/FifthElement/blob/master/Artboard%201xxxhdpi.png "path")
-#The Element Architecture
+# [![path](Artboard 1ldpi.png "path")](https://code.cs.umanitoba.ca/comp3350-summer2018/FifthElement/blob/master/Artboard%201xxxhdpi.png "path") The Element Architecture 
+
 
 The element application was designed using the 3-tier architecture structure. 
 The 3 tiers are: 
-* Presentation, Business Logic, and Persistence. 
-*In addition to these three layers, the Domain models represent the objects that are shared between the three tiers. 
+* Presentation
+* Business Logic
+* Persistence. 
+
+In addition to these three layers, the Domain models represent the objects that are shared between the three tiers. 
 
 ## Packages:
 ### Presentation
@@ -31,7 +34,7 @@ The Presentation package contains the layouts to display our application data an
 
 
 ### Business.Services
-The Business.Service package contains the Java classes that manage Persistence stubs which contain Domain objects. These classes mostly focuses on manipulating the attributes of the song, which are the author, the album the song belongs to and the playlist that the user included the song in.
+The Business.Service package contains the Java classes that manage Persistence stubs. These classes handle objects and its logic and focuses on manipulating Songs, Authors, Albums, and any other domain objects.
 -AlbumService.java
 -AuthorService.java
 -SongService.java
@@ -44,18 +47,23 @@ The Objects package  stores the data needed by the three tiers.
 -Song.java
 
 ### Persistence
-The persistence package is the database of the application. It contains the stub package. The stub package is for the storage and retrieval of data needed for the application. The stub store the data as a list implemented as an arrayList.
--AlbumPersistence.java
--AuthorPersistence.java
--PlayList.java
--SongPersistence.java
+The persistence package is where data would be stored. It contains the stub package and ultimately the database of the application. The stub package is for storage and retrieval of data needed for the application and closely simulates how a database would behave. The stub store the data as a list implemented as an arrayList.
+- Stubs - simulates a database. implements the Persistence interfaces
+ - AlbumPersistenceStub
+ - AuthorPersistenceStub
+ - PlayListPersistenceStub
+ - SongPersistenceStub
+- AlbumPersistence.java
+- AuthorPersistence.java
+- PlayListPersistence.java
+- SongPersistence.java
 
 
-###Application
-The application package initialises the persistence stubs.
--Services.java
+### Application
+The application package initialises the persistence stubs and any other objects that would be used all throughout the application. It contains the main service class
+-Services.java - Initializes the Persistence objects and the other Services objects in the Presentation.
 
-###DIAGRAM 
+### Architectural Diagram 
 Below is a visual representation of the layout and structure of our application.
 
 

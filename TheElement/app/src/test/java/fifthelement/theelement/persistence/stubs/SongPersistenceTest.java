@@ -14,7 +14,7 @@ import java.util.UUID;
 import fifthelement.theelement.objects.Song;
 
 @RunWith(JUnit4.class)
-public class SongPersistenceStubTest {
+public class SongPersistenceTest {
 
     private SongPersistenceStub classUnderTest;
     private ArrayList<Song> songList;

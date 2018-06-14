@@ -19,6 +19,8 @@ public class AuthorPersistenceStub implements AuthorPersistence {
         this.authorList.add(new Author("Bob Marley"));
         this.authorList.add(new Author("Led Zepplin"));
         this.authorList.add(new Author("Justin Bieber"));
+        this.authorList.add(new Author("Jeremy The Goat"));
+
     }
 
 
@@ -62,6 +64,8 @@ public class AuthorPersistenceStub implements AuthorPersistence {
 
     @Override
     public boolean deleteAuthor(Author author) throws IllegalArgumentException {
+        if (author == null)
+            throw new IllegalArgumentException("Cannot delete a null author");
         return this.deleteAuthor(author.getUUID());
     }
 

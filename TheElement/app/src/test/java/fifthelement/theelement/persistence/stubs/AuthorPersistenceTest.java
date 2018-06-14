@@ -14,7 +14,7 @@ import java.util.UUID;
 import fifthelement.theelement.objects.Author;
 
 @RunWith(JUnit4.class)
-public class AuthorPersistenceStubTest {
+public class AuthorPersistenceTest {
 
     private AuthorPersistenceStub classUnderTest;
     private ArrayList<Author> authorList;
@@ -32,8 +32,6 @@ public class AuthorPersistenceStubTest {
         uuidTwo = classUnderTest.getAllAuthors().get(1).getUUID();
         uuidThree = classUnderTest.getAllAuthors().get(2).getUUID();
         uuidFour = classUnderTest.getAllAuthors().get(3).getUUID();
-
-
     }
 
     @Test
@@ -46,7 +44,7 @@ public class AuthorPersistenceStubTest {
     public void testValidGetAuthorById() {
         Author author = classUnderTest.getAuthorByUUID(uuidOne);
         Assert.assertTrue("testValidGetAuthorById: author id != 1",author.getUUID().compareTo(uuidOne) == 0);
-        Assert.assertTrue("testValidGetAuthorById: author name != Author1", "Author1".equals(author.getName()));
+        Assert.assertTrue("testValidGetAuthorById: author name != Bob Marley", "Bob Marley".equals(author.getName()));
     }
 
     @Test

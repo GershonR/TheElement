@@ -1,4 +1,4 @@
-package fifthelement.theelement.persistence;
+package fifthelement.theelement.presentation;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -60,5 +60,13 @@ public class SongsListAdapter extends BaseAdapter {
         songName.setText(printSong.getName());
         authorName.setText(authors);
         return view;
+    }
+
+    public void filterResults() {
+        //grab all the songs
+    }
+
+    public void notifyDataSetChanged() {
+        super.notifyDataSetChanged();
     }
 }

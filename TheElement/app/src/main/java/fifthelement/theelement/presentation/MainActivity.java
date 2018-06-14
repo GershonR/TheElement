@@ -15,12 +15,14 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.view.View;
 
 import fifthelement.theelement.R;
+import fifthelement.theelement.presentation.Fragments.HomeFragment;
+import fifthelement.theelement.presentation.Fragments.SearchFragment;
+import fifthelement.theelement.presentation.Fragments.SeekerFragment;
+import fifthelement.theelement.presentation.Fragments.SongListFragment;
 import fifthelement.theelement.presentation.MusicService.MusicBinder;
 
 
@@ -90,6 +92,9 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.song_list:
                 fragmentClass = SongListFragment.class;
+                break;
+            case R.id.search_view_fragment:
+                fragmentClass = SearchFragment.class;
                 break;
             default:
                 fragmentClass = HomeFragment.class;

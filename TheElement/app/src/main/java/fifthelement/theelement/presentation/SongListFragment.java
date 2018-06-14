@@ -54,9 +54,8 @@ public class SongListFragment extends Fragment {
                 public void onItemClick(AdapterView<?> parent, View view,
                                         int position, long id) {
                     // TODO Auto-generated method stub
-                    musicService.setCurrSongPath(songs.get(position).getPath());
+                    musicService.playSongAsynch(songs.get(position).getPath());
                     Toast.makeText(getContext(), "Now Playing: " + songs.get(position).getName(), Toast.LENGTH_SHORT).show();
-                    musicService.start();
                 }
             });
 

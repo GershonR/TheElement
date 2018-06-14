@@ -7,7 +7,7 @@ import java.util.UUID;
 public class PlayList {
     private UUID uuid;
     private String listName;
-    private List<UUID> songList;
+    private List<Song> songList;
 
     public PlayList(String name) {
         this.uuid = UUID.randomUUID();
@@ -15,7 +15,7 @@ public class PlayList {
         this.songList = new ArrayList<>();
     }
 
-    public PlayList(String name, List<UUID> songList) {
+    public PlayList(String name, List<Song> songList) {
         this.uuid = UUID.randomUUID();
         this.listName = name;
         this.songList = songList;
@@ -30,7 +30,7 @@ public class PlayList {
         return uuid;
     }
 
-    public List<UUID> getSongs() {
+    public List<Song> getSongs() {
         return songList;
     }
 
@@ -43,20 +43,20 @@ public class PlayList {
         this.uuid = uuid;
     }
 
-    public void setSongs(List<UUID> songList) {
+    public void setSongs(List<Song> songList) {
         this.songList = songList;
     }
 
     public void addSong(Song newSong) {
-        this.songList.add(newSong.getUUID());
+        this.songList.add(newSong);
     }
 
     public void removeSong(Song song) {
-        this.songList.remove(song.getUUID());
+        this.songList.remove(song);
     }
 
     public boolean contains(Song song) {
-        return songList.contains(song.getUUID());
+        return songList.contains(song);
     }
 
     @Override

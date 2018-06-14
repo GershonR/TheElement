@@ -7,8 +7,8 @@ public class Author {
 
     private UUID uuid;
     private String name;
-    private List<UUID> songList;
-    private List<UUID> albumList;
+    private List<Song> songList;
+    private List<Album> albumList;
 
 
     public Author(String name) {
@@ -26,11 +26,11 @@ public class Author {
         return uuid;
     }
 
-    public List<UUID> getSongList() {
+    public List<Song> getSongList() {
         return this.songList;
     }
 
-    public List<UUID> getAlbumList() {
+    public List<Album> getAlbumList() {
         return albumList;
     }
 
@@ -43,28 +43,28 @@ public class Author {
         this.name = newName;
     }
 
-    public void setSongList(List<UUID> songList) {
+    public void setSongList(List<Song> songList) {
         this.songList = songList;
     }
 
-    public void setAlbumList(List<UUID> albumList) {
+    public void setAlbumList(List<Album> albumList) {
         this.albumList = albumList;
     }
 
     public void addSong(Song song) {
-        this.songList.add(song.getUUID());
+        this.songList.add(song);
     }
 
     public void addAlbum(Album album) {
-        this.albumList.add(album.getUUID());
+        this.albumList.add(album);
     }
 
     public void deleteSong(Song song) {
-        this.songList.remove(song.getUUID());
+        this.songList.remove(song);
     }
 
     public void deleteAlbum(Album album) {
-        this.albumList.remove(album.getUUID());
+        this.albumList.remove(album);
     }
 
     @Override

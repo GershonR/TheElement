@@ -18,8 +18,6 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         System.out.println("Im in a Home Fragment Page");
         View view = inflater.inflate(R.layout.home_fragment, container, false);
-        textView = view.findViewById(R.id.home_page_example_text);
-        textView.setText("Some Text In The Home Page");
         return view;
 
     }

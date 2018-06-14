@@ -1,0 +1,128 @@
+package fifthelement.theelement.business;
+
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.JUnit4;
+
+import java.util.List;
+import java.util.UUID;
+
+import fifthelement.theelement.business.Services.AuthorService;
+import fifthelement.theelement.objects.Author;
+
+@RunWith(JUnit4.class)
+public class AuthorServiceTest {
+    AuthorService classUnderTest;
+
+    @Before
+    public void setup() {
+        classUnderTest = new AuthorService();
+        classUnderTest.getAuthors().clear();
+
+        classUnderTest.insertAuthor(new Author("Bob Marley"));
+        classUnderTest.insertAuthor(new Author("Led Zepplin"));
+        classUnderTest.insertAuthor(new Author("Justin Bieber"));
+    }
+
+
+    @Test
+    public void getAllAuthorsTest() {
+        List<Author> authors = classUnderTest.getAuthors(); // Stub creates 3
+
+        Assert.assertTrue("getAllAuthorsTest: author size != 3", authors.size() == 3);
+    }
+
+    @Test
+    public void insertAuthorValidTest() {
+        Author author = new Author("Jim Bob");
+        classUnderTest.insertAuthor(author);
+
+        Assert.assertTrue("insertAuthorValidTest: author size != 4", classUnderTest.getAuthors().size() == 4);
+    }
+
+
+    @Test(expected = IllegalArgumentException.class)
+    public void insertAuthorInValidTest() {
+        Author author = null;
+        classUnderTest.insertAuthor(author);
+    }
+
+    @Test(expected = ArrayStoreException.class)
+    public void insertAuthorDuplicateTest() {
+        Author authorOne = new Author("Jim Bob");
+        authorOne.setUUID(UUID.fromString("493410b3-dd0b-4b78-97bf-289f50f6e74f"));
+        Author authorTwo = new Author("Bob Jim");
+        authorTwo.setUUID(UUID.fromString("493410b3-dd0b-4b78-97bf-289f50f6e74f"));
+
+        classUnderTest.insertAuthor(authorOne);
+        classUnderTest.insertAuthor(authorTwo);
+    }
+
+    @Test
+    public void updateAuthorValidTest() {
+        Author authorOne = new Author("Jim Bob");
+        authorOne.setUUID(UUID.fromString("493410b3-dd0b-4b78-97bf-289f50f6e74f"));
+        Author authorTwo = new Author("Bob Jim");
+        authorTwo.setUUID(UUID.fromString("493410b3-dd0b-4b78-97bf-289f50f6e74f"));
+
+        boolean insertReturn = classUnderTest.insertAuthor(authorOne);
+        boolean updateReturn = classUnderTest.updateAuthor(authorTwo);
+
+        Assert.assertTrue("updateAuthorValidTest: insertReturn != true", insertReturn);
+        Assert.assertTrue("updateAuthorValidTest: updateReturn != true", updateReturn);
+        Assert.assertTrue("updateAuthorValidTest: song size != 4", classUnderTest.getAuthors().size() == 4);
+
+        Author author = classUnderTest.getAuthorByUUID(UUID.fromString("493410b3-dd0b-4b78-97bf-289f50f6e74f"));
+        Assert.assertTrue("updateAuthorValidTest: song name != Changed Author Name", "Bob Jim".equals(author.getName()));
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void updateAuthorInValidTest() {
+        Author author = null;
+        classUnderTest.updateAuthor(author);
+    }
+
+    @Test
+    public void updateAuthorNotExistTest() {
+        Author author = new Author("Jim Bob");
+        boolean result = classUnderTest.updateAuthor(author);
+        Assert.assertFalse("updateAuthorNotExistTest: result != false", result);
+        Assert.assertTrue("updateAuthorNotExistTest: author size != 3", classUnderTest.getAuthors().size() == 3);
+
+    }
+
+    @Test
+    public void deleteAuthorValidTest() {
+        Author authorOne = new Author("Santa");
+        UUID authorUUID = UUID.fromString("793410b3-dd0b-4b78-97bf-289f50f6e74f");
+        authorOne.setUUID(authorUUID);
+
+        boolean insertReturn = classUnderTest.insertAuthor(authorOne);
+        Assert.assertTrue("deleteAuthorValidTest: insertReturn != true", insertReturn);
+        Assert.assertTrue("deleteAuthorValidTest: author size != 4", classUnderTest.getAuthors().size() == 4);
+
+        boolean deleteReturn = classUnderTest.deleteAuthor(authorOne);
+        Assert.assertTrue("deleteAuthorValidTest: deleteReturn != true", deleteReturn);
+        Assert.assertTrue("deleteAuthorValidTest: author size != 3", classUnderTest.getAuthors().size() == 3);
+
+        Author deletedAuthor = classUnderTest.getAuthorByUUID(authorUUID);
+        Assert.assertNull("deleteAuthorValidTest: deletedAuthor != null", deletedAuthor);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void deleteAuthorInValidTest() {
+        Author author = null;
+        classUnderTest.deleteAuthor(author);
+    }
+
+    @Test
+    public void deleteAuthorNotExistTest() {
+        Author author = new Author("Pepe");
+        boolean result = classUnderTest.deleteAuthor(author);
+        Assert.assertFalse("deleteAuthorNotExistTest: result != false", result);
+        Assert.assertTrue("deleteAuthorNotExistTest: author size != 3", classUnderTest.getAuthors().size() == 3);
+    }
+
+}

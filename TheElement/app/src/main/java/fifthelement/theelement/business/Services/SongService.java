@@ -16,10 +16,6 @@ import fifthelement.theelement.persistence.AuthorPersistence;
 import fifthelement.theelement.persistence.PlayListPersistence;
 import fifthelement.theelement.persistence.SongPersistence;
 
-
-// TODO: Our MainActivity Initializes This - Fragments Will Call
-//       these Methods!
-// TODO: TESTS!
 public class SongService {
 
     private SongPersistence songPersistence;
@@ -38,14 +34,70 @@ public class SongService {
         return songPersistence.getAllSongs();
     }
 
-    // TODO: Try-Catch
-    public boolean insertSong(Song song) {
+    public boolean insertSong(Song song) throws ArrayStoreException, IllegalArgumentException {
+        if(song == null)
+            throw new IllegalArgumentException();
         return songPersistence.storeSong(song);
     }
 
-    // TODO: Try-Catch
-    public boolean updateSong(Song song) {
+    public boolean updateSong(Song song) throws IllegalArgumentException {
+        if(song == null)
+            throw new IllegalArgumentException();
         return songPersistence.updateSong(song);
+    }
+
+    public boolean deleteSong(Song songToRemove) throws IllegalArgumentException {
+        if(songToRemove == null)
+            throw new IllegalArgumentException();
+        Song song = songPersistence.getSongByUUID(songToRemove.getUUID());
+
+        if( song != null ) {
+
+            for( Album a : song.getAlbums() ) {
+                Album album = albumPersistence.getAlbumByUUID(a.getUUID());
+                album.deleteSong(song);
+                albumPersistence.updateAlbum(album);
+            }
+
+            for( Author a : song.getAuthors() ) {
+                Author author = authorPersistence.getAuthorByUUID(a.getUUID());
+                author.deleteSong(song);
+                authorPersistence.updateAuthor(author);
+            }
+
+            // deletes songs from existing PlayList if it's there
+            // implementation for this hasn't been fully decided. this is a STUB
+            for( PlayList p : playListPersistence.getAllPlayLists() ) {
+                if( p.contains(song) ) {
+                    p.removeSong(song);
+                    playListPersistence.updatePlayList(p);
+                }
+            }
+
+            validateAlbum(song.getAlbums());
+            validateAuthor(song.getAuthors());
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * This method checks if any song already has the same path
+     * @param path  The path to check
+     * @return  True if there exists a song with the same path
+     */
+    public boolean pathExists(String path) {
+        List<Song> songs = getSongs();
+        boolean toReturn = false;
+
+        for(Song song : songs) {
+            if(song.getPath().equals(path)) {
+                toReturn = true;
+                break;
+            }
+        }
+
+        return toReturn;
     }
 
     public void sortSongs(List<Song> songs) {
@@ -83,43 +135,10 @@ public class SongService {
         return result;
     }
 
-    public boolean deleteSong(Song songToRemove) {
-        Song song = songPersistence.getSongByUUID(songToRemove.getUUID());
-
-        if( song != null ) {
-
-            for( Album a : song.getAlbums() ) {
-                Album album = albumPersistence.getAlbumByUUID(a.getUUID());
-                album.deleteSong(song);
-                albumPersistence.updateAlbum(album);
-            }
-
-            for( Author a : song.getAuthors() ) {
-                Author author = authorPersistence.getAuthorByUUID(a.getUUID());
-                author.deleteSong(song);
-                authorPersistence.updateAuthor(author);
-            }
-
-            // deletes songs from existing PlayList if it's there
-            // implementation for this hasn't been fully decided. this is a STUB
-            for( PlayList p : playListPersistence.getAllPlayLists() ) {
-                if( p.contains(song) ) {
-                    p.removeSong(song);
-                    playListPersistence.updatePlayList(p);
-                }
-            }
-
-            validateAlbum(song.getAlbums());
-            validateAuthor(song.getAuthors());
-            return true;
-        }
-        return false;
-    }
-
     private void validateAlbum(List<Album> albumList) {
         for( Album a : albumList ) {
             if( albumPersistence.getAlbumByUUID(a.getUUID()).getsongs().size() == 0 ) {
-                albumPersistence.deleteAlbum(a);
+                albumPersistence.deleteAlbum(a.getUUID());
 
                 // delete album from Author
                 Author author = authorPersistence.getAuthorByUUID(a.getUUID());
@@ -132,7 +151,7 @@ public class SongService {
     private void validateAuthor(List<Author> authorList) {
         for( Author a : authorList ) {
             if( authorPersistence.getAuthorByUUID(a.getUUID()).getSongList().size() == 0 ) {
-                authorPersistence.deleteAuthor(a);
+                authorPersistence.deleteAuthor(a.getUUID());
             }
         }
     }

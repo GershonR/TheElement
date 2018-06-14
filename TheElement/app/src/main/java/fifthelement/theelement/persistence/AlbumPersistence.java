@@ -11,11 +11,11 @@ public interface AlbumPersistence {
 
     Album getAlbumByUUID(UUID uuid); // get a album by UUID
 
-    Album storeAlbum(Album album); // checks & ignores duplicates
+    boolean storeAlbum(Album album); // checks & ignores duplicates
 
-    Album updateAlbum(Album album); // replaces old album with new one
+    boolean updateAlbum(Album album); // replaces old album with new one
 
-    boolean deleteAlbum(Album album); // delete's using UUID
+    boolean deleteAlbum(UUID uuid); // delete's using UUID
 
     boolean albumExists(UUID uuid); // sees if an album exists by UUID
 }

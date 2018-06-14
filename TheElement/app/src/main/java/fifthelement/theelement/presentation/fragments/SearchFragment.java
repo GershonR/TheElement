@@ -16,9 +16,9 @@ import java.util.List;
 import fifthelement.theelement.R;
 import fifthelement.theelement.business.Services.SongService;
 import fifthelement.theelement.objects.Song;
-import fifthelement.theelement.presentation.MainActivity;
-import fifthelement.theelement.presentation.MusicService;
-import fifthelement.theelement.presentation.SongsListAdapter;
+import fifthelement.theelement.presentation.activities.MainActivity;
+import fifthelement.theelement.presentation.services.MusicService;
+import fifthelement.theelement.presentation.adapters.SongsListAdapter;
 
 public class SearchFragment extends Fragment implements SearchView.OnQueryTextListener {
     private SearchView mSearchView;
@@ -41,7 +41,7 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        songService = new SongService();
+        songService = ((MainActivity)getActivity()).getSongService();
         musicService = ((MainActivity)getActivity()).getMusicService();
         view = inflater.inflate(R.layout.search_fragment, container, false);
         ListView listView = view.findViewById(R.id.search_song_list_view_item);

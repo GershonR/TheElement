@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="10dp"
+    android:descendantFocusability="blocksDescendants"
     tools:context=".presentation.fragments.SongListItemFragment">
 
 
@@ -26,5 +27,19 @@
         android:text="TextView2"
         android:textColor="@android:color/black"
         android:textSize="16dp" />
+
+    <ImageButton
+        android:id="@+id/popup_button"
+        style="@style/Widget.AppCompat.ImageButton"
+        android:background="?android:selectableItemBackground"
+        android:layout_width="wrap_content"
+        android:layout_height="54dp"
+        android:layout_gravity="right"
+        android:adjustViewBounds="true"
+        android:fadingEdge="none"
+        android:maxHeight="30dp"
+        android:maxWidth="30dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_popup" />
 
 </FrameLayout>

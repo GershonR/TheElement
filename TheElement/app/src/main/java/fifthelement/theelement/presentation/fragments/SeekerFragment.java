@@ -93,6 +93,14 @@ public class SeekerFragment extends Fragment {
         //Set up new playback listener which will initiate seekbar updating if playback starts somehow
         musicService.setPlaybackListener(new PlaybackStartStopListener());
 
+        //Update the seekbar with current playback position and duration
+        int currentPosition = musicService.getCurrentPosition();
+        final int duration = musicService.getDuration();
+        if (mSeekbarAudio.getMax() != duration){
+            mSeekbarAudio.setMax(duration);
+        }
+        mSeekbarAudio.setProgress(currentPosition);
+
         //Start updating the seekbar if music is playing
         if(musicService.isPlaying()){
             startUpdatingCallbackWithPosition();

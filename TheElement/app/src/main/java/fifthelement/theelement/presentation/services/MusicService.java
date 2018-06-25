@@ -58,7 +58,10 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
     // instance completes playback of a music file.
     @Override
     public void onCompletion(MediaPlayer mediaPlayer) {
-
+        //We stop playback on completion
+        if(playbackListener != null){
+            playbackListener.onPlaybackStop();
+        }
     }
 
     // This function acts as a callback that occurs when the private MediaPlayer

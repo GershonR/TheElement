@@ -153,8 +153,8 @@ public class SeekerFragment extends Fragment {
             startUpdatingCallbackWithPosition();
         }
 
-        public void onPlaybackStop(){
-            stopUpdatingCallbackWithPosition(false);
+        public void onPlaybackStop(boolean resetUIPlaybackPosition){
+            stopUpdatingCallbackWithPosition(resetUIPlaybackPosition);
         }
     }
 

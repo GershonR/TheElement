@@ -60,7 +60,7 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
     public void onCompletion(MediaPlayer mediaPlayer) {
         //We stop playback on completion
         if(playbackListener != null){
-            playbackListener.onPlaybackStop();
+            playbackListener.onPlaybackStop(true);
         }
     }
 
@@ -140,7 +140,7 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
     public void pause() {
         if(playerPrepared && player.isPlaying()){
             if(playbackListener != null){
-                playbackListener.onPlaybackStop();
+                playbackListener.onPlaybackStop(false);
             }
             player.pause();
         }

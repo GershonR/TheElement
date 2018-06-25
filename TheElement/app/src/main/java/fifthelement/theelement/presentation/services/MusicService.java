@@ -18,6 +18,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 import fifthelement.theelement.application.Services;
+import fifthelement.theelement.presentation.fragments.SeekerFragment;
 
 
 // This MusicService will allow for a MediaPlayer instance to
@@ -29,6 +30,7 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
     private MediaPlayer player;
     private boolean playerPrepared;
     private final IBinder musicBind = new MusicBinder();
+    private SeekerFragment.PlaybackStartStopListener playbackListener;
 
     //This function is called when the service is bound, it will return a MusicBinder instance
     @Override
@@ -122,6 +124,9 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
     // This function will start the private MediaPlayer instance (equivalent to 'Play').
     public void start() {
         if(playerPrepared && !player.isPlaying()) {
+            if(playbackListener != null){
+                playbackListener.onPlaybackStart();
+            }
             player.start();
         } else if(!playerPrepared) {
             Services.getToastService(getApplicationContext()).sendToast("No Song Selected!", "RED");
@@ -131,6 +136,9 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
     // This function pauses the playback of the private MediaPlayer instance.
     public void pause() {
         if(playerPrepared && player.isPlaying()){
+            if(playbackListener != null){
+                playbackListener.onPlaybackStop();
+            }
             player.pause();
         }
     }
@@ -167,6 +175,9 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
         return player.isPlaying();
     }
 
+    public void setPlaybackListener(SeekerFragment.PlaybackStartStopListener listener){
+        playbackListener = listener;
+    }
 
     //Public helper class for binding this service to an activity
     public class MusicBinder extends Binder {

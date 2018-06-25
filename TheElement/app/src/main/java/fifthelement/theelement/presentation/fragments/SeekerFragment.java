@@ -90,6 +90,9 @@ public class SeekerFragment extends Fragment {
                     }
                 });
 
+        //Set up new playback listener which will initiate seekbar updating if playback starts somehow
+        musicService.setPlaybackListener(new PlaybackStartStopListener());
+
         //Start updating the seekbar if music is playing
         if(musicService.isPlaying()){
             startUpdatingCallbackWithPosition();
@@ -142,6 +145,16 @@ public class SeekerFragment extends Fragment {
             if (!mUserIsSeeking) {
                 mSeekbarAudio.setProgress(currentPosition);
             }
+        }
+    }
+
+    public class PlaybackStartStopListener {
+        public void onPlaybackStart(){
+            startUpdatingCallbackWithPosition();
+        }
+
+        public void onPlaybackStop(){
+            stopUpdatingCallbackWithPosition(false);
         }
     }
 

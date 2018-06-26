@@ -83,7 +83,7 @@ public class NotificationService extends Service {
                 NotificationConstants.getDefaultAlbumArt(this));
 
         Intent notificationIntent = new Intent(this, MainActivity.class);
-        notificationIntent.setAction(NotificationConstants.ACTION.MAIN_ACTION);
+        notificationIntent.setAction(NotificationConstants.ACTION.MAIN_ACTION + System.currentTimeMillis());
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0,
                 notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 

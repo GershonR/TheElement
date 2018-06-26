@@ -18,6 +18,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 import fifthelement.theelement.application.Services;
+import fifthelement.theelement.presentation.fragments.SeekerFragment;
 
 
 // This MusicService will allow for a MediaPlayer instance to
@@ -26,14 +27,10 @@ import fifthelement.theelement.application.Services;
 public class MusicService extends Service implements MediaPlayer.OnPreparedListener,
         MediaPlayer.OnErrorListener, MediaPlayer.OnCompletionListener {
 
-    public static final int PLAYBACK_POSITION_REFRESH_INTERVAL_MS = 500;
-
     private MediaPlayer player;
     private boolean playerPrepared;
     private final IBinder musicBind = new MusicBinder();
-    private PlaybackInfoListener mPlaybackInfoListener;
-    private ScheduledExecutorService mExecutor;
-    private Runnable mSeekbarPositionUpdateTask;
+    private SeekerFragment.PlaybackStartStopListener playbackListener;
 
     //This function is called when the service is bound, it will return a MusicBinder instance
     @Override
@@ -61,7 +58,10 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
     // instance completes playback of a music file.
     @Override
     public void onCompletion(MediaPlayer mediaPlayer) {
-
+        //We stop playback on completion
+        if(playbackListener != null){
+            playbackListener.onPlaybackStop(true);
+        }
     }
 
     // This function acts as a callback that occurs when the private MediaPlayer
@@ -112,7 +112,6 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
             @Override
             public void onPrepared(MediaPlayer player) {
                 playerPrepared = true;
-                initializeProgressCallback();
                 start();
             }
 
@@ -123,14 +122,15 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
     // This function will reset the MediaPlayer instance and reset seekbar UI positions to start.
     public void reset() {
         player.reset();
-        stopUpdatingCallbackWithPosition(true);
     }
 
     // This function will start the private MediaPlayer instance (equivalent to 'Play').
     public void start() {
         if(playerPrepared && !player.isPlaying()) {
+            if(playbackListener != null){
+                playbackListener.onPlaybackStart();
+            }
             player.start();
-            startUpdatingCallbackWithPosition();
         } else if(!playerPrepared) {
             Services.getToastService(getApplicationContext()).sendToast("No Song Selected!", "RED");
         }
@@ -139,8 +139,10 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
     // This function pauses the playback of the private MediaPlayer instance.
     public void pause() {
         if(playerPrepared && player.isPlaying()){
+            if(playbackListener != null){
+                playbackListener.onPlaybackStop(false);
+            }
             player.pause();
-            stopUpdatingCallbackWithPosition(false);
         }
     }
 
@@ -176,73 +178,8 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
         return player.isPlaying();
     }
 
-
-    /**
-     * setPlaybackInfoListener
-     *  This function will set a PlaybackInfoListener for this service, which is used by seekbars in
-     *  the UI to update the current position of playback.
-     * @param listener - PlaybackInfoListener to use during playback
-     */
-    // This function will set a PlaybackInfoListener for this service, which is used by seekbars in
-    // the UI to update the current position of playback.
-    public void setPlaybackInfoListener(PlaybackInfoListener listener) {
-        mPlaybackInfoListener = listener;
-    }
-
-    // This function will spawn a scheduled executor to call a UI update function at a set interval.
-    private void startUpdatingCallbackWithPosition() {
-        if (mExecutor == null) {
-            mExecutor = Executors.newSingleThreadScheduledExecutor();
-        }
-        if (mSeekbarPositionUpdateTask == null) {
-            mSeekbarPositionUpdateTask = new Runnable() {
-                @Override
-                public void run() {
-                    updateProgressCallbackTask();
-                }
-            };
-        }
-        mExecutor.scheduleAtFixedRate(
-                mSeekbarPositionUpdateTask,
-                0,
-                PLAYBACK_POSITION_REFRESH_INTERVAL_MS,
-                TimeUnit.MILLISECONDS
-        );
-    }
-
-    // This function will stop the scheduled executor from calling UI update function and uses a
-    // boolean parameter to determine if seekbar UI elements reporting playback must reset to 0.
-    private void stopUpdatingCallbackWithPosition(boolean resetUIPlaybackPosition) {
-        if (mExecutor != null) {
-            mExecutor.shutdownNow();
-            mExecutor = null;
-            mSeekbarPositionUpdateTask = null;
-            if (resetUIPlaybackPosition && mPlaybackInfoListener != null) {
-                mPlaybackInfoListener.onPositionChanged(0);
-            }
-        }
-    }
-
-    /// This function will call the onPositionChanged function of the PlaybackInfoListener with the
-    //  current position of playback, which will update the seekbars that are using the listener.
-    private void updateProgressCallbackTask() {
-        if (player != null && player.isPlaying()) {
-            int currentPosition = player.getCurrentPosition();
-            if (mPlaybackInfoListener != null) {
-                mPlaybackInfoListener.onPositionChanged(currentPosition);
-            }
-        }
-    }
-
-    // This function will initialize seekbars using the PlaybackInfoListener with current playback
-    //     *  data.
-    public void initializeProgressCallback() {
-        final int duration = player.getDuration();
-        if (mPlaybackInfoListener != null) {
-            mPlaybackInfoListener.onDurationChanged(duration);
-            mPlaybackInfoListener.onPositionChanged(0);
-            System.out.println("onDurationChanged duration: " + duration);
-        }
+    public void setPlaybackListener(SeekerFragment.PlaybackStartStopListener listener){
+        playbackListener = listener;
     }
 
     //Public helper class for binding this service to an activity

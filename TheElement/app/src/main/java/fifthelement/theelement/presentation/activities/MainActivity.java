@@ -16,7 +16,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
+import fifthelement.theelement.BuildConfig;
 import fifthelement.theelement.R;
 import fifthelement.theelement.application.Services;
 import fifthelement.theelement.business.Services.SongService;
@@ -59,6 +61,12 @@ public class MainActivity extends AppCompatActivity {
         actionbar.setHomeAsUpIndicator(R.drawable.ic_menu);
 
         mDrawer = Services.getDrawerService(this).getmDrawer();
+        int versionCode = BuildConfig.VERSION_CODE;
+        String versionName = BuildConfig.VERSION_NAME;
+
+        TextView version = (TextView)findViewById(R.id.footer_item);
+
+        version.setText("Version: " + versionName + versionCode);
     }
 
     @Override

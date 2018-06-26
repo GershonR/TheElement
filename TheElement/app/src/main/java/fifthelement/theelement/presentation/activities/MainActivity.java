@@ -15,13 +15,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import fifthelement.theelement.R;
 import fifthelement.theelement.application.Services;
 import fifthelement.theelement.business.Services.SongService;
+import fifthelement.theelement.presentation.constants.NotificationConstants;
 import fifthelement.theelement.presentation.services.MusicService;
 import fifthelement.theelement.presentation.fragments.SeekerFragment;
 import fifthelement.theelement.presentation.services.MusicService.MusicBinder;
+import fifthelement.theelement.presentation.services.NotificationService;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -79,6 +82,12 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    public void startNotificationService(View v) {
+        Intent serviceIntent = new Intent(MainActivity.this, NotificationService.class);
+        serviceIntent.setAction(NotificationConstants.ACTION.STARTFOREGROUND_ACTION);
+        startService(serviceIntent);
+    }
+
     private ServiceConnection musicConnection = new ServiceConnection() {
 
         @Override
@@ -86,6 +95,7 @@ public class MainActivity extends AppCompatActivity {
             MusicBinder binder = (MusicBinder)service;
             //get service
             musicService = binder.getService();
+            Services.setMusicService(musicService);
             musicBound = true;
 
             createSeeker();

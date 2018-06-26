@@ -18,6 +18,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 import fifthelement.theelement.application.Services;
+import fifthelement.theelement.objects.Song;
 import fifthelement.theelement.presentation.fragments.SeekerFragment;
 
 
@@ -29,6 +30,7 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
 
     private MediaPlayer player;
     private boolean playerPrepared;
+    private Song currentSongPlaying;
     private final IBinder musicBind = new MusicBinder();
     private SeekerFragment.PlaybackStartStopListener playbackListener;
 
@@ -93,13 +95,14 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
     }
 
     // This function will attempt to set the media player up asynchronously and play the media.
-    public boolean playSongAsync(String songPath) {
+    public boolean playSongAsync(Song song) {
         reset();
-        Uri uri = Uri.parse(songPath);
+        Uri uri = Uri.parse(song.getPath());
 
         try {
             player.setDataSource(getApplication(), uri);
             player.prepareAsync();
+            currentSongPlaying = song;
         } catch(Exception e) {
             Services.getToastService(getApplicationContext()).sendToast("Invalid Song!", "RED");
             e.printStackTrace();
@@ -176,6 +179,10 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
     // This function will return a boolean indicating if playback is currently going on.
     public boolean isPlaying() {
         return player.isPlaying();
+    }
+
+    public Song getCurrentSongPlaying() {
+        return this.currentSongPlaying;
     }
 
     public void setPlaybackListener(SeekerFragment.PlaybackStartStopListener listener){

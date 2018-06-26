@@ -18,7 +18,7 @@
              by Toolbar.
              We need to re-use AppTheme for global styles
         -->
-        <activity android:name=".presentation.activities.MainActivity">
+        <activity android:name=".presentation.activities.MainActivity" android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -29,6 +29,7 @@
         <activity android:name=".presentation.activities.AddMusicActivity"/>
 
         <service android:name=".presentation.services.MusicService" />
+        <service android:name=".presentation.services.NotificationService" />
     </application>
 
 </manifest>

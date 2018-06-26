@@ -15,6 +15,7 @@ import fifthelement.theelement.persistence.stubs.PlayListPersistenceStub;
 import fifthelement.theelement.persistence.stubs.SongPersistenceStub;
 import fifthelement.theelement.presentation.services.DrawerService;
 import fifthelement.theelement.presentation.services.FragmentService;
+import fifthelement.theelement.presentation.services.MusicService;
 import fifthelement.theelement.presentation.services.ToastService;
 
 public class Services {
@@ -26,6 +27,7 @@ public class Services {
     private static ToastService toastService = null;
     private static DrawerService drawerService = null;
     private static FragmentService fragmentService = null;
+    private static MusicService musicService = null;
 
     public static synchronized SongPersistence getSongPersistence() {
 
@@ -88,6 +90,16 @@ public class Services {
         }
 
         return playListPersistence;
+    }
+
+    public static synchronized MusicService getMusicService() {
+
+        return musicService;
+    }
+
+    public static synchronized void setMusicService(MusicService musicServiceToSet) {
+
+        musicService = musicServiceToSet;
     }
 
 }

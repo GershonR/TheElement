@@ -18,7 +18,7 @@
              by Toolbar.
              We need to re-use AppTheme for global styles
         -->
-        <activity android:name=".presentation.activities.MainActivity">
+        <activity android:name=".presentation.activities.MainActivity" android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

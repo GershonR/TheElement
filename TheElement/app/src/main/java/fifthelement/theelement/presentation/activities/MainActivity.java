@@ -127,6 +127,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         stopService(playIntent);
+        unbindService(musicConnection);
         musicService = null;
         super.onDestroy();
     }

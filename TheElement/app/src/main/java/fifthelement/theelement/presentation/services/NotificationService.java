@@ -84,10 +84,8 @@ public class NotificationService extends Service {
 
         Intent notificationIntent = new Intent(this, MainActivity.class);
         notificationIntent.setAction(NotificationConstants.ACTION.MAIN_ACTION);
-        notificationIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-                | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0,
-                notificationIntent, 0);
+                notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         Intent previousIntent = new Intent(this, NotificationService.class);
         previousIntent.setAction(NotificationConstants.ACTION.PREV_ACTION);

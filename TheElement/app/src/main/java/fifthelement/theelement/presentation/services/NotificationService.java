@@ -1,11 +1,16 @@
 package fifthelement.theelement.presentation.services;
 
 import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +24,8 @@ import fifthelement.theelement.presentation.activities.MainActivity;
 import fifthelement.theelement.presentation.constants.NotificationConstants;
 
 public class NotificationService extends Service {
+
+    private String CHANNEL_ID = "THE_ELEMENT_01";// The id of the channel.
 
     Notification status;
     MusicService musicService;
@@ -131,11 +138,24 @@ public class NotificationService extends Service {
             if(musicService.getCurrentSongPlaying().getAlbums().size() > 1)
                 bigViews.setTextViewText(R.id.status_bar_album_name, musicService.getCurrentSongPlaying().getAlbums().get(0).getName());
         }
-        status = new Notification.Builder(this).build();
+
+        // Make this work on Oreo
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel notificationChannel = null;
+            notificationChannel = new NotificationChannel(CHANNEL_ID, CHANNEL_ID, NotificationManager.IMPORTANCE_DEFAULT);
+            notificationChannel.setLockscreenVisibility(Notification.VISIBILITY_PUBLIC);
+            NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+            manager.createNotificationChannel(notificationChannel);
+            status = new Notification.Builder(this, CHANNEL_ID)
+                    .setSmallIcon(R.drawable.ic_launcher_theelement)
+                    .setContentTitle(getString(R.string.app_name)).build();
+        } else {
+            status = new Notification.Builder(this)
+                    .setSmallIcon(R.drawable.ic_launcher_theelement).build();
+        }
         status.contentView = views;
         status.bigContentView = bigViews;
         status.flags = Notification.FLAG_ONGOING_EVENT;
-        status.icon = R.drawable.ic_launcher_theelement;
         status.contentIntent = pendingIntent;
         startForeground(NotificationConstants.NOTIFICATION_ID.FOREGROUND_SERVICE, status);
     }

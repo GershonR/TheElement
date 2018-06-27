@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -44,24 +45,28 @@ public class SeekerFragment extends Fragment {
     }
 
     private void initializeUI() {
-        Button mPlayButton = view.findViewById(R.id.button_play);
-        Button mPauseButton = view.findViewById(R.id.button_pause);
+        final ImageButton mPlayButton = view.findViewById(R.id.button_play_pause);
         mSeekbarAudio = view.findViewById(R.id.seekbar_audio);
 
-        mPauseButton.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        stopUpdatingCallbackWithPosition(false);
-                        musicService.pause();
-                    }
-                });
+        if(!musicService.isPlaying()) {
+            mPlayButton.setImageResource(R.drawable.ic_play_button);
+        } else {
+            mPlayButton.setImageResource(R.drawable.ic_pause_button);
+        }
+
         mPlayButton.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        startUpdatingCallbackWithPosition();
-                        musicService.start();
+                        if(!musicService.isPlaying()) {
+                            mPlayButton.setImageResource(R.drawable.ic_play_button);
+                            startUpdatingCallbackWithPosition();
+                            musicService.start();
+                        } else {
+                            mPlayButton.setImageResource(R.drawable.ic_pause_button);
+                            stopUpdatingCallbackWithPosition(false);
+                            musicService.pause();
+                        }
                     }
                 });
     }
@@ -158,10 +163,14 @@ public class SeekerFragment extends Fragment {
 
     public class PlaybackStartStopListener {
         public void onPlaybackStart(){
+            ImageButton mPlayButton = view.findViewById(R.id.button_play_pause);
+            mPlayButton.setImageResource(R.drawable.ic_pause_button);
             startUpdatingCallbackWithPosition();
         }
 
         public void onPlaybackStop(boolean resetUIPlaybackPosition){
+            ImageButton mPlayButton = view.findViewById(R.id.button_play_pause);
+            mPlayButton.setImageResource(R.drawable.ic_play_button);
             stopUpdatingCallbackWithPosition(resetUIPlaybackPosition);
         }
     }

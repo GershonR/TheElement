@@ -128,13 +128,13 @@ public class NotificationService extends Service {
             views.setTextViewText(R.id.status_bar_track_name, musicService.getCurrentSongPlaying().getName());
             bigViews.setTextViewText(R.id.status_bar_track_name, musicService.getCurrentSongPlaying().getName());
 
-            if(musicService.getCurrentSongPlaying().getAuthors().size() > 1) {
-                views.setTextViewText(R.id.status_bar_artist_name, musicService.getCurrentSongPlaying().getAuthors().get(0).getName());
-                bigViews.setTextViewText(R.id.status_bar_artist_name, musicService.getCurrentSongPlaying().getAuthors().get(0).getName());
+            if(musicService.getCurrentSongPlaying().getAuthor() != null) {
+                views.setTextViewText(R.id.status_bar_artist_name, musicService.getCurrentSongPlaying().getAuthor().getName());
+                bigViews.setTextViewText(R.id.status_bar_artist_name, musicService.getCurrentSongPlaying().getAuthor().getName());
             }
 
-            if(musicService.getCurrentSongPlaying().getAlbums().size() > 1)
-                bigViews.setTextViewText(R.id.status_bar_album_name, musicService.getCurrentSongPlaying().getAlbums().get(0).getName());
+            if(musicService.getCurrentSongPlaying().getAlbum() != null)
+                bigViews.setTextViewText(R.id.status_bar_album_name, musicService.getCurrentSongPlaying().getAlbum().getName());
         }
 
         // Make this work on Oreo

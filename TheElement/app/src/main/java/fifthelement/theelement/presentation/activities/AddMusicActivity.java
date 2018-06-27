@@ -123,9 +123,9 @@ public class AddMusicActivity extends AppCompatActivity {
 
             Song song = new Song(songName, realPath);
             if(songArtist != null)
-                 song.addAuthor(new Author(songArtist));
+                 song.setAuthor(new Author(songArtist));
             if(songAlbum != null)
-                 song.addAlbum(new Album(songAlbum));
+                 song.setAlbum(new Album(songAlbum));
             songService.insertSong(song);
         } else {
             Services.getToastService(getApplicationContext()).sendToast("This Song Already Exists!", "RED");

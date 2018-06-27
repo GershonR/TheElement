@@ -54,15 +54,10 @@ public class SongsListAdapter extends BaseAdapter {
         TextView songName = (TextView) view.findViewById(R.id.song_name_list);
         TextView authorName = (TextView) view.findViewById(R.id.author_name_list);
         final Song printSong = songs.get(i);
-        List<Author> author = printSong.getAuthors();
+        Author author = printSong.getAuthor();
         String authors = "";
-       if(author != null) {
-           for(int j = 0; j < author.size(); j++){
-               authors += author.get(j).getName();
-               if(j < author.size()-1) {
-                   authors += ", ";
-               }
-           }
+        if(author != null) {
+            authors += author.getName();
        }
         songName.setText(printSong.getName());
         authorName.setText(authors);

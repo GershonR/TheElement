@@ -8,15 +8,35 @@ public class Song implements Comparable<Song>{
     private UUID uuid;
     private String songName;
     private String path;
-    private List<Author> authorList;//might not include this
-    private List<Album> albumList; //might not include this
+    private String genre;
+    private Author author;
+    private Album album;
 
     public Song(String name, String path){
         this.uuid = UUID.randomUUID();
         this.songName = name;
         this.path = path;
-        albumList = new ArrayList<>();
-        authorList = new ArrayList<>();
+        this.genre = "";
+        author = null;
+        album = null;
+    }
+
+    public Song(UUID uuid, String name, String path){
+        this.uuid = uuid;
+        this.songName = name;
+        this.path = path;
+        this.genre = "";
+        author = null;
+        album = null;
+    }
+
+    public Song(UUID uuid, String name, String path, Author author, Album album, String genre){
+        this.uuid = uuid;
+        this.songName = name;
+        this.path = path;
+        this.author = author;
+        this.album = album;
+        this.genre = genre;
     }
 
     // getters
@@ -32,12 +52,16 @@ public class Song implements Comparable<Song>{
         return path;
     }
 
-    public List<Author> getAuthors(){
-        return authorList;
+    public String getGenre() {
+        return genre;
     }
 
-    public List<Album> getAlbums(){
-        return albumList;
+    public Author getAuthor(){
+        return author;
+    }
+
+    public Album getAlbum(){
+        return album;
     }
 
     // setters
@@ -53,20 +77,16 @@ public class Song implements Comparable<Song>{
         this.path = path;
     }
 
-    public void setAuthors(List<Author> authorList){
-        this.authorList =  authorList;
+    public void setGenre(String genre) {
+        this.genre = genre;
     }
 
-    public void setAlbums(List<Album> albumList){
-        this.albumList =  albumList;
+    public void setAuthor(Author author){
+        this.author =  author;
     }
 
-    public void addAuthor(Author newAuthor){//to add a single author
-        this.authorList.add(newAuthor);
-    }
-
-    public void addAlbum(Album newAlbum){//to add a single album
-        this.albumList.add(newAlbum);
+    public void setAlbum(Album album){
+        this.album =  album;
     }
 
     @Override

@@ -68,8 +68,6 @@ public class SongService {
             }
 
             songPersistence.deleteSong(song);
-            validateAlbum(song.getAlbums());
-            validateAuthor(song.getAuthors());
             return true;
         }
         return false;
@@ -122,28 +120,5 @@ public class SongService {
         if (matcher.find() == false)
             result = true;
         return result;
-    }
-
-    // Checks if Album is still valid (contains >1 song)
-    private void validateAlbum(List<Album> albumList) {
-        for( Album a : albumList ) {
-            if( albumPersistence.getAlbumByUUID(a.getUUID()).getSongs().size() == 0 ) {
-                albumPersistence.deleteAlbum(a.getUUID());
-
-                // delete album from Author
-                Author author = authorPersistence.getAuthorByUUID(a.getUUID());
-                author.deleteAlbum(a);
-                authorPersistence.updateAuthor(author);
-            }
-        }
-    }
-
-    // Checks if Author is still valid (contains >1 song)
-    private void validateAuthor(List<Author> authorList) {
-        for( Author a : authorList ) {
-            if( authorPersistence.getAuthorByUUID(a.getUUID()).getSongList().size() == 0 ) {
-                authorPersistence.deleteAuthor(a.getUUID());
-            }
-        }
     }
 }

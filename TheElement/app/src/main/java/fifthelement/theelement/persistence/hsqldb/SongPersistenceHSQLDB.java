@@ -24,7 +24,7 @@ public class SongPersistenceHSQLDB implements SongPersistence {
     public SongPersistenceHSQLDB(final String dbPath) {
         try {
             System.out.println("DB PATH: " + dbPath);
-            this.c = DriverManager.getConnection("jdbc:hsqldb:file:" + dbPath, "ELEMENT", "secure");
+            this.c = DriverManager.getConnection("jdbc:hsqldb:file:" + dbPath, "SA", "");
         } catch (final SQLException e) {
             throw new PersistenceException(e);
         }

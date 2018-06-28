@@ -16,9 +16,11 @@ import android.widget.Toast;
 
 import fifthelement.theelement.application.Services;
 import fifthelement.theelement.business.Services.SongService;
+import fifthelement.theelement.business.exceptions.SongAlreadyExistsException;
 import fifthelement.theelement.objects.Album;
 import fifthelement.theelement.objects.Author;
 import fifthelement.theelement.objects.Song;
+import fifthelement.theelement.persistence.hsqldb.PersistenceException;
 import fifthelement.theelement.presentation.util.PathUtil;
 
 
@@ -113,22 +115,23 @@ public class AddMusicActivity extends AppCompatActivity {
             System.out.println(e.getMessage());
         }
 
-        if(!songService.pathExists(path.getPath())) {
-            String realPath = "";
-            try {
-                realPath = PathUtil.getPath(getApplicationContext(), path);
-            } catch(Exception e) {
-
-            }
+        try {
+            String realPath = PathUtil.getPath(getApplicationContext(), path);
 
             Song song = new Song(songName, realPath);
             if(songArtist != null)
-                 song.setAuthor(new Author(songArtist));
+                song.setAuthor(new Author(songArtist));
             if(songAlbum != null)
-                 song.setAlbum(new Album(songAlbum));
+                song.setAlbum(new Album(songAlbum));
+            if(songGenre != null)
+                song.setGenre(songGenre);
             songService.insertSong(song);
-        } else {
-            Services.getToastService(getApplicationContext()).sendToast("This Song Already Exists!", "RED");
+        } catch (PersistenceException p) {
+            Services.getToastService(getApplicationContext()).sendToast("Error saving song!", "RED");
+        } catch (SongAlreadyExistsException s) {
+            Services.getToastService(getApplicationContext()).sendToast("Song already exists!", "RED");
+        } catch (Exception e) {
+            Services.getToastService(getApplicationContext()).sendToast("Could not get the songs path!", "RED");
         }
     }
 

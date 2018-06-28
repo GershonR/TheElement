@@ -8,6 +8,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import fifthelement.theelement.application.Services;
+import fifthelement.theelement.business.exceptions.SongAlreadyExistsException;
 import fifthelement.theelement.objects.Album;
 import fifthelement.theelement.objects.Author;
 import fifthelement.theelement.objects.PlayList;
@@ -16,6 +17,7 @@ import fifthelement.theelement.persistence.AlbumPersistence;
 import fifthelement.theelement.persistence.AuthorPersistence;
 import fifthelement.theelement.persistence.PlayListPersistence;
 import fifthelement.theelement.persistence.SongPersistence;
+import fifthelement.theelement.persistence.hsqldb.PersistenceException;
 
 public class SongService {
 
@@ -39,9 +41,11 @@ public class SongService {
         return songPersistence.getAllSongs();
     }
 
-    public boolean insertSong(Song song) throws ArrayStoreException, IllegalArgumentException {
+    public boolean insertSong(Song song) throws PersistenceException, IllegalArgumentException, SongAlreadyExistsException {
         if(song == null)
             throw new IllegalArgumentException();
+        if(pathExists(song.getPath()))
+            throw new SongAlreadyExistsException(song.getPath());
         return songPersistence.storeSong(song);
     }
 

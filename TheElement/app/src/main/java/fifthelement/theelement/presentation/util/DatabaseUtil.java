@@ -27,7 +27,6 @@ public class DatabaseUtil {
             }
 
             copyAssetsToDirectory(context, assetNames, dataDirectory);
-            System.out.println("Database: " + dataDirectory.toString() + "/" + Main.getDBPathName());
             Main.setDBPathName(dataDirectory.toString() + "/" + Main.getDBPathName());
 
         } catch (final IOException ioe) {
@@ -46,7 +45,6 @@ public class DatabaseUtil {
             int count;
 
             File outFile = new File(copyPath);
-            System.out.println("Database Copy: " + copyPath);
 
             if (!outFile.exists()) {
                 InputStreamReader in = new InputStreamReader(assetManager.open(asset));

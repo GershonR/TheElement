@@ -87,7 +87,7 @@ public class SongPersistenceHSQLDB implements SongPersistence {
     }
 
     @Override
-    public boolean storeSong(Song song) throws ArrayStoreException {
+    public boolean storeSong(Song song) throws PersistenceException {
         try {
             final PreparedStatement st = c.prepareStatement("INSERT INTO songs VALUES(?, ?, ?, ?, ?, ?)");
             st.setString(1, song.getUUID().toString());

@@ -8,21 +8,28 @@ import java.util.UUID;
 public class Album{
     private UUID uuid;
     private String albumName;
+    private Author author;
     private List<Song> songList;
-    private List<Author> authorList;
 
     public Album(String name){
         this.uuid = UUID.randomUUID();
         this.albumName = name;
         this.songList = new ArrayList<>();
-        this.authorList = new ArrayList<>();
+        this.author = new Author("");
     }
 
-    public Album(String name, List<Song> songList, List<Author> authorList){
+    public Album(String name, List<Song> songList, Author author){
         this.uuid = UUID.randomUUID();
         this.albumName = name;
         this.songList = songList;
-        this.authorList = authorList;
+        this.author = author;
+    }
+
+    public Album(UUID uuid, String name, Author author, List<Song> songList){
+        this.uuid = uuid;
+        this.albumName = name;
+        this.songList = songList;
+        this.author = author;
     }
 
     // getters
@@ -34,8 +41,8 @@ public class Album{
         return albumName;
     }
 
-    public List<Author> getAuthors() {
-        return authorList;
+    public Author getAuthor() {
+        return author;
     }
 
     public List<Song> getSongs() {
@@ -47,20 +54,14 @@ public class Album{
         this.uuid = uuid;
     }
 
-    public void setName(String newName) {
-        this.albumName = newName;
-    }
+    public void setName(String newName) { this.albumName = newName; }
 
-    public void setAuthors(List<Author> authorList) {
-        this.authorList =  authorList;
+    public void setAuthor(Author author) {
+        this.author =  author;
     }
 
     public void setSongs(List<Song>songList) {
         this.songList = songList;
-    }
-
-    public void addAuthor(Author newAuthor) {
-        this.authorList.add(newAuthor);
     }
 
     public void addSong(Song newSong) {

@@ -17,8 +17,6 @@ import fifthelement.theelement.persistence.SongPersistence;
 
 public class SongPersistenceHSQLDB implements SongPersistence {
 
-    private List<Song> songList;
-
     private Connection c;
 
     public SongPersistenceHSQLDB(final String dbPath) {
@@ -31,7 +29,7 @@ public class SongPersistenceHSQLDB implements SongPersistence {
 
     }
 
-    private Song fromResultSet(final ResultSet rs) throws SQLException {
+    public static Song fromResultSet(final ResultSet rs) throws SQLException {
         final UUID songUUID = UUID.fromString(rs.getString("songUUID"));
         final String songName = rs.getString("songName");
         final String songPath = rs.getString("songPath");

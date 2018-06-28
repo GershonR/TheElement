@@ -159,7 +159,6 @@ public class SongPersistenceHSQLDB implements SongPersistence {
 
     @Override
     public boolean songExists(UUID uuid) {
-        boolean exists = false;
         Song song = getSongByUUID(uuid);
         return song != null;
     }

@@ -9,3 +9,5 @@ SET WRITE_DELAY 20
 SET SCHEMA PUBLIC
 INSERT INTO SONGS VALUES('067e6162-3b6f-4ae2-a171-2470b63dff00','This Is America','android.resource://fifthelement.theelement/raw/childish_gambino_this_is_america', 'Childish Gambino', '', 'Hiphop')
 INSERT INTO SONGS VALUES('54947df8-0e9e-4471-a2f9-9af509fb5889','Classical Music','android.resource://fifthelement.theelement/raw/classical_music', '', '', 'Classical')
+INSERT INTO SONGS VALUES('7dc53df5-703e-49b3-8670-b1c468f47f1f','Adventure of a Lifetime','android.resource://fifthelement.theelement/raw/coldplay_adventure_of_a_lifetime', 'Coldplay', 'A Head Full of Dreams', 'Pop')
+INSERT INTO SONGS VALUES('123e4567-e89b-12d3-a456-556642440000','Hall of Fame','android.resource://fifthelement.theelement/raw/hall_of_fame', '', '', '')

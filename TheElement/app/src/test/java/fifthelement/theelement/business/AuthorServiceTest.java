@@ -11,6 +11,7 @@ import java.util.UUID;
 
 import fifthelement.theelement.business.Services.AuthorService;
 import fifthelement.theelement.objects.Author;
+import fifthelement.theelement.persistence.stubs.AuthorPersistenceStub;
 
 @RunWith(JUnit4.class)
 public class AuthorServiceTest {
@@ -18,7 +19,7 @@ public class AuthorServiceTest {
 
     @Before
     public void setup() {
-        classUnderTest = new AuthorService();
+        classUnderTest = new AuthorService(new AuthorPersistenceStub());
         classUnderTest.getAuthors().clear();
 
         classUnderTest.insertAuthor(new Author("Bob Marley"));

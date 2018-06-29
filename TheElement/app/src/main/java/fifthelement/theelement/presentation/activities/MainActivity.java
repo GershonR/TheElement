@@ -5,6 +5,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.design.widget.NavigationView;
@@ -18,8 +19,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
 import fifthelement.theelement.BuildConfig;
 import fifthelement.theelement.R;
+import fifthelement.theelement.application.Main;
 import fifthelement.theelement.application.Services;
 import fifthelement.theelement.business.Services.SongService;
 import fifthelement.theelement.presentation.constants.NotificationConstants;
@@ -27,6 +34,7 @@ import fifthelement.theelement.presentation.services.MusicService;
 import fifthelement.theelement.presentation.fragments.SeekerFragment;
 import fifthelement.theelement.presentation.services.MusicService.MusicBinder;
 import fifthelement.theelement.presentation.services.NotificationService;
+import fifthelement.theelement.presentation.util.DatabaseUtil;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -49,7 +57,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        songService = new SongService();
 
         // Set a Toolbar to replace the ActionBar.
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -67,7 +74,11 @@ public class MainActivity extends AppCompatActivity {
         TextView version = (TextView)findViewById(R.id.footer_item);
 
         version.setText("Version: " + versionName + versionCode);
+        DatabaseUtil.copyDatabaseToDevice(this);
+
+        songService = new SongService();
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -139,4 +150,6 @@ public class MainActivity extends AppCompatActivity {
         musicService = null;
         super.onDestroy();
     }
+
+
 }

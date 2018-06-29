@@ -15,7 +15,15 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import fifthelement.theelement.business.Services.SongService;
+import fifthelement.theelement.business.exceptions.SongAlreadyExistsException;
 import fifthelement.theelement.objects.Song;
+import fifthelement.theelement.persistence.hsqldb.PersistenceException;
+import fifthelement.theelement.persistence.stubs.AlbumPersistenceStub;
+import fifthelement.theelement.persistence.stubs.AuthorPersistenceStub;
+import fifthelement.theelement.persistence.stubs.PlayListPersistenceStub;
+import fifthelement.theelement.persistence.stubs.SongPersistenceStub;
+
+import static org.junit.Assert.fail;
 
 @RunWith(JUnit4.class)
 public class SongServiceTest {
@@ -25,14 +33,15 @@ public class SongServiceTest {
     @Before
     public void setup() {
 
-        classUnderTest = new SongService();
+        classUnderTest = new SongService(new SongPersistenceStub(), new AlbumPersistenceStub(), new AuthorPersistenceStub(), new PlayListPersistenceStub());
+        List<Song> songs = classUnderTest.getSongs();
         classUnderTest.getSongs().clear();
         this.songsList = classUnderTest.getSongs();
-        songsList.add(new Song( "Pristine", "Path"));
-        songsList.add(new Song( "This is America", "Path"));
-        songsList.add(new Song( "Nice For What", "Path"));
-        songsList.add(new Song( "Geyser", "Path"));
-        songsList.add(new Song( "Purity", "Path"));
+        songsList.add(new Song( "Pristine", "data/song1"));
+        songsList.add(new Song( "This is America", "data/song2"));
+        songsList.add(new Song( "Nice For What", "data/song3"));
+        songsList.add(new Song( "Geyser", "data/song4"));
+        songsList.add(new Song( "Purity", "data/song5"));
     }
 
     @Test
@@ -43,22 +52,23 @@ public class SongServiceTest {
     }
 
     @Test
-    public void insertSongValidTest() {
+    public void insertSongValidTest() throws SongAlreadyExistsException {
         Song song = new Song("Some song", "Path");
         classUnderTest.insertSong(song);
 
-        Assert.assertTrue("insertSongValidTest: album size != 6", classUnderTest.getSongs().size() == 6);
+        Assert.assertTrue("insertSongValidTest: song size != 6", classUnderTest.getSongs().size() == 6);
     }
 
 
     @Test(expected = IllegalArgumentException.class)
-    public void insertSongInValidTest() {
+    public void insertSongInValidTest() throws SongAlreadyExistsException {
         Song song = null;
+
         classUnderTest.insertSong(song);
     }
 
-    @Test(expected = ArrayStoreException.class)
-    public void insertSongDuplicateTest() {
+    @Test(expected = SongAlreadyExistsException.class)
+    public void insertSongDuplicateTest() throws SongAlreadyExistsException{
         Song songOne = new Song("A song", "Path");
         songOne.setUUID(UUID.fromString("493410b3-dd0b-4b78-97bf-289f50f6e74f"));
         Song songTwo = new Song("Other song", "Path");
@@ -69,7 +79,7 @@ public class SongServiceTest {
     }
 
     @Test
-    public void updateSongValidTest() {
+    public void updateSongValidTest() throws Exception {
         Song songOne = new Song("A song", "Path");
         songOne.setUUID(UUID.fromString("493410b3-dd0b-4b78-97bf-289f50f6e74f"));
         Song songTwo = new Song("Other song", "Path");
@@ -102,12 +112,12 @@ public class SongServiceTest {
     }
 
     @Test
-    public void deleteSongValidTest() {
+    public void deleteSongValidTest() throws Exception {
         Song songOne = new Song("21", "Path");
         UUID songUUID = UUID.fromString("793410b3-dd0b-4b78-97bf-289f50f6e74f");
         songOne.setUUID(songUUID);
-
         boolean insertReturn = classUnderTest.insertSong(songOne);
+
         Assert.assertTrue("deleteSongValidTest: insertReturn != true", insertReturn);
         Assert.assertTrue("deleteSongValidTest: song size != 6", classUnderTest.getSongs().size() == 6);
 

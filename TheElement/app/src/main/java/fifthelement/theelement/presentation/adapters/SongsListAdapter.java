@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.support.v7.widget.AppCompatImageButton;
 import android.support.v7.widget.PopupMenu;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -19,6 +20,7 @@ import fifthelement.theelement.R;
 import fifthelement.theelement.application.Services;
 import fifthelement.theelement.objects.Author;
 import fifthelement.theelement.objects.Song;
+import fifthelement.theelement.persistence.hsqldb.PersistenceException;
 import fifthelement.theelement.presentation.activities.MainActivity;
 
 public class SongsListAdapter extends BaseAdapter {
@@ -54,16 +56,11 @@ public class SongsListAdapter extends BaseAdapter {
         TextView songName = (TextView) view.findViewById(R.id.song_name_list);
         TextView authorName = (TextView) view.findViewById(R.id.author_name_list);
         final Song printSong = songs.get(i);
-        List<Author> author = printSong.getAuthors();
+        Author author = printSong.getAuthor();
         String authors = "";
-       if(author != null) {
-           for(int j = 0; j < author.size(); j++){
-               authors += author.get(j).getName();
-               if(j < author.size()-1) {
-                   authors += ", ";
-               }
-           }
-       }
+        if(author != null) {
+            authors += author.getName();
+        }
         songName.setText(printSong.getName());
         authorName.setText(authors);
         AppCompatImageButton button = view.findViewById(R.id.popup_button);
@@ -75,9 +72,15 @@ public class SongsListAdapter extends BaseAdapter {
                 activity.getMenuInflater().inflate(R.menu.song_list_item_menu, popup.getMenu());
                 popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     public boolean onMenuItemClick(MenuItem item) {
-                        Services.getToastService(context).sendToast("Deleted " + printSong.getName());
-                        activity.getSongService().deleteSong(printSong);
-                        notifyDataSetChanged();
+                        try { // TODO: Possible code smell?
+                            Services.getToastService(context).sendToast("Deleted " + printSong.getName());
+                            activity.getSongService().deleteSong(printSong);
+                            songs.remove(printSong);
+                            notifyDataSetChanged();
+                        } catch(PersistenceException p) {
+                            Services.getToastService(context).sendToast("Could not delete " + printSong.getName());
+                            Log.e("SongListAdapter", p.getMessage());
+                        }
                         return true;
                     }
                 });

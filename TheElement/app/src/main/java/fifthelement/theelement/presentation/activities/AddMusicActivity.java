@@ -15,10 +15,14 @@ import android.view.View;
 import android.widget.Toast;
 
 import fifthelement.theelement.application.Services;
+import fifthelement.theelement.business.Services.AlbumService;
+import fifthelement.theelement.business.Services.AuthorService;
 import fifthelement.theelement.business.Services.SongService;
+import fifthelement.theelement.business.exceptions.SongAlreadyExistsException;
 import fifthelement.theelement.objects.Album;
 import fifthelement.theelement.objects.Author;
 import fifthelement.theelement.objects.Song;
+import fifthelement.theelement.persistence.hsqldb.PersistenceException;
 import fifthelement.theelement.presentation.util.PathUtil;
 
 
@@ -29,6 +33,9 @@ public class AddMusicActivity extends AppCompatActivity {
     private static final int PICKFILE_REQUEST_CODE = 1;
 
     SongService songService;
+    AlbumService albumService;
+    AuthorService authorService;
+
     MediaMetadataRetriever metaRetriver;
 
 
@@ -36,6 +43,8 @@ public class AddMusicActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         songService = new SongService();
+        authorService = Services.getAuthorService();
+        albumService = Services.getAlbumService();
 
         if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, PICKFILE_REQUEST_CODE);
@@ -113,22 +122,37 @@ public class AddMusicActivity extends AppCompatActivity {
             System.out.println(e.getMessage());
         }
 
-        if(!songService.pathExists(path.getPath())) {
-            String realPath = "";
-            try {
-                realPath = PathUtil.getPath(getApplicationContext(), path);
-            } catch(Exception e) {
-
-            }
-
+        // TODO: Fix Code Smell
+        try {
+            String realPath = PathUtil.getPath(getApplicationContext(), path);
+            Author author = null;
+            Album album = null;
             Song song = new Song(songName, realPath);
-            if(songArtist != null)
-                 song.addAuthor(new Author(songArtist));
-            if(songAlbum != null)
-                 song.addAlbum(new Album(songAlbum));
+            if(songArtist != null) { // TODO: Seperate Method For This?
+                author = new Author(songArtist);
+                song.setAuthor(author);
+                authorService.insertAuthor(author);
+            }
+            if(songAlbum != null) { // TODO: Seperate Method For This?
+                album = new Album(songAlbum);
+                if(author != null)
+                    album.setAuthor(author);
+                else
+                    album.setAuthor(null);
+                song.setAlbum(album);
+                albumService.insertAlbum(album);
+            }
+            if(songGenre != null)
+                song.setGenre(songGenre);
             songService.insertSong(song);
-        } else {
-            Services.getToastService(getApplicationContext()).sendToast("This Song Already Exists!", "RED");
+            Services.getToastService(getApplicationContext()).sendToast("Added " + song.getName(), "GREEN");
+        } catch (PersistenceException p) {
+            Services.getToastService(getApplicationContext()).sendToast("Error saving song!", "RED");
+            System.out.println(p.getMessage());
+        } catch (SongAlreadyExistsException s) {
+            Services.getToastService(getApplicationContext()).sendToast("Song already exists!", "RED");
+        } catch (Exception e) {
+            Services.getToastService(getApplicationContext()).sendToast("Could not get the songs path!", "RED");
         }
     }
 

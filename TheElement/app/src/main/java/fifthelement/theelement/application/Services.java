@@ -4,11 +4,17 @@ import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 
 import java.util.logging.Logger;
+
+import fifthelement.theelement.business.Services.AlbumService;
+import fifthelement.theelement.business.Services.AuthorService;
 import fifthelement.theelement.objects.PlayList;
 import fifthelement.theelement.persistence.AlbumPersistence;
 import fifthelement.theelement.persistence.AuthorPersistence;
 import fifthelement.theelement.persistence.PlayListPersistence;
 import fifthelement.theelement.persistence.SongPersistence;
+import fifthelement.theelement.persistence.hsqldb.AlbumPersistenceHSQLDB;
+import fifthelement.theelement.persistence.hsqldb.AuthorPersistenceHSQLDB;
+import fifthelement.theelement.persistence.hsqldb.SongPersistenceHSQLDB;
 import fifthelement.theelement.persistence.stubs.AlbumPersistenceStub;
 import fifthelement.theelement.persistence.stubs.AuthorPersistenceStub;
 import fifthelement.theelement.persistence.stubs.PlayListPersistenceStub;
@@ -28,11 +34,13 @@ public class Services {
     private static DrawerService drawerService = null;
     private static FragmentService fragmentService = null;
     private static MusicService musicService = null;
+    private static AuthorService authorService = null;
+    private static AlbumService albumService = null;
 
     public static synchronized SongPersistence getSongPersistence() {
 
         if (songPersistence == null) {
-            songPersistence = new SongPersistenceStub();
+            songPersistence = new SongPersistenceHSQLDB(Main.getDBPathName());
         }
 
         return songPersistence;
@@ -41,7 +49,7 @@ public class Services {
     public static synchronized AlbumPersistence getAlbumPersistence() {
 
         if (albumPersistence == null) {
-            albumPersistence = new AlbumPersistenceStub();
+            albumPersistence = new AlbumPersistenceHSQLDB(Main.getDBPathName());
         }
 
         return albumPersistence;
@@ -50,7 +58,7 @@ public class Services {
     public static synchronized AuthorPersistence getAuthorPersistence() {
 
         if (authorPersistence == null) {
-            authorPersistence = new AuthorPersistenceStub();
+            authorPersistence = new AuthorPersistenceHSQLDB(Main.getDBPathName());
         }
 
         return authorPersistence;
@@ -90,6 +98,24 @@ public class Services {
         }
 
         return playListPersistence;
+    }
+
+    public static synchronized AuthorService getAuthorService() {
+
+        if( authorService == null ) {
+            authorService = new AuthorService();
+        }
+
+        return authorService;
+    }
+
+    public static synchronized AlbumService getAlbumService() {
+
+        if( albumService == null ) {
+            albumService = new AlbumService();
+        }
+
+        return albumService;
     }
 
     public static synchronized MusicService getMusicService() {

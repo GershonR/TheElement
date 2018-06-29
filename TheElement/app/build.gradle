@@ -1,9 +1,9 @@
 apply plugin: 'com.android.application'
 
-def versionMajor = 1
-def versionMinor = 1
-def versionPatch = 0
-def versionBuild = 5 // bump for dogfood builds, public betas, etc.
+def versionMajor = 1 // bump for each iteration
+def versionMinor = 2 // bump for each merge
+def versionPatch = 0 // bump for each hotfix
+def versionBuild = 9 // bump for dogfood builds, changes on your local
 
 android {
     compileSdkVersion 27
@@ -41,4 +41,5 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    implementation group: 'org.hsqldb', name: 'hsqldb', version: '2.4.1'
 }

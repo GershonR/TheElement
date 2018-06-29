@@ -16,14 +16,14 @@ public class SongPersistenceStub implements SongPersistence {
         this.songList = new ArrayList<>();
 
         Song song = new Song("This Is America", "android.resource://fifthelement.theelement/raw/childish_gambino_this_is_america");
-        song.addAuthor(new Author("Childish Gambino"));
+        song.setAuthor(new Author("Childish Gambino"));
         this.storeSong(song);
 
         song = new Song("Classical Music", "android.resource://fifthelement.theelement/raw/classical_music");
         this.storeSong(song);
 
         song = new Song("Adventure of a Lifetime", "android.resource://fifthelement.theelement/raw/coldplay_adventure_of_a_lifetime");
-        song.addAuthor(new Author("Coldplay"));
+        song.setAuthor(new Author("Coldplay"));
         this.storeSong(song);
 
         song = new Song("Hall of Fame", "android.resource://fifthelement.theelement/raw/hall_of_fame");
@@ -103,5 +103,10 @@ public class SongPersistenceStub implements SongPersistence {
                 break;
             }
         return exists;
+    }
+
+    @Override
+    public List<Song> getSongsByAlbumUUID(UUID ID) {
+        return null;
     }
 }

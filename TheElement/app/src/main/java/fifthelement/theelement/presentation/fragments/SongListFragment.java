@@ -2,6 +2,7 @@ package fifthelement.theelement.presentation.fragments;
 
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +25,7 @@ public class SongListFragment extends Fragment {
     private View view;
     private SongService songService;
     private MusicService musicService;
+    private SongsListAdapter songListAdapter;
     List<Song> songs;
 
     @Override
@@ -38,7 +40,7 @@ public class SongListFragment extends Fragment {
         songs = songService.getSongs();
 
         if(songs != null) {
-            final SongsListAdapter songListAdapter = new SongsListAdapter(getActivity(), songs);
+            songListAdapter = new SongsListAdapter(getActivity(), songs);
 
             Button buttonOrganize = view.findViewById(R.id.button_organize_list);
             buttonOrganize.setOnClickListener(new View.OnClickListener(){
@@ -67,6 +69,16 @@ public class SongListFragment extends Fragment {
 
         }
         return view;
+    }
+
+    @Override
+    public void onResume() { // TODO: Try and figure out why the list wont get updated when you add a song
+        super.onResume();
+        if(songListAdapter != null) {
+            songs = songService.getSongs();
+            songListAdapter.notifyDataSetChanged();
+            Log.e("DEBUG", "onResume of SongListFragment");
+        }
     }
 
 }

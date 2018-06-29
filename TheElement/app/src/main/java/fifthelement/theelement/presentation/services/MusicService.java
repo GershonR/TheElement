@@ -11,7 +11,6 @@ import android.os.PowerManager;
 import android.util.Log;
 
 import fifthelement.theelement.application.Helpers;
-import fifthelement.theelement.application.Services;
 import fifthelement.theelement.objects.Song;
 import fifthelement.theelement.presentation.fragments.SeekerFragment;
 
@@ -26,7 +25,8 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
     private boolean playerPrepared;
     private Song currentSongPlaying;
     private final IBinder musicBind = new MusicBinder();
-    private SeekerFragment.PlaybackStartStopListener playbackListener;
+    private SeekerFragment.SeekerPlaybackStartStopListener seekerPlaybackListener;
+    private NotificationService.NotificationPlaybackStartStopListener notificationPlaybackListener;
 
     private static final String LOG_TAG = "MusicService";
 
@@ -57,8 +57,8 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
     @Override
     public void onCompletion(MediaPlayer mediaPlayer) {
         //We stop playback on completion
-        if(playbackListener != null){
-            playbackListener.onPlaybackStop(true);
+        if(seekerPlaybackListener != null){
+            seekerPlaybackListener.onPlaybackStop(true);
         }
     }
 
@@ -120,6 +120,12 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
 
     // This function will reset the MediaPlayer instance and reset seekbar UI positions to start.
     public void reset() {
+        if(seekerPlaybackListener != null){
+            seekerPlaybackListener.onPlaybackStop(true);
+        }
+        if(notificationPlaybackListener != null){
+            notificationPlaybackListener.onPlaybackStop();
+        }
         player.reset();
         seekTo(0);
         playerPrepared = false;
@@ -128,8 +134,11 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
     // This function will start the private MediaPlayer instance (equivalent to 'Play').
     public void start() {
         if(playerPrepared && !player.isPlaying()) {
-            if(playbackListener != null){
-                playbackListener.onPlaybackStart();
+            if(seekerPlaybackListener != null){
+                seekerPlaybackListener.onPlaybackStart();
+            }
+            if(notificationPlaybackListener != null){
+                notificationPlaybackListener.onPlaybackStart();
             }
             player.start();
         } else if(!playerPrepared) {
@@ -140,8 +149,11 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
     // This function pauses the playback of the private MediaPlayer instance.
     public void pause() {
         if(playerPrepared && player.isPlaying()){
-            if(playbackListener != null){
-                playbackListener.onPlaybackStop(false);
+            if(seekerPlaybackListener != null){
+                seekerPlaybackListener.onPlaybackStop(false);
+            }
+            if(notificationPlaybackListener != null){
+                notificationPlaybackListener.onPlaybackStop();
             }
             player.pause();
         }
@@ -183,8 +195,12 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
         return this.currentSongPlaying;
     }
 
-    public void setPlaybackListener(SeekerFragment.PlaybackStartStopListener listener){
-        playbackListener = listener;
+    public void setSeekerPlaybackListener(SeekerFragment.SeekerPlaybackStartStopListener listener){
+        seekerPlaybackListener = listener;
+    }
+
+    public void setNotificationPlaybackListener(NotificationService.NotificationPlaybackStartStopListener listener){
+        notificationPlaybackListener = listener;
     }
 
     //Public helper class for binding this service to an activity

@@ -196,4 +196,14 @@ public class NotificationService extends Service {
         startForeground(NotificationConstants.NOTIFICATION_ID, status);
     }
 
+    public class NotificationPlaybackStartStopListener {
+        public void onPlaybackStart(){
+            showPlay();
+        }
+
+        public void onPlaybackStop() {
+            showPause();
+        }
+    }
+
 }

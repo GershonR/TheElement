@@ -2,14 +2,11 @@ package fifthelement.theelement.presentation.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
-import android.widget.TextView;
 
 
 import java.util.concurrent.Executors;
@@ -18,9 +15,7 @@ import java.util.concurrent.TimeUnit;
 
 import fifthelement.theelement.R;
 import fifthelement.theelement.application.Services;
-import fifthelement.theelement.presentation.activities.MainActivity;
 import fifthelement.theelement.presentation.services.MusicService;
-import fifthelement.theelement.presentation.services.PlaybackInfoListener;
 
 public class SeekerFragment extends Fragment {
 
@@ -97,7 +92,7 @@ public class SeekerFragment extends Fragment {
                 });
 
         //Set up new playback listener which will initiate seekbar updating if playback starts somehow
-        musicService.setPlaybackListener(new PlaybackStartStopListener());
+        musicService.setSeekerPlaybackListener(new SeekerPlaybackStartStopListener());
 
         //Update the seekbar with current playback position and duration
         int currentPosition = musicService.getCurrentPosition();
@@ -162,7 +157,7 @@ public class SeekerFragment extends Fragment {
         }
     }
 
-    public class PlaybackStartStopListener {
+    public class SeekerPlaybackStartStopListener {
         public void onPlaybackStart(){
             ImageButton mPlayButton = view.findViewById(R.id.button_play_pause);
             mPlayButton.setImageResource(R.drawable.ic_pause_button);

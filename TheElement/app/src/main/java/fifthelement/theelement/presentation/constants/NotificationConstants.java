@@ -16,17 +16,4 @@ public class NotificationConstants {
     public static final String NEXT_ACTION = "fifthelement.theelement.presentation.action.next";
     public static final String STARTFOREGROUND_ACTION = "fifthelement.theelement.presentation.action.startforeground";
     public static final String STOPFOREGROUND_ACTION = "fifthelement.theelement.presentation.action.stopforeground";
-
-    public static Bitmap getDefaultAlbumArt(Context context) {
-        Bitmap bm = null;
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        try {
-            bm = BitmapFactory.decodeResource(context.getResources(),
-                    R.drawable.default_album_art, options);
-        } catch (Error ee) {
-        } catch (Exception e) {
-        }
-        return bm;
-    }
-
 }

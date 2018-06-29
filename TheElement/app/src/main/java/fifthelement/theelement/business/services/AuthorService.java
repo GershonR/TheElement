@@ -1,13 +1,10 @@
-package fifthelement.theelement.business.Services;
+package fifthelement.theelement.business.services;
 
 import java.util.List;
 import java.util.UUID;
 
 import fifthelement.theelement.application.Persistence;
-import fifthelement.theelement.application.Services;
-import fifthelement.theelement.objects.Album;
 import fifthelement.theelement.objects.Author;
-import fifthelement.theelement.persistence.AlbumPersistence;
 import fifthelement.theelement.persistence.AuthorPersistence;
 
 

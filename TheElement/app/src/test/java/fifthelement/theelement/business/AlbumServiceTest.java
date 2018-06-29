@@ -9,10 +9,8 @@ import org.junit.runners.JUnit4;
 import java.util.List;
 import java.util.UUID;
 
-import fifthelement.theelement.business.Services.AlbumService;
-import fifthelement.theelement.business.Services.AuthorService;
+import fifthelement.theelement.business.services.AlbumService;
 import fifthelement.theelement.objects.Album;
-import fifthelement.theelement.objects.Author;
 import fifthelement.theelement.persistence.stubs.AlbumPersistenceStub;
 import fifthelement.theelement.persistence.stubs.SongPersistenceStub;
 

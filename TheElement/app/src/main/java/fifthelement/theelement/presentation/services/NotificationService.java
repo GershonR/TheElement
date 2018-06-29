@@ -22,6 +22,7 @@ import fifthelement.theelement.R;
 import fifthelement.theelement.application.Services;
 import fifthelement.theelement.presentation.activities.MainActivity;
 import fifthelement.theelement.presentation.constants.NotificationConstants;
+import fifthelement.theelement.presentation.util.SongUtil;
 
 public class NotificationService extends Service {
 
@@ -79,7 +80,7 @@ public class NotificationService extends Service {
         views.setViewVisibility(R.id.status_bar_icon, View.VISIBLE);
         views.setViewVisibility(R.id.status_bar_album_art, View.GONE);
         bigViews.setImageViewBitmap(R.id.status_bar_album_art,
-                NotificationConstants.getDefaultAlbumArt(this));
+                SongUtil.getDefaultAlbumArt(this));
 
         Intent notificationIntent = new Intent(this, MainActivity.class);
         notificationIntent.setAction(NotificationConstants.MAIN_ACTION + System.currentTimeMillis());

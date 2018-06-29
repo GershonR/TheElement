@@ -3,22 +3,8 @@ package fifthelement.theelement.application;
 import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 
-import java.util.logging.Logger;
-
-import fifthelement.theelement.business.Services.AlbumService;
-import fifthelement.theelement.business.Services.AuthorService;
-import fifthelement.theelement.objects.PlayList;
-import fifthelement.theelement.persistence.AlbumPersistence;
-import fifthelement.theelement.persistence.AuthorPersistence;
-import fifthelement.theelement.persistence.PlayListPersistence;
-import fifthelement.theelement.persistence.SongPersistence;
-import fifthelement.theelement.persistence.hsqldb.AlbumPersistenceHSQLDB;
-import fifthelement.theelement.persistence.hsqldb.AuthorPersistenceHSQLDB;
-import fifthelement.theelement.persistence.hsqldb.SongPersistenceHSQLDB;
-import fifthelement.theelement.persistence.stubs.AlbumPersistenceStub;
-import fifthelement.theelement.persistence.stubs.AuthorPersistenceStub;
-import fifthelement.theelement.persistence.stubs.PlayListPersistenceStub;
-import fifthelement.theelement.persistence.stubs.SongPersistenceStub;
+import fifthelement.theelement.business.services.AlbumService;
+import fifthelement.theelement.business.services.AuthorService;
 import fifthelement.theelement.presentation.services.DrawerService;
 import fifthelement.theelement.presentation.services.FragmentService;
 import fifthelement.theelement.presentation.services.MusicService;

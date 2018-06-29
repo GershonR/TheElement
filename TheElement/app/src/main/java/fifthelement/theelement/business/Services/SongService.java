@@ -26,6 +26,8 @@ public class SongService {
     private AuthorPersistence authorPersistence;
     private PlayListPersistence playListPersistence;
 
+    private List<Song> songs;
+
     public SongService() {
         songPersistence = Services.getSongPersistence();
         albumPersistence = Services.getAlbumPersistence();
@@ -45,7 +47,7 @@ public class SongService {
     }
 
     public List<Song> getSongs() throws PersistenceException {
-        List<Song> songs = songPersistence.getAllSongs();
+        songs = songPersistence.getAllSongs();
 
         if(songs != null) {
             for(Song song : songs) {
@@ -74,7 +76,7 @@ public class SongService {
         return songPersistence.updateSong(song);
     }
 
-    public boolean deleteSong(Song songToRemove) throws IllegalArgumentException {
+    public boolean deleteSong(Song songToRemove) throws PersistenceException, IllegalArgumentException {
         if(songToRemove == null)
             throw new IllegalArgumentException();
         Song song = songPersistence.getSongByUUID(songToRemove.getUUID());
@@ -83,12 +85,12 @@ public class SongService {
 
             // deletes songs from existing PlayList if it's there
             // implementation for this hasn't been fully decided. this is a STUB
-            for( PlayList p : playListPersistence.getAllPlayLists() ) {
-                if( p.contains(song) ) {
-                    p.removeSong(song);
-                    playListPersistence.updatePlayList(p);
-                }
-            }
+            //for( PlayList p : playListPersistence.getAllPlayLists() ) {
+            //    if( p.contains(song) ) {
+            //        p.removeSong(song);
+            //        playListPersistence.updatePlayList(p);
+            //    }
+            //}
 
             songPersistence.deleteSong(song);
             return true;

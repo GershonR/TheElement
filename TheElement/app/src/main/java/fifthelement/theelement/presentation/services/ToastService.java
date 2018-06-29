@@ -38,7 +38,7 @@ public class ToastService {
             case "BLACK":
                 return Color.BLACK;
             case "GREEN":
-                return Color.GREEN;
+                return Color.parseColor("#009f00");
              default:
                 return Color.LTGRAY;
         }

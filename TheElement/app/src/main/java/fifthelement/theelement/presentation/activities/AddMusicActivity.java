@@ -122,17 +122,18 @@ public class AddMusicActivity extends AppCompatActivity {
             System.out.println(e.getMessage());
         }
 
+        // TODO: Fix Code Smell
         try {
             String realPath = PathUtil.getPath(getApplicationContext(), path);
             Author author = null;
             Album album = null;
             Song song = new Song(songName, realPath);
-            if(songArtist != null) {
+            if(songArtist != null) { // TODO: Seperate Method For This?
                 author = new Author(songArtist);
                 song.setAuthor(author);
                 authorService.insertAuthor(author);
             }
-            if(songAlbum != null) {
+            if(songAlbum != null) { // TODO: Seperate Method For This?
                 album = new Album(songAlbum);
                 if(author != null)
                     album.setAuthor(author);
@@ -144,6 +145,7 @@ public class AddMusicActivity extends AppCompatActivity {
             if(songGenre != null)
                 song.setGenre(songGenre);
             songService.insertSong(song);
+            Services.getToastService(getApplicationContext()).sendToast("Added " + song.getName(), "GREEN");
         } catch (PersistenceException p) {
             Services.getToastService(getApplicationContext()).sendToast("Error saving song!", "RED");
             System.out.println(p.getMessage());

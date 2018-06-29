@@ -199,11 +199,11 @@ public class NotificationService extends Service {
 
     public class NotificationPlaybackStartStopListener {
         public void onPlaybackStart(){
-            showPlay();
+            showPause();
         }
 
         public void onPlaybackStop() {
-            showPause();
+            showPlay();
         }
     }
 

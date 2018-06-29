@@ -9,6 +9,7 @@ import fifthelement.theelement.persistence.AlbumPersistence;
 import fifthelement.theelement.persistence.AuthorPersistence;
 import fifthelement.theelement.persistence.PlayListPersistence;
 import fifthelement.theelement.persistence.SongPersistence;
+import fifthelement.theelement.persistence.hsqldb.AlbumPersistenceHSQLDB;
 import fifthelement.theelement.persistence.hsqldb.SongPersistenceHSQLDB;
 import fifthelement.theelement.persistence.stubs.AlbumPersistenceStub;
 import fifthelement.theelement.persistence.stubs.AuthorPersistenceStub;
@@ -42,7 +43,7 @@ public class Services {
     public static synchronized AlbumPersistence getAlbumPersistence() {
 
         if (albumPersistence == null) {
-            albumPersistence = new AlbumPersistenceStub();
+            albumPersistence = new AlbumPersistenceHSQLDB(Main.getDBPathName());
         }
 
         return albumPersistence;

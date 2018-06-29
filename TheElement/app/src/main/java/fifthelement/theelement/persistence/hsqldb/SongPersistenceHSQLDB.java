@@ -29,12 +29,22 @@ public class SongPersistenceHSQLDB implements SongPersistence {
 
     }
 
-    public static Song fromResultSet(final ResultSet rs) throws SQLException {
+    private Song fromResultSet(final ResultSet rs) throws SQLException {
         final UUID songUUID = UUID.fromString(rs.getString("songUUID"));
         final String songName = rs.getString("songName");
         final String songPath = rs.getString("songPath");
-        final Author songAuthor = new Author(rs.getString("songAuthor"));
-        final Album songAlbum = new Album(rs.getString("songAlbum"));
+        final String authorUUID = rs.getString("authorUUID");
+        final String albumUUID = rs.getString("albumUUID");
+        Author songAuthor = null;
+        Album songAlbum = null;
+        System.out.println(authorUUID.length());
+        System.out.println(albumUUID.length());
+        if(authorUUID != null && authorUUID.length() == 36)
+            songAuthor = new Author(UUID.fromString(authorUUID), "");
+        if(albumUUID != null && albumUUID.length() == 36) {
+            System.out.println("Creating a new album");
+            songAlbum = new Album(UUID.fromString(albumUUID), "");
+        }
         final String songGenre = rs.getString("songGenre");
         return new Song(songUUID, songName, songPath, songAuthor, songAlbum, songGenre);
     }
@@ -54,6 +64,7 @@ public class SongPersistenceHSQLDB implements SongPersistence {
                 final Song song = fromResultSet(rs);
                 songs.add(song);
             }
+
             rs.close();
             st.close();
 
@@ -69,16 +80,45 @@ public class SongPersistenceHSQLDB implements SongPersistence {
     @Override
     public Song getSongByUUID(final UUID uuid) {
         try {
-            final PreparedStatement st = c.prepareStatement("SELECT * songs WHERE songUUID = ?");
+            final PreparedStatement st = c.prepareStatement("SELECT * FROM songs WHERE songUUID = ?");
             st.setString(1, uuid.toString());
 
             final ResultSet rs = st.executeQuery();
+            rs.next();
             final Song song = fromResultSet(rs);
             rs.close();
             st.close();
 
             return song;
         } catch (final SQLException e) {
+            throw new PersistenceException(e);
+        }
+
+    }
+
+    @Override
+    public List<Song> getSongsByAlbumUUID(final UUID uuid) {
+
+        final List<Song> songs = new ArrayList<>();
+
+        try
+        {
+            final PreparedStatement st = c.prepareStatement("SELECT * FROM songs WHERE albumUUID = ?");
+            st.setString(1, uuid.toString());
+            final ResultSet rs = st.executeQuery();
+            while (rs.next())
+            {
+                final Song song = fromResultSet(rs);
+                songs.add(song);
+            }
+
+            rs.close();
+            st.close();
+
+            return songs;
+        }
+        catch (final SQLException e)
+        {
             throw new PersistenceException(e);
         }
 

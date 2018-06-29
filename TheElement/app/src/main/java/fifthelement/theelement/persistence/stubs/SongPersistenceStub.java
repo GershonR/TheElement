@@ -104,4 +104,9 @@ public class SongPersistenceStub implements SongPersistence {
             }
         return exists;
     }
+
+    @Override
+    public List<Song> getSongsByAlbumUUID(UUID ID) {
+        return null;
+    }
 }

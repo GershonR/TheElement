@@ -18,6 +18,13 @@ public class Album{
         this.author = new Author("");
     }
 
+    public Album(UUID uuid, String name){
+        this.uuid = uuid;
+        this.albumName = name;
+        this.songList = new ArrayList<>();
+        this.author = new Author("");
+    }
+
     public Album(String name, List<Song> songList, Author author){
         this.uuid = UUID.randomUUID();
         this.albumName = name;

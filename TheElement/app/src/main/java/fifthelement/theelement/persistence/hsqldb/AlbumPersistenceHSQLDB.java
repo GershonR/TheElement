@@ -30,37 +30,13 @@ public class AlbumPersistenceHSQLDB implements AlbumPersistence {
     }
 
     private Album fromResultSet(final ResultSet rs) throws SQLException {
+        System.out.println("Got result set");
         final UUID albumUUID = UUID.fromString(rs.getString("albumUUID"));
         final String albumName = rs.getString("albumName");
         final String authorUUID = rs.getString("authorUUID");
         final Author author = Services.getAuthorPersistence().getAuthorByUUID(UUID.fromString(authorUUID));
-        final List<Song> songs = getSongs(albumUUID);
+        final List<Song> songs = null;
         return new Album(albumUUID, albumName, author, songs);
-    }
-
-    private List<Song> getSongs(UUID albumUUID) {
-        final List<Song> songs = new ArrayList<>();
-
-        try
-        {
-            final PreparedStatement st = c.prepareStatement("SELECT * FROM albumsongs WHERE albumuuid = ?");
-            st.setString(1, albumUUID.toString());
-
-            final ResultSet rs = st.executeQuery();
-            while (rs.next())
-            {
-                final Song song = SongPersistenceHSQLDB.fromResultSet(rs);
-                songs.add(song);
-            }
-            rs.close();
-            st.close();
-
-            return songs;
-        }
-        catch (final SQLException e)
-        {
-            throw new PersistenceException(e);
-        }
     }
 
     @Override
@@ -91,7 +67,22 @@ public class AlbumPersistenceHSQLDB implements AlbumPersistence {
 
     @Override
     public Album getAlbumByUUID(UUID uuid) {
-        return null;
+        try {
+            final PreparedStatement st = c.prepareStatement("SELECT * FROM albums WHERE albumUUID = ?");
+            String uuidString = uuid.toString();
+            st.setString(1, uuidString);
+
+            final ResultSet rs = st.executeQuery();
+            rs.next();
+            final Album album = fromResultSet(rs);
+            rs.close();
+            st.close();
+
+            return album;
+        } catch (final SQLException e) {
+            throw new PersistenceException(e);
+        }
+
     }
 
     @Override

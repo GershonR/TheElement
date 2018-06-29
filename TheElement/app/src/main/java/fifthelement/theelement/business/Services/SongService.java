@@ -37,8 +37,23 @@ public class SongService {
         return songPersistence.getSongByUUID(uuid);
     }
 
-    public List<Song> getSongs() {
-        return songPersistence.getAllSongs();
+    public List<Song> getSongs() throws PersistenceException {
+        List<Song> songs = songPersistence.getAllSongs();
+
+        if(songs != null) {
+            for(Song song : songs) {
+                if(song.getAuthor() != null)
+                    song.setAuthor(authorPersistence.getAuthorByUUID(song.getAuthor().getUUID()));
+                if(song.getAlbum() != null) {
+                    System.out.println("Setting a new album");
+                    Album a = albumPersistence.getAlbumByUUID(song.getAlbum().getUUID());
+                    System.out.println(a.getName());
+                    song.setAlbum(albumPersistence.getAlbumByUUID(song.getAlbum().getUUID()));
+                }
+            }
+        }
+
+        return songs;
     }
 
     public boolean insertSong(Song song) throws PersistenceException, IllegalArgumentException, SongAlreadyExistsException {

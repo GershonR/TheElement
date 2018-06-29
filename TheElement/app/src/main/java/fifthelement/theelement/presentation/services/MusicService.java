@@ -60,6 +60,9 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
         if(seekerPlaybackListener != null){
             seekerPlaybackListener.onPlaybackStop(true);
         }
+        if(notificationPlaybackListener != null){
+            notificationPlaybackListener.onPlaybackStop();
+        }
     }
 
     // This function acts as a callback that occurs when the private MediaPlayer

@@ -20,13 +20,15 @@ import android.widget.TextView;
 
 import fifthelement.theelement.BuildConfig;
 import fifthelement.theelement.R;
+import fifthelement.theelement.application.Helpers;
 import fifthelement.theelement.application.Services;
-import fifthelement.theelement.business.Services.SongService;
+import fifthelement.theelement.business.services.SongService;
 import fifthelement.theelement.presentation.constants.NotificationConstants;
 import fifthelement.theelement.presentation.services.MusicService;
 import fifthelement.theelement.presentation.fragments.SeekerFragment;
 import fifthelement.theelement.presentation.services.MusicService.MusicBinder;
 import fifthelement.theelement.presentation.services.NotificationService;
+import fifthelement.theelement.presentation.util.DatabaseUtil;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -49,7 +51,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        songService = new SongService();
 
         // Set a Toolbar to replace the ActionBar.
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -67,7 +68,11 @@ public class MainActivity extends AppCompatActivity {
         TextView version = (TextView)findViewById(R.id.footer_item);
 
         version.setText("Version: " + versionName + versionCode);
+        DatabaseUtil.copyDatabaseToDevice(this);
+
+        songService = new SongService();
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -92,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void startNotificationService(View v) {
         Intent serviceIntent = new Intent(MainActivity.this, NotificationService.class);
-        serviceIntent.setAction(NotificationConstants.ACTION.STARTFOREGROUND_ACTION);
+        serviceIntent.setAction(NotificationConstants.STARTFOREGROUND_ACTION);
         startService(serviceIntent);
     }
 
@@ -119,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void createSeeker() {
         SeekerFragment seeker = new SeekerFragment();//create the fragment instance
-        Services.getFragmentService(this).createFragment(R.id.music_seeker, seeker);
+        Helpers.getFragmentHelper(this).createFragment(R.id.music_seeker, seeker);
     }
 
     @Override
@@ -139,4 +144,6 @@ public class MainActivity extends AppCompatActivity {
         musicService = null;
         super.onDestroy();
     }
+
+
 }

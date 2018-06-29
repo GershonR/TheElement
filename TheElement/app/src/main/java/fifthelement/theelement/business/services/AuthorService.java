@@ -1,12 +1,10 @@
-package fifthelement.theelement.business.Services;
+package fifthelement.theelement.business.services;
 
 import java.util.List;
 import java.util.UUID;
 
-import fifthelement.theelement.application.Services;
-import fifthelement.theelement.objects.Album;
+import fifthelement.theelement.application.Persistence;
 import fifthelement.theelement.objects.Author;
-import fifthelement.theelement.persistence.AlbumPersistence;
 import fifthelement.theelement.persistence.AuthorPersistence;
 
 
@@ -15,7 +13,11 @@ public class AuthorService {
     private AuthorPersistence authorPersistence;
 
     public AuthorService() {
-        authorPersistence = Services.getAuthorPersistence();
+        authorPersistence = Persistence.getAuthorPersistence();
+    }
+
+    public AuthorService(AuthorPersistence authorPersistence) {
+        this.authorPersistence = authorPersistence;
     }
 
     public Author getAuthorByUUID(UUID uuid) {

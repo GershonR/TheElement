@@ -22,14 +22,14 @@ import fifthelement.theelement.R;
 import fifthelement.theelement.application.Services;
 import fifthelement.theelement.presentation.activities.MainActivity;
 import fifthelement.theelement.presentation.constants.NotificationConstants;
+import fifthelement.theelement.presentation.util.SongUtil;
 
 public class NotificationService extends Service {
 
-    private String CHANNEL_ID = "THE_ELEMENT_01";// The id of the channel.
-
     Notification status;
     MusicService musicService;
-    private final String LOG_TAG = "NotificationService";
+
+    private static final String LOG_TAG = "NotificationService";
 
     @Override
     public void onDestroy() {
@@ -44,12 +44,12 @@ public class NotificationService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         musicService = Services.getMusicService();
-        if (intent.getAction().equals(NotificationConstants.ACTION.STARTFOREGROUND_ACTION)) {
-            showNotification();
-        } else if (intent.getAction().equals(NotificationConstants.ACTION.PREV_ACTION)) {
+        if (intent.getAction().equals(NotificationConstants.STARTFOREGROUND_ACTION)) {
+            buildNotification();
+        } else if (intent.getAction().equals(NotificationConstants.PREV_ACTION)) {
             Toast.makeText(this, "Clicked Previous", Toast.LENGTH_SHORT).show();
             Log.i(LOG_TAG, "Clicked Previous");
-        } else if (intent.getAction().equals(NotificationConstants.ACTION.PLAY_ACTION)) {
+        } else if (intent.getAction().equals(NotificationConstants.PLAY_ACTION)) {
             if (musicService.isPlaying()) {
                 showPlay();
                 musicService.pause();
@@ -57,10 +57,10 @@ public class NotificationService extends Service {
                 showPause();
                 musicService.start();
             }
-        } else if (intent.getAction().equals(NotificationConstants.ACTION.NEXT_ACTION)) {
+        } else if (intent.getAction().equals(NotificationConstants.NEXT_ACTION)) {
             Toast.makeText(this, "Clicked Next", Toast.LENGTH_SHORT).show();
             Log.i(LOG_TAG, "Clicked Next");
-        } else if (intent.getAction().equals(NotificationConstants.ACTION.STOPFOREGROUND_ACTION)) {
+        } else if (intent.getAction().equals(NotificationConstants.STOPFOREGROUND_ACTION)) {
             Services.getMusicService().pause();
             stopForeground(true);
             stopSelf();
@@ -68,7 +68,7 @@ public class NotificationService extends Service {
         return START_STICKY;
     }
 
-    private void showNotification() {
+    private void buildNotification() {
         musicService = Services.getMusicService();
         // Using RemoteViews to bind custom layouts into Notification
         RemoteViews views = new RemoteViews(getPackageName(),
@@ -80,30 +80,30 @@ public class NotificationService extends Service {
         views.setViewVisibility(R.id.status_bar_icon, View.VISIBLE);
         views.setViewVisibility(R.id.status_bar_album_art, View.GONE);
         bigViews.setImageViewBitmap(R.id.status_bar_album_art,
-                NotificationConstants.getDefaultAlbumArt(this));
+                SongUtil.getDefaultAlbumArt(this));
 
         Intent notificationIntent = new Intent(this, MainActivity.class);
-        notificationIntent.setAction(NotificationConstants.ACTION.MAIN_ACTION + System.currentTimeMillis());
+        notificationIntent.setAction(NotificationConstants.MAIN_ACTION + System.currentTimeMillis());
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0,
                 notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         Intent previousIntent = new Intent(this, NotificationService.class);
-        previousIntent.setAction(NotificationConstants.ACTION.PREV_ACTION);
+        previousIntent.setAction(NotificationConstants.PREV_ACTION);
         PendingIntent ppreviousIntent = PendingIntent.getService(this, 0,
                 previousIntent, 0);
 
         Intent playIntent = new Intent(this, NotificationService.class);
-        playIntent.setAction(NotificationConstants.ACTION.PLAY_ACTION);
+        playIntent.setAction(NotificationConstants.PLAY_ACTION);
         PendingIntent pplayIntent = PendingIntent.getService(this, 0,
                 playIntent, 0);
 
         Intent nextIntent = new Intent(this, NotificationService.class);
-        nextIntent.setAction(NotificationConstants.ACTION.NEXT_ACTION);
+        nextIntent.setAction(NotificationConstants.NEXT_ACTION);
         PendingIntent pnextIntent = PendingIntent.getService(this, 0,
                 nextIntent, 0);
 
         Intent closeIntent = new Intent(this, NotificationService.class);
-        closeIntent.setAction(NotificationConstants.ACTION.STOPFOREGROUND_ACTION);
+        closeIntent.setAction(NotificationConstants.STOPFOREGROUND_ACTION);
         PendingIntent pcloseIntent = PendingIntent.getService(this, 0,
                 closeIntent, 0);
 
@@ -124,27 +124,34 @@ public class NotificationService extends Service {
         bigViews.setImageViewResource(R.id.status_bar_play,
                 R.drawable.ic_pause);
 
+        createNotificationDisplay(views, bigViews);
+        showNotification(views, bigViews, pendingIntent);
+
+
+    }
+
+    private void createNotificationDisplay(RemoteViews views, RemoteViews bigViews) {
         if(musicService.getCurrentSongPlaying() != null) {
             views.setTextViewText(R.id.status_bar_track_name, musicService.getCurrentSongPlaying().getName());
             bigViews.setTextViewText(R.id.status_bar_track_name, musicService.getCurrentSongPlaying().getName());
 
-            if(musicService.getCurrentSongPlaying().getAuthors().size() > 1) {
-                views.setTextViewText(R.id.status_bar_artist_name, musicService.getCurrentSongPlaying().getAuthors().get(0).getName());
-                bigViews.setTextViewText(R.id.status_bar_artist_name, musicService.getCurrentSongPlaying().getAuthors().get(0).getName());
+            if(musicService.getCurrentSongPlaying().getAuthor() != null) {
+                views.setTextViewText(R.id.status_bar_artist_name, musicService.getCurrentSongPlaying().getAuthor().getName());
+                bigViews.setTextViewText(R.id.status_bar_artist_name, musicService.getCurrentSongPlaying().getAuthor().getName());
             }
 
-            if(musicService.getCurrentSongPlaying().getAlbums().size() > 1)
-                bigViews.setTextViewText(R.id.status_bar_album_name, musicService.getCurrentSongPlaying().getAlbums().get(0).getName());
+            if(musicService.getCurrentSongPlaying().getAlbum() != null)
+                bigViews.setTextViewText(R.id.status_bar_album_name, musicService.getCurrentSongPlaying().getAlbum().getName());
         }
+    }
 
-        // Make this work on Oreo
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel notificationChannel = null;
-            notificationChannel = new NotificationChannel(CHANNEL_ID, CHANNEL_ID, NotificationManager.IMPORTANCE_DEFAULT);
+    private void showNotification(RemoteViews views, RemoteViews bigViews, PendingIntent pendingIntent) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) { // Make this work on Oreo
+            NotificationChannel notificationChannel = new NotificationChannel(NotificationConstants.CHANNEL_ID, NotificationConstants.CHANNEL_ID, NotificationManager.IMPORTANCE_DEFAULT);
             notificationChannel.setLockscreenVisibility(Notification.VISIBILITY_PUBLIC);
             NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
             manager.createNotificationChannel(notificationChannel);
-            status = new Notification.Builder(this, CHANNEL_ID)
+            status = new Notification.Builder(this, NotificationConstants.CHANNEL_ID)
                     .setSmallIcon(R.drawable.ic_launcher_theelement)
                     .setContentTitle(getString(R.string.app_name)).build();
         } else {
@@ -155,8 +162,9 @@ public class NotificationService extends Service {
         status.bigContentView = bigViews;
         status.flags = Notification.FLAG_ONGOING_EVENT;
         status.contentIntent = pendingIntent;
-        startForeground(NotificationConstants.NOTIFICATION_ID.FOREGROUND_SERVICE, status);
+        startForeground(NotificationConstants.NOTIFICATION_ID, status);
     }
+
 
     public void showPause() {
         RemoteViews views = new RemoteViews(getPackageName(),
@@ -170,7 +178,7 @@ public class NotificationService extends Service {
                 R.drawable.ic_pause);
         status.contentView = views;
         status.bigContentView = bigViews;
-        startForeground(NotificationConstants.NOTIFICATION_ID.FOREGROUND_SERVICE, status);
+        startForeground(NotificationConstants.NOTIFICATION_ID, status);
     }
 
     public void showPlay() {
@@ -185,7 +193,7 @@ public class NotificationService extends Service {
                 R.drawable.ic_play);
         status.contentView = views;
         status.bigContentView = bigViews;
-        startForeground(NotificationConstants.NOTIFICATION_ID.FOREGROUND_SERVICE, status);
+        startForeground(NotificationConstants.NOTIFICATION_ID, status);
     }
 
 }

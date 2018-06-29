@@ -1,4 +1,4 @@
-package fifthelement.theelement.presentation.services;
+package fifthelement.theelement.presentation.helpers;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -6,11 +6,11 @@ import android.graphics.PorterDuff;
 import android.view.View;
 import android.widget.Toast;
 
-public class ToastService {
+public class ToastHelper {
     Context context;
     private static Toast toast;
 
-    public ToastService(Context context) {
+    public ToastHelper(Context context) {
         this.context = context;
     }
 
@@ -38,7 +38,7 @@ public class ToastService {
             case "BLACK":
                 return Color.BLACK;
             case "GREEN":
-                return Color.GREEN;
+                return Color.parseColor("#009f00");
              default:
                 return Color.LTGRAY;
         }

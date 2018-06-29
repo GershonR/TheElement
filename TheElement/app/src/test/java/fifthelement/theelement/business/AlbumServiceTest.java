@@ -9,10 +9,10 @@ import org.junit.runners.JUnit4;
 import java.util.List;
 import java.util.UUID;
 
-import fifthelement.theelement.business.Services.AlbumService;
-import fifthelement.theelement.business.Services.AuthorService;
+import fifthelement.theelement.business.services.AlbumService;
 import fifthelement.theelement.objects.Album;
-import fifthelement.theelement.objects.Author;
+import fifthelement.theelement.persistence.stubs.AlbumPersistenceStub;
+import fifthelement.theelement.persistence.stubs.SongPersistenceStub;
 
 @RunWith(JUnit4.class)
 public class AlbumServiceTest {
@@ -20,7 +20,7 @@ public class AlbumServiceTest {
 
     @Before
     public void setup() {
-        classUnderTest = new AlbumService();
+        classUnderTest = new AlbumService(new AlbumPersistenceStub(), new SongPersistenceStub());
         classUnderTest.getAlbums().clear();
 
         classUnderTest.insertAlbum(new Album("Thriller"));

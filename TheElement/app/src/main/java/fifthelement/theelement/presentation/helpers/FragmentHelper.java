@@ -1,14 +1,14 @@
-package fifthelement.theelement.presentation.services;
+package fifthelement.theelement.presentation.helpers;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
-public class FragmentService {
+public class FragmentHelper {
     AppCompatActivity application;
 
-    public FragmentService(AppCompatActivity application) {
+    public FragmentHelper(AppCompatActivity application) {
         this.application = application;
     }
 

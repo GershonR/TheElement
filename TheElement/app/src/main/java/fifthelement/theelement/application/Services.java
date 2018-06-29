@@ -4,6 +4,9 @@ import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 
 import java.util.logging.Logger;
+
+import fifthelement.theelement.business.Services.AlbumService;
+import fifthelement.theelement.business.Services.AuthorService;
 import fifthelement.theelement.objects.PlayList;
 import fifthelement.theelement.persistence.AlbumPersistence;
 import fifthelement.theelement.persistence.AuthorPersistence;
@@ -31,6 +34,8 @@ public class Services {
     private static DrawerService drawerService = null;
     private static FragmentService fragmentService = null;
     private static MusicService musicService = null;
+    private static AuthorService authorService = null;
+    private static AlbumService albumService = null;
 
     public static synchronized SongPersistence getSongPersistence() {
 
@@ -93,6 +98,24 @@ public class Services {
         }
 
         return playListPersistence;
+    }
+
+    public static synchronized AuthorService getAuthorService() {
+
+        if( authorService == null ) {
+            authorService = new AuthorService();
+        }
+
+        return authorService;
+    }
+
+    public static synchronized AlbumService getAlbumService() {
+
+        if( albumService == null ) {
+            albumService = new AlbumService();
+        }
+
+        return albumService;
     }
 
     public static synchronized MusicService getMusicService() {

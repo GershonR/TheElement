@@ -76,7 +76,17 @@ public class AuthorPersistenceHSQLDB implements AuthorPersistence {
 
     @Override
     public boolean storeAuthor(Author author) {
-        return false;
+        try {
+            final PreparedStatement st = c.prepareStatement("INSERT INTO authors VALUES(?, ?)");
+            st.setString(1, author.getUUID().toString());
+            st.setString(2, author.getName());
+
+            st.executeUpdate();
+
+            return true;
+        } catch (final SQLException e) {
+            throw new PersistenceException(e);
+        }
     }
 
     @Override

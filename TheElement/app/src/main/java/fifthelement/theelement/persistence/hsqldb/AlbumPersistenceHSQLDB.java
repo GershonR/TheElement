@@ -32,7 +32,9 @@ public class AlbumPersistenceHSQLDB implements AlbumPersistence {
         final UUID albumUUID = UUID.fromString(rs.getString("albumUUID"));
         final String albumName = rs.getString("albumName");
         final String authorUUID = rs.getString("authorUUID");
-        final Author author = Services.getAuthorPersistence().getAuthorByUUID(UUID.fromString(authorUUID));
+        Author author = null;
+        if(authorUUID != null)
+            author = Services.getAuthorPersistence().getAuthorByUUID(UUID.fromString(authorUUID));
         final List<Song> songs = null;
         return new Album(albumUUID, albumName, author, songs);
     }
@@ -85,7 +87,21 @@ public class AlbumPersistenceHSQLDB implements AlbumPersistence {
 
     @Override
     public boolean storeAlbum(Album album) {
-        return false;
+        try {
+            final PreparedStatement st = c.prepareStatement("INSERT INTO albums VALUES(?, ?, ?)");
+            st.setString(1, album.getUUID().toString());
+            st.setString(2, album.getName());
+            if(album.getAuthor() != null)
+                st.setString(3, album.getAuthor().getUUID().toString());
+            else
+                st.setString(3, null);
+
+            st.executeUpdate();
+
+            return true;
+        } catch (final SQLException e) {
+            throw new PersistenceException(e);
+        }
     }
 
     @Override

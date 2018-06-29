@@ -15,6 +15,8 @@ import android.view.View;
 import android.widget.Toast;
 
 import fifthelement.theelement.application.Services;
+import fifthelement.theelement.business.Services.AlbumService;
+import fifthelement.theelement.business.Services.AuthorService;
 import fifthelement.theelement.business.Services.SongService;
 import fifthelement.theelement.business.exceptions.SongAlreadyExistsException;
 import fifthelement.theelement.objects.Album;
@@ -31,6 +33,9 @@ public class AddMusicActivity extends AppCompatActivity {
     private static final int PICKFILE_REQUEST_CODE = 1;
 
     SongService songService;
+    AlbumService albumService;
+    AuthorService authorService;
+
     MediaMetadataRetriever metaRetriver;
 
 
@@ -38,6 +43,8 @@ public class AddMusicActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         songService = new SongService();
+        authorService = Services.getAuthorService();
+        albumService = Services.getAlbumService();
 
         if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, PICKFILE_REQUEST_CODE);
@@ -117,17 +124,29 @@ public class AddMusicActivity extends AppCompatActivity {
 
         try {
             String realPath = PathUtil.getPath(getApplicationContext(), path);
-
+            Author author = null;
+            Album album = null;
             Song song = new Song(songName, realPath);
-            if(songArtist != null)
-                song.setAuthor(new Author(songArtist));
-            if(songAlbum != null)
-                song.setAlbum(new Album(songAlbum));
+            if(songArtist != null) {
+                author = new Author(songArtist);
+                song.setAuthor(author);
+                authorService.insertAuthor(author);
+            }
+            if(songAlbum != null) {
+                album = new Album(songAlbum);
+                if(author != null)
+                    album.setAuthor(author);
+                else
+                    album.setAuthor(null);
+                song.setAlbum(album);
+                albumService.insertAlbum(album);
+            }
             if(songGenre != null)
                 song.setGenre(songGenre);
             songService.insertSong(song);
         } catch (PersistenceException p) {
             Services.getToastService(getApplicationContext()).sendToast("Error saving song!", "RED");
+            System.out.println(p.getMessage());
         } catch (SongAlreadyExistsException s) {
             Services.getToastService(getApplicationContext()).sendToast("Song already exists!", "RED");
         } catch (Exception e) {

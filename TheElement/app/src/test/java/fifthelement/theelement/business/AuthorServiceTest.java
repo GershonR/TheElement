@@ -9,7 +9,7 @@ import org.junit.runners.JUnit4;
 import java.util.List;
 import java.util.UUID;
 
-import fifthelement.theelement.business.Services.AuthorService;
+import fifthelement.theelement.business.services.AuthorService;
 import fifthelement.theelement.objects.Author;
 import fifthelement.theelement.persistence.stubs.AuthorPersistenceStub;
 

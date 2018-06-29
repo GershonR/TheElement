@@ -9,12 +9,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import java.util.List;
 
 import fifthelement.theelement.R;
-import fifthelement.theelement.business.Services.SongService;
+import fifthelement.theelement.application.Helpers;
+import fifthelement.theelement.application.Services;
+import fifthelement.theelement.business.services.SongService;
 import fifthelement.theelement.objects.Song;
 import fifthelement.theelement.presentation.activities.MainActivity;
 import fifthelement.theelement.presentation.services.MusicService;
@@ -43,6 +44,8 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
                              Bundle savedInstanceState) {
         songService = ((MainActivity)getActivity()).getSongService();
         musicService = ((MainActivity)getActivity()).getMusicService();
+        songs = songService.getSongs();
+
         view = inflater.inflate(R.layout.search_fragment, container, false);
         ListView listView = view.findViewById(R.id.search_song_list_view_item);
         mSearchView = view.findViewById(R.id.search_view_item);
@@ -56,9 +59,11 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
         //mListView.setTextFilterEnabled(true);
         setupSearchView();
 
+        playSongOnClick(listView);
+        return view;
+    }
 
-        songs = songService.getSongs();
-
+    private void playSongOnClick(ListView listView) {
         if(songs != null) {
             final SongsListAdapter songListAdapter = new SongsListAdapter(getActivity(), songs);
             listView.setAdapter(songListAdapter);
@@ -70,16 +75,13 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
                                         int position, long id) {
                     boolean result = musicService.playSongAsync(songs.get(position));
                     if(result) {
-                        Toast.makeText(getContext(), "Now Playing: " + songs.get(position).getName(), Toast.LENGTH_SHORT).show();
+                        Helpers.getToastHelper(getActivity()).sendToast("Now Playing: " + songs.get(position).getName());
                         ((MainActivity)getActivity()).startNotificationService(view.findViewById(R.id.toolbar));
                     }
                 }
             });
 
-        } else {
-
         }
-        return view;
     }
 
     private void clearSearchViewResults(){

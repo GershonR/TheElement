@@ -4,20 +4,17 @@ import android.Manifest;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.View;
-import android.widget.Toast;
 
+import fifthelement.theelement.application.Helpers;
 import fifthelement.theelement.application.Services;
-import fifthelement.theelement.business.Services.AlbumService;
-import fifthelement.theelement.business.Services.AuthorService;
-import fifthelement.theelement.business.Services.SongService;
+import fifthelement.theelement.business.services.AlbumService;
+import fifthelement.theelement.business.services.AuthorService;
+import fifthelement.theelement.business.services.SongService;
 import fifthelement.theelement.business.exceptions.SongAlreadyExistsException;
 import fifthelement.theelement.objects.Album;
 import fifthelement.theelement.objects.Author;
@@ -31,6 +28,7 @@ public class AddMusicActivity extends AppCompatActivity {
     private static final int CHOOSE_FILE_REQUESTCODE = 8777;
     private static final int PICKFILE_RESULT_CODE = 8778;
     private static final int PICKFILE_REQUEST_CODE = 1;
+    private static final String LOG_TAG = "AddMusicActivity";
 
     SongService songService;
     AlbumService albumService;
@@ -63,12 +61,12 @@ public class AddMusicActivity extends AppCompatActivity {
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
                     openFileExplorer();
-                    Services.getToastService(getApplicationContext()).sendToast("Permission Granted");
+                    Helpers.getToastHelper(getApplicationContext()).sendToast("Permission Granted");
 
                 } else {
                     Intent intent = new Intent(AddMusicActivity.this, MainActivity.class);
                     AddMusicActivity.this.startActivity(intent);
-                    Services.getToastService(getApplicationContext()).sendToast("Permission Denied", "RED");
+                    Helpers.getToastHelper(getApplicationContext()).sendToast("Permission Denied", "RED");
                 }
                 return;
             }
@@ -80,8 +78,7 @@ public class AddMusicActivity extends AppCompatActivity {
         switch (requestCode) {
             case PICKFILE_RESULT_CODE:
                 if (resultCode == RESULT_OK) {
-                    String FilePath = data.getData().getPath();
-                    getMusicData(data.getData());
+                    setupSong(data.getData());
                 }
         }
         Intent intent = new Intent(AddMusicActivity.this, MainActivity.class);
@@ -94,12 +91,12 @@ public class AddMusicActivity extends AppCompatActivity {
         try {
             startActivityForResult(fileintent, PICKFILE_RESULT_CODE);
         } catch (ActivityNotFoundException e) {
-            Log.e("tag", "No activity can handle picking a file. Showing alternatives.");
+            Log.e(LOG_TAG, "No activity can handle picking a file. Showing alternatives.");
         }
     }
 
 
-    private void getMusicData(Uri path) {
+    private void setupSong(Uri path) {
         metaRetriver = new MediaMetadataRetriever();
         metaRetriver.setDataSource(getApplication(), path);
 
@@ -119,9 +116,13 @@ public class AddMusicActivity extends AppCompatActivity {
             songArtist = metaRetriver.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ARTIST);
             songGenre = metaRetriver.extractMetadata(MediaMetadataRetriever.METADATA_KEY_GENRE);
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            Log.e(LOG_TAG, e.getMessage());
         }
 
+        createSong(path, songName, songArtist, songAlbum, songGenre);
+    }
+
+    private void createSong(Uri path, String songName, String songArtist, String songAlbum, String songGenre) {
         // TODO: Fix Code Smell
         try {
             String realPath = PathUtil.getPath(getApplicationContext(), path);
@@ -145,14 +146,16 @@ public class AddMusicActivity extends AppCompatActivity {
             if(songGenre != null)
                 song.setGenre(songGenre);
             songService.insertSong(song);
-            Services.getToastService(getApplicationContext()).sendToast("Added " + song.getName(), "GREEN");
+            Helpers.getToastHelper(getApplicationContext()).sendToast("Added " + song.getName(), "GREEN");
         } catch (PersistenceException p) {
-            Services.getToastService(getApplicationContext()).sendToast("Error saving song!", "RED");
-            System.out.println(p.getMessage());
+            Helpers.getToastHelper(getApplicationContext()).sendToast("Error saving song!", "RED");
+            Log.e(LOG_TAG, p.getMessage());
         } catch (SongAlreadyExistsException s) {
-            Services.getToastService(getApplicationContext()).sendToast("Song already exists!", "RED");
+            Helpers.getToastHelper(getApplicationContext()).sendToast("Song already exists!", "RED");
+            Log.e(LOG_TAG, s.getMessage());
         } catch (Exception e) {
-            Services.getToastService(getApplicationContext()).sendToast("Could not get the songs path!", "RED");
+            Helpers.getToastHelper(getApplicationContext()).sendToast("Could not get the songs path!", "RED");
+            Log.e(LOG_TAG, e.getMessage());
         }
     }
 

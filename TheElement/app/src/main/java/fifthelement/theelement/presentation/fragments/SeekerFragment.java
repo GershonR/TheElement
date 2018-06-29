@@ -16,6 +16,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 import fifthelement.theelement.R;
+import fifthelement.theelement.application.Services;
 import fifthelement.theelement.presentation.activities.MainActivity;
 import fifthelement.theelement.presentation.services.MusicService;
 import fifthelement.theelement.presentation.services.PlaybackInfoListener;
@@ -37,7 +38,7 @@ public class SeekerFragment extends Fragment {
 
         view = inflater.inflate(R.layout.seeker_fragment, container, false);
 
-        musicService = ((MainActivity)getActivity()).getMusicService();
+        musicService = Services.getMusicService();
         initializeUI();
         initializeSeekbar();
         return view;

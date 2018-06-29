@@ -2,21 +2,15 @@ package fifthelement.theelement.presentation.services;
 
 import android.app.Service;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Binder;
 import android.os.IBinder;
 import android.os.PowerManager;
-import android.view.View;
-import android.widget.Toast;
+import android.util.Log;
 
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
-
+import fifthelement.theelement.application.Helpers;
 import fifthelement.theelement.application.Services;
 import fifthelement.theelement.objects.Song;
 import fifthelement.theelement.presentation.fragments.SeekerFragment;
@@ -33,6 +27,8 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
     private Song currentSongPlaying;
     private final IBinder musicBind = new MusicBinder();
     private SeekerFragment.PlaybackStartStopListener playbackListener;
+
+    private static final String LOG_TAG = "MusicService";
 
     //This function is called when the service is bound, it will return a MusicBinder instance
     @Override
@@ -104,8 +100,8 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
             player.prepareAsync();
             currentSongPlaying = song;
         } catch(Exception e) {
-            Services.getToastService(getApplicationContext()).sendToast("Invalid Song!", "RED");
-            e.printStackTrace();
+            Helpers.getToastHelper(getApplicationContext()).sendToast("Invalid Song!", "RED");
+            Log.e(LOG_TAG, e.getMessage());
             return false;
         }
         playerPrepared = false;
@@ -125,6 +121,8 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
     // This function will reset the MediaPlayer instance and reset seekbar UI positions to start.
     public void reset() {
         player.reset();
+        seekTo(0);
+        playerPrepared = false;
     }
 
     // This function will start the private MediaPlayer instance (equivalent to 'Play').
@@ -135,7 +133,7 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
             }
             player.start();
         } else if(!playerPrepared) {
-            Services.getToastService(getApplicationContext()).sendToast("No Song Selected!", "RED");
+            Helpers.getToastHelper(getApplicationContext()).sendToast("No Song Selected!", "RED");
         }
     }
 

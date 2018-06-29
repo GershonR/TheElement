@@ -1,16 +1,10 @@
-package fifthelement.theelement.business.Services;
+package fifthelement.theelement.business.services;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-import fifthelement.theelement.application.Services;
+import fifthelement.theelement.application.Persistence;
 import fifthelement.theelement.objects.Album;
-import fifthelement.theelement.objects.Author;
-import fifthelement.theelement.objects.Song;
 import fifthelement.theelement.persistence.AlbumPersistence;
 import fifthelement.theelement.persistence.SongPersistence;
 
@@ -21,8 +15,8 @@ public class AlbumService {
     private SongPersistence songPersistence;
 
     public AlbumService() {
-        albumPersistence = Services.getAlbumPersistence();
-        songPersistence = Services.getSongPersistence();
+        albumPersistence = Persistence.getAlbumPersistence();
+        songPersistence = Persistence.getSongPersistence();
     }
 
     public AlbumService(AlbumPersistence albumPersistence, SongPersistence songPersistence) {

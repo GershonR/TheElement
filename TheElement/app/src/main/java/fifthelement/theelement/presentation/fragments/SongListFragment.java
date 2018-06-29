@@ -34,20 +34,16 @@ public class SongListFragment extends Fragment {
                              Bundle savedInstanceState) {
         songService = ((MainActivity)getActivity()).getSongService();
         musicService = Services.getMusicService();
+        songs = songService.getSongs();
 
         view = inflater.inflate(R.layout.song_list_fragment, container, false);
         ListView listView = (ListView) view.findViewById(R.id.song_list_view);
 
-        songs = songService.getSongs();
+        songListAdapter = new SongsListAdapter(getActivity(), songs);
+        listView.setAdapter(songListAdapter);
 
-        if(songs != null) {
-            songListAdapter = new SongsListAdapter(getActivity(), songs);
-            listView.setAdapter(songListAdapter);
-
-            sortSongsButton();
-            playSong(listView);
-
-        }
+        sortSongsButton();
+        playSong(listView);
         return view;
     }
 
@@ -62,19 +58,22 @@ public class SongListFragment extends Fragment {
     }
 
     private void playSong(ListView listView) {
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener()
-        {
+        if(songs != null) {
+            final SongsListAdapter songListAdapter = new SongsListAdapter(getActivity(), songs);
+            listView.setAdapter(songListAdapter);
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
-                boolean result = musicService.playSongAsync(songs.get(position));
-                if(result) {
-                    Helpers.getToastHelper(getActivity()).sendToast("Now Playing: " + songs.get(position).getName());
-                    ((MainActivity)getActivity()).startNotificationService(view.findViewById(R.id.toolbar));
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view,
+                                        int position, long id) {
+                    boolean result = musicService.playSongAsync(songs.get(position));
+                    if (result) {
+                        Helpers.getToastHelper(getActivity()).sendToast("Now Playing: " + songs.get(position).getName());
+                        ((MainActivity) getActivity()).startNotificationService(view.findViewById(R.id.toolbar));
+                    }
                 }
-            }
-        });
+            });
+        }
     }
 
     @Override

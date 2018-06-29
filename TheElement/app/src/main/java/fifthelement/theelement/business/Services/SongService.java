@@ -33,6 +33,13 @@ public class SongService {
         playListPersistence = Services.getPlayListPersistence();
     }
 
+    public SongService(SongPersistence songPersistence, AlbumPersistence albumPersistence, AuthorPersistence authorPersistence, PlayListPersistence playListPersistence) {
+        this.songPersistence = songPersistence;
+        this.albumPersistence = albumPersistence;
+        this.authorPersistence = authorPersistence;
+        this.playListPersistence = playListPersistence;
+    }
+
     public Song getSongByUUID(UUID uuid) {
         return songPersistence.getSongByUUID(uuid);
     }

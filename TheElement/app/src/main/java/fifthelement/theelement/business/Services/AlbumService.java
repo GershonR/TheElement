@@ -25,6 +25,11 @@ public class AlbumService {
         songPersistence = Services.getSongPersistence();
     }
 
+    public AlbumService(AlbumPersistence albumPersistence, SongPersistence songPersistence) {
+        this.albumPersistence = albumPersistence;
+        this.songPersistence = songPersistence;
+    }
+
     public Album getAlbumByUUID(UUID uuid) {
         return albumPersistence.getAlbumByUUID(uuid);
     }

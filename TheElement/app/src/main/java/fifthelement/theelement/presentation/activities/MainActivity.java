@@ -20,6 +20,7 @@ import android.widget.TextView;
 
 import fifthelement.theelement.BuildConfig;
 import fifthelement.theelement.R;
+import fifthelement.theelement.application.Helpers;
 import fifthelement.theelement.application.Services;
 import fifthelement.theelement.business.services.SongService;
 import fifthelement.theelement.presentation.constants.NotificationConstants;
@@ -123,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void createSeeker() {
         SeekerFragment seeker = new SeekerFragment();//create the fragment instance
-        Services.getFragmentService(this).createFragment(R.id.music_seeker, seeker);
+        Helpers.getFragmentHelper(this).createFragment(R.id.music_seeker, seeker);
     }
 
     @Override

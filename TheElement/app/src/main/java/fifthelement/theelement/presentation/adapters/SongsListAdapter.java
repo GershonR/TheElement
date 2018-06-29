@@ -17,6 +17,7 @@ import android.widget.Toast;
 import java.util.List;
 
 import fifthelement.theelement.R;
+import fifthelement.theelement.application.Helpers;
 import fifthelement.theelement.application.Services;
 import fifthelement.theelement.objects.Author;
 import fifthelement.theelement.objects.Song;
@@ -27,6 +28,7 @@ public class SongsListAdapter extends BaseAdapter {
     Context context;
     List<Song> songs;
     LayoutInflater inflater;
+    private static final String LOG_TAG = "SongsListAdapter";
 
     public SongsListAdapter(Context context, List<Song> songs) {
         this.context = context;
@@ -64,6 +66,11 @@ public class SongsListAdapter extends BaseAdapter {
         songName.setText(printSong.getName());
         authorName.setText(authors);
         AppCompatImageButton button = view.findViewById(R.id.popup_button);
+        songOptions(activity, printSong, button);
+        return view;
+    }
+
+    private void songOptions(final MainActivity activity, final Song song, AppCompatImageButton button) {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -72,22 +79,30 @@ public class SongsListAdapter extends BaseAdapter {
                 activity.getMenuInflater().inflate(R.menu.song_list_item_menu, popup.getMenu());
                 popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     public boolean onMenuItemClick(MenuItem item) {
-                        try { // TODO: Possible code smell?
-                            Services.getToastService(context).sendToast("Deleted " + printSong.getName());
-                            activity.getSongService().deleteSong(printSong);
-                            songs.remove(printSong);
-                            notifyDataSetChanged();
-                        } catch(PersistenceException p) {
-                            Services.getToastService(context).sendToast("Could not delete " + printSong.getName());
-                            Log.e("SongListAdapter", p.getMessage());
-                        }
+                        deleteSong(song, activity);
                         return true;
                     }
                 });
                 popup.show();
             }
         });
-        return view;
+    }
+
+    private void deleteSong(Song song, MainActivity activity) {
+        try { // TODO: Possible code smell?
+            Helpers.getToastHelper(context).sendToast("Deleted " + song.getName());
+            if(Services.getMusicService().getCurrentSongPlaying() != null
+                    && Services.getMusicService().getCurrentSongPlaying().getUUID().equals(song.getUUID())) {
+                Services.getMusicService().reset();
+
+            }
+            activity.getSongService().deleteSong(song);
+            songs.remove(song);
+            notifyDataSetChanged();
+        } catch(PersistenceException p) {
+            Helpers.getToastHelper(context).sendToast("Could not delete " + song.getName());
+            Log.e(LOG_TAG, p.getMessage());
+        }
     }
 
     public void notifyDataSetChanged() {

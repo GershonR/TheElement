@@ -10,6 +10,7 @@ import android.os.IBinder;
 import android.os.PowerManager;
 import android.util.Log;
 
+import fifthelement.theelement.application.Helpers;
 import fifthelement.theelement.application.Services;
 import fifthelement.theelement.objects.Song;
 import fifthelement.theelement.presentation.fragments.SeekerFragment;
@@ -99,7 +100,7 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
             player.prepareAsync();
             currentSongPlaying = song;
         } catch(Exception e) {
-            Services.getToastService(getApplicationContext()).sendToast("Invalid Song!", "RED");
+            Helpers.getToastHelper(getApplicationContext()).sendToast("Invalid Song!", "RED");
             Log.e(LOG_TAG, e.getMessage());
             return false;
         }
@@ -120,6 +121,8 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
     // This function will reset the MediaPlayer instance and reset seekbar UI positions to start.
     public void reset() {
         player.reset();
+        seekTo(0);
+        playerPrepared = false;
     }
 
     // This function will start the private MediaPlayer instance (equivalent to 'Play').
@@ -130,7 +133,7 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
             }
             player.start();
         } else if(!playerPrepared) {
-            Services.getToastService(getApplicationContext()).sendToast("No Song Selected!", "RED");
+            Helpers.getToastHelper(getApplicationContext()).sendToast("No Song Selected!", "RED");
         }
     }
 

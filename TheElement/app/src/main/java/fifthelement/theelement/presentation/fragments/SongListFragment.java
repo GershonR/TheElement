@@ -14,6 +14,7 @@ import android.widget.ListView;
 import java.util.List;
 
 import fifthelement.theelement.R;
+import fifthelement.theelement.application.Helpers;
 import fifthelement.theelement.application.Services;
 import fifthelement.theelement.business.services.SongService;
 import fifthelement.theelement.objects.Song;
@@ -44,7 +45,7 @@ public class SongListFragment extends Fragment {
             listView.setAdapter(songListAdapter);
 
             sortSongsButton();
-            deleteSongsButton(listView);
+            playSong(listView);
 
         }
         return view;
@@ -60,7 +61,7 @@ public class SongListFragment extends Fragment {
         });
     }
 
-    private void deleteSongsButton(ListView listView) {
+    private void playSong(ListView listView) {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
 
@@ -69,7 +70,7 @@ public class SongListFragment extends Fragment {
                                     int position, long id) {
                 boolean result = musicService.playSongAsync(songs.get(position));
                 if(result) {
-                    Services.getToastService(getActivity()).sendToast("Now Playing: " + songs.get(position).getName());
+                    Helpers.getToastHelper(getActivity()).sendToast("Now Playing: " + songs.get(position).getName());
                     ((MainActivity)getActivity()).startNotificationService(view.findViewById(R.id.toolbar));
                 }
             }

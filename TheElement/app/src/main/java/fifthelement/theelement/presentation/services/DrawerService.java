@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.MenuItem;
 
 import fifthelement.theelement.R;
+import fifthelement.theelement.application.Helpers;
 import fifthelement.theelement.application.Services;
 import fifthelement.theelement.presentation.fragments.HomeFragment;
 import fifthelement.theelement.presentation.fragments.SearchFragment;
@@ -65,7 +66,7 @@ public class DrawerService {
             Log.e(LOG_TAG, e.getMessage());
         }
 
-        Services.getFragmentService(application).createFragment(R.id.flContent, fragment);
+        Helpers.getFragmentHelper(application).createFragment(R.id.flContent, fragment);
 
         // Highlight the selected item has been done by NavigationView
         menuItem.setChecked(true);

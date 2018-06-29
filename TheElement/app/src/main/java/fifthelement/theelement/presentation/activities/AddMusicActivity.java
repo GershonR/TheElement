@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
+import fifthelement.theelement.application.Helpers;
 import fifthelement.theelement.application.Services;
 import fifthelement.theelement.business.services.AlbumService;
 import fifthelement.theelement.business.services.AuthorService;
@@ -60,12 +61,12 @@ public class AddMusicActivity extends AppCompatActivity {
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
                     openFileExplorer();
-                    Services.getToastService(getApplicationContext()).sendToast("Permission Granted");
+                    Helpers.getToastHelper(getApplicationContext()).sendToast("Permission Granted");
 
                 } else {
                     Intent intent = new Intent(AddMusicActivity.this, MainActivity.class);
                     AddMusicActivity.this.startActivity(intent);
-                    Services.getToastService(getApplicationContext()).sendToast("Permission Denied", "RED");
+                    Helpers.getToastHelper(getApplicationContext()).sendToast("Permission Denied", "RED");
                 }
                 return;
             }
@@ -90,7 +91,7 @@ public class AddMusicActivity extends AppCompatActivity {
         try {
             startActivityForResult(fileintent, PICKFILE_RESULT_CODE);
         } catch (ActivityNotFoundException e) {
-            Log.e("tag", "No activity can handle picking a file. Showing alternatives.");
+            Log.e(LOG_TAG, "No activity can handle picking a file. Showing alternatives.");
         }
     }
 
@@ -115,11 +116,10 @@ public class AddMusicActivity extends AppCompatActivity {
             songArtist = metaRetriver.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ARTIST);
             songGenre = metaRetriver.extractMetadata(MediaMetadataRetriever.METADATA_KEY_GENRE);
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            Log.e(LOG_TAG, e.getMessage());
         }
+
         createSong(path, songName, songArtist, songAlbum, songGenre);
-
-
     }
 
     private void createSong(Uri path, String songName, String songArtist, String songAlbum, String songGenre) {
@@ -146,15 +146,15 @@ public class AddMusicActivity extends AppCompatActivity {
             if(songGenre != null)
                 song.setGenre(songGenre);
             songService.insertSong(song);
-            Services.getToastService(getApplicationContext()).sendToast("Added " + song.getName(), "GREEN");
+            Helpers.getToastHelper(getApplicationContext()).sendToast("Added " + song.getName(), "GREEN");
         } catch (PersistenceException p) {
-            Services.getToastService(getApplicationContext()).sendToast("Error saving song!", "RED");
+            Helpers.getToastHelper(getApplicationContext()).sendToast("Error saving song!", "RED");
             Log.e(LOG_TAG, p.getMessage());
         } catch (SongAlreadyExistsException s) {
-            Services.getToastService(getApplicationContext()).sendToast("Song already exists!", "RED");
+            Helpers.getToastHelper(getApplicationContext()).sendToast("Song already exists!", "RED");
             Log.e(LOG_TAG, s.getMessage());
         } catch (Exception e) {
-            Services.getToastService(getApplicationContext()).sendToast("Could not get the songs path!", "RED");
+            Helpers.getToastHelper(getApplicationContext()).sendToast("Could not get the songs path!", "RED");
             Log.e(LOG_TAG, e.getMessage());
         }
     }

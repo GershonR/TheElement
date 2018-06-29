@@ -6,27 +6,13 @@ import android.support.v7.app.AppCompatActivity;
 import fifthelement.theelement.business.services.AlbumService;
 import fifthelement.theelement.business.services.AuthorService;
 import fifthelement.theelement.presentation.services.DrawerService;
-import fifthelement.theelement.presentation.services.FragmentService;
 import fifthelement.theelement.presentation.services.MusicService;
-import fifthelement.theelement.presentation.services.ToastService;
 
 public class Services {
-    private static ToastService toastService = null;
     private static DrawerService drawerService = null;
-    private static FragmentService fragmentService = null;
     private static MusicService musicService = null;
     private static AuthorService authorService = null;
     private static AlbumService albumService = null;
-
-
-    public static synchronized ToastService getToastService(Context context) {
-
-        if (toastService == null) {
-            toastService = new ToastService(context);
-        }
-
-        return toastService;
-    }
 
     public static synchronized DrawerService getDrawerService(AppCompatActivity appCompatActivity) {
 
@@ -34,14 +20,6 @@ public class Services {
              drawerService = new DrawerService(appCompatActivity);
 
         return drawerService;
-    }
-
-    public static synchronized FragmentService getFragmentService(AppCompatActivity appCompatActivity) {
-
-        if(fragmentService == null || appCompatActivity.hashCode() != fragmentService.getApplicationHashCode())
-                fragmentService = new FragmentService(appCompatActivity);
-
-        return fragmentService;
     }
 
     public static synchronized AuthorService getAuthorService() {

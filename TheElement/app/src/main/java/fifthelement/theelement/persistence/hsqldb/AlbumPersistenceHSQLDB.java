@@ -22,7 +22,6 @@ public class AlbumPersistenceHSQLDB implements AlbumPersistence {
 
     public AlbumPersistenceHSQLDB(final String dbPath) {
         try {
-            System.out.println("DB PATH: " + dbPath);
             this.c = DriverManager.getConnection("jdbc:hsqldb:file:" + dbPath, "SA", "");
         } catch (final SQLException e) {
             throw new PersistenceException(e);
@@ -30,7 +29,6 @@ public class AlbumPersistenceHSQLDB implements AlbumPersistence {
     }
 
     private Album fromResultSet(final ResultSet rs) throws SQLException {
-        System.out.println("Got result set");
         final UUID albumUUID = UUID.fromString(rs.getString("albumUUID"));
         final String albumName = rs.getString("albumName");
         final String authorUUID = rs.getString("authorUUID");

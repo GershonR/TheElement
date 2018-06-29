@@ -21,7 +21,6 @@ public class SongPersistenceHSQLDB implements SongPersistence {
 
     public SongPersistenceHSQLDB(final String dbPath) {
         try {
-            System.out.println("DB PATH: " + dbPath);
             this.c = DriverManager.getConnection("jdbc:hsqldb:file:" + dbPath, "SA", "");
         } catch (final SQLException e) {
             throw new PersistenceException(e);
@@ -37,14 +36,10 @@ public class SongPersistenceHSQLDB implements SongPersistence {
         final String albumUUID = rs.getString("albumUUID");
         Author songAuthor = null;
         Album songAlbum = null;
-        System.out.println(authorUUID.length());
-        System.out.println(albumUUID.length());
         if(authorUUID != null && authorUUID.length() == 36)
             songAuthor = new Author(UUID.fromString(authorUUID), "");
-        if(albumUUID != null && albumUUID.length() == 36) {
-            System.out.println("Creating a new album");
+        if(albumUUID != null && albumUUID.length() == 36)
             songAlbum = new Album(UUID.fromString(albumUUID), "");
-        }
         final String songGenre = rs.getString("songGenre");
         return new Song(songUUID, songName, songPath, songAuthor, songAlbum, songGenre);
     }

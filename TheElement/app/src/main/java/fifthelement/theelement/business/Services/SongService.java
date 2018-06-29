@@ -52,9 +52,6 @@ public class SongService {
                 if(song.getAuthor() != null)
                     song.setAuthor(authorPersistence.getAuthorByUUID(song.getAuthor().getUUID()));
                 if(song.getAlbum() != null) {
-                    System.out.println("Setting a new album");
-                    Album a = albumPersistence.getAlbumByUUID(song.getAlbum().getUUID());
-                    System.out.println(a.getName());
                     song.setAlbum(albumPersistence.getAlbumByUUID(song.getAlbum().getUUID()));
                 }
             }

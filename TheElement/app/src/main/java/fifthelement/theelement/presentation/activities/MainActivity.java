@@ -103,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void startNotificationService(View v) {
         Intent serviceIntent = new Intent(MainActivity.this, NotificationService.class);
-        serviceIntent.setAction(NotificationConstants.ACTION.STARTFOREGROUND_ACTION);
+        serviceIntent.setAction(NotificationConstants.STARTFOREGROUND_ACTION);
         startService(serviceIntent);
     }
 

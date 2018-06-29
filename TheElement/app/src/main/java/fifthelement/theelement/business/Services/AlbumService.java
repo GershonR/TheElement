@@ -7,6 +7,7 @@ import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import fifthelement.theelement.application.Persistence;
 import fifthelement.theelement.application.Services;
 import fifthelement.theelement.objects.Album;
 import fifthelement.theelement.objects.Author;
@@ -21,8 +22,8 @@ public class AlbumService {
     private SongPersistence songPersistence;
 
     public AlbumService() {
-        albumPersistence = Services.getAlbumPersistence();
-        songPersistence = Services.getSongPersistence();
+        albumPersistence = Persistence.getAlbumPersistence();
+        songPersistence = Persistence.getSongPersistence();
     }
 
     public AlbumService(AlbumPersistence albumPersistence, SongPersistence songPersistence) {

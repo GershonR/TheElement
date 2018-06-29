@@ -7,6 +7,7 @@ import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import fifthelement.theelement.application.Persistence;
 import fifthelement.theelement.application.Services;
 import fifthelement.theelement.business.exceptions.SongAlreadyExistsException;
 import fifthelement.theelement.objects.Album;
@@ -29,10 +30,10 @@ public class SongService {
     private List<Song> songs;
 
     public SongService() {
-        songPersistence = Services.getSongPersistence();
-        albumPersistence = Services.getAlbumPersistence();
-        authorPersistence = Services.getAuthorPersistence();
-        playListPersistence = Services.getPlayListPersistence();
+        songPersistence = Persistence.getSongPersistence();
+        albumPersistence = Persistence.getAlbumPersistence();
+        authorPersistence = Persistence.getAuthorPersistence();
+        playListPersistence = Persistence.getPlayListPersistence();
     }
 
     public SongService(SongPersistence songPersistence, AlbumPersistence albumPersistence, AuthorPersistence authorPersistence, PlayListPersistence playListPersistence) {

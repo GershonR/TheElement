@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import fifthelement.theelement.application.Persistence;
 import fifthelement.theelement.application.Services;
 import fifthelement.theelement.objects.Album;
 import fifthelement.theelement.objects.Author;
@@ -34,7 +35,7 @@ public class AlbumPersistenceHSQLDB implements AlbumPersistence {
         final String authorUUID = rs.getString("authorUUID");
         Author author = null;
         if(authorUUID != null)
-            author = Services.getAuthorPersistence().getAuthorByUUID(UUID.fromString(authorUUID));
+            author = Persistence.getAuthorPersistence().getAuthorByUUID(UUID.fromString(authorUUID));
         final List<Song> songs = null;
         return new Album(albumUUID, albumName, author, songs);
     }

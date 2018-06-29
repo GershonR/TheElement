@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Binder;
 import android.os.IBinder;
 import android.os.PowerManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -33,6 +34,8 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
     private Song currentSongPlaying;
     private final IBinder musicBind = new MusicBinder();
     private SeekerFragment.PlaybackStartStopListener playbackListener;
+
+    private static final String LOG_TAG = "MusicService";
 
     //This function is called when the service is bound, it will return a MusicBinder instance
     @Override
@@ -105,7 +108,7 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
             currentSongPlaying = song;
         } catch(Exception e) {
             Services.getToastService(getApplicationContext()).sendToast("Invalid Song!", "RED");
-            e.printStackTrace();
+            Log.e(LOG_TAG, e.getMessage());
             return false;
         }
         playerPrepared = false;

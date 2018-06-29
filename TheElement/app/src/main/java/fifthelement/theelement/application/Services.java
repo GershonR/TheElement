@@ -25,11 +25,6 @@ import fifthelement.theelement.presentation.services.MusicService;
 import fifthelement.theelement.presentation.services.ToastService;
 
 public class Services {
-    private static SongPersistence songPersistence = null;
-    private static AlbumPersistence albumPersistence = null;
-    private static AuthorPersistence authorPersistence = null;
-    private static PlayListPersistence playListPersistence = null;
-
     private static ToastService toastService = null;
     private static DrawerService drawerService = null;
     private static FragmentService fragmentService = null;
@@ -37,32 +32,6 @@ public class Services {
     private static AuthorService authorService = null;
     private static AlbumService albumService = null;
 
-    public static synchronized SongPersistence getSongPersistence() {
-
-        if (songPersistence == null) {
-            songPersistence = new SongPersistenceHSQLDB(Main.getDBPathName());
-        }
-
-        return songPersistence;
-    }
-
-    public static synchronized AlbumPersistence getAlbumPersistence() {
-
-        if (albumPersistence == null) {
-            albumPersistence = new AlbumPersistenceHSQLDB(Main.getDBPathName());
-        }
-
-        return albumPersistence;
-    }
-
-    public static synchronized AuthorPersistence getAuthorPersistence() {
-
-        if (authorPersistence == null) {
-            authorPersistence = new AuthorPersistenceHSQLDB(Main.getDBPathName());
-        }
-
-        return authorPersistence;
-    }
 
     public static synchronized ToastService getToastService(Context context) {
 
@@ -87,17 +56,6 @@ public class Services {
                 fragmentService = new FragmentService(appCompatActivity);
 
         return fragmentService;
-    }
-
-
-
-    public static synchronized PlayListPersistence getPlayListPersistence() {
-
-        if( playListPersistence == null ) {
-            playListPersistence = new PlayListPersistenceStub();
-        }
-
-        return playListPersistence;
     }
 
     public static synchronized AuthorService getAuthorService() {

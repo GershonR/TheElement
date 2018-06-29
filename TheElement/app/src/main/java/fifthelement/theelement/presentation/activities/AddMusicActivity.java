@@ -31,6 +31,7 @@ public class AddMusicActivity extends AppCompatActivity {
     private static final int CHOOSE_FILE_REQUESTCODE = 8777;
     private static final int PICKFILE_RESULT_CODE = 8778;
     private static final int PICKFILE_REQUEST_CODE = 1;
+    private static final String LOG_TAG = "AddMusicActivity";
 
     SongService songService;
     AlbumService albumService;
@@ -80,8 +81,7 @@ public class AddMusicActivity extends AppCompatActivity {
         switch (requestCode) {
             case PICKFILE_RESULT_CODE:
                 if (resultCode == RESULT_OK) {
-                    String FilePath = data.getData().getPath();
-                    getMusicData(data.getData());
+                    setupSong(data.getData());
                 }
         }
         Intent intent = new Intent(AddMusicActivity.this, MainActivity.class);
@@ -99,7 +99,7 @@ public class AddMusicActivity extends AppCompatActivity {
     }
 
 
-    private void getMusicData(Uri path) {
+    private void setupSong(Uri path) {
         metaRetriver = new MediaMetadataRetriever();
         metaRetriver.setDataSource(getApplication(), path);
 
@@ -121,7 +121,12 @@ public class AddMusicActivity extends AppCompatActivity {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+        createSong(path, songName, songArtist, songAlbum, songGenre);
 
+
+    }
+
+    private void createSong(Uri path, String songName, String songArtist, String songAlbum, String songGenre) {
         // TODO: Fix Code Smell
         try {
             String realPath = PathUtil.getPath(getApplicationContext(), path);
@@ -148,11 +153,13 @@ public class AddMusicActivity extends AppCompatActivity {
             Services.getToastService(getApplicationContext()).sendToast("Added " + song.getName(), "GREEN");
         } catch (PersistenceException p) {
             Services.getToastService(getApplicationContext()).sendToast("Error saving song!", "RED");
-            System.out.println(p.getMessage());
+            Log.e(LOG_TAG, p.getMessage());
         } catch (SongAlreadyExistsException s) {
             Services.getToastService(getApplicationContext()).sendToast("Song already exists!", "RED");
+            Log.e(LOG_TAG, s.getMessage());
         } catch (Exception e) {
             Services.getToastService(getApplicationContext()).sendToast("Could not get the songs path!", "RED");
+            Log.e(LOG_TAG, e.getMessage());
         }
     }
 

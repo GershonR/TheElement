@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 
 import fifthelement.theelement.R;
@@ -18,6 +19,8 @@ public class DrawerService {
     AppCompatActivity application;
     private NavigationView nvDrawer;
     private DrawerLayout mDrawer;
+
+    private static final String LOG_TAG = "DrawerService";
 
     public DrawerService(AppCompatActivity application) {
         this.application = application;
@@ -59,7 +62,7 @@ public class DrawerService {
         try {
             fragment = (Fragment) fragmentClass.newInstance();
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e(LOG_TAG, e.getMessage());
         }
 
         Services.getFragmentService(application).createFragment(R.id.flContent, fragment);

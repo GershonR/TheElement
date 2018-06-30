@@ -85,7 +85,7 @@ public class SongListFragment extends Fragment {
     }
 
     @Override
-    public void onResume() { // TODO: Try and figure out why the list wont get updated when you add a song
+    public void onResume() {
         super.onResume();
         if(songListAdapter != null) {
             songs = songService.getSongs();

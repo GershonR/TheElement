@@ -28,6 +28,8 @@ public class NotificationService extends Service {
 
     Notification status;
     MusicService musicService;
+    RemoteViews views;
+    RemoteViews bigViews;
 
     private static final String LOG_TAG = "NotificationService";
 
@@ -48,8 +50,8 @@ public class NotificationService extends Service {
         if (intent.getAction().equals(NotificationConstants.STARTFOREGROUND_ACTION)) {
             buildNotification();
         } else if (intent.getAction().equals(NotificationConstants.PREV_ACTION)) {
-            Toast.makeText(this, "Clicked Previous", Toast.LENGTH_SHORT).show();
-            Log.i(LOG_TAG, "Clicked Previous");
+            musicService.prev();
+            buildNotification();
         } else if (intent.getAction().equals(NotificationConstants.PLAY_ACTION)) {
             if (musicService.isPlaying()) {
                 showPlay();
@@ -59,8 +61,8 @@ public class NotificationService extends Service {
                 musicService.start();
             }
         } else if (intent.getAction().equals(NotificationConstants.NEXT_ACTION)) {
-            Toast.makeText(this, "Clicked Next", Toast.LENGTH_SHORT).show();
-            Log.i(LOG_TAG, "Clicked Next");
+            musicService.skip();
+            buildNotification();
         } else if (intent.getAction().equals(NotificationConstants.STOPFOREGROUND_ACTION)) {
             Services.getMusicService().pause();
             stopForeground(true);
@@ -72,9 +74,9 @@ public class NotificationService extends Service {
     private void buildNotification() {
         musicService = Services.getMusicService();
         // Using RemoteViews to bind custom layouts into Notification
-        RemoteViews views = new RemoteViews(getPackageName(),
+        views = new RemoteViews(getPackageName(),
                 R.layout.status_bar);
-        RemoteViews bigViews = new RemoteViews(getPackageName(),
+        bigViews = new RemoteViews(getPackageName(),
                 R.layout.status_bar_expanded);
 
         // showing default album image

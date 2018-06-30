@@ -45,6 +45,7 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
         songService = ((MainActivity)getActivity()).getSongService();
         musicService = ((MainActivity)getActivity()).getMusicService();
         songs = songService.getSongs();
+        musicService.setSongs(songs);
 
         view = inflater.inflate(R.layout.search_fragment, container, false);
         ListView listView = view.findViewById(R.id.search_song_list_view_item);
@@ -73,9 +74,8 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view,
                                         int position, long id) {
-                    boolean result = musicService.playSongAsync(songs.get(position));
+                    boolean result = musicService.playSongAsync(songs.get(position), position);
                     if(result) {
-                        Helpers.getToastHelper(getActivity()).sendToast("Now Playing: " + songs.get(position).getName());
                         ((MainActivity)getActivity()).startNotificationService(view.findViewById(R.id.toolbar));
                     }
                 }

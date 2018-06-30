@@ -60,6 +60,7 @@ public class SongListFragment extends Fragment {
         buttonOrganize.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v) {
                 songService.sortSongs(songs);
+                musicService.setSongs(songs);
                 refreshAdapter();
             }
         });
@@ -74,9 +75,8 @@ public class SongListFragment extends Fragment {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view,
                                         int position, long id) {
-                    boolean result = musicService.playSongAsync(songs.get(position));
+                    boolean result = musicService.playSongAsync(songs.get(position), position);
                     if (result) {
-                        Helpers.getToastHelper(getActivity()).sendToast("Now Playing: " + songs.get(position).getName());
                         ((MainActivity) getActivity()).startNotificationService(view.findViewById(R.id.toolbar));
                     }
                 }
@@ -89,6 +89,7 @@ public class SongListFragment extends Fragment {
         super.onResume();
         if(songListAdapter != null) {
             songs = songService.getSongs();
+            musicService.setSongs(songs);
             refreshAdapter();
         }
     }

@@ -24,6 +24,7 @@ import fifthelement.theelement.presentation.adapters.SongsListAdapter;
 
 public class SongListFragment extends Fragment {
     private View view;
+    private ListView listView;
     private SongService songService;
     private MusicService musicService;
     private SongsListAdapter songListAdapter;
@@ -35,16 +36,23 @@ public class SongListFragment extends Fragment {
         songService = ((MainActivity)getActivity()).getSongService();
         musicService = Services.getMusicService();
         songs = songService.getSongs();
+        displayView(inflater, container);
+        return view;
+    }
 
+    private void displayView(LayoutInflater inflater, ViewGroup container) {
         view = inflater.inflate(R.layout.song_list_fragment, container, false);
-        ListView listView = (ListView) view.findViewById(R.id.song_list_view);
+        listView = (ListView) view.findViewById(R.id.song_list_view);
 
-        songListAdapter = new SongsListAdapter(getActivity(), songs);
-        listView.setAdapter(songListAdapter);
+        refreshAdapter();
 
         sortSongsButton();
         playSong(listView);
-        return view;
+    }
+
+    private void refreshAdapter() {
+        songListAdapter = new SongsListAdapter(getActivity(), songs);
+        listView.setAdapter(songListAdapter);
     }
 
     private void sortSongsButton() {
@@ -52,7 +60,7 @@ public class SongListFragment extends Fragment {
         buttonOrganize.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v) {
                 songService.sortSongs(songs);
-                songListAdapter.notifyDataSetChanged();
+                refreshAdapter();
             }
         });
     }
@@ -81,8 +89,7 @@ public class SongListFragment extends Fragment {
         super.onResume();
         if(songListAdapter != null) {
             songs = songService.getSongs();
-            songListAdapter.notifyDataSetChanged();
-            Log.e("DEBUG", "onResume of SongListFragment");
+            refreshAdapter();
         }
     }
 

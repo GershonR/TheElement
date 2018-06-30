@@ -20,8 +20,8 @@
 
         <ImageButton
             android:id="@+id/button_play_pause"
-            android:layout_width="65dp"
-            android:layout_height="65dp"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
             android:adjustViewBounds="false"
             android:background="@android:color/transparent"
             android:cropToPadding="false"

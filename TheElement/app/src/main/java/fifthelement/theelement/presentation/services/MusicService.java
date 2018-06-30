@@ -178,6 +178,9 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
             } else {
                 playSongAsync(songs.get(currentSongPlayingIndex), currentSongPlayingIndex);
             }
+            if(notificationPlaybackListener != null){
+                notificationPlaybackListener.onSkip();
+            }
         }
     }
 
@@ -189,6 +192,9 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
                 playSongAsync(songs.get(songs.size() - 1), songs.size() - 1);
             } else {
                 playSongAsync(songs.get(currentSongPlayingIndex), currentSongPlayingIndex);
+            }
+            if(notificationPlaybackListener != null){
+                notificationPlaybackListener.onSkip();
             }
         }
     }

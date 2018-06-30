@@ -44,6 +44,7 @@ public class NotificationService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         musicService = Services.getMusicService();
+        musicService.setNotificationPlaybackListener(new NotificationPlaybackStartStopListener());
         if (intent.getAction().equals(NotificationConstants.STARTFOREGROUND_ACTION)) {
             buildNotification();
         } else if (intent.getAction().equals(NotificationConstants.PREV_ACTION)) {
@@ -194,6 +195,16 @@ public class NotificationService extends Service {
         status.contentView = views;
         status.bigContentView = bigViews;
         startForeground(NotificationConstants.NOTIFICATION_ID, status);
+    }
+
+    public class NotificationPlaybackStartStopListener {
+        public void onPlaybackStart(){
+            showPause();
+        }
+
+        public void onPlaybackStop() {
+            showPlay();
+        }
     }
 
 }

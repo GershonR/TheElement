@@ -42,6 +42,8 @@ public class SeekerFragment extends Fragment {
 
     private void initializeUI() {
         final ImageButton mPlayButton = view.findViewById(R.id.button_play_pause);
+        final ImageButton mSkipButton = view.findViewById(R.id.button_next);
+        final ImageButton mPrevButton = view.findViewById(R.id.button_prev);
         mSeekbarAudio = view.findViewById(R.id.seekbar_audio);
 
         if(!musicService.isPlaying()) {
@@ -63,6 +65,22 @@ public class SeekerFragment extends Fragment {
                             stopUpdatingCallbackWithPosition(false);
                             musicService.pause();
                         }
+                    }
+                });
+
+        mSkipButton.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        musicService.skip();
+                    }
+                });
+
+        mPrevButton.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        musicService.prev();
                     }
                 });
     }

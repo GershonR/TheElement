@@ -28,6 +28,9 @@ public class NotificationService extends Service {
 
     Notification status;
     MusicService musicService;
+    RemoteViews views;
+    RemoteViews bigViews;
+    NotificationManager manager;
 
     private static final String LOG_TAG = "NotificationService";
 
@@ -48,8 +51,8 @@ public class NotificationService extends Service {
         if (intent.getAction().equals(NotificationConstants.STARTFOREGROUND_ACTION)) {
             buildNotification();
         } else if (intent.getAction().equals(NotificationConstants.PREV_ACTION)) {
-            Toast.makeText(this, "Clicked Previous", Toast.LENGTH_SHORT).show();
-            Log.i(LOG_TAG, "Clicked Previous");
+            musicService.prev();
+            buildNotification();
         } else if (intent.getAction().equals(NotificationConstants.PLAY_ACTION)) {
             if (musicService.isPlaying()) {
                 showPlay();
@@ -59,8 +62,8 @@ public class NotificationService extends Service {
                 musicService.start();
             }
         } else if (intent.getAction().equals(NotificationConstants.NEXT_ACTION)) {
-            Toast.makeText(this, "Clicked Next", Toast.LENGTH_SHORT).show();
-            Log.i(LOG_TAG, "Clicked Next");
+            musicService.skip();
+            buildNotification();
         } else if (intent.getAction().equals(NotificationConstants.STOPFOREGROUND_ACTION)) {
             Services.getMusicService().pause();
             stopForeground(true);
@@ -72,9 +75,9 @@ public class NotificationService extends Service {
     private void buildNotification() {
         musicService = Services.getMusicService();
         // Using RemoteViews to bind custom layouts into Notification
-        RemoteViews views = new RemoteViews(getPackageName(),
+        views = new RemoteViews(getPackageName(),
                 R.layout.status_bar);
-        RemoteViews bigViews = new RemoteViews(getPackageName(),
+        bigViews = new RemoteViews(getPackageName(),
                 R.layout.status_bar_expanded);
 
         // showing default album image
@@ -139,18 +142,23 @@ public class NotificationService extends Service {
             if(musicService.getCurrentSongPlaying().getAuthor() != null) {
                 views.setTextViewText(R.id.status_bar_artist_name, musicService.getCurrentSongPlaying().getAuthor().getName());
                 bigViews.setTextViewText(R.id.status_bar_artist_name, musicService.getCurrentSongPlaying().getAuthor().getName());
+            } else {
+                views.setTextViewText(R.id.status_bar_artist_name, "");
+                bigViews.setTextViewText(R.id.status_bar_artist_name, "");
             }
 
             if(musicService.getCurrentSongPlaying().getAlbum() != null)
                 bigViews.setTextViewText(R.id.status_bar_album_name, musicService.getCurrentSongPlaying().getAlbum().getName());
+            else
+                bigViews.setTextViewText(R.id.status_bar_album_name, "");
         }
     }
 
     private void showNotification(RemoteViews views, RemoteViews bigViews, PendingIntent pendingIntent) {
+        manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) { // Make this work on Oreo
             NotificationChannel notificationChannel = new NotificationChannel(NotificationConstants.CHANNEL_ID, NotificationConstants.CHANNEL_ID, NotificationManager.IMPORTANCE_DEFAULT);
             notificationChannel.setLockscreenVisibility(Notification.VISIBILITY_PUBLIC);
-            NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
             manager.createNotificationChannel(notificationChannel);
             status = new Notification.Builder(this, NotificationConstants.CHANNEL_ID)
                     .setSmallIcon(R.drawable.ic_launcher_theelement)
@@ -168,33 +176,27 @@ public class NotificationService extends Service {
 
 
     public void showPause() {
-        RemoteViews views = new RemoteViews(getPackageName(),
-                R.layout.status_bar);
-        RemoteViews bigViews = new RemoteViews(getPackageName(),
-                R.layout.status_bar_expanded);
-
-        views.setImageViewResource(R.id.status_bar_play,
-                R.drawable.ic_pause);
-        bigViews.setImageViewResource(R.id.status_bar_play,
-                R.drawable.ic_pause);
-        status.contentView = views;
-        status.bigContentView = bigViews;
-        startForeground(NotificationConstants.NOTIFICATION_ID, status);
+        if(status != null && manager != null) {
+            bigViews.setImageViewResource(R.id.status_bar_play, R.drawable.ic_pause);
+            views.setImageViewResource(R.id.status_bar_play, R.drawable.ic_pause);
+            manager.notify(NotificationConstants.NOTIFICATION_ID, status);
+        }
     }
 
     public void showPlay() {
-        RemoteViews views = new RemoteViews(getPackageName(),
-                R.layout.status_bar);
-        RemoteViews bigViews = new RemoteViews(getPackageName(),
-                R.layout.status_bar_expanded);
+        if(status != null && manager != null) {
+            bigViews.setImageViewResource(R.id.status_bar_play, R.drawable.ic_play);
+            views.setImageViewResource(R.id.status_bar_play, R.drawable.ic_play);
+            manager.notify(NotificationConstants.NOTIFICATION_ID, status);
+        }
+    }
 
-        views.setImageViewResource(R.id.status_bar_play,
-                R.drawable.ic_play);
-        bigViews.setImageViewResource(R.id.status_bar_play,
-                R.drawable.ic_play);
-        status.contentView = views;
-        status.bigContentView = bigViews;
-        startForeground(NotificationConstants.NOTIFICATION_ID, status);
+    public void updateSong() {
+        if(status != null && manager != null) {
+            createNotificationDisplay(views, bigViews);
+            manager.notify(NotificationConstants.NOTIFICATION_ID, status);
+
+        }
     }
 
     public class NotificationPlaybackStartStopListener {
@@ -204,6 +206,10 @@ public class NotificationService extends Service {
 
         public void onPlaybackStop() {
             showPlay();
+        }
+
+        public void onSkip() {
+            updateSong();
         }
     }
 

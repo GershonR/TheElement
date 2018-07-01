@@ -10,8 +10,12 @@ import android.os.IBinder;
 import android.os.PowerManager;
 import android.util.Log;
 
+import java.util.List;
+
+import fifthelement.theelement.R;
 import fifthelement.theelement.application.Helpers;
 import fifthelement.theelement.objects.Song;
+import fifthelement.theelement.presentation.activities.MainActivity;
 import fifthelement.theelement.presentation.fragments.SeekerFragment;
 
 
@@ -23,7 +27,9 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
 
     private MediaPlayer player;
     private boolean playerPrepared;
+    private List<Song> songs;
     private Song currentSongPlaying;
+    private int currentSongPlayingIndex;
     private final IBinder musicBind = new MusicBinder();
     private SeekerFragment.SeekerPlaybackStartStopListener seekerPlaybackListener;
     private NotificationService.NotificationPlaybackStartStopListener notificationPlaybackListener;
@@ -94,10 +100,10 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
     }
 
     // This function will attempt to set the media player up asynchronously and play the media.
-    public boolean playSongAsync(Song song) {
+    public boolean playSongAsync(Song song, int index) {
         reset();
         Uri uri = Uri.parse(song.getPath());
-
+        currentSongPlayingIndex = index;
         try {
             player.setDataSource(getApplication(), uri);
             player.prepareAsync();
@@ -115,6 +121,7 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
             public void onPrepared(MediaPlayer player) {
                 playerPrepared = true;
                 start();
+                Helpers.getToastHelper(getApplicationContext()).sendToast("Now Playing: " + currentSongPlaying.getName());
             }
 
         });
@@ -159,6 +166,36 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
                 notificationPlaybackListener.onPlaybackStop();
             }
             player.pause();
+        }
+    }
+
+    // Skips to the next song in the list
+    public void skip() {
+        if(songs != null) {
+            currentSongPlayingIndex++;
+            if (currentSongPlayingIndex > songs.size() - 1) {
+                playSongAsync(songs.get(0), 0);
+            } else {
+                playSongAsync(songs.get(currentSongPlayingIndex), currentSongPlayingIndex);
+            }
+            if(notificationPlaybackListener != null){
+                notificationPlaybackListener.onSkip();
+            }
+        }
+    }
+
+    // Skips to the previous song in the list
+    public void prev() {
+        if(songs != null) {
+            currentSongPlayingIndex--;
+            if (currentSongPlayingIndex <= 0) {
+                playSongAsync(songs.get(songs.size() - 1), songs.size() - 1);
+            } else {
+                playSongAsync(songs.get(currentSongPlayingIndex), currentSongPlayingIndex);
+            }
+            if(notificationPlaybackListener != null){
+                notificationPlaybackListener.onSkip();
+            }
         }
     }
 
@@ -211,5 +248,17 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
         public MusicService getService() {
             return MusicService.this;
         }
+    }
+
+    public int getCurrentSongPlayingIndex() {
+        return currentSongPlayingIndex;
+    }
+
+    public List<Song> getSongs() {
+        return songs;
+    }
+
+    public void setSongs(List<Song> songs) {
+        this.songs = songs;
     }
 }

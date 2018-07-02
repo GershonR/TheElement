@@ -2,8 +2,8 @@ apply plugin: 'com.android.application'
 
 def versionMajor = 1 // bump for each iteration
 def versionMinor = 7 // bump for each merge
-def versionPatch = 1 // bump for each hotfix
-def versionBuild = 9 // bump for dogfood builds, changes on your local
+def versionPatch = 2 // bump for each hotfix
+def versionBuild = 0 // bump for dogfood builds, changes on your local
 
 android {
     compileSdkVersion 27

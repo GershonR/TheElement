@@ -33,6 +33,7 @@ public class NotificationService extends Service {
     NotificationManager manager;
 
     private static final String LOG_TAG = "NotificationService";
+    private static final int NOTIFICATION_ID = 666;
 
     @Override
     public void onDestroy() {
@@ -212,5 +213,4 @@ public class NotificationService extends Service {
             updateSong();
         }
     }
-
 }

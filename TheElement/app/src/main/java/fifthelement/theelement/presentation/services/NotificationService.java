@@ -33,7 +33,7 @@ public class NotificationService extends Service {
     NotificationManager manager;
 
     private static final String LOG_TAG = "NotificationService";
-
+    
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -212,5 +212,4 @@ public class NotificationService extends Service {
             updateSong();
         }
     }
-
 }

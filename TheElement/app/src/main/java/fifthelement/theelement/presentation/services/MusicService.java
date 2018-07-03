@@ -194,7 +194,7 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
     public void prev() {
         if(songs != null) {
             currentSongPlayingIndex--;
-            if (currentSongPlayingIndex <= 0) {
+            if (currentSongPlayingIndex < 0) {
                 playSongAsync(songs.get(songs.size() - 1), songs.size() - 1);
                 currentSongPlayingIndex = songs.size() - 1;
             } else {

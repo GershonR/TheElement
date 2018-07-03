@@ -2,6 +2,7 @@ package fifthelement.theelement.presentation.adapters;
 
 import android.app.Activity;
 import android.content.Context;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.AppCompatImageButton;
 import android.support.v7.widget.PopupMenu;
 import android.util.Log;
@@ -12,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.List;
 
@@ -23,6 +23,9 @@ import fifthelement.theelement.objects.Author;
 import fifthelement.theelement.objects.Song;
 import fifthelement.theelement.persistence.hsqldb.PersistenceException;
 import fifthelement.theelement.presentation.activities.MainActivity;
+import fifthelement.theelement.presentation.fragments.SearchFragment;
+import fifthelement.theelement.presentation.fragments.SongInfoFragment;
+import fifthelement.theelement.presentation.fragments.SongListFragment;
 
 public class SongsListAdapter extends BaseAdapter {
     Context context;
@@ -79,7 +82,22 @@ public class SongsListAdapter extends BaseAdapter {
                 activity.getMenuInflater().inflate(R.menu.song_list_item_menu, popup.getMenu());
                 popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     public boolean onMenuItemClick(MenuItem item) {
-                        deleteSong(song, activity);
+                        if(item.getItemId() == R.id.add_song){
+                            deleteSong(song, activity);
+                        }
+                        if(item.getItemId() == R.id.song_info){
+                            Class lass = SearchFragment.class;
+                            Fragment fragment = null;
+                            try{
+                                SongInfoFragment songInfoFragment = SongInfoFragment.newInstance();
+                                songInfoFragment.setSong(song);
+                                fragment = (Fragment) songInfoFragment;
+                            }
+                            catch (Exception e){
+                                Log.e(LOG_TAG, e.getMessage());
+                            }
+                            Helpers.getFragmentHelper(activity).createFragment(R.id.song_list, fragment);
+                        }
                         return true;
                     }
                 });

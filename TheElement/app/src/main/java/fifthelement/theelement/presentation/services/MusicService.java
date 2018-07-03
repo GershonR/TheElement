@@ -27,6 +27,7 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
 
     private MediaPlayer player;
     private boolean playerPrepared;
+    private boolean autoplayEnabled;
     private List<Song> songs;
     private Song currentSongPlaying;
     private int currentSongPlayingIndex;
@@ -68,6 +69,10 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
         }
         if(notificationPlaybackListener != null){
             notificationPlaybackListener.onPlaybackStop();
+        }
+        //If autoplay is on, we "skip" to next song on completion
+        if(autoplayEnabled){
+            skip();
         }
     }
 
@@ -175,6 +180,7 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
             currentSongPlayingIndex++;
             if (currentSongPlayingIndex > songs.size() - 1) {
                 playSongAsync(songs.get(0), 0);
+                currentSongPlayingIndex = 0;
             } else {
                 playSongAsync(songs.get(currentSongPlayingIndex), currentSongPlayingIndex);
             }
@@ -190,6 +196,7 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
             currentSongPlayingIndex--;
             if (currentSongPlayingIndex <= 0) {
                 playSongAsync(songs.get(songs.size() - 1), songs.size() - 1);
+                currentSongPlayingIndex = songs.size() - 1;
             } else {
                 playSongAsync(songs.get(currentSongPlayingIndex), currentSongPlayingIndex);
             }
@@ -241,6 +248,10 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
 
     public void setNotificationPlaybackListener(NotificationService.NotificationPlaybackStartStopListener listener){
         notificationPlaybackListener = listener;
+    }
+
+    public void setAutoplayEnabled(boolean newValue){
+        autoplayEnabled = newValue;
     }
 
     //Public helper class for binding this service to an activity

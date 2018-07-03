@@ -13,6 +13,36 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="3" />
+
+            <Switch
+                android:id="@+id/autoplaySwitch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Autoplay" />
+
+            <Space
+                android:layout_width="10dp"
+                android:layout_height="wrap_content" />
+
+            <Switch
+                android:id="@+id/shuffleSwitch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:splitTrack="false"
+                android:text="Shuffle" />
+        </LinearLayout>
+
         <Button
             android:id="@+id/button_organize_list"
             android:layout_width="match_parent"
@@ -23,6 +53,7 @@
             android:id="@+id/song_list_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"></ListView>
+
     </LinearLayout>
 
 

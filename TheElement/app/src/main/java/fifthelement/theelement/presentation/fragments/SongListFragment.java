@@ -8,7 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.ListView;
+import android.widget.Switch;
 
 
 import java.util.List;
@@ -47,7 +49,18 @@ public class SongListFragment extends Fragment {
         refreshAdapter();
 
         sortSongsButton();
+        autoPlaySwitch();
         playSong(listView);
+    }
+
+    private void autoPlaySwitch() {
+        Switch autoplaySwitch = view.findViewById(R.id.autoplaySwitch);
+        autoplaySwitch.setChecked(musicService.getAutoplayEnabled());
+        autoplaySwitch.setOnCheckedChangeListener(new Switch.OnCheckedChangeListener(){
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                musicService.setAutoplayEnabled(isChecked);
+            }
+        });
     }
 
     private void refreshAdapter() {

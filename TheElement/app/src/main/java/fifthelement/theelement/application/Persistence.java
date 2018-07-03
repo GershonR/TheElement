@@ -2,18 +2,18 @@ package fifthelement.theelement.application;
 
 import fifthelement.theelement.persistence.AlbumPersistence;
 import fifthelement.theelement.persistence.AuthorPersistence;
-import fifthelement.theelement.persistence.PlayListPersistence;
+import fifthelement.theelement.persistence.PlaylistPersistence;
 import fifthelement.theelement.persistence.SongPersistence;
 import fifthelement.theelement.persistence.hsqldb.AlbumPersistenceHSQLDB;
 import fifthelement.theelement.persistence.hsqldb.AuthorPersistenceHSQLDB;
 import fifthelement.theelement.persistence.hsqldb.SongPersistenceHSQLDB;
-import fifthelement.theelement.persistence.stubs.PlayListPersistenceStub;
+import fifthelement.theelement.persistence.stubs.PlaylistPersistenceStub;
 
 public class Persistence {
     private static SongPersistence songPersistence = null;
     private static AlbumPersistence albumPersistence = null;
     private static AuthorPersistence authorPersistence = null;
-    private static PlayListPersistence playListPersistence = null;
+    private static PlaylistPersistence playlistPersistence = null;
 
     public static synchronized SongPersistence getSongPersistence() {
 
@@ -42,12 +42,12 @@ public class Persistence {
         return authorPersistence;
     }
 
-    public static synchronized PlayListPersistence getPlayListPersistence() {
+    public static synchronized PlaylistPersistence getPlaylistPersistence() {
 
-        if( playListPersistence == null ) {
-            playListPersistence = new PlayListPersistenceStub();
+        if( playlistPersistence == null ) {
+            playlistPersistence = new PlaylistPersistenceStub();
         }
 
-        return playListPersistence;
+        return playlistPersistence;
     }
 }

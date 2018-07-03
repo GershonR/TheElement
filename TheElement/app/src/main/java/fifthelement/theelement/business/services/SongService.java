@@ -12,7 +12,7 @@ import fifthelement.theelement.business.exceptions.SongAlreadyExistsException;
 import fifthelement.theelement.objects.Song;
 import fifthelement.theelement.persistence.AlbumPersistence;
 import fifthelement.theelement.persistence.AuthorPersistence;
-import fifthelement.theelement.persistence.PlayListPersistence;
+import fifthelement.theelement.persistence.PlaylistPersistence;
 import fifthelement.theelement.persistence.SongPersistence;
 import fifthelement.theelement.persistence.hsqldb.PersistenceException;
 
@@ -21,7 +21,7 @@ public class SongService {
     private SongPersistence songPersistence;
     private AlbumPersistence albumPersistence;
     private AuthorPersistence authorPersistence;
-    private PlayListPersistence playListPersistence;
+    private PlaylistPersistence playlistPersistence;
 
     private List<Song> songs;
 
@@ -29,14 +29,14 @@ public class SongService {
         songPersistence = Persistence.getSongPersistence();
         albumPersistence = Persistence.getAlbumPersistence();
         authorPersistence = Persistence.getAuthorPersistence();
-        playListPersistence = Persistence.getPlayListPersistence();
+        playlistPersistence = Persistence.getPlaylistPersistence();
     }
 
-    public SongService(SongPersistence songPersistence, AlbumPersistence albumPersistence, AuthorPersistence authorPersistence, PlayListPersistence playListPersistence) {
+    public SongService(SongPersistence songPersistence, AlbumPersistence albumPersistence, AuthorPersistence authorPersistence, PlaylistPersistence playlistPersistence) {
         this.songPersistence = songPersistence;
         this.albumPersistence = albumPersistence;
         this.authorPersistence = authorPersistence;
-        this.playListPersistence = playListPersistence;
+        this.playlistPersistence = playlistPersistence;
     }
 
     public Song getSongByUUID(UUID uuid) {
@@ -82,10 +82,10 @@ public class SongService {
 
             // deletes songs from existing PlayList if it's there
             // implementation for this hasn't been fully decided. this is a STUB
-            //for( PlayList p : playListPersistence.getAllPlayLists() ) {
+            //for( PlayList p : playlistPersistence.getAllPlayLists() ) {
             //    if( p.contains(song) ) {
             //        p.removeSong(song);
-            //        playListPersistence.updatePlayList(p);
+            //        playlistPersistence.updatePlayList(p);
             //    }
             //}
 

@@ -4,30 +4,47 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import fifthelement.theelement.objects.PlayList;
-import fifthelement.theelement.persistence.PlayListPersistence;
+import fifthelement.theelement.objects.Author;
+import fifthelement.theelement.objects.Playlist;
+import fifthelement.theelement.objects.Song;
+import fifthelement.theelement.persistence.PlaylistPersistence;
 
-public class PlayListPersistenceStub implements PlayListPersistence {
+public class PlaylistPersistenceStub implements PlaylistPersistence {
 
-    private List<PlayList> playLists;
+    private List<Playlist> playLists;
 
-    public PlayListPersistenceStub() {
+    public PlaylistPersistenceStub() {
         this.playLists = new ArrayList<>();
 
-        this.storePlayList(new PlayList("PlayList1"));
-        this.storePlayList(new PlayList("PlayList2"));
-        this.storePlayList(new PlayList("PlayList3"));
-        this.storePlayList(new PlayList("PlayList4"));
+        Song song1 = new Song("This Is America", "android.resource://fifthelement.theelement/raw/childish_gambino_this_is_america");
+        song1.setAuthor(new Author("Childish Gambino"));
+        Song song2 = new Song("Classical Music", "android.resource://fifthelement.theelement/raw/classical_music");
+        Song song3 = new Song("Adventure of a Lifetime", "android.resource://fifthelement.theelement/raw/coldplay_adventure_of_a_lifetime");
+        song3.setAuthor(new Author("Coldplay"));
+
+
+        Playlist playlist1 = new Playlist("Actual Playlist (3 songs)");
+        playlist1.addSong(song1);
+        playlist1.addSong(song2);
+        playlist1.addSong(song3);
+        this.storePlaylist(playlist1);
+
+        Playlist playlist2 = new Playlist("Second Playlist(1 song)");
+        playlist2.addSong(song1);
+        this.storePlaylist(playlist2);
+
+        this.storePlaylist(new Playlist("Empty Playlist"));
+        this.storePlaylist(new Playlist("Playlist4"));
     }
 
     @Override
-    public List<PlayList> getAllPlayLists() {
+    public List<Playlist> getAllPlaylists() {
         return playLists;
     }
 
     @Override
-    public PlayList getPlayListByUUID(UUID uuid) {
-        for( PlayList p : playLists ) {
+    public Playlist getPlaylistByUUID(UUID uuid) {
+        for( Playlist p : playLists ) {
             if( p.getUUID() == uuid ) {
                 return p;
             }
@@ -36,8 +53,8 @@ public class PlayListPersistenceStub implements PlayListPersistence {
     }
 
     @Override
-    public boolean storePlayList(PlayList playList) {
-        if( playListExists(playList.getUUID()) ) {
+    public boolean storePlaylist(Playlist playList) {
+        if( playlistExists(playList.getUUID()) ) {
             throw new ArrayStoreException();
         }
         playLists.add(playList);
@@ -45,7 +62,7 @@ public class PlayListPersistenceStub implements PlayListPersistence {
     }
 
     @Override
-    public boolean updatePlayList(PlayList playList) {
+    public boolean updatePlaylist(Playlist playList) {
         if( playList == null ) {
             throw new IllegalArgumentException("Cannot update a null playlist");
         }
@@ -59,12 +76,12 @@ public class PlayListPersistenceStub implements PlayListPersistence {
     }
 
     @Override
-    public boolean deletePlayList(PlayList playList) throws IllegalArgumentException {
-        return this.deletePlayList(playList.getUUID());
+    public boolean deletePlaylist(Playlist playList) throws IllegalArgumentException {
+        return this.deletePlaylist(playList.getUUID());
     }
 
     @Override
-    public boolean deletePlayList(UUID uuid) throws IllegalArgumentException {
+    public boolean deletePlaylist(UUID uuid) throws IllegalArgumentException {
         boolean removed = false;
         if(uuid == null)
             throw new IllegalArgumentException("Cannot delete a null author");
@@ -78,14 +95,13 @@ public class PlayListPersistenceStub implements PlayListPersistence {
     }
 
 
-    @Override
-    public boolean playListExists(PlayList playList) {
-        return this.playListExists(playList.getUUID());
+    public boolean playlistExists(Playlist playList) {
+        return this.playlistExists(playList.getUUID());
     }
 
     @Override
-    public boolean playListExists(UUID uuid) {
-        return getPlayListByUUID(uuid) != null;
+    public boolean playlistExists(UUID uuid) {
+        return getPlaylistByUUID(uuid) != null;
     }
 
 }

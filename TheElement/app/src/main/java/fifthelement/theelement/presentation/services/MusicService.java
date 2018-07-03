@@ -254,6 +254,10 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
         autoplayEnabled = newValue;
     }
 
+    public boolean getAutoplayEnabled(){
+        return autoplayEnabled;
+    }
+
     //Public helper class for binding this service to an activity
     public class MusicBinder extends Binder {
         public MusicService getService() {

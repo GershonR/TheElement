@@ -55,6 +55,7 @@ public class SongListFragment extends Fragment {
 
     private void autoPlaySwitch() {
         Switch autoplaySwitch = view.findViewById(R.id.autoplaySwitch);
+        autoplaySwitch.setChecked(musicService.getAutoplayEnabled());
         autoplaySwitch.setOnCheckedChangeListener(new Switch.OnCheckedChangeListener(){
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 musicService.setAutoplayEnabled(isChecked);

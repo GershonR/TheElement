@@ -107,6 +107,7 @@ public class SongListFragment extends Fragment {
         super.onResume();
         if(songListAdapter != null) {
             sortSongs();
+            musicService.updateShuffledList();
         }
     }
 

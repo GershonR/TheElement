@@ -5,14 +5,17 @@ import java.util.Arrays;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.view.View;
 
 import fifthelement.theelement.R;
 
-public class LibraryFragment extends Activity {
+public class LibraryFragment extends Fragment {
 
+    private View view;
     private ListView mainListView;
     private ArrayAdapter<String> listAdapter;
 
@@ -20,23 +23,26 @@ public class LibraryFragment extends Activity {
      * Called when the activity is first created.
      */
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // setContentView(R.layout.main);
 
         // Find the ListView resource.
-        mainListView = (ListView) findViewById(R.id.library_view);
+        view = inflater.inflate(R.layout.library_fragment, container, false);
+        mainListView = view.findViewById(R.id.library_view);
+
 
         // Create and populate a List of for the library.
-        String[] options = new String[]{"Playlists", "Songs", "Themes", "Liked"};
+        String[] options = new String[]{"Change Theme", "Delete Songs", "Hide album art notification "};
         ArrayList<String> libraryList = new ArrayList<String>();
         libraryList.addAll(Arrays.asList(options));
 
         // Create ArrayAdapter using the library list.
-        listAdapter = new ArrayAdapter<String>(this, R.layout.simplerow, libraryList);
+        listAdapter = new ArrayAdapter<String>(getActivity(), R.layout.simplerow, libraryList);
 
 
         // Set the ArrayAdapter as the ListView's adapter.
         mainListView.setAdapter(listAdapter);
+        return view;
     }
 }

@@ -1,14 +1,20 @@
 apply plugin: 'com.android.application'
 
+def versionMajor = 1 // bump for each iteration
+def versionMinor = 8 // bump for each merge
+def versionPatch = 2 // bump for each hotfix
+def versionBuild = 0 // bump for dogfood builds, changes on your local
+
 android {
     compileSdkVersion 27
     defaultConfig {
         applicationId "fifthelement.theelement"
         minSdkVersion 23
         targetSdkVersion 27
-        versionCode 1
-        versionName "1.0"
+        versionCode versionMajor * 10000 + versionMinor * 1000 + versionPatch * 100 + versionBuild
+        versionName "${versionMajor}.${versionMinor}.${versionPatch}"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
     }
     buildTypes {
         release {
@@ -20,6 +26,7 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_7
         targetCompatibility JavaVersion.VERSION_1_7
     }
+
 }
 
 dependencies {
@@ -34,4 +41,5 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    implementation group: 'org.hsqldb', name: 'hsqldb', version: '2.4.1'
 }

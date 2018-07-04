@@ -1,42 +1,53 @@
 package fifthelement.theelement.application;
 
-import fifthelement.theelement.persistence.AlbumPersistence;
-import fifthelement.theelement.persistence.AuthorPersistence;
-import fifthelement.theelement.persistence.SongPersistence;
-import fifthelement.theelement.persistence.stubs.AlbumPersistenceStub;
-import fifthelement.theelement.persistence.stubs.AuthorPersistenceStub;
-import fifthelement.theelement.persistence.stubs.SongPersistenceStub;
+import android.content.Context;
+import android.support.v7.app.AppCompatActivity;
+
+import fifthelement.theelement.business.services.AlbumService;
+import fifthelement.theelement.business.services.AuthorService;
+import fifthelement.theelement.presentation.services.DrawerService;
+import fifthelement.theelement.presentation.services.MusicService;
 
 public class Services {
-    private static SongPersistence songPersistence = null;
-    private static AlbumPersistence albumPersistence = null;
-    private static AuthorPersistence authorPersistence = null;
+    private static DrawerService drawerService = null;
+    private static MusicService musicService = null;
+    private static AuthorService authorService = null;
+    private static AlbumService albumService = null;
 
-    public static synchronized SongPersistence getSongPersistence() {
+    public static synchronized DrawerService getDrawerService(AppCompatActivity appCompatActivity) {
 
-        if (songPersistence == null) {
-            songPersistence = new SongPersistenceStub();
-        }
+        if(drawerService == null || appCompatActivity.hashCode() != drawerService.getApplicationHashCode())
+             drawerService = new DrawerService(appCompatActivity);
 
-        return songPersistence;
+        return drawerService;
     }
 
-    public static synchronized AlbumPersistence getAlbumPersistence() {
+    public static synchronized AuthorService getAuthorService() {
 
-        if (albumPersistence == null) {
-            albumPersistence = new AlbumPersistenceStub();
+        if( authorService == null ) {
+            authorService = new AuthorService();
         }
 
-        return albumPersistence;
+        return authorService;
     }
 
-    public static synchronized AuthorPersistence getAuthorPersistence() {
+    public static synchronized AlbumService getAlbumService() {
 
-        if (authorPersistence == null) {
-            authorPersistence = new AuthorPersistenceStub();
+        if( albumService == null ) {
+            albumService = new AlbumService();
         }
 
-        return authorPersistence;
+        return albumService;
+    }
+
+    public static synchronized MusicService getMusicService() {
+
+        return musicService;
+    }
+
+    public static synchronized void setMusicService(MusicService musicServiceToSet) {
+
+        musicService = musicServiceToSet;
     }
 
 }

@@ -28,13 +28,13 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <FrameLayout
             android:id="@+id/music_seeker"
             android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:background="@color/colorAccent"
-            android:layout_height="75dp">
-        </FrameLayout>
+            android:background="@color/colorAccent"></FrameLayout>
     </RelativeLayout>
 
     <!-- The navigation drawer that comes from the left -->
@@ -46,5 +46,21 @@
         android:layout_gravity="start"
         android:background="@android:color/white"
         app:headerLayout="@layout/nav_header"
-        app:menu="@menu/drawer_view" />
+        app:menu="@menu/drawer_view">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:clickable="true"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/footer_item"
+            android:layout_width="match_parent"
+            android:layout_height="24dp"
+            android:gravity="center"
+            android:text="Version: 1.0.0" />
+    </LinearLayout>
+
+    </android.support.design.widget.NavigationView>
 </android.support.v4.widget.DrawerLayout>

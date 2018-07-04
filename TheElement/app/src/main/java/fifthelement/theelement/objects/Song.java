@@ -1,71 +1,101 @@
 package fifthelement.theelement.objects;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public class Song implements Comparable<Song>{
     private UUID uuid;
     private String songName;
     private String path;
-    private ArrayList<Author>authors;//might not include this 
-    private ArrayList<Album> albums; //might not include this
+    private String genre;
+    private Author author;
+    private Album album;
 
     public Song(String name, String path){
         this.uuid = UUID.randomUUID();
         this.songName = name;
         this.path = path;
-        albums = new ArrayList<Album>();
-        authors = new ArrayList<Author>();
+        this.genre = "";
+        author = null;
+        album = null;
+    }
+
+    public Song(UUID uuid, String name, String path){
+        this.uuid = uuid;
+        this.songName = name;
+        this.path = path;
+        this.genre = "";
+        author = null;
+        album = null;
+    }
+
+    public Song(UUID uuid, String name, String path, Author author, Album album, String genre){
+        this.uuid = uuid;
+        this.songName = name;
+        this.path = path;
+        this.author = author;
+        this.album = album;
+        this.genre = genre;
+    }
+
+    // getters
+    public UUID getUUID(){
+        return uuid;
     }
 
     public String getName(){
         return songName;
     }
 
-    public UUID getUUID(){
-        return uuid;
+    public String getPath() {
+        return path;
     }
 
-    public void setUUID(UUID uuid) { this.uuid = uuid; }
-
-    public ArrayList<Author> getAuthors(){
-        return authors;
+    public String getGenre() {
+        return genre;
     }
-    
-    public ArrayList<Album> getAlbums(){
-        return albums;
+
+    public Author getAuthor(){
+        return author;
+    }
+
+    public Album getAlbum(){
+        return album;
+    }
+
+    // setters
+    public void setUUID(UUID uuid) {
+        this.uuid = uuid;
     }
 
     public void setName(String newName){
         this.songName = newName;
     }
 
-    public String getPath() {
-        return path;
-    }
-
     public void setPath(String path) {
         this.path = path;
     }
 
-    public void setAuthors(ArrayList<Author>authorList){
-        this.authors =  authorList;
+    public void setGenre(String genre) {
+        this.genre = genre;
     }
 
-    public void addAuthor(Author newAuthor){//to add a single author
-        this.authors.add(newAuthor);
+    public void setAuthor(Author author){
+        this.author =  author;
     }
 
-    public void setAlbums(ArrayList<Album>albumList){
-        this.albums =  albumList;
-    }
-
-    public void addAlbum(Album newAlbum){//to add a single album
-        this.albums.add(newAlbum);
+    public void setAlbum(Album album){
+        this.album =  album;
     }
 
     @Override
     public int compareTo(Song song){
         return songName.compareTo(song.getName());
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        return object instanceof Song && ((Song) object).getUUID() == this.getUUID();
     }
 }

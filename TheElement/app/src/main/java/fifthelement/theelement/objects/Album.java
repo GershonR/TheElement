@@ -1,57 +1,86 @@
 package fifthelement.theelement.objects;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.List;
 import java.util.UUID;
 
 public class Album{
     private UUID uuid;
     private String albumName;
-    private ArrayList<Author> authors;
-    private ArrayList<Song> songs;
+    private Author author;
+    private List<Song> songList;
 
     public Album(String name){
         this.uuid = UUID.randomUUID();
         this.albumName = name;
-        authors = new ArrayList<Author>();
-        songs = new ArrayList<Song>();
+        this.songList = new ArrayList<>();
+        this.author = new Author("");
     }
 
-    public String getName(){
+    public Album(UUID uuid, String name){
+        this.uuid = uuid;
+        this.albumName = name;
+        this.songList = new ArrayList<>();
+        this.author = new Author("");
+    }
+
+    public Album(String name, List<Song> songList, Author author){
+        this.uuid = UUID.randomUUID();
+        this.albumName = name;
+        this.songList = songList;
+        this.author = author;
+    }
+
+    public Album(UUID uuid, String name, Author author, List<Song> songList){
+        this.uuid = uuid;
+        this.albumName = name;
+        this.songList = songList;
+        this.author = author;
+    }
+
+    // getters
+    public UUID getUUID() {
+        return uuid;
+    }
+
+    public String getName() {
         return albumName;
     }
 
-    public UUID getUUID() { return uuid; }
-
-    public void setUUID(UUID uuid) { this.uuid = uuid; }
-
-    public ArrayList<Author> getAuthors(){
-        return authors;
-    }
-    
-    public ArrayList<Song> getsongs(){
-        return songs;
+    public Author getAuthor() {
+        return author;
     }
 
-    public void setName(String newName){
-        this.albumName = newName;
+    public List<Song> getSongs() {
+        return songList;
     }
 
-    public void setAuthors(ArrayList<Author>authorList){
-        this.authors =  authorList;
-    }
-    //OR
-
-    public void addAuthor(Author newAuthor){//to add a single author
-        this.authors.add(newAuthor);
+    // setters
+    public void setUUID(UUID uuid) {
+        this.uuid = uuid;
     }
 
-    public void setSongs(ArrayList<Song>songList){
-        this.songs = songList;
-    }
-    //OR
+    public void setName(String newName) { this.albumName = newName; }
 
-    public void addSong(Song newSong){
-        this.songs.add(newSong);
+    public void setAuthor(Author author) {
+        this.author =  author;
     }
 
+    public void setSongs(List<Song>songList) {
+        this.songList = songList;
+    }
+
+    public void addSong(Song newSong) {
+        this.songList.add(newSong);
+    }
+
+    public void deleteSong(Song song) {
+        this.songList.remove(song);
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        return object instanceof Album && ((Album) object).getUUID() == this.getUUID();
+    }
 }

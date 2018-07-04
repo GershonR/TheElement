@@ -15,23 +15,18 @@ public class SongPersistenceStub implements SongPersistence {
     public SongPersistenceStub() {
         this.songList = new ArrayList<>();
 
-        /*
-            Tife just change the song path here, the SongService
-            calls this constructor
-         */
-        Song song = new Song("Nice For What", "test");
-        song.addAuthor(new Author("Drake"));
+        Song song = new Song("This Is America", "android.resource://fifthelement.theelement/raw/childish_gambino_this_is_america");
+        song.setAuthor(new Author("Childish Gambino"));
         this.storeSong(song);
 
-        song = new Song("Girls Like You", "test");
+        song = new Song("Classical Music", "android.resource://fifthelement.theelement/raw/classical_music");
         this.storeSong(song);
 
-        song = new Song("This Is America", "test");
-        song.addAuthor(new Author("Childish Gambino"));
+        song = new Song("Adventure of a Lifetime", "android.resource://fifthelement.theelement/raw/coldplay_adventure_of_a_lifetime");
+        song.setAuthor(new Author("Coldplay"));
         this.storeSong(song);
 
-        song = new Song("All Mine", "test");
-        song.addAuthor(new Author("Kanye West"));
+        song = new Song("Hall of Fame", "android.resource://fifthelement.theelement/raw/hall_of_fame");
         this.storeSong(song);
     }
 
@@ -53,7 +48,7 @@ public class SongPersistenceStub implements SongPersistence {
     }
 
     @Override
-    public boolean storeSong(Song song) {
+    public boolean storeSong(Song song) throws ArrayStoreException {
         if(songExists(song.getUUID()))
             throw new ArrayStoreException();
         this.songList.add(song);
@@ -61,7 +56,7 @@ public class SongPersistenceStub implements SongPersistence {
     }
 
     @Override
-    public boolean updateSong(Song song) {
+    public boolean updateSong(Song song) throws IllegalArgumentException {
         boolean found = false;
         if(song == null)
             throw new IllegalArgumentException("Cannot update a null song");
@@ -74,7 +69,14 @@ public class SongPersistenceStub implements SongPersistence {
     }
 
     @Override
-    public boolean deleteSong(UUID uuid) {
+    public boolean deleteSong(Song song) throws IllegalArgumentException {
+        if(song == null)
+            throw new IllegalArgumentException();
+        return deleteSong(song.getUUID());
+    }
+
+    @Override
+    public boolean deleteSong(UUID uuid) throws IllegalArgumentException {
         boolean removed = false;
         if(uuid == null)
             throw new IllegalArgumentException("Cannot delete with a null UUID");
@@ -88,6 +90,11 @@ public class SongPersistenceStub implements SongPersistence {
     }
 
     @Override
+    public boolean songExists(Song song) {
+        return songExists(song.getUUID());
+    }
+
+    @Override
     public boolean songExists(UUID uuid) {
         boolean exists = false;
         for(Song s : this.songList)
@@ -96,5 +103,10 @@ public class SongPersistenceStub implements SongPersistence {
                 break;
             }
         return exists;
+    }
+
+    @Override
+    public List<Song> getSongsByAlbumUUID(UUID ID) {
+        return null;
     }
 }

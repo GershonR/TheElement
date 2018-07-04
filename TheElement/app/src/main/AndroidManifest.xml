@@ -3,12 +3,13 @@
     package="fifthelement.theelement">
 
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/ic_theelement_launcher"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/ic_theelement_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
 
@@ -17,7 +18,7 @@
              by Toolbar.
              We need to re-use AppTheme for global styles
         -->
-        <activity android:name=".presentation.MainActivity">
+        <activity android:name=".presentation.activities.MainActivity" android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -27,7 +28,9 @@
 
         <activity android:name=".presentation.activities.AddMusicActivity"/>
 
-        <service android:name=".presentation.MusicService" />
+        <service android:name=".presentation.services.MusicService" />
+        <service android:name=".presentation.services.NotificationService"
+            android:stopWithTask="true"/>
     </application>
 
 </manifest>

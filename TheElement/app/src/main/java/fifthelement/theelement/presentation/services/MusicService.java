@@ -10,6 +10,8 @@ import android.os.IBinder;
 import android.os.PowerManager;
 import android.util.Log;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import fifthelement.theelement.R;
@@ -27,8 +29,10 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
 
     private MediaPlayer player;
     private boolean playerPrepared;
+    private boolean shuffled;
     private boolean autoplayEnabled;
     private List<Song> songs;
+    private List<Song> shuffledList;
     private Song currentSongPlaying;
     private int currentSongPlayingIndex;
     private final IBinder musicBind = new MusicBinder();
@@ -178,10 +182,16 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
         if(songs != null) {
             currentSongPlayingIndex++;
             if (currentSongPlayingIndex > songs.size() - 1) {
-                playSongAsync(songs.get(0), 0);
                 currentSongPlayingIndex = 0;
+                if(shuffled)
+                    playSongAsync(shuffledList.get(0), 0);
+                else
+                    playSongAsync(songs.get(0), 0);
             } else {
-                playSongAsync(songs.get(currentSongPlayingIndex), currentSongPlayingIndex);
+                if(shuffled)
+                    playSongAsync(shuffledList.get(currentSongPlayingIndex), currentSongPlayingIndex);
+                else
+                    playSongAsync(songs.get(currentSongPlayingIndex), currentSongPlayingIndex);
             }
             if(notificationPlaybackListener != null){
                 notificationPlaybackListener.onSkip();
@@ -194,15 +204,30 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
         if(songs != null) {
             currentSongPlayingIndex--;
             if (currentSongPlayingIndex < 0) {
-                playSongAsync(songs.get(songs.size() - 1), songs.size() - 1);
                 currentSongPlayingIndex = songs.size() - 1;
+                if(shuffled)
+                    playSongAsync(shuffledList.get(currentSongPlayingIndex), currentSongPlayingIndex);
+                else
+                    playSongAsync(songs.get(currentSongPlayingIndex), currentSongPlayingIndex);
             } else {
-                playSongAsync(songs.get(currentSongPlayingIndex), currentSongPlayingIndex);
+                if(shuffled)
+                    playSongAsync(shuffledList.get(currentSongPlayingIndex), currentSongPlayingIndex);
+                else
+                    playSongAsync(songs.get(currentSongPlayingIndex), currentSongPlayingIndex);
+
             }
             if(notificationPlaybackListener != null){
                 notificationPlaybackListener.onSkip();
             }
         }
+    }
+
+    public void shuffle() {
+       shuffledList = new ArrayList<>();
+       shuffledList.addAll(songs);
+       Collections.shuffle(shuffledList);
+       shuffled = true;
+       playSongAsync(shuffledList.get(0), 0);
     }
 
     // This function will return the duration of the currently loaded music file.
@@ -236,6 +261,10 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
     public boolean isPlaying() {
         return player.isPlaying();
     }
+
+    public boolean getShuffled() { return shuffled; }
+
+    public void setShuffleEnabled(boolean shuffled) { this.shuffled = shuffled; }
 
     public Song getCurrentSongPlaying() {
         return this.currentSongPlaying;

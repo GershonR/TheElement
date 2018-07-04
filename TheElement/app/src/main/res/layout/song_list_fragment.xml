@@ -43,8 +43,8 @@
                         android:layout_height="60dp"
                         android:background="?android:attr/selectableItemBackground"
                         android:drawableLeft="@drawable/ic_shuffle_black_24dp"
-                        android:paddingLeft="70dp"
-                        android:paddingRight="70dp"
+                        android:paddingLeft="50dp"
+                        android:paddingRight="30dp"
                         android:text=" SHUFFLE" />
                 </LinearLayout>
 

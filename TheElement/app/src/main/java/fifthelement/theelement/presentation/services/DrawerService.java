@@ -13,6 +13,7 @@ import fifthelement.theelement.R;
 import fifthelement.theelement.application.Helpers;
 import fifthelement.theelement.application.Services;
 import fifthelement.theelement.presentation.fragments.HomeFragment;
+import fifthelement.theelement.presentation.fragments.LibraryFragment;
 import fifthelement.theelement.presentation.fragments.SearchFragment;
 import fifthelement.theelement.presentation.fragments.SongListFragment;
 
@@ -56,7 +57,7 @@ public class DrawerService {
                 fragmentClass = SearchFragment.class;
                 break;
             default:
-                fragmentClass = HomeFragment.class;
+                fragmentClass = LibraryFragment.class;
                 break;
         }
 

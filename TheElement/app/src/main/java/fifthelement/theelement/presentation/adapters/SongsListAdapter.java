@@ -86,11 +86,11 @@ public class SongsListAdapter extends BaseAdapter {
                             deleteSong(song, activity);
                         }
                         if(item.getItemId() == R.id.song_info){
-                            Class lass = SearchFragment.class;
                             Fragment fragment = null;
                             try{
                                 SongInfoFragment songInfoFragment = SongInfoFragment.newInstance();
                                 songInfoFragment.setSong(song);
+                                songInfoFragment.setActivity(activity);
                                 fragment = (Fragment) songInfoFragment;
                             }
                             catch (Exception e){

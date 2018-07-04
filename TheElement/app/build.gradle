@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 
 def versionMajor = 1 // bump for each iteration
-def versionMinor = 8 // bump for each merge
+def versionMinor = 9 // bump for each merge
 def versionPatch = 3 // bump for each hotfix
 def versionBuild = 0 // bump for dogfood builds, changes on your local
 
@@ -36,6 +36,7 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.android.support:appcompat-v7:27.1.1'
     implementation 'com.android.support:support-v4:27.1.1'
+    implementation 'com.android.support:cardview-v7:27.1.1'
     implementation 'com.android.support.constraint:constraint-layout:1.1.0'
     implementation 'com.android.support:design:27.1.1'
     testImplementation 'junit:junit:4.12'

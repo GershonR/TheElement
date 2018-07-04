@@ -48,8 +48,8 @@ public class SongListFragment extends Fragment {
 
         refreshAdapter();
 
-        sortSongsButton();
         autoPlaySwitch();
+        shuffleSwitch();
         playSong(listView);
     }
 
@@ -63,20 +63,25 @@ public class SongListFragment extends Fragment {
         });
     }
 
+    private void shuffleSwitch() {
+        Button shuffle = view.findViewById(R.id.shuffle);
+        shuffle.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v) {
+                musicService.shuffle();
+            }
+        });
+    }
+
     private void refreshAdapter() {
         songListAdapter = new SongsListAdapter(getActivity(), songs);
         listView.setAdapter(songListAdapter);
     }
 
-    private void sortSongsButton() {
-        Button buttonOrganize = view.findViewById(R.id.button_organize_list);
-        buttonOrganize.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v) {
-                songService.sortSongs(songs);
-                musicService.setSongs(songs);
-                refreshAdapter();
-            }
-        });
+    private void sortSongs() {
+        songs = songService.getSongs();
+        songService.sortSongs(songs);
+        musicService.setSongs(songs);
+        refreshAdapter();
     }
 
     private void playSong(ListView listView) {
@@ -90,6 +95,7 @@ public class SongListFragment extends Fragment {
                                         int position, long id) {
                     boolean result = musicService.playSongAsync(songs.get(position), position);
                     if (result) {
+                        musicService.setShuffleEnabled(false);
                         ((MainActivity) getActivity()).startNotificationService(view.findViewById(R.id.toolbar));
                     }
                 }
@@ -101,9 +107,8 @@ public class SongListFragment extends Fragment {
     public void onResume() {
         super.onResume();
         if(songListAdapter != null) {
-            songs = songService.getSongs();
-            musicService.setSongs(songs);
-            refreshAdapter();
+            sortSongs();
+            musicService.updateShuffledList();
         }
     }
 

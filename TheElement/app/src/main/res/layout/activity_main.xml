@@ -34,7 +34,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:background="@color/colorAccent"></FrameLayout>
+            android:background="?attr/colorAccent"></FrameLayout>
     </RelativeLayout>
 
     <!-- The navigation drawer that comes from the left -->

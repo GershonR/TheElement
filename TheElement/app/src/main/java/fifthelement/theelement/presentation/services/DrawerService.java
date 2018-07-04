@@ -2,8 +2,6 @@ package fifthelement.theelement.presentation.services;
 
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -11,9 +9,8 @@ import android.view.MenuItem;
 
 import fifthelement.theelement.R;
 import fifthelement.theelement.application.Helpers;
-import fifthelement.theelement.application.Services;
 import fifthelement.theelement.presentation.fragments.HomeFragment;
-import fifthelement.theelement.presentation.fragments.LibraryFragment;
+import fifthelement.theelement.presentation.fragments.SettingFragment;
 import fifthelement.theelement.presentation.fragments.SearchFragment;
 import fifthelement.theelement.presentation.fragments.SongListFragment;
 
@@ -57,7 +54,7 @@ public class DrawerService {
                 fragmentClass = SearchFragment.class;
                 break;
             default:
-                fragmentClass = LibraryFragment.class;
+                fragmentClass = SettingFragment.class;
                 break;
         }
 

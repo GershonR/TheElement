@@ -2,8 +2,11 @@
 <resources>
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#8e24aa</color>
+    <color name="colorAccent">#C2185B</color>
 
+    <color name="greenPrimary">#00838F</color>
+    <color name="greenPrimaryDark">#78909C</color>
+    <color name="greenAccent">#4DD0E1</color>
     <!-- A transparent black -->
     <color name="transparent_black">#aa000000</color>
 

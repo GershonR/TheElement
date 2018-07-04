@@ -142,7 +142,6 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
             notificationPlaybackListener.onPlaybackStop();
         }
         player.reset();
-        seekTo(0);
         playerPrepared = false;
     }
 

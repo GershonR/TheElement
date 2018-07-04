@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -65,12 +66,12 @@ public class SongsListAdapter extends BaseAdapter {
         }
         songName.setText(printSong.getName());
         authorName.setText(authors);
-        AppCompatImageButton button = view.findViewById(R.id.popup_button);
+        ImageButton button = view.findViewById(R.id.popup_button);
         songOptions(activity, printSong, button);
         return view;
     }
 
-    private void songOptions(final MainActivity activity, final Song song, AppCompatImageButton button) {
+    private void songOptions(final MainActivity activity, final Song song, ImageButton button) {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

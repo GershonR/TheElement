@@ -22,6 +22,7 @@ import fifthelement.theelement.BuildConfig;
 import fifthelement.theelement.R;
 import fifthelement.theelement.application.Helpers;
 import fifthelement.theelement.application.Services;
+import fifthelement.theelement.business.services.SongListService;
 import fifthelement.theelement.business.services.SongService;
 import fifthelement.theelement.presentation.constants.NotificationConstants;
 import fifthelement.theelement.presentation.services.MusicService;
@@ -36,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private NavigationView nvDrawer;
     private SongService songService;
+    private SongListService songListService;
     private MusicService musicService;
     private Intent playIntent;
     private boolean musicBound = false;
@@ -70,7 +72,11 @@ public class MainActivity extends AppCompatActivity {
         version.setText("Version: " + versionName + versionCode);
         DatabaseUtil.copyDatabaseToDevice(this);
 
-        songService = new SongService();
+        songService = Services.getSongService();
+        songListService = Services.getSongListService();
+
+        //Sets current song list to the list of all songs in app
+        songListService.setSongList(songService.getSongs());
     }
 
 

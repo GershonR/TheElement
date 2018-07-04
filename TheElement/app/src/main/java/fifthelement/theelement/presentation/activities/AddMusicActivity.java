@@ -10,6 +10,8 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
+import java.net.URISyntaxException;
+
 import fifthelement.theelement.application.Helpers;
 import fifthelement.theelement.application.Services;
 import fifthelement.theelement.business.services.AlbumService;
@@ -126,34 +128,15 @@ public class AddMusicActivity extends AppCompatActivity {
         // TODO: Fix Code Smell
         try {
             String realPath = PathUtil.getPath(getApplicationContext(), path);
-            Author author = null;
-            Album album = null;
-            Song song = new Song(songName, realPath);
-            if(songArtist != null) { // TODO: Seperate Method For This?
-                author = new Author(songArtist);
-                song.setAuthor(author);
-                authorService.insertAuthor(author);
-            }
-            if(songAlbum != null) { // TODO: Seperate Method For This?
-                album = new Album(songAlbum);
-                if(author != null)
-                    album.setAuthor(author);
-                else
-                    album.setAuthor(null);
-                song.setAlbum(album);
-                albumService.insertAlbum(album);
-            }
-            if(songGenre != null)
-                song.setGenre(songGenre);
-            songService.insertSong(song);
-            Helpers.getToastHelper(getApplicationContext()).sendToast("Added " + song.getName(), "GREEN");
+            songService.createSong(realPath, songName, songArtist, songAlbum, songGenre);
+            Helpers.getToastHelper(getApplicationContext()).sendToast("Added " + songName, "GREEN");
         } catch (PersistenceException p) {
             Helpers.getToastHelper(getApplicationContext()).sendToast("Error saving song!", "RED");
             Log.e(LOG_TAG, p.getMessage());
         } catch (SongAlreadyExistsException s) {
             Helpers.getToastHelper(getApplicationContext()).sendToast("Song already exists!", "RED");
             Log.e(LOG_TAG, s.getMessage());
-        } catch (Exception e) {
+        } catch (URISyntaxException e) {
             Helpers.getToastHelper(getApplicationContext()).sendToast("Could not get the songs path!", "RED");
             Log.e(LOG_TAG, e.getMessage());
         }

@@ -18,18 +18,14 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import fifthelement.theelement.R;
 import fifthelement.theelement.application.Helpers;
-import fifthelement.theelement.application.Services;
 import fifthelement.theelement.business.services.PlaylistService;
 import fifthelement.theelement.business.services.SongListService;
 import fifthelement.theelement.objects.Playlist;
 import fifthelement.theelement.persistence.hsqldb.PersistenceException;
 import fifthelement.theelement.presentation.activities.MainActivity;
-import fifthelement.theelement.presentation.services.MusicService;
 
 import static fifthelement.theelement.application.Services.getMusicService;
 import static fifthelement.theelement.application.Services.getSongListService;
@@ -173,7 +169,7 @@ public class PlaylistListAdapter extends BaseAdapter {
 
             SongListService songListService = getSongListService();
             songListService.setShuffled(true);
-            songListService.setSongList(playlist.getSongs());
+            songListService.setCurrentSongsList(playlist.getSongs());
             songListService.setAutoplayEnabled(true);
 
             getMusicService().start();

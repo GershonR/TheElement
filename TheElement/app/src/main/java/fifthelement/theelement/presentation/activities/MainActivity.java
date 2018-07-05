@@ -9,6 +9,7 @@ import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -38,6 +39,8 @@ import fifthelement.theelement.presentation.adapters.CompactSongsListAdapter;
 import fifthelement.theelement.presentation.adapters.PlaylistListAdapter;
 import fifthelement.theelement.presentation.constants.NotificationConstants;
 import fifthelement.theelement.presentation.fragments.SeekerFragment;
+import fifthelement.theelement.presentation.fragments.SongInfoFragment;
+import fifthelement.theelement.presentation.fragments.SongListFragment;
 import fifthelement.theelement.presentation.services.MusicService;
 import fifthelement.theelement.presentation.services.MusicService.MusicBinder;
 import fifthelement.theelement.presentation.services.NotificationService;
@@ -95,8 +98,21 @@ public class MainActivity extends AppCompatActivity {
         playlistService = new PlaylistService();
         //Sets current song list to the list of all songs in app
         songListService.setSongList(songService.getSongs());
+
+        createDefaultPage();
     }
 
+    private void createDefaultPage() {
+        Fragment fragment = null;
+        Class fragmentClass = SongListFragment.class;
+        try{
+            fragment = (Fragment) fragmentClass.newInstance();
+        }
+        catch (Exception e){
+            Log.e(LOG_TAG, e.getMessage());
+        }
+        Helpers.getFragmentHelper(this).createFragment(R.id.flContent, fragment);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -243,6 +259,7 @@ public class MainActivity extends AppCompatActivity {
             MusicBinder binder = (MusicBinder)service;
             //get service
             musicService = binder.getService();
+            musicService.reset();
             Services.setMusicService(musicService);
             musicBound = true;
 

@@ -15,6 +15,11 @@ public class SongUtil {
 
     private static final String LOG_TAG = "SongUtil";
 
+    /**
+     * This method will give you the default album art
+     * @param context   The context of the app
+     * @return          The default album art as a bitmap
+     */
     public static Bitmap getDefaultAlbumArt(Context context) {
         Bitmap bm = null;
         BitmapFactory.Options options = new BitmapFactory.Options();
@@ -27,6 +32,12 @@ public class SongUtil {
         return bm;
     }
 
+    /**
+     * This method will give you a songs album art
+     * @param context   The context of the app
+     * @param song      The song to extract the album art
+     * @return          The songs album art as a bitmap
+     */
     public static Bitmap getSongAlbumArt(Context context, Song song) {
         Bitmap bm = null;
         MediaMetadataRetriever metaRetriver = new MediaMetadataRetriever();

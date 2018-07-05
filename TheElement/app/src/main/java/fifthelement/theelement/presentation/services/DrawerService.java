@@ -13,6 +13,7 @@ import fifthelement.theelement.R;
 import fifthelement.theelement.application.Helpers;
 import fifthelement.theelement.application.Services;
 import fifthelement.theelement.presentation.fragments.HomeFragment;
+import fifthelement.theelement.presentation.fragments.PlaylistListFragment;
 import fifthelement.theelement.presentation.fragments.SearchFragment;
 import fifthelement.theelement.presentation.fragments.SongListFragment;
 
@@ -48,6 +49,9 @@ public class DrawerService {
         switch(menuItem.getItemId()) {
             case R.id.home_page:
                 fragmentClass = HomeFragment.class;
+                break;
+            case R.id.playlist_list:
+                fragmentClass = PlaylistListFragment.class;
                 break;
             case R.id.song_list:
                 fragmentClass = SongListFragment.class;

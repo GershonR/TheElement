@@ -5,7 +5,6 @@
     <string name="song_list">Song List</string>
     <string name="tools">Edit Settings</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="sort">Sort</string>
 
@@ -13,4 +12,5 @@
     <string name="cd_previous">Skip backwards</string>
     <string name="cd_play">Play and pause</string>
     <string name="cd_next">Skip forwards</string>
+    <string name="playlists">Playlists</string>
 </resources>

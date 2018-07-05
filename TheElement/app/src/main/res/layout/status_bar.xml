@@ -10,15 +10,6 @@
         android:layout_height="@dimen/status_bar_album_art"
         android:gravity="center" />
 
-    <ImageView
-        android:id="@+id/status_bar_icon"
-        android:layout_width="@dimen/status_bar_album_art"
-        android:layout_height="@dimen/status_bar_album_art"
-        android:background="@drawable/status_bg"
-        android:scaleType="center"
-        android:src="@drawable/ic_launcher_theelement"
-        android:visibility="gone" />
-
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"

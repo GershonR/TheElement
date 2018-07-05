@@ -42,6 +42,7 @@ import fifthelement.theelement.presentation.adapters.CompactSongsListAdapter;
 import fifthelement.theelement.presentation.adapters.PlaylistListAdapter;
 import fifthelement.theelement.presentation.constants.NotificationConstants;
 import fifthelement.theelement.presentation.fragments.HomeFragment;
+import fifthelement.theelement.presentation.fragments.PlaylistListFragment;
 import fifthelement.theelement.presentation.fragments.SeekerFragment;
 import fifthelement.theelement.presentation.fragments.SongInfoFragment;
 import fifthelement.theelement.presentation.fragments.SongListFragment;
@@ -108,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void createDefaultPage() {
         Fragment fragment = null;
-        Class fragmentClass = HomeFragment.class;
+        Class fragmentClass = SongListFragment.class;
         try{
             fragment = (Fragment) fragmentClass.newInstance();
         }

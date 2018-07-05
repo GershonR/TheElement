@@ -3,7 +3,6 @@ package fifthelement.theelement.presentation.adapters;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatImageButton;
 import android.support.v7.widget.PopupMenu;
@@ -22,14 +21,12 @@ import java.util.List;
 
 import fifthelement.theelement.R;
 import fifthelement.theelement.application.Helpers;
-import fifthelement.theelement.application.Main;
 import fifthelement.theelement.application.Services;
 import fifthelement.theelement.business.services.PlaylistService;
 import fifthelement.theelement.business.services.SongListService;
 import fifthelement.theelement.objects.Playlist;
 import fifthelement.theelement.persistence.hsqldb.PersistenceException;
 import fifthelement.theelement.presentation.activities.MainActivity;
-import fifthelement.theelement.presentation.fragments.PlaylistListFragment;
 
 import static fifthelement.theelement.application.Services.getMusicService;
 import static fifthelement.theelement.application.Services.getSongListService;
@@ -156,15 +153,10 @@ public class PlaylistListAdapter extends BaseAdapter {
     }
 
     private void deletePlaylist(Playlist playlist, MainActivity activity) {
-        try {
-            boolean result = activity.deletePlaylist(playlist);
-            if ( result)
-                Helpers.getToastHelper(context).sendToast("Deleted " + playlist.getName());
-            else
-                Helpers.getToastHelper(context).sendToast("Could not delete " + playlist.getName());
-
-            //activity.getPlaylistService().deletePlaylist(playlist);
-            //notifyDataSetChanged();
+        try { // TODO: Possible code smell?
+            Helpers.getToastHelper(context).sendToast("Deleted " + playlist.getName());
+            activity.getPlaylistService().deletePlaylist(playlist);
+            notifyDataSetChanged();
         } catch(PersistenceException p) {
             Helpers.getToastHelper(context).sendToast("Could not delete " + playlist.getName());
             Log.e(LOG_TAG, p.getMessage());

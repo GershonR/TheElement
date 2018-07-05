@@ -65,8 +65,8 @@ public class PlaylistListFragment extends Fragment {
         refreshAdapter();
     }
 
-    public void refreshAdapter() {
-        PlaylistListAdapter playlistListAdapter = new PlaylistListAdapter(getActivity(), playlistService.getAllPlaylists());
+    private void refreshAdapter() {
+        PlaylistListAdapter playlistListAdapter = new PlaylistListAdapter(getActivity(), playlists);
         playlistListView.setAdapter(playlistListAdapter);
     }
 }

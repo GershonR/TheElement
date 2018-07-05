@@ -25,6 +25,8 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.util.List;
+
 import fifthelement.theelement.BuildConfig;
 import fifthelement.theelement.R;
 import fifthelement.theelement.application.Helpers;
@@ -39,9 +41,8 @@ import fifthelement.theelement.presentation.adapters.CompactSongsListAdapter;
 import fifthelement.theelement.presentation.adapters.PlaylistListAdapter;
 import fifthelement.theelement.presentation.constants.NotificationConstants;
 import fifthelement.theelement.presentation.fragments.HomeFragment;
+import fifthelement.theelement.presentation.fragments.PlaylistListFragment;
 import fifthelement.theelement.presentation.fragments.SeekerFragment;
-import fifthelement.theelement.presentation.fragments.SongInfoFragment;
-import fifthelement.theelement.presentation.fragments.SongListFragment;
 import fifthelement.theelement.presentation.services.MusicService;
 import fifthelement.theelement.presentation.services.MusicService.MusicBinder;
 import fifthelement.theelement.presentation.services.NotificationService;
@@ -98,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
         songListService = Services.getSongListService();
         playlistService = new PlaylistService();
         //Sets current song list to the list of all songs in app
-        songListService.setSongList(songService.getSongs());
+        songListService.setCurrentSongsList(songService.getSongs());
 
         createDefaultPage();
     }
@@ -157,6 +158,14 @@ public class MainActivity extends AppCompatActivity {
                     Playlist newPlaylist = new Playlist(newName);
                     getPlaylistService().insertPlaylist(newPlaylist);
                     Helpers.getToastHelper(getApplicationContext()).sendToast(newName+" created!");
+                    // find and refresh the playlist list fragment
+                    List<Fragment> allFrags = getSupportFragmentManager().getFragments();
+                    for (Fragment fragment: allFrags){
+                        if (fragment instanceof PlaylistListFragment){
+                            ((PlaylistListFragment) fragment).refreshAdapter();
+                        }
+                    }
+
                 }
                 else{
                     Helpers.getToastHelper(getApplicationContext()).sendToast(newName+" is an invalid name, try again");
@@ -177,7 +186,7 @@ public class MainActivity extends AppCompatActivity {
 
     private boolean validText(String text){
         boolean result = false;
-        String normalChars = "^[a-zA-Z0-9]+$";
+        String normalChars = "^[a-zA-Z0-9 ]+$";
         if (text.matches(normalChars))
             result = true;
         return result;
@@ -222,12 +231,25 @@ public class MainActivity extends AppCompatActivity {
         builderSingle.show();
     }
 
+    public boolean deletePlaylist(Playlist playlist){
+        boolean result = playlistService.deletePlaylist(playlist);
+        List<Fragment> allFrags;
+        if ( result){
+            allFrags = getSupportFragmentManager().getFragments();
+            for (Fragment fragment: allFrags){
+                if (fragment instanceof PlaylistListFragment){
+                    ((PlaylistListFragment) fragment).refreshAdapter();
+                }
+            }
+        }
+        return result;
+    }
+
+    // For choosing to open a single song to play from the playlist
     public void openPlaylistSongs(final Playlist currentPlaylist){
         AlertDialog.Builder builderSingle = new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.alert_dialog_custom));
         builderSingle.setIcon(R.drawable.ic_song_list);
         builderSingle.setTitle(currentPlaylist.getName()+" songs:");
-
-        //final CompactSongsListAdapter compactSongsListAdapter = new CompactSongsListAdapter(this, currentPlaylist.getSongs());
 
         builderSingle.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
             @Override

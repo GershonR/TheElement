@@ -174,6 +174,7 @@ public class PlaylistPersistenceHSQLDB implements PlaylistPersistence {
             final PreparedStatement st2 = c.prepareStatement("DELETE FROM playlists WHERE playlistUUID = ?");
             st2.setString(1, uuid.toString());
             st2.executeUpdate();
+            removed = true;
         } catch (final SQLException e) {
             throw new PersistenceException(e);
         }

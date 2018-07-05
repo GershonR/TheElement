@@ -68,23 +68,28 @@ public class SongService {
     }
 
     public void createSong(String realPath, String songName, String songArtist, String songAlbum, String songGenre) throws PersistenceException, IllegalArgumentException, SongAlreadyExistsException {
+        if(songName == null || realPath == null)
+            throw new IllegalArgumentException();
+
         Author author = null;
         Album album = null;
         Song song = new Song(songName, realPath);
-        if(songArtist != null) { // TODO: Seperate Method For This?
+        if(songArtist != null) {
             author = new Author(songArtist);
             song.setAuthor(author);
-            Services.getAuthorService().insertAuthor(author);
+            authorService.insertAuthor(author);
         }
-        if(songAlbum != null) { // TODO: Seperate Method For This?
+
+        if(songAlbum != null) {
             album = new Album(songAlbum);
             if(author != null)
                 album.setAuthor(author);
             else
                 album.setAuthor(null);
             song.setAlbum(album);
-            Services.getAlbumService().insertAlbum(album);
+            albumService.insertAlbum(album);
         }
+
         if(songGenre != null)
             song.setGenre(songGenre);
         insertSong(song);

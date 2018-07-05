@@ -2,6 +2,7 @@ package fifthelement.theelement.presentation.adapters;
 
 import android.app.Activity;
 import android.content.Context;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.AppCompatImageButton;
 import android.support.v7.widget.PopupMenu;
 import android.util.Log;
@@ -23,6 +24,9 @@ import fifthelement.theelement.objects.Author;
 import fifthelement.theelement.objects.Song;
 import fifthelement.theelement.persistence.hsqldb.PersistenceException;
 import fifthelement.theelement.presentation.activities.MainActivity;
+import fifthelement.theelement.presentation.fragments.SearchFragment;
+import fifthelement.theelement.presentation.fragments.SongInfoFragment;
+import fifthelement.theelement.presentation.fragments.SongListFragment;
 
 public class SongsListAdapter extends BaseAdapter {
     Context context;
@@ -56,6 +60,7 @@ public class SongsListAdapter extends BaseAdapter {
         final MainActivity activity = (MainActivity)context;
         view = inflater.inflate(R.layout.fragment_list_item, null);
         TextView songName = (TextView) view.findViewById(R.id.primary_string);
+        songName.setSelected(true);
         TextView authorName = (TextView) view.findViewById(R.id.secondary_string);
         final Song printSong = songs.get(i);
         Author author = printSong.getAuthor();
@@ -82,6 +87,18 @@ public class SongsListAdapter extends BaseAdapter {
                         switch(item.getItemId()) {
                             case R.id.add_song:
                                 deleteSong(song, activity);
+                                break;
+                            case R.id.song_info:
+                                Fragment fragment = null;
+                                try{
+                                    SongInfoFragment songInfoFragment = SongInfoFragment.newInstance();
+                                    songInfoFragment.setSong(song);
+                                    fragment = (Fragment) songInfoFragment;
+                                }
+                                catch (Exception e){
+                                    Log.e(LOG_TAG, e.getMessage());
+                                }
+                                Helpers.getFragmentHelper(activity).createFragment(R.id.flContent, fragment);
                                 break;
                             // pass the song to the main activity, to find out
                             // which playlist it needs to be added too

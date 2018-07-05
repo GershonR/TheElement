@@ -12,6 +12,8 @@ import java.util.UUID;
 
 import fifthelement.theelement.business.services.SongService;
 import fifthelement.theelement.business.exceptions.SongAlreadyExistsException;
+import fifthelement.theelement.objects.Album;
+import fifthelement.theelement.objects.Author;
 import fifthelement.theelement.objects.Song;
 import fifthelement.theelement.persistence.stubs.AlbumPersistenceStub;
 import fifthelement.theelement.persistence.stubs.AuthorPersistenceStub;
@@ -89,6 +91,48 @@ public class SongServiceTest {
 
         Song song = classUnderTest.getSongByUUID(UUID.fromString("493410b3-dd0b-4b78-97bf-289f50f6e74f"));
         Assert.assertTrue("updateSongValidTest: song name != Changed Song Name", "Other song".equals(song.getName()));
+    }
+
+    @Test
+    public void updateSongWithParametersValidTest() throws Exception{
+        Album albumOne = new Album("Album");
+        Author authorOne = new Author("Author");
+        Song songOne = new Song(UUID.fromString("493410b3-dd0b-4b78-97bf-289f50f6e74f"),"A song", "Path", authorOne, albumOne, "Jazz");
+        classUnderTest.insertSong(songOne);
+
+        Song songTwo = new Song("Other song", "Path");
+        songTwo.setUUID(UUID.fromString("493410b3-dd0b-4b78-97bf-289f50f6e74f"));
+
+        classUnderTest.updateSongWithParameters(songTwo, "new song", "new Author", "new Album","Rock");
+
+        Song songTestOne = classUnderTest.getSongByUUID(UUID.fromString("493410b3-dd0b-4b78-97bf-289f50f6e74f"));
+        Assert.assertTrue("Song name not updated", "new song".equals(songTestOne.getName()));
+        Assert.assertTrue("Song author not updated", "new Author".equals(songTestOne.getAuthor().getName()));
+        Assert.assertTrue("Song album not updated", "new Album".equals(songTestOne.getAlbum().getName()));
+        Assert.assertTrue("Song genre not updated", "Rock".equals(songTestOne.getGenre()));
+
+        classUnderTest.updateSongWithParameters(songTwo, "new song", "", "","");
+
+        Song songTestTwo = classUnderTest.getSongByUUID(UUID.fromString("493410b3-dd0b-4b78-97bf-289f50f6e74f"));
+        Assert.assertTrue("Song name not updated", "new song".equals(songTestTwo.getName()));
+        Assert.assertTrue("Song author not updated", songTestTwo.getAuthor()== null);
+        Assert.assertTrue("Song album not updated", songTestTwo.getAlbum()== null);
+        Assert.assertTrue("Song genre not updated", songTestTwo.getGenre() == null);
+    }
+
+    @Test
+    public void updateSongWithRatingValidTest() throws Exception{
+        Song songOne = new Song("A song", "Path");
+        songOne.setRating(1.0);
+        songOne.setUUID(UUID.fromString("493410b3-dd0b-4b78-97bf-289f50f6e74f"));
+        classUnderTest.insertSong(songOne);
+
+        Song songTwo = new Song("Other song", "Path");
+        songTwo.setUUID(UUID.fromString("493410b3-dd0b-4b78-97bf-289f50f6e74f"));
+        classUnderTest.updateSongWithRating(songTwo, 4.5);
+
+        Song song = classUnderTest.getSongByUUID(UUID.fromString("493410b3-dd0b-4b78-97bf-289f50f6e74f"));
+        Assert.assertTrue("Song rating not updated", song.getRating() == 4.5);
     }
 
     @Test(expected = IllegalArgumentException.class)

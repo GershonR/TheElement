@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import java.util.List;
@@ -57,10 +58,10 @@ public class SongsListAdapter extends BaseAdapter {
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
         final MainActivity activity = (MainActivity)context;
-        view = inflater.inflate(R.layout.fragment_song_list_item, null);
-        TextView songName = (TextView) view.findViewById(R.id.song_name_list);
+        view = inflater.inflate(R.layout.fragment_list_item, null);
+        TextView songName = (TextView) view.findViewById(R.id.primary_string);
         songName.setSelected(true);
-        TextView authorName = (TextView) view.findViewById(R.id.author_name_list);
+        TextView authorName = (TextView) view.findViewById(R.id.secondary_string);
         final Song printSong = songs.get(i);
         Author author = printSong.getAuthor();
         String authors = "";
@@ -69,12 +70,12 @@ public class SongsListAdapter extends BaseAdapter {
         }
         songName.setText(printSong.getName());
         authorName.setText(authors);
-        AppCompatImageButton button = view.findViewById(R.id.popup_button);
+        ImageButton button = view.findViewById(R.id.popup_button);
         songOptions(activity, printSong, button);
         return view;
     }
 
-    private void songOptions(final MainActivity activity, final Song song, AppCompatImageButton button) {
+    private void songOptions(final MainActivity activity, final Song song, ImageButton button) {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -83,20 +84,27 @@ public class SongsListAdapter extends BaseAdapter {
                 activity.getMenuInflater().inflate(R.menu.song_list_item_menu, popup.getMenu());
                 popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     public boolean onMenuItemClick(MenuItem item) {
-                        if(item.getItemId() == R.id.add_song){
-                            deleteSong(song, activity);
-                        }
-                        if(item.getItemId() == R.id.song_info){
-                            Fragment fragment = null;
-                            try{
-                                SongInfoFragment songInfoFragment = SongInfoFragment.newInstance();
-                                songInfoFragment.setSong(song);
-                                fragment = (Fragment) songInfoFragment;
-                            }
-                            catch (Exception e){
-                                Log.e(LOG_TAG, e.getMessage());
-                            }
-                            Helpers.getFragmentHelper(activity).createFragment(R.id.flContent, fragment);
+                        switch(item.getItemId()) {
+                            case R.id.add_song:
+                                deleteSong(song, activity);
+                                break;
+                            case R.id.song_info:
+                                Fragment fragment = null;
+                                try{
+                                    SongInfoFragment songInfoFragment = SongInfoFragment.newInstance();
+                                    songInfoFragment.setSong(song);
+                                    fragment = (Fragment) songInfoFragment;
+                                }
+                                catch (Exception e){
+                                    Log.e(LOG_TAG, e.getMessage());
+                                }
+                                Helpers.getFragmentHelper(activity).createFragment(R.id.flContent, fragment);
+                                break;
+                            // pass the song to the main activity, to find out
+                            // which playlist it needs to be added too
+                            case R.id.add_to_playlist:
+                                activity.showDialog(song);
+                                break;
                         }
                         return true;
                     }
@@ -116,6 +124,7 @@ public class SongsListAdapter extends BaseAdapter {
             }
             activity.getSongService().deleteSong(song);
             songs.remove(song);
+            Services.getSongListService().removeSongFromList(song);
             notifyDataSetChanged();
         } catch(PersistenceException p) {
             Helpers.getToastHelper(context).sendToast("Could not delete " + song.getName());

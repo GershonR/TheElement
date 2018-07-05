@@ -17,7 +17,7 @@ import fifthelement.theelement.objects.Author;
 import fifthelement.theelement.objects.Song;
 import fifthelement.theelement.persistence.stubs.AlbumPersistenceStub;
 import fifthelement.theelement.persistence.stubs.AuthorPersistenceStub;
-import fifthelement.theelement.persistence.stubs.PlayListPersistenceStub;
+import fifthelement.theelement.persistence.stubs.PlaylistPersistenceStub;
 import fifthelement.theelement.persistence.stubs.SongPersistenceStub;
 
 import static org.junit.Assert.fail;
@@ -30,7 +30,7 @@ public class SongServiceTest {
     @Before
     public void setup() {
 
-        classUnderTest = new SongService(new SongPersistenceStub(), new AlbumPersistenceStub(), new AuthorPersistenceStub(), new PlayListPersistenceStub());
+        classUnderTest = new SongService(new SongPersistenceStub(), new AlbumPersistenceStub(), new AuthorPersistenceStub(), new PlaylistPersistenceStub());
         List<Song> songs = classUnderTest.getSongs();
         classUnderTest.getSongs().clear();
         this.songsList = classUnderTest.getSongs();
@@ -180,26 +180,6 @@ public class SongServiceTest {
         boolean result = classUnderTest.deleteSong(song);
         Assert.assertFalse("deleteSongNotExistTest: result != false", result);
         Assert.assertTrue("deleteSongNotExistTest: album size != 5", classUnderTest.getSongs().size() == 5);
-    }
-
-    @Test
-    public void sortSongListSize() {
-        //sort list
-       classUnderTest.sortSongs(songsList);
-
-        Assert.assertTrue("Size of list after sorting != 5", songsList.size() == 5);
-    }
-
-    @Test
-    public void sortSongOrderTest() {
-        //sort list
-        classUnderTest.sortSongs(songsList);
-
-        Assert.assertTrue("List after sort doesn't match to the sorted list", songsList.get(0).getName().equals("Geyser"));
-        Assert.assertTrue("List after sort doesn't match to the sorted list", songsList.get(1).getName().equals("Nice For What"));
-        Assert.assertTrue("List after sort doesn't match to the sorted list", songsList.get(2).getName().equals("Pristine"));
-        Assert.assertTrue("List after sort doesn't match to the sorted list", songsList.get(3).getName().equals("Purity"));
-        Assert.assertTrue("List after sort doesn't match to the sorted list", songsList.get(4).getName().equals("This is America"));
     }
 
     @Test

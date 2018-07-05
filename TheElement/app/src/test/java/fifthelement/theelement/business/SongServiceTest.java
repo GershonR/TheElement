@@ -151,6 +151,32 @@ public class SongServiceTest {
     }
 
     @Test
+    public void createSongValidTest() throws Exception {
+        String path = "google.com";
+        String name = "TestSong";
+        String artist = "Test";
+        String album = "Test Album";
+        String genre = "Test Genere";
+
+        classUnderTest.createSong(path, name, artist, album, genre);
+        Assert.assertTrue("updateSongNotExistTest: song size != 6", classUnderTest.getSongs().size() == 6);
+
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void createSongInvalidTest() throws Exception {
+        String path = null;
+        String name = null;
+        String artist = null;
+        String album = null;
+        String genre = null;
+
+        classUnderTest.createSong(path, name, artist, album, genre);
+        Assert.assertTrue("updateSongNotExistTest: song size != 6", classUnderTest.getSongs().size() == 5);
+
+    }
+
+    @Test
     public void deleteSongValidTest() throws Exception {
         Song songOne = new Song("21", "Path");
         UUID songUUID = UUID.fromString("793410b3-dd0b-4b78-97bf-289f50f6e74f");

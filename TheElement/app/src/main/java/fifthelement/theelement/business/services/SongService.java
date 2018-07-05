@@ -70,9 +70,18 @@ public class SongService {
         return songPersistence.storeSong(song);
     }
 
+    public boolean updateSong(Song song) throws IllegalArgumentException {
+        if(song == null)
+            throw new IllegalArgumentException();
+
+        return songPersistence.updateSong(song);
+    }
+
     public boolean updateSongWithParameters(Song song, String songName, String author, String album, String genre) {
 
-        song.setName(songName);
+        if(!songName.equals("")){
+            song.setName(songName);
+        }
         AuthorService authorService = Services.getAuthorService();
         AlbumService  albumService = Services.getAlbumService();
 
@@ -93,7 +102,7 @@ public class SongService {
             song.setAlbum(newAlbum);
             albumService.insertAlbum(newAlbum);
         } else {
-            song.setAuthor(null);
+            song.setAlbum(null);
         }
 
         if(genre.equals("")) {
@@ -109,12 +118,6 @@ public class SongService {
         return updateSong(song);
     }
 
-    public boolean updateSong(Song song) throws IllegalArgumentException {
-        if(song == null)
-            throw new IllegalArgumentException();
-
-        return songPersistence.updateSong(song);
-    }
 
     public boolean deleteSong(Song songToRemove) throws PersistenceException, IllegalArgumentException {
         if(songToRemove == null)

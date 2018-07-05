@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import fifthelement.theelement.application.Services;
+
 public class Song implements Comparable<Song>{
     private UUID uuid;
     private String songName;
@@ -11,6 +13,7 @@ public class Song implements Comparable<Song>{
     private String genre;
     private Author author;
     private Album album;
+    private double rating;
 
     public Song(String name, String path){
         this.uuid = UUID.randomUUID();
@@ -19,6 +22,7 @@ public class Song implements Comparable<Song>{
         this.genre = "";
         author = null;
         album = null;
+        rating = 0;
     }
 
     public Song(UUID uuid, String name, String path){
@@ -28,6 +32,7 @@ public class Song implements Comparable<Song>{
         this.genre = "";
         author = null;
         album = null;
+        rating = 0;
     }
 
     public Song(UUID uuid, String name, String path, Author author, Album album, String genre){
@@ -37,8 +42,18 @@ public class Song implements Comparable<Song>{
         this.author = author;
         this.album = album;
         this.genre = genre;
+        rating = 0;
     }
 
+    public Song(UUID uuid, String name, String path, Author author, Album album, String genre, double rating) {
+        this.uuid = uuid;
+        this.songName = name;
+        this.path = path;
+        this.author = author;
+        this.album = album;
+        this.genre = genre;
+        this.rating = rating;
+    }
     // getters
     public UUID getUUID(){
         return uuid;
@@ -64,6 +79,8 @@ public class Song implements Comparable<Song>{
         return album;
     }
 
+    public double getRating() { return rating; }
+
     // setters
     public void setUUID(UUID uuid) {
         this.uuid = uuid;
@@ -88,6 +105,7 @@ public class Song implements Comparable<Song>{
     public void setAlbum(Album album){
         this.album =  album;
     }
+    public void setRating(double rating){ this.rating = rating; }
 
     @Override
     public int compareTo(Song song){

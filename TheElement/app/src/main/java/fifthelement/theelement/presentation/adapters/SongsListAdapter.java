@@ -59,6 +59,7 @@ public class SongsListAdapter extends BaseAdapter {
         final MainActivity activity = (MainActivity)context;
         view = inflater.inflate(R.layout.fragment_song_list_item, null);
         TextView songName = (TextView) view.findViewById(R.id.song_name_list);
+        songName.setSelected(true);
         TextView authorName = (TextView) view.findViewById(R.id.author_name_list);
         final Song printSong = songs.get(i);
         Author author = printSong.getAuthor();
@@ -90,13 +91,12 @@ public class SongsListAdapter extends BaseAdapter {
                             try{
                                 SongInfoFragment songInfoFragment = SongInfoFragment.newInstance();
                                 songInfoFragment.setSong(song);
-                                songInfoFragment.setActivity(activity);
                                 fragment = (Fragment) songInfoFragment;
                             }
                             catch (Exception e){
                                 Log.e(LOG_TAG, e.getMessage());
                             }
-                            Helpers.getFragmentHelper(activity).createFragment(R.id.song_list, fragment);
+                            Helpers.getFragmentHelper(activity).createFragment(R.id.flContent, fragment);
                         }
                         return true;
                     }

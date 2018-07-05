@@ -8,7 +8,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import fifthelement.theelement.application.Persistence;
+import fifthelement.theelement.application.Services;
 import fifthelement.theelement.business.exceptions.SongAlreadyExistsException;
+import fifthelement.theelement.objects.Album;
+import fifthelement.theelement.objects.Author;
 import fifthelement.theelement.objects.Song;
 import fifthelement.theelement.persistence.AlbumPersistence;
 import fifthelement.theelement.persistence.AuthorPersistence;
@@ -67,9 +70,49 @@ public class SongService {
         return songPersistence.storeSong(song);
     }
 
+    public boolean updateSongWithParameters(Song song, String songName, String author, String album, String genre) {
+
+        song.setName(songName);
+        AuthorService authorService = Services.getAuthorService();
+        AlbumService  albumService = Services.getAlbumService();
+
+        Author newAuthor = new Author(author);
+        if(!author.equals("")) { // TODO: Seperate Method For This?
+            song.setAuthor(newAuthor);
+            authorService.insertAuthor(newAuthor);
+        }else {
+            song.setAuthor(null);
+        }
+
+        if(!album.equals("")) { // TODO: Seperate Method For This?
+            Album newAlbum = new Album(album);
+            if(!author.equals(""))
+                newAlbum.setAuthor(newAuthor);
+            else
+                newAlbum.setAuthor(null);
+            song.setAlbum(newAlbum);
+            albumService.insertAlbum(newAlbum);
+        } else {
+            song.setAuthor(null);
+        }
+
+        if(genre.equals("")) {
+            song.setGenre(null);
+        } else {
+            song.setGenre(genre);
+        }
+        return updateSong(song);
+    }
+
+    public boolean updateSongWithRating(Song song, double rating){
+        song.setRating(rating);
+        return updateSong(song);
+    }
+
     public boolean updateSong(Song song) throws IllegalArgumentException {
         if(song == null)
             throw new IllegalArgumentException();
+
         return songPersistence.updateSong(song);
     }
 

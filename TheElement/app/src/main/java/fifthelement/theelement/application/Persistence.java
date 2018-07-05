@@ -6,6 +6,7 @@ import fifthelement.theelement.persistence.PlaylistPersistence;
 import fifthelement.theelement.persistence.SongPersistence;
 import fifthelement.theelement.persistence.hsqldb.AlbumPersistenceHSQLDB;
 import fifthelement.theelement.persistence.hsqldb.AuthorPersistenceHSQLDB;
+import fifthelement.theelement.persistence.hsqldb.PlaylistPersistenceHSQLDB;
 import fifthelement.theelement.persistence.hsqldb.SongPersistenceHSQLDB;
 import fifthelement.theelement.persistence.stubs.PlaylistPersistenceStub;
 
@@ -45,7 +46,7 @@ public class Persistence {
     public static synchronized PlaylistPersistence getPlaylistPersistence() {
 
         if( playlistPersistence == null ) {
-            playlistPersistence = new PlaylistPersistenceStub();
+            playlistPersistence = new PlaylistPersistenceHSQLDB(Main.getDBPathName());
         }
 
         return playlistPersistence;

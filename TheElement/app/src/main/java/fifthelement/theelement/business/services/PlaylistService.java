@@ -1,14 +1,16 @@
 package fifthelement.theelement.business.services;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 import fifthelement.theelement.application.Persistence;
 import fifthelement.theelement.objects.Playlist;
+import fifthelement.theelement.objects.Song;
 import fifthelement.theelement.persistence.PlaylistPersistence;
 
 
-public class PlaylistService implements PlaylistPersistence {
+public class PlaylistService {
 
     private PlaylistPersistence playlistPersistence;
 
@@ -25,8 +27,26 @@ public class PlaylistService implements PlaylistPersistence {
     }
 
     public List<Playlist> getAllPlaylists() {
-        return playlistPersistence.getAllPlaylists();
+
+        List<Playlist> playlists = playlistPersistence.getAllPlaylists();
+
+        if(playlists != null) {
+            for(Playlist playlist : playlists) {
+                List<Song> songs = playlistPersistence.getAllSongsByPlaylist(playlist.getUUID());
+                List<Song> updatedSongs = new ArrayList<>();
+                if(songs != null) {
+                    for(Song song : songs) {
+                        song = Persistence.getSongPersistence().getSongByUUID(song.getUUID());
+                        updatedSongs.add(song);
+                    }
+                }
+                playlist.setSongs(updatedSongs);
+            }
+        }
+
+        return playlists;
     }
+
 
     public boolean insertPlaylist(Playlist playlist) throws ArrayStoreException, IllegalArgumentException {
         if(playlist == null)
@@ -34,7 +54,6 @@ public class PlaylistService implements PlaylistPersistence {
         return playlistPersistence.storePlaylist(playlist);
     }
 
-    @Override
     public boolean storePlaylist(Playlist playlist) {
         if(playlist == null)
             throw new IllegalArgumentException();

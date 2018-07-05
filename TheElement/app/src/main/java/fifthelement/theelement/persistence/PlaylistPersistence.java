@@ -4,10 +4,13 @@ import java.util.List;
 import java.util.UUID;
 
 import fifthelement.theelement.objects.Playlist;
+import fifthelement.theelement.objects.Song;
 
 public interface PlaylistPersistence {
 
     List<Playlist> getAllPlaylists();
+
+    List<Song> getAllSongsByPlaylist(UUID uuid);
 
     Playlist getPlaylistByUUID(UUID uuid);
 

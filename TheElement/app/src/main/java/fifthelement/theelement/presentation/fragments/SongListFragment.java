@@ -8,7 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.ListView;
+import android.widget.Switch;
 
 
 import java.util.List;
@@ -50,30 +52,40 @@ public class SongListFragment extends Fragment {
 
         refreshAdapter();
 
-        sortSongsButton();
+        autoPlaySwitch();
+        shuffleSwitch();
         playSong(listView);
     }
 
-    public void setAdapterSongsFromPlaylist(Playlist playlist){
-        songs = playlist.getSongs();
-        //refreshAdapter();
+    private void autoPlaySwitch() {
+        Switch autoplaySwitch = view.findViewById(R.id.autoplaySwitch);
+        autoplaySwitch.setChecked(musicService.getAutoplayEnabled());
+        autoplaySwitch.setOnCheckedChangeListener(new Switch.OnCheckedChangeListener(){
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                musicService.setAutoplayEnabled(isChecked);
+            }
+        });
+    }
+
+    private void shuffleSwitch() {
+        Button shuffle = view.findViewById(R.id.shuffle);
+        shuffle.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v) {
+                musicService.shuffle();
+            }
+        });
     }
 
     private void refreshAdapter() {
         songListAdapter = new SongsListAdapter(getActivity(), songs);
         listView.setAdapter(songListAdapter);
-
     }
 
-    private void sortSongsButton() {
-        Button buttonOrganize = view.findViewById(R.id.button_organize_list);
-        buttonOrganize.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v) {
-                songService.sortSongs(songs);
-                musicService.setSongs(songs);
-                refreshAdapter();
-            }
-        });
+    private void sortSongs() {
+        songs = songService.getSongs();
+        songService.sortSongs(songs);
+        musicService.setSongs(songs);
+        refreshAdapter();
     }
 
     private void playSong(ListView listView) {
@@ -87,6 +99,7 @@ public class SongListFragment extends Fragment {
                                         int position, long id) {
                     boolean result = musicService.playSongAsync(songs.get(position), position);
                     if (result) {
+                        musicService.setShuffleEnabled(false);
                         ((MainActivity) getActivity()).startNotificationService(view.findViewById(R.id.toolbar));
                     }
                 }
@@ -98,9 +111,8 @@ public class SongListFragment extends Fragment {
     public void onResume() {
         super.onResume();
         if(songListAdapter != null) {
-            songs = songService.getSongs();
-            musicService.setSongs(songs);
-            refreshAdapter();
+            sortSongs();
+            musicService.updateShuffledList();
         }
     }
 }

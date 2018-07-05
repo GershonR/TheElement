@@ -19,6 +19,8 @@ import android.view.ContextThemeWrapper;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import fifthelement.theelement.BuildConfig;
@@ -50,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
     private PlaylistService playlistService;
     private Intent playIntent;
     private boolean musicBound = false;
-    private Playlist currentPlaylist;
+    //private Playlist currentPlaylist;
 
     public SongService getSongService() {
         return songService;
@@ -58,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
     public MusicService getMusicService(){
         return musicService;
     }
+    public SongListService getSongListService() { return songListService; }
     public PlaylistService getPlaylistService(){
         return playlistService;
     }
@@ -109,8 +112,56 @@ public class MainActivity extends AppCompatActivity {
             case android.R.id.home:
                 mDrawer.openDrawer(GravityCompat.START);
                 return true;
+            case R.id.new_playlist:
+                newPlaylistDialog();
+                break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void newPlaylistDialog(){
+        final AlertDialog.Builder builderSingle = new AlertDialog.Builder(this);
+        builderSingle.setIcon(R.drawable.ic_playlist_add);
+        builderSingle.setTitle("Give your playlist a name:");
+        final EditText newNameInput = new EditText(this);
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT);
+        newNameInput.setLayoutParams(lp);
+        builderSingle.setView(newNameInput);
+
+        builderSingle.setPositiveButton("Create", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //take the text and change the name of the playlist
+                String newName = newNameInput.getText().toString();
+                if ( validText(newName)){
+                    Playlist newPlaylist = new Playlist(newName);
+                    getPlaylistService().insertPlaylist(newPlaylist);
+                    Helpers.getToastHelper(getApplicationContext()).sendToast(newName+" created!");
+                }
+                else{
+                    Helpers.getToastHelper(getApplicationContext()).sendToast(newName+" is an invalid name, try again");
+                }
+                dialog.dismiss();
+            }
+        });
+
+        builderSingle.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        builderSingle.show();
+    }
+
+    private boolean validText(String text){
+        boolean result = false;
+        String normalChars = "^[a-zA-Z0-9]+$";
+        if (text.matches(normalChars))
+            result = true;
+        return result;
     }
 
     public void showDialog(final Song song) {
@@ -118,7 +169,7 @@ public class MainActivity extends AppCompatActivity {
         builderSingle.setIcon(R.drawable.ic_add);
         builderSingle.setTitle("Select a Playlist:");
 
-        final PlaylistListAdapter playlistListAdapter = new PlaylistListAdapter(this, playlistService.getPlaylists());
+        final PlaylistListAdapter playlistListAdapter = new PlaylistListAdapter(this, playlistService.getAllPlaylists());
 
         builderSingle.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
             @Override
@@ -131,7 +182,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 AlertDialog.Builder builderInner = new AlertDialog.Builder(MainActivity.this);
-                Playlist chosenPlaylist =  playlistService.getPlaylists().get(which);
+                Playlist chosenPlaylist =  playlistService.getAllPlaylists().get(which);
                 chosenPlaylist.addSong(song);
                 //builderInner.setMessage(chosenPlaylist.getName()+" is the chosen playlist");
                 builderInner.setTitle("Added to "+chosenPlaylist.getName());
@@ -147,10 +198,7 @@ public class MainActivity extends AppCompatActivity {
         builderSingle.show();
     }
 
-    public Playlist getCurrentPlaylist(){ return currentPlaylist;}
-    public void setCurrentPlaylist(Playlist newPlaylist){ this.currentPlaylist = newPlaylist;}
-
-    public void openPlaylistSongs(){
+    public void openPlaylistSongs(final Playlist currentPlaylist){
         AlertDialog.Builder builderSingle = new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.alert_dialog_custom));
         builderSingle.setIcon(R.drawable.ic_song_list);
         builderSingle.setTitle(currentPlaylist.getName()+" songs:");
@@ -192,8 +240,6 @@ public class MainActivity extends AppCompatActivity {
             musicBound = true;
 
             createSeeker();
-
-
         }
 
         @Override

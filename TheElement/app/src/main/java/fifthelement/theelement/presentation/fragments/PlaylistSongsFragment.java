@@ -14,6 +14,7 @@ import java.util.List;
 
 import fifthelement.theelement.R;
 import fifthelement.theelement.application.Services;
+import fifthelement.theelement.business.services.SongListService;
 import fifthelement.theelement.business.services.SongService;
 import fifthelement.theelement.objects.Playlist;
 import fifthelement.theelement.objects.Song;
@@ -35,7 +36,9 @@ public class PlaylistSongsFragment extends Fragment {
                              Bundle savedInstanceState) {
         songService = ((MainActivity)getActivity()).getSongService();
         musicService = Services.getMusicService();
-        songs = ((MainActivity)getActivity()).getCurrentPlaylist().getSongs();
+
+        songs = ((MainActivity)getActivity()).getSongListService().getSongList();
+        //songs = ((MainActivity)getActivity()).getCurrentPlaylist().getSongs();
 
         displayView(inflater, container);
         return view;

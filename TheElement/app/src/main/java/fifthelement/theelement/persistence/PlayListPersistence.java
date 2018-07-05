@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.UUID;
 
 import fifthelement.theelement.objects.Playlist;
-import fifthelement.theelement.objects.Playlist;
 
 public interface PlaylistPersistence {
 
@@ -15,7 +14,7 @@ public interface PlaylistPersistence {
     // using boolean since its a stub. would make changes when implementing db anyway
     boolean storePlaylist(Playlist playList);
 
-    boolean updatePlaylist(Playlist playList);
+    boolean updatePlaylist(Playlist playlist, String newName);
 
     boolean deletePlaylist(Playlist playList);
 

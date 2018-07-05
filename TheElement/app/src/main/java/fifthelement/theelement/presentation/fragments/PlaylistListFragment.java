@@ -41,7 +41,7 @@ public class PlaylistListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         playlistService = ((MainActivity)getActivity()).getPlaylistService();
-        playlists = playlistService.getPlaylists();
+        playlists = playlistService.getAllPlaylists();
         displayView(inflater, container);
         return view;
     }
@@ -52,8 +52,8 @@ public class PlaylistListFragment extends Fragment {
         playlistListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                ((MainActivity)getActivity()).setCurrentPlaylist(playlistService.getPlaylists().get(position));
-                ((MainActivity)getActivity()).openPlaylistSongs();
+                //((MainActivity)getActivity()).setCurrentPlaylist(playlistService.getPlaylists().get(position));
+                ((MainActivity)getActivity()).openPlaylistSongs(playlistService.getAllPlaylists().get(position));
             }
         });
 

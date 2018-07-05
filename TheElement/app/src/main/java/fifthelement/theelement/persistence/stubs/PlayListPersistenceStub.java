@@ -11,10 +11,10 @@ import fifthelement.theelement.persistence.PlaylistPersistence;
 
 public class PlaylistPersistenceStub implements PlaylistPersistence {
 
-    private List<Playlist> playLists;
+    private List<Playlist> playlists;
 
     public PlaylistPersistenceStub() {
-        this.playLists = new ArrayList<>();
+        this.playlists = new ArrayList<>();
 
         Song song1 = new Song("This Is America", "android.resource://fifthelement.theelement/raw/childish_gambino_this_is_america");
         song1.setAuthor(new Author("Childish Gambino"));
@@ -78,12 +78,12 @@ public class PlaylistPersistenceStub implements PlaylistPersistence {
 
     @Override
     public List<Playlist> getAllPlaylists() {
-        return playLists;
+        return playlists;
     }
 
     @Override
     public Playlist getPlaylistByUUID(UUID uuid) {
-        for( Playlist p : playLists ) {
+        for( Playlist p : playlists) {
             if( p.getUUID() == uuid ) {
                 return p;
             }
@@ -96,26 +96,23 @@ public class PlaylistPersistenceStub implements PlaylistPersistence {
         if( playlistExists(playList.getUUID()) ) {
             throw new ArrayStoreException();
         }
-        playLists.add(playList);
+        playlists.add(playList);
         return true;
     }
 
     @Override
-    public boolean updatePlaylist(Playlist playList) {
-        if( playList == null ) {
-            throw new IllegalArgumentException("Cannot update a null playlist");
+    public boolean updatePlaylist(Playlist playlist, String newName) {
+        if( newName == null || playlist == null) {
+            throw new IllegalArgumentException("Cannot update a playlist with null string");
         }
-        for( int i = 0; i < playLists.size(); i++ ) {
-            if( playLists.get(i).getUUID() == playList.getUUID() ) {
-                playLists.set(i, playList);
-                return true;
-            }
-        }
-        return false;
+        playlist.setName(newName);
+        return true;
     }
 
     @Override
     public boolean deletePlaylist(Playlist playList) throws IllegalArgumentException {
+        if(playList == null)
+            throw new IllegalArgumentException("Cannot delete a null playlist");
         return this.deletePlaylist(playList.getUUID());
     }
 
@@ -124,9 +121,9 @@ public class PlaylistPersistenceStub implements PlaylistPersistence {
         boolean removed = false;
         if(uuid == null)
             throw new IllegalArgumentException("Cannot delete a null author");
-        for(int index = 0; index < playLists.size(); index++) {
-            if(playLists.get(index).getUUID().compareTo(uuid) == 0) {
-                this.playLists.remove(index);
+        for(int index = 0; index < playlists.size(); index++) {
+            if(playlists.get(index).getUUID().compareTo(uuid) == 0) {
+                this.playlists.remove(index);
                 removed = true;
             }
         }

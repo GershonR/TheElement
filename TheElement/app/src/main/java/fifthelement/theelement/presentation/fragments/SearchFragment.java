@@ -47,9 +47,9 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
         songListService = Services.getSongListService();
         musicService = Services.getMusicService();
 
-        prevSongList = songListService.getSongList(); //Get previous list of songs so we can restore it after
+        prevSongList = songListService.getAllSongsList(); //Get previous list of songs so we can restore it after
         List<Song> songs = songService.getSongs();
-        songListService.setSongList(songs);
+        songListService.setCurrentSongsList(songs);
 
         view = inflater.inflate(R.layout.search_fragment, container, false);
         ListView listView = view.findViewById(R.id.search_song_list_view_item);
@@ -68,7 +68,7 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
     }
 
     private void playSongOnClick(ListView listView) {
-        List<Song> songs = songListService.getSongList();
+        List<Song> songs = songListService.getAllSongsList();
         if(songs != null) {
             final SongsListAdapter songListAdapter = new SongsListAdapter(getActivity(), songs);
             listView.setAdapter(songListAdapter);
@@ -103,7 +103,7 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
             // Search on submit button
             public boolean onQueryTextSubmit(String query) {
                 List<Song> songs = songService.search(query);
-                songListService.setSongList(songs);
+                songListService.setCurrentSongsList(songs);
                 songsListAdapter = new SongsListAdapter(getActivity(), songs);
                 mListView.setAdapter(songsListAdapter);
                 songsListAdapter.notifyDataSetChanged();
@@ -113,7 +113,7 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
             @Override
             public boolean onQueryTextChange(String newText) {
                 List<Song> songs = songService.search(newText);
-                songListService.setSongList(songs);
+                songListService.setCurrentSongsList(songs);
                 songsListAdapter = new SongsListAdapter(getActivity(), songs);
                 mListView.setAdapter(songsListAdapter);
                 songsListAdapter.notifyDataSetChanged();
@@ -135,12 +135,12 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
     @Override
     public void onPause(){
         super.onPause();
-        songListService.setSongList(prevSongList);
+        songListService.setCurrentSongsList(prevSongList);
     }
 
     @Override
     public void onResume(){
         super.onResume();
-        prevSongList = songListService.getSongList();
+        prevSongList = songListService.getAllSongsList();
     }
 }

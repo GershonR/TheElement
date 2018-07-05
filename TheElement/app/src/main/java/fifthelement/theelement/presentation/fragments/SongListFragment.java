@@ -72,20 +72,20 @@ public class SongListFragment extends Fragment {
     }
 
     private void refreshAdapter() {
-        List<Song> songs = songListService.getSongList();
+        List<Song> songs = songListService.getAllSongsList();
         songListAdapter = new SongsListAdapter(getActivity(), songs);
         listView.setAdapter(songListAdapter);
     }
 
     private void sortSongs() {
-        List<Song> songs = songListService.getSongList();
+        List<Song> songs = songListService.getAllSongsList();
         songListService.sortSongs(songs);
-        songListService.setSongList(songs);
+        songListService.setCurrentSongsList(songs);
         refreshAdapter();
     }
 
     private void playSong(ListView listView) {
-        List<Song> songs = songListService.getSongList();
+        List<Song> songs = songListService.getAllSongsList();
         if(songs != null) {
             final SongsListAdapter songListAdapter = new SongsListAdapter(getActivity(), songs);
             listView.setAdapter(songListAdapter);
@@ -108,7 +108,7 @@ public class SongListFragment extends Fragment {
     public void onResume() {
         super.onResume();
         if(songListAdapter != null) {
-            songListService.setSongList(songService.getSongs());
+            songListService.setCurrentSongsList(songService.getSongs());
             sortSongs();
             songListService.updateShuffledList();
         }

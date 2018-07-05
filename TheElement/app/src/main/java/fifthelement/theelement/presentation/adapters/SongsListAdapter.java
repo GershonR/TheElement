@@ -85,7 +85,7 @@ public class SongsListAdapter extends BaseAdapter {
                 popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     public boolean onMenuItemClick(MenuItem item) {
                         switch(item.getItemId()) {
-                            case R.id.add_song:
+                            case R.id.delete_song:
                                 deleteSong(song, activity);
                                 break;
                             case R.id.song_info:
@@ -115,7 +115,7 @@ public class SongsListAdapter extends BaseAdapter {
     }
 
     private void deleteSong(Song song, MainActivity activity) {
-        try { // TODO: Possible code smell?
+        try {
             Helpers.getToastHelper(context).sendToast("Deleted " + song.getName());
             if(Services.getMusicService().getCurrentSongPlaying() != null
                     && Services.getMusicService().getCurrentSongPlaying().getUUID().equals(song.getUUID())) {

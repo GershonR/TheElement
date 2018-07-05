@@ -17,6 +17,7 @@ import java.util.List;
 import fifthelement.theelement.R;
 import fifthelement.theelement.application.Services;
 import fifthelement.theelement.business.services.SongListService;
+import fifthelement.theelement.business.services.SongService;
 import fifthelement.theelement.objects.Song;
 import fifthelement.theelement.presentation.activities.MainActivity;
 import fifthelement.theelement.presentation.services.MusicService;
@@ -26,6 +27,7 @@ public class SongListFragment extends Fragment {
     private View view;
     private ListView listView;
     private SongListService songListService;
+    private SongService songService;
     private MusicService musicService;
     private SongsListAdapter songListAdapter;
 
@@ -34,6 +36,7 @@ public class SongListFragment extends Fragment {
                              Bundle savedInstanceState) {
         songListService = Services.getSongListService();
         musicService = Services.getMusicService();
+        songService = Services.getSongService();
         displayView(inflater, container);
         return view;
     }
@@ -105,6 +108,7 @@ public class SongListFragment extends Fragment {
     public void onResume() {
         super.onResume();
         if(songListAdapter != null) {
+            songListService.setSongList(songService.getSongs());
             sortSongs();
             songListService.updateShuffledList();
         }

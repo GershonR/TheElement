@@ -15,6 +15,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -32,6 +33,7 @@ import fifthelement.theelement.business.services.SongListService;
 import fifthelement.theelement.business.services.SongService;
 import fifthelement.theelement.objects.Playlist;
 import fifthelement.theelement.objects.Song;
+import fifthelement.theelement.persistence.hsqldb.PersistenceException;
 import fifthelement.theelement.presentation.adapters.CompactSongsListAdapter;
 import fifthelement.theelement.presentation.adapters.PlaylistListAdapter;
 import fifthelement.theelement.presentation.constants.NotificationConstants;
@@ -52,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
     private PlaylistService playlistService;
     private Intent playIntent;
     private boolean musicBound = false;
-    //private Playlist currentPlaylist;
+    private static final String LOG_TAG = "MainActivity";
 
     public SongService getSongService() {
         return songService;
@@ -182,18 +184,22 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 AlertDialog.Builder builderInner = new AlertDialog.Builder(MainActivity.this);
-                Playlist chosenPlaylist =  playlistService.getAllPlaylists().get(which);
-                chosenPlaylist.addSong(song);
-                playlistService.insertSongForPlaylist(chosenPlaylist, song);
-                //builderInner.setMessage(chosenPlaylist.getName()+" is the chosen playlist");
-                builderInner.setTitle("Added to "+chosenPlaylist.getName());
-                builderInner.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog,int which) {
-                        dialog.dismiss();
-                    }
-                });
-                builderInner.show();
+                try {
+                    Playlist chosenPlaylist =  playlistService.getAllPlaylists().get(which);
+                    chosenPlaylist.addSong(song);
+                    playlistService.insertSongForPlaylist(chosenPlaylist, song);
+                    builderInner.setTitle("Added to "+chosenPlaylist.getName());
+                    builderInner.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog,int which) {
+                            dialog.dismiss();
+                        }
+                    });
+                    builderInner.show();
+                } catch (PersistenceException p) {
+                    Log.e(LOG_TAG, p.getMessage());
+                    Helpers.getToastHelper(getApplicationContext()).sendToast("Could not get playlist", "RED");
+                }
             }
         });
         builderSingle.show();

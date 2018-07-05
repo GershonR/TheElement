@@ -98,7 +98,7 @@ public class SongService {
         return songPersistence.storeSong(song);
     }
 
-    public boolean updateSong(Song song) throws IllegalArgumentException {
+    public boolean updateSong(Song song) throws PersistenceException, IllegalArgumentException {
         if(song == null)
             throw new IllegalArgumentException();
 

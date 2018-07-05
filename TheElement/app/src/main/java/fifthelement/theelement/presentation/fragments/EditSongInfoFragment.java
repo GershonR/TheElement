@@ -58,7 +58,7 @@ public class EditSongInfoFragment extends Fragment {
                 catch (Exception e){
                     Log.e(LOG_TAG, e.getMessage());
                 }
-                Helpers.getFragmentHelper((AppCompatActivity)v.getContext()).createFragment(R.id.flContent, fragment);
+                Helpers.getFragmentHelper((MainActivity)getActivity()).createFragment(R.id.flContent, fragment);
             }
         });
 

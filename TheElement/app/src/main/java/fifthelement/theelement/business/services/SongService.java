@@ -204,12 +204,12 @@ public class SongService {
         if( song != null ) {
             song.incrNumPlayed();
             if( song.getAuthor() != null ) {
-                author = song.getAuthor();
+                author = Services.getAuthorService().getAuthorByUUID(song.getAuthor().getUUID());
                 author.incrNumPlayed();
                 Services.getAuthorService().updateAuthor(author);
             }
             if( song.getAlbum() != null ) {
-                album = song.getAlbum();
+                album = Services.getAlbumService().getAlbumByUUID(song.getAlbum().getUUID());
                 album.incrNumPlayed();
                 Services.getAlbumService().updateAlbum(album);
             }
@@ -225,16 +225,16 @@ public class SongService {
         if( song != null ) {
             song.decrNumPlayed();
             if( song.getAuthor() != null ) {
-                author = song.getAuthor();
+                author = Services.getAuthorService().getAuthorByUUID(song.getAuthor().getUUID());
                 author.decrNumPlayed();
+                Services.getAuthorService().updateAuthor(author);
             }
             if( song.getAlbum() != null ) {
-                album = song.getAlbum();
+                album = Services.getAlbumService().getAlbumByUUID(song.getAlbum().getUUID());
                 album.decrNumPlayed();
+                Services.getAlbumService().updateAlbum(album);
             }
         }
         this.updateSong(song);
-        Services.getAuthorService().updateAuthor(author);
-        Services.getAlbumService().updateAlbum(album);
     }
 }

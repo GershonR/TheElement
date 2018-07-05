@@ -38,6 +38,7 @@ import fifthelement.theelement.persistence.hsqldb.PersistenceException;
 import fifthelement.theelement.presentation.adapters.CompactSongsListAdapter;
 import fifthelement.theelement.presentation.adapters.PlaylistListAdapter;
 import fifthelement.theelement.presentation.constants.NotificationConstants;
+import fifthelement.theelement.presentation.fragments.HomeFragment;
 import fifthelement.theelement.presentation.fragments.SeekerFragment;
 import fifthelement.theelement.presentation.fragments.SongInfoFragment;
 import fifthelement.theelement.presentation.fragments.SongListFragment;
@@ -104,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void createDefaultPage() {
         Fragment fragment = null;
-        Class fragmentClass = SongListFragment.class;
+        Class fragmentClass = HomeFragment.class;
         try{
             fragment = (Fragment) fragmentClass.newInstance();
         }
@@ -257,13 +258,11 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
             MusicBinder binder = (MusicBinder)service;
-            //get service
             musicService = binder.getService();
-            musicService.reset();
             Services.setMusicService(musicService);
             musicBound = true;
-
             createSeeker();
+            musicService.reset();
         }
 
         @Override

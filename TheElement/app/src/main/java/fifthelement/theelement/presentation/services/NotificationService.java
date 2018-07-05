@@ -136,6 +136,8 @@ public class NotificationService extends Service {
         if(musicService.getCurrentSongPlaying() != null) {
             views.setTextViewText(R.id.status_bar_track_name, musicService.getCurrentSongPlaying().getName());
             bigViews.setTextViewText(R.id.status_bar_track_name, musicService.getCurrentSongPlaying().getName());
+            views.setImageViewBitmap(R.id.status_bar_album_art, SongUtil.getSongAlbumArt(this, musicService.getCurrentSongPlaying()));
+            bigViews.setImageViewBitmap(R.id.status_bar_album_art, SongUtil.getSongAlbumArt(this, musicService.getCurrentSongPlaying()));
 
             if(musicService.getCurrentSongPlaying().getAuthor() != null) {
                 views.setTextViewText(R.id.status_bar_artist_name, musicService.getCurrentSongPlaying().getAuthor().getName());

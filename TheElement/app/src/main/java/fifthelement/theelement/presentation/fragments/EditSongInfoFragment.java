@@ -26,7 +26,6 @@ public class EditSongInfoFragment extends Fragment {
     private EditText artistName;
     private EditText albumName;
     private EditText genre;
-    private MainActivity activity;
 
 
     @Override
@@ -59,7 +58,7 @@ public class EditSongInfoFragment extends Fragment {
                 catch (Exception e){
                     Log.e(LOG_TAG, e.getMessage());
                 }
-                Helpers.getFragmentHelper((AppCompatActivity)v.getContext()).createFragment(R.id.song_list, fragment);
+                Helpers.getFragmentHelper((MainActivity)getActivity()).createFragment(R.id.flContent, fragment);
             }
         });
 
@@ -91,18 +90,8 @@ public class EditSongInfoFragment extends Fragment {
 
     public void updateSong(){
 
-        song.setName(songName.getText().toString());
-
-//        song.setAuthor(artistName.getText().toString());
-
-        if(genre.getText().toString().equals("")) {
-            song.setGenre(null);
-        } else {
-            song.setGenre(genre.getText().toString());
-        }
-
         if(song != null) {
-            activity.getSongService().updateSong(song);
+            ((MainActivity)getActivity()).getSongService().updateSongWithParameters(song, songName.getText().toString(), artistName.getText().toString(), albumName.getText().toString(), genre.getText().toString());
         }
     }
 
@@ -113,10 +102,5 @@ public class EditSongInfoFragment extends Fragment {
     public void setSong(Song newSong) {
         song = newSong;
     }
-
-    public void setActivity(MainActivity newActivity){
-        activity = newActivity;
-    }
-
 
 }

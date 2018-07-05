@@ -9,18 +9,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import fifthelement.theelement.R;
 import fifthelement.theelement.application.Helpers;
 import fifthelement.theelement.objects.Song;
 import fifthelement.theelement.presentation.activities.MainActivity;
+import fifthelement.theelement.presentation.util.SongUtil;
 
 
 public class SongInfoFragment extends Fragment {
     private static final String LOG_TAG = "SongsInfoFragment";
     private Song song;
-    private MainActivity activity;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -28,6 +30,8 @@ public class SongInfoFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_song_info, container, false);
 
+        ImageView albumArt = (ImageView) view.findViewById(R.id.song_info_albumArt);
+        albumArt.setImageBitmap(SongUtil.getSongAlbumArt(getContext(), song));
         TextView songName = (TextView) view.findViewById(R.id.song_info_name);
         songName.setText(song.getName());
 
@@ -52,6 +56,15 @@ public class SongInfoFragment extends Fragment {
             genre.setText("");
         }
 
+        RatingBar rating = (RatingBar) view.findViewById(R.id.song_info_rating);
+        rating.setRating((float)song.getRating());
+        rating.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+                ((MainActivity)getActivity()).getSongService().updateSongWithRating(song, ratingBar.getRating());
+            }
+        });
+
         Button editButton = view.findViewById(R.id.song_info_edit_btn);
         editButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,13 +73,28 @@ public class SongInfoFragment extends Fragment {
                 try{
                     EditSongInfoFragment editSongInfoFragment = EditSongInfoFragment.newInstance();
                     editSongInfoFragment.setSong(song);
-                    editSongInfoFragment.setActivity(activity);
                     fragment = (Fragment) editSongInfoFragment;
                 }
                 catch (Exception e){
                     Log.e(LOG_TAG, e.getMessage());
                 }
-                Helpers.getFragmentHelper((AppCompatActivity)v.getContext()).createFragment(R.id.song_list, fragment);
+                Helpers.getFragmentHelper((MainActivity)getActivity()).createFragment(R.id.flContent, fragment);
+            }
+        });
+
+        Button backButton = view.findViewById(R.id.song_info_back_btn);
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Fragment fragment = null;
+                Class fragmentClass = SongListFragment.class;
+                try{
+                    fragment = (Fragment) fragmentClass.newInstance();
+                }
+                catch (Exception e){
+                    Log.e(LOG_TAG, e.getMessage());
+                }
+                Helpers.getFragmentHelper((MainActivity)getActivity()).createFragment(R.id.flContent, fragment);
             }
         });
 
@@ -82,8 +110,5 @@ public class SongInfoFragment extends Fragment {
         song = newSong;
     }
 
-    public void setActivity(MainActivity newActivity){
-        activity = newActivity;
-    }
 
 }

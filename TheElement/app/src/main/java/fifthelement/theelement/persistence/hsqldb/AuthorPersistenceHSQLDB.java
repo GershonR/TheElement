@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.UUID;
 
 import fifthelement.theelement.objects.Author;
+import fifthelement.theelement.objects.Playlist;
 import fifthelement.theelement.persistence.AuthorPersistence;
 
 public class AuthorPersistenceHSQLDB implements AuthorPersistence {
@@ -32,7 +33,7 @@ public class AuthorPersistenceHSQLDB implements AuthorPersistence {
     }
 
     @Override
-    public List<Author> getAllAuthors() {
+    public List<Author> getAllAuthors() throws PersistenceException {
 
         final List<Author> authors = new ArrayList<>();
 
@@ -57,7 +58,7 @@ public class AuthorPersistenceHSQLDB implements AuthorPersistence {
     }
 
     @Override
-    public Author getAuthorByUUID(UUID uuid) {
+    public Author getAuthorByUUID(UUID uuid) throws PersistenceException {
         try {
             final PreparedStatement st = c.prepareStatement("SELECT * FROM authors WHERE authorUUID = ?");
             String uuidString = uuid.toString();
@@ -76,7 +77,7 @@ public class AuthorPersistenceHSQLDB implements AuthorPersistence {
     }
 
     @Override
-    public boolean storeAuthor(Author author) {
+    public boolean storeAuthor(Author author) throws PersistenceException {
         try {
             final PreparedStatement st = c.prepareStatement("INSERT INTO authors VALUES(?, ?, ?)");
             st.setString(1, author.getUUID().toString());
@@ -92,7 +93,7 @@ public class AuthorPersistenceHSQLDB implements AuthorPersistence {
     }
 
     @Override
-    public boolean updateAuthor(Author author) {
+    public boolean updateAuthor(Author author) throws PersistenceException {
         try {
             final PreparedStatement st = c.prepareStatement("UPDATE authors SET authorName = ?, numPlayed = ? WHERE authorUUID = ? ");
             st.setString(1, author.getName());
@@ -107,22 +108,38 @@ public class AuthorPersistenceHSQLDB implements AuthorPersistence {
     }
 
     @Override
-    public boolean deleteAuthor(Author author) {
-        return false;
+    public boolean deleteAuthor(Author author) throws PersistenceException, IllegalArgumentException  {
+        if(author == null)
+            throw new IllegalArgumentException();
+        return deleteAuthor(author.getUUID());
     }
 
     @Override
-    public boolean deleteAuthor(UUID uuid) {
-        return false;
+    public boolean deleteAuthor(UUID uuid) throws PersistenceException {
+        boolean removed = false;
+        if(uuid == null)
+            throw new IllegalArgumentException("Cannot delete with a null UUID");
+        try {
+            final PreparedStatement st = c.prepareStatement("DELETE FROM authors WHERE authorUUID = ?");
+            st.setString(1, uuid.toString());
+
+            st.executeUpdate();
+
+        } catch (final SQLException e) {
+            throw new PersistenceException(e);
+        }
+
+        return  removed;
     }
 
     @Override
-    public boolean authorExists(Author author) {
-        return false;
+    public boolean authorExists(Author author) throws PersistenceException {
+        return authorExists(author.getUUID());
     }
 
     @Override
-    public boolean authorExists(UUID uuid) {
-        return false;
+    public boolean authorExists(UUID uuid) throws PersistenceException  {
+        Author author = getAuthorByUUID(uuid);
+        return author != null;
     }
 }

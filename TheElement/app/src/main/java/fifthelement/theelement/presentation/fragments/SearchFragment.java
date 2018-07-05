@@ -13,7 +13,6 @@ import android.widget.ListView;
 import java.util.List;
 
 import fifthelement.theelement.R;
-import fifthelement.theelement.application.Helpers;
 import fifthelement.theelement.application.Services;
 import fifthelement.theelement.business.services.SongListService;
 import fifthelement.theelement.business.services.SongService;
@@ -62,7 +61,6 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
         songsListAdapter = new SongsListAdapter(getActivity(), songService.getSongs());
         mListView.setAdapter(songsListAdapter);
 
-        //mListView.setTextFilterEnabled(true);
         setupSearchView();
 
         playSongOnClick(listView);

@@ -26,12 +26,16 @@ public class SongService {
     private AlbumPersistence albumPersistence;
     private AuthorPersistence authorPersistence;
     private PlaylistPersistence playlistPersistence;
+    private AuthorService authorService;
+    private AlbumService albumService;
 
     public SongService() {
         songPersistence = Persistence.getSongPersistence();
         albumPersistence = Persistence.getAlbumPersistence();
         authorPersistence = Persistence.getAuthorPersistence();
         playlistPersistence = Persistence.getPlaylistPersistence();
+        authorService = Services.getAuthorService();
+        albumService = Services.getAlbumService();
     }
 
     public SongService(SongPersistence songPersistence, AlbumPersistence albumPersistence, AuthorPersistence authorPersistence, PlaylistPersistence playlistPersistence) {
@@ -39,6 +43,9 @@ public class SongService {
         this.albumPersistence = albumPersistence;
         this.authorPersistence = authorPersistence;
         this.playlistPersistence = playlistPersistence;
+        this.albumService = new AlbumService(albumPersistence, songPersistence);
+        this.authorService = new AuthorService(authorPersistence);
+
     }
 
     public Song getSongByUUID(UUID uuid) {
@@ -62,23 +69,28 @@ public class SongService {
     }
 
     public void createSong(String realPath, String songName, String songArtist, String songAlbum, String songGenre) throws PersistenceException, IllegalArgumentException, SongAlreadyExistsException {
+        if(songName == null || realPath == null)
+            throw new IllegalArgumentException();
+
         Author author = null;
         Album album = null;
         Song song = new Song(songName, realPath);
-        if(songArtist != null) { // TODO: Seperate Method For This?
+        if(songArtist != null) {
             author = new Author(songArtist);
             song.setAuthor(author);
-            Services.getAuthorService().insertAuthor(author);
+            authorService.insertAuthor(author);
         }
-        if(songAlbum != null) { // TODO: Seperate Method For This?
+
+        if(songAlbum != null) {
             album = new Album(songAlbum);
             if(author != null)
                 album.setAuthor(author);
             else
                 album.setAuthor(null);
             song.setAlbum(album);
-            Services.getAlbumService().insertAlbum(album);
+            albumService.insertAlbum(album);
         }
+
         if(songGenre != null)
             song.setGenre(songGenre);
         insertSong(song);
@@ -92,11 +104,52 @@ public class SongService {
         return songPersistence.storeSong(song);
     }
 
-    public boolean updateSong(Song song) throws IllegalArgumentException {
+    public boolean updateSong(Song song) throws PersistenceException, IllegalArgumentException {
         if(song == null)
             throw new IllegalArgumentException();
+
         return songPersistence.updateSong(song);
     }
+
+    public boolean updateSongWithParameters(Song song, String songName, String author, String album, String genre) {
+
+        if(!songName.equals("")){
+            song.setName(songName);
+        }
+
+        Author newAuthor = new Author(author);
+        if(!author.equals("")) { // TODO: Seperate Method For This?
+            song.setAuthor(newAuthor);
+            authorService.insertAuthor(newAuthor);
+        }else {
+            song.setAuthor(null);
+        }
+
+        if(!album.equals("")) { // TODO: Seperate Method For This?
+            Album newAlbum = new Album(album);
+            if(!author.equals(""))
+                newAlbum.setAuthor(newAuthor);
+            else
+                newAlbum.setAuthor(null);
+            song.setAlbum(newAlbum);
+            albumService.insertAlbum(newAlbum);
+        } else {
+            song.setAlbum(null);
+        }
+
+        if(genre.equals("")) {
+            song.setGenre(null);
+        } else {
+            song.setGenre(genre);
+        }
+        return updateSong(song);
+    }
+
+    public boolean updateSongWithRating(Song song, double rating){
+        song.setRating(rating);
+        return updateSong(song);
+    }
+
 
     public boolean deleteSong(Song songToRemove) throws PersistenceException, IllegalArgumentException {
         if(songToRemove == null)

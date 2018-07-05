@@ -60,6 +60,7 @@ public class SongsListAdapter extends BaseAdapter {
         final MainActivity activity = (MainActivity)context;
         view = inflater.inflate(R.layout.fragment_list_item, null);
         TextView songName = (TextView) view.findViewById(R.id.primary_string);
+        songName.setSelected(true);
         TextView authorName = (TextView) view.findViewById(R.id.secondary_string);
         final Song printSong = songs.get(i);
         Author author = printSong.getAuthor();
@@ -84,8 +85,20 @@ public class SongsListAdapter extends BaseAdapter {
                 popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     public boolean onMenuItemClick(MenuItem item) {
                         switch(item.getItemId()) {
-                            case R.id.add_song:
+                            case R.id.delete_song:
                                 deleteSong(song, activity);
+                                break;
+                            case R.id.song_info:
+                                Fragment fragment = null;
+                                try{
+                                    SongInfoFragment songInfoFragment = SongInfoFragment.newInstance();
+                                    songInfoFragment.setSong(song);
+                                    fragment = (Fragment) songInfoFragment;
+                                }
+                                catch (Exception e){
+                                    Log.e(LOG_TAG, e.getMessage());
+                                }
+                                Helpers.getFragmentHelper(activity).createFragment(R.id.flContent, fragment);
                                 break;
                             // pass the song to the main activity, to find out
                             // which playlist it needs to be added too
@@ -102,7 +115,7 @@ public class SongsListAdapter extends BaseAdapter {
     }
 
     private void deleteSong(Song song, MainActivity activity) {
-        try { // TODO: Possible code smell?
+        try {
             Helpers.getToastHelper(context).sendToast("Deleted " + song.getName());
             if(Services.getMusicService().getCurrentSongPlaying() != null
                     && Services.getMusicService().getCurrentSongPlaying().getUUID().equals(song.getUUID())) {

@@ -20,15 +20,13 @@ public class SongListServiceTest {
 
     @Before
     public void setup() {
-
-        classUnderTest = new SongListService();
         songsList = new ArrayList<Song>();
         songsList.add(new Song( "Pristine", "data/song1"));
         songsList.add(new Song( "This is America", "data/song2"));
         songsList.add(new Song( "Nice For What", "data/song3"));
         songsList.add(new Song( "Geyser", "data/song4"));
         songsList.add(new Song( "Purity", "data/song5"));
-        classUnderTest.setSongList(songsList);
+        classUnderTest = new SongListService(songsList);
     }
 
     @Test
@@ -90,5 +88,23 @@ public class SongListServiceTest {
         Song shouldNotEqual = classUnderTest.getSongAtIndex(0);
 
         Assert.assertFalse("Remove function did not remove the song from the list", shouldNotEqual.getName().equals("Pristine"));
+    }
+
+    @Test
+    public void shuffleValidTest() {
+        classUnderTest.shuffle();
+
+        Assert.assertTrue("Shuffle not true", classUnderTest.getShuffled());
+        Assert.assertTrue("List size is not 5", classUnderTest.getSongList().size() == 5);
+    }
+
+    @Test
+    public void setSongsListValidTest() {
+        classUnderTest.setShuffled(true);
+        classUnderTest.setSongList(songsList);
+
+
+        Assert.assertTrue("Shuffle not true", classUnderTest.getShuffled());
+        Assert.assertTrue("List size is not 5", classUnderTest.getSongList().size() == 5);
     }
 }

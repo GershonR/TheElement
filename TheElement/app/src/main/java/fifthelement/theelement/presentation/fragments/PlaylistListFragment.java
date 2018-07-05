@@ -24,6 +24,7 @@ import fifthelement.theelement.business.services.PlaylistService;
 import fifthelement.theelement.business.services.SongService;
 import fifthelement.theelement.objects.Playlist;
 import fifthelement.theelement.objects.Song;
+import fifthelement.theelement.persistence.hsqldb.PersistenceException;
 import fifthelement.theelement.presentation.activities.MainActivity;
 import fifthelement.theelement.presentation.adapters.PlaylistListAdapter;
 import fifthelement.theelement.presentation.adapters.SongsListAdapter;
@@ -41,7 +42,12 @@ public class PlaylistListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         playlistService = ((MainActivity)getActivity()).getPlaylistService();
-        playlists = playlistService.getAllPlaylists();
+        try {
+            playlists = playlistService.getAllPlaylists();
+        } catch (PersistenceException p) {
+            Log.e(LOG_TAG, p.getMessage());
+            Helpers.getToastHelper(getContext()).sendToast("Could not retrieve playlists", "RED");
+        }
         displayView(inflater, container);
         return view;
     }
@@ -52,7 +58,6 @@ public class PlaylistListFragment extends Fragment {
         playlistListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //((MainActivity)getActivity()).setCurrentPlaylist(playlistService.getPlaylists().get(position));
                 ((MainActivity)getActivity()).openPlaylistSongs(playlistService.getAllPlaylists().get(position));
             }
         });
@@ -62,7 +67,6 @@ public class PlaylistListFragment extends Fragment {
 
     private void refreshAdapter() {
         PlaylistListAdapter playlistListAdapter = new PlaylistListAdapter(getActivity(), playlists);
-        //PlaylistListAdapter playlistListAdapter = new PlaylistListAdapter(getActivity(), playlists);
         playlistListView.setAdapter(playlistListAdapter);
     }
 }

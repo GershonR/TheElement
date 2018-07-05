@@ -3,29 +3,33 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:descendantFocusability="blocksDescendants"
     android:padding="10dp"
+    android:descendantFocusability="blocksDescendants"
     tools:context=".presentation.fragments.SongListItemFragment">
 
 
     <TextView
         android:id="@+id/primary_string"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:singleLine="true"
+        android:layout_marginRight="50dp"
+        android:ellipsize="marquee"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:marqueeRepeatLimit="marquee_forever"
         android:paddingTop="0dp"
         android:scrollHorizontally="true"
-        android:ellipsize="marquee"
-        android:marqueeRepeatLimit="marquee_forever"
+        android:singleLine="true"
         android:text="TextView"
         android:textColor="@android:color/black"
         android:textSize="22dp"
-        android:textStyle="normal" />
+        android:textStyle="normal"/>
 
     <TextView
         android:id="@+id/secondary_string"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginRight="50dp"
         android:layout_marginTop="30dp"
         android:singleLine="true"
         android:text="TextView2"
@@ -35,11 +39,11 @@
     <ImageButton
         android:id="@+id/popup_button"
         style="@style/Widget.AppCompat.ImageButton"
+        android:background="?android:selectableItemBackground"
         android:layout_width="wrap_content"
         android:layout_height="54dp"
         android:layout_gravity="right"
         android:adjustViewBounds="true"
-        android:background="?android:selectableItemBackground"
         android:fadingEdge="none"
         android:maxHeight="30dp"
         android:maxWidth="30dp"

@@ -140,4 +140,15 @@ public class PlaylistPersistenceStub implements PlaylistPersistence {
         return getPlaylistByUUID(uuid) != null;
     }
 
+    @Override
+    public List<Song> getAllSongsByPlaylist(UUID uuid) {
+        Playlist playlist = getPlaylistByUUID(uuid);
+        return playlist.getSongs();
+    }
+
+    @Override
+    public boolean storeSongForPlaylist(Playlist playList, Song song) {
+        playList.addSong(song);
+        return true;
+    }
 }

@@ -11,7 +11,9 @@ import java.util.UUID;
 
 import fifthelement.theelement.business.services.PlaylistService;
 import fifthelement.theelement.objects.Playlist;
+import fifthelement.theelement.objects.Song;
 import fifthelement.theelement.persistence.stubs.PlaylistPersistenceStub;
+import fifthelement.theelement.persistence.stubs.SongPersistenceStub;
 
 @RunWith(JUnit4.class)
 public class PlaylistServiceTest {
@@ -19,7 +21,7 @@ public class PlaylistServiceTest {
 
     @Before
     public void setup() {
-        classUnderTest = new PlaylistService(new PlaylistPersistenceStub());
+        classUnderTest = new PlaylistService(new PlaylistPersistenceStub(), new SongPersistenceStub());
         classUnderTest.getAllPlaylists().clear();
 
         classUnderTest.insertPlaylist(new Playlist("Thriller"));
@@ -51,7 +53,7 @@ public class PlaylistServiceTest {
     }
 
     @Test
-    public void updatePlaylistValidTest() {
+    public void insertPlaylistMultipleValidTest() {
         Playlist playlistOne = new Playlist("21");
         playlistOne.setId(UUID.fromString("493410b3-dd0b-4b78-97bf-289f50f6e74f"));
         Playlist playlistTwo = new Playlist("Gold");
@@ -95,6 +97,51 @@ public class PlaylistServiceTest {
         boolean result = classUnderTest.deletePlaylist(playlist);
         Assert.assertFalse("deletePlaylistNotExistTest: result != false", result);
         Assert.assertTrue("deletePlaylistNotExistTest: playlist size != 3", classUnderTest.getAllPlaylists().size() == 3);
+    }
+
+    @Test
+    public void updatePlaylistValidTest() {
+        Playlist playlist = new Playlist("Led Zepplin");
+        playlist.setId(UUID.fromString("493410b3-dd0b-4b78-97bf-289f50f6e74f"));
+        UUID playlistUUID = playlist.getUUID();
+
+        boolean insertReturn = classUnderTest.insertPlaylist(playlist);
+        Assert.assertTrue("updatePlaylistValidTest: insertReturn != true", insertReturn);
+
+        boolean result = classUnderTest.updatePlaylist(playlist, "Barney");
+
+        Playlist playlistFound = classUnderTest.getPlaylistByUUID(playlistUUID);
+
+        Assert.assertTrue("updatePlaylistValidTest: result != true", result);
+        Assert.assertTrue("updatePlaylistValidTest name != Barney", playlistFound.getName().equals("Barney"));
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void updatePlaylistInValidTest() {
+        Playlist playlist = null;
+
+        boolean result = classUnderTest.updatePlaylist(playlist, "Fred");
+    }
+
+    @Test
+    public void insertSongForPlaylistValidTest() {
+        Playlist playlist = new Playlist("Led Zepplin");
+        playlist.setId(UUID.fromString("493410b3-dd0b-4b78-97bf-289f50f6e74f"));
+        Song song = new Song("Test", "");
+
+        boolean insertReturn = classUnderTest.insertPlaylist(playlist);
+        Assert.assertTrue("insertSongForPlaylistValidTest: insertReturn != true", insertReturn);
+
+        boolean result = classUnderTest.insertSongForPlaylist(playlist, song);
+        Assert.assertTrue("insertSongForPlaylistValidTest: result != true", result);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void insertSongForPlaylistInValidTest() {
+        Playlist playlist = null;
+        Song song = null;
+
+        boolean result = classUnderTest.insertSongForPlaylist(playlist, song);
     }
 
 }

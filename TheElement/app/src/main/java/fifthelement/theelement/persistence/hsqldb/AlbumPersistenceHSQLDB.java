@@ -42,7 +42,7 @@ public class AlbumPersistenceHSQLDB implements AlbumPersistence {
     }
 
     @Override
-    public List<Album> getAllAlbums() {
+    public List<Album> getAllAlbums() throws PersistenceException {
 
         final List<Album> albums = new ArrayList<>();
 
@@ -68,7 +68,7 @@ public class AlbumPersistenceHSQLDB implements AlbumPersistence {
     }
 
     @Override
-    public Album getAlbumByUUID(UUID uuid) {
+    public Album getAlbumByUUID(UUID uuid) throws PersistenceException{
         try {
             final PreparedStatement st = c.prepareStatement("SELECT * FROM albums WHERE albumUUID = ?");
             String uuidString = uuid.toString();
@@ -88,7 +88,7 @@ public class AlbumPersistenceHSQLDB implements AlbumPersistence {
     }
 
     @Override
-    public boolean storeAlbum(Album album) {
+    public boolean storeAlbum(Album album) throws PersistenceException {
         try {
             final PreparedStatement st = c.prepareStatement("INSERT INTO albums VALUES(?, ?, ?, ?)");
             st.setString(1, album.getUUID().toString());
@@ -108,8 +108,7 @@ public class AlbumPersistenceHSQLDB implements AlbumPersistence {
     }
 
     @Override
-    public boolean updateAlbum(Album album) {
-        //TODO: authorUUID not updated due to conflict with foreign key. needs someone who's expert in db to do this :D
+    public boolean updateAlbum(Album album) throws PersistenceException {
         try {
             final PreparedStatement st = c.prepareStatement("UPDATE albums SET albumName = ?, numPlayed = ? WHERE albumUUID = ? ");
             st.setString(1, album.getName());
@@ -124,22 +123,38 @@ public class AlbumPersistenceHSQLDB implements AlbumPersistence {
     }
 
     @Override
-    public boolean deleteAlbum(Album album) {
-        return false;
+    public boolean deleteAlbum(Album album) throws PersistenceException, IllegalArgumentException {
+        if(album == null)
+            throw new IllegalArgumentException();
+        return deleteAlbum(album.getUUID());
     }
 
     @Override
-    public boolean deleteAlbum(UUID uuid) {
-        return false;
+    public boolean deleteAlbum(UUID uuid) throws PersistenceException, IllegalArgumentException {
+        boolean removed = false;
+        if(uuid == null)
+            throw new IllegalArgumentException("Cannot delete with a null UUID");
+        try {
+            final PreparedStatement st = c.prepareStatement("DELETE FROM albums WHERE albumUUID = ?");
+            st.setString(1, uuid.toString());
+
+            st.executeUpdate();
+
+        } catch (final SQLException e) {
+            throw new PersistenceException(e);
+        }
+
+        return  removed;
     }
 
     @Override
-    public boolean albumExists(Album album) {
-        return false;
+    public boolean albumExists(Album album) throws PersistenceException {
+        return albumExists(album.getUUID());
     }
 
     @Override
-    public boolean albumExists(UUID uuid) {
-        return false;
+    public boolean albumExists(UUID uuid) throws PersistenceException {
+        Album album = getAlbumByUUID(uuid);
+        return album != null;
     }
 }

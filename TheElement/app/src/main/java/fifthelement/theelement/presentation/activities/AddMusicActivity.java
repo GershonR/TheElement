@@ -19,9 +19,6 @@ import fifthelement.theelement.business.services.AuthorService;
 import fifthelement.theelement.business.services.SongListService;
 import fifthelement.theelement.business.services.SongService;
 import fifthelement.theelement.business.exceptions.SongAlreadyExistsException;
-import fifthelement.theelement.objects.Album;
-import fifthelement.theelement.objects.Author;
-import fifthelement.theelement.objects.Song;
 import fifthelement.theelement.persistence.hsqldb.PersistenceException;
 import fifthelement.theelement.presentation.util.PathUtil;
 
@@ -126,7 +123,6 @@ public class AddMusicActivity extends AppCompatActivity {
     }
 
     private void createSong(Uri path, String songName, String songArtist, String songAlbum, String songGenre) {
-        // TODO: Fix Code Smell
         try {
             String realPath = PathUtil.getPath(getApplicationContext(), path);
             songService.createSong(realPath, songName, songArtist, songAlbum, songGenre);

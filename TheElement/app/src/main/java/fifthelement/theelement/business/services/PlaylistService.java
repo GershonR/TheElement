@@ -65,12 +65,6 @@ public class PlaylistService {
         return playlistPersistence.storeSongForPlaylist(playlist, song);
     }
 
-    public boolean storePlaylist(Playlist playlist) {
-        if(playlist == null)
-            throw new IllegalArgumentException();
-        return playlistPersistence.storePlaylist(playlist);
-    }
-
     public boolean updatePlaylist(Playlist playlist, String newName) throws  IllegalArgumentException {
         if(playlist == null)
             throw new IllegalArgumentException();
@@ -81,23 +75,5 @@ public class PlaylistService {
         if(playlist == null)
             throw new IllegalArgumentException();
         return playlistPersistence.deletePlaylist(playlist.getUUID());
-    }
-
-    public boolean deletePlaylist(UUID uuid) {
-        if (uuid == null)
-            throw new IllegalArgumentException();
-        return playlistPersistence.deletePlaylist(uuid);
-    }
-
-    public boolean playlistExists(Playlist playList) {
-        if (playList == null)
-            throw new IllegalArgumentException();
-        return playlistPersistence.playlistExists(playList.getUUID());
-    }
-
-    public boolean playlistExists(UUID uuid) {
-        if (uuid == null)
-            throw new IllegalArgumentException();
-        return playlistPersistence.playlistExists(uuid);
     }
 }

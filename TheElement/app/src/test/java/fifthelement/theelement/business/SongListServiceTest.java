@@ -27,6 +27,7 @@ public class SongListServiceTest {
         songsList.add(new Song( "Geyser", "data/song4"));
         songsList.add(new Song( "Purity", "data/song5"));
         classUnderTest = new SongListService(songsList);
+        classUnderTest.setCurrentSongsList(classUnderTest.getAllSongsList());
     }
 
     @Test

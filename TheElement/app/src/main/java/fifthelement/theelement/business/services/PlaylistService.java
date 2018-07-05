@@ -9,6 +9,7 @@ import fifthelement.theelement.objects.Playlist;
 import fifthelement.theelement.objects.Song;
 import fifthelement.theelement.persistence.PlaylistPersistence;
 import fifthelement.theelement.persistence.SongPersistence;
+import fifthelement.theelement.persistence.hsqldb.PersistenceException;
 
 
 public class PlaylistService {
@@ -30,7 +31,7 @@ public class PlaylistService {
         return playlistPersistence.getPlaylistByUUID(uuid);
     }
 
-    public List<Playlist> getAllPlaylists() {
+    public List<Playlist> getAllPlaylists() throws PersistenceException {
 
         List<Playlist> playlists = playlistPersistence.getAllPlaylists();
 

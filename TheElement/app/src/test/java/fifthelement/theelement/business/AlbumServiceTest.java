@@ -140,6 +140,24 @@ public class AlbumServiceTest {
     }
 
     @Test
+    public void albumStatsTest_incrDecrPlays() {       // initializing them
+        List<Album> albumList = classUnderTest.getAlbums();
+        for( Album album : albumList ) {
+            album.setNumPlayed(0);
+        }
+        albumList.get(0).incrNumPlayed();
+        albumList.get(0).incrNumPlayed();
+        albumList.get(0).decrNumPlayed();
+        int actual = classUnderTest.getAlbumByUUID(albumList.get(0).getUUID()).getNumPlayed();
+        Assert.assertEquals(1, actual);
+        albumList.get(1).incrNumPlayed();
+        albumList.get(1).decrNumPlayed();
+        albumList.get(1).decrNumPlayed();
+        actual = classUnderTest.getAlbumByUUID(albumList.get(1).getUUID()).getNumPlayed();
+        Assert.assertEquals(0, actual);
+    }
+
+    @Test
     public void albumStatsTest_getMostPlayedAlbum() {
         List<Album> albumList = classUnderTest.getAlbums();
         int i = 8;
@@ -167,5 +185,4 @@ public class AlbumServiceTest {
         int actual = classUnderTest.getTotalAlbumPlays();
         Assert.assertEquals(expected, actual);
     }
-
 }

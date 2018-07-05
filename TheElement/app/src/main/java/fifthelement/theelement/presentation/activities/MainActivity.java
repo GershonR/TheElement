@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -25,6 +26,8 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.util.List;
+
 import fifthelement.theelement.BuildConfig;
 import fifthelement.theelement.R;
 import fifthelement.theelement.application.Helpers;
@@ -39,6 +42,7 @@ import fifthelement.theelement.presentation.adapters.CompactSongsListAdapter;
 import fifthelement.theelement.presentation.adapters.PlaylistListAdapter;
 import fifthelement.theelement.presentation.constants.NotificationConstants;
 import fifthelement.theelement.presentation.fragments.HomeFragment;
+import fifthelement.theelement.presentation.fragments.PlaylistListFragment;
 import fifthelement.theelement.presentation.fragments.SeekerFragment;
 import fifthelement.theelement.presentation.fragments.SongInfoFragment;
 import fifthelement.theelement.presentation.fragments.SongListFragment;
@@ -105,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void createDefaultPage() {
         Fragment fragment = null;
-        Class fragmentClass = HomeFragment.class;
+        Class fragmentClass = SongListFragment.class;
         try{
             fragment = (Fragment) fragmentClass.newInstance();
         }
@@ -157,6 +161,13 @@ public class MainActivity extends AppCompatActivity {
                     Playlist newPlaylist = new Playlist(newName);
                     getPlaylistService().insertPlaylist(newPlaylist);
                     Helpers.getToastHelper(getApplicationContext()).sendToast(newName+" created!");
+                    // find and refresh the playlist list fragment
+                    List<android.support.v4.app.Fragment> allFrags = getSupportFragmentManager().getFragments();
+                    for (Fragment fragment: allFrags){
+                        if (fragment instanceof PlaylistListFragment){
+                            ((PlaylistListFragment) fragment).refreshAdapter();
+                        }
+                    }
                 }
                 else{
                     Helpers.getToastHelper(getApplicationContext()).sendToast(newName+" is an invalid name, try again");
@@ -177,9 +188,23 @@ public class MainActivity extends AppCompatActivity {
 
     private boolean validText(String text){
         boolean result = false;
-        String normalChars = "^[a-zA-Z0-9]+$";
+        String normalChars = "^[a-zA-Z0-9 ]+$";
         if (text.matches(normalChars))
             result = true;
+        return result;
+    }
+
+    public boolean deletePlaylist(Playlist playlist){
+        boolean result = playlistService.deletePlaylist(playlist);
+        List<Fragment> allFrags;
+        if ( result){
+            allFrags = getSupportFragmentManager().getFragments();
+            for (Fragment fragment: allFrags){
+                if (fragment instanceof PlaylistListFragment){
+                    ((PlaylistListFragment) fragment).refreshAdapter();
+                }
+            }
+        }
         return result;
     }
 

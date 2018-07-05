@@ -60,7 +60,7 @@ public class DrawerService {
                 fragmentClass = SearchFragment.class;
                 break;
             default:
-                fragmentClass = HomeFragment.class;
+                fragmentClass = SongListFragment.class;
                 break;
         }
 

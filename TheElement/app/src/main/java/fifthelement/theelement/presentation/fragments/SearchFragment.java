@@ -61,7 +61,6 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
         songsListAdapter = new SongsListAdapter(getActivity(), songService.getSongs());
         mListView.setAdapter(songsListAdapter);
 
-        //mListView.setTextFilterEnabled(true);
         setupSearchView();
 
         playSongOnClick(listView);

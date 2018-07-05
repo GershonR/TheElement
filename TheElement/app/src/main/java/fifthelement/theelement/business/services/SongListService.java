@@ -8,12 +8,21 @@ import fifthelement.theelement.application.Services;
 import fifthelement.theelement.objects.Song;
 
 public class SongListService {
-    private List<Song> allSongsList = Services.getSongService().getSongs();
+    private List<Song> allSongsList;
     private List<Song> currentSongsList = null;
     private List<Song> shuffledList = null;
     private boolean shuffled = false;
     private boolean autoplayEnabled = false;
     private int currentSongPlayingIndex = 0;
+
+    public SongListService() {
+        this.allSongsList = Services.getSongService().getSongs();
+    }
+
+    public SongListService(List<Song> songs) {
+        this.allSongsList = songs;
+        this.currentSongsList = songs;
+    }
 
     //Method to set the current list of currentSongsList to play currentSongsList from
     public void setCurrentSongsList(List<Song> newList){

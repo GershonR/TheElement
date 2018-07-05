@@ -31,7 +31,7 @@ public class SongInfoFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_song_info, container, false);
 
         ImageView albumArt = (ImageView) view.findViewById(R.id.song_info_albumArt);
-        albumArt.setImageBitmap(SongUtil.getSongAlbumArt(getContext(), song));
+        albumArt.setImageBitmap(SongUtil.getDefaultAlbumArt(view.getContext()));
         TextView songName = (TextView) view.findViewById(R.id.song_info_name);
         songName.setText(song.getName());
 
@@ -83,12 +83,12 @@ public class SongInfoFragment extends Fragment {
         });
 
         Button backButton = view.findViewById(R.id.song_info_back_btn);
-        backButton.setOnClickListener(new View.OnClickListener(){
+        backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Fragment fragment = null;
+                Class fragmentClass = SongListFragment.class;
                 try{
-                    Class fragmentClass = SongListFragment.class;
                     fragment = (Fragment) fragmentClass.newInstance();
                 }
                 catch (Exception e){

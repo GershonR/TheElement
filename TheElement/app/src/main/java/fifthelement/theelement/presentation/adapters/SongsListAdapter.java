@@ -99,6 +99,7 @@ public class SongsListAdapter extends BaseAdapter {
             }
             activity.getSongService().deleteSong(song);
             songs.remove(song);
+            Services.getSongListService().removeSongFromList(song);
             notifyDataSetChanged();
         } catch(PersistenceException p) {
             Helpers.getToastHelper(context).sendToast("Could not delete " + song.getName());

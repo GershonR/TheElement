@@ -16,6 +16,7 @@ import fifthelement.theelement.application.Helpers;
 import fifthelement.theelement.application.Services;
 import fifthelement.theelement.business.services.AlbumService;
 import fifthelement.theelement.business.services.AuthorService;
+import fifthelement.theelement.business.services.SongListService;
 import fifthelement.theelement.business.services.SongService;
 import fifthelement.theelement.business.exceptions.SongAlreadyExistsException;
 import fifthelement.theelement.objects.Album;
@@ -33,6 +34,7 @@ public class AddMusicActivity extends AppCompatActivity {
     private static final String LOG_TAG = "AddMusicActivity";
 
     SongService songService;
+    SongListService songListService;
     AlbumService albumService;
     AuthorService authorService;
 
@@ -42,7 +44,8 @@ public class AddMusicActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        songService = new SongService();
+        songService = Services.getSongService();
+        songListService = Services.getSongListService();
         authorService = Services.getAuthorService();
         albumService = Services.getAlbumService();
 
@@ -83,6 +86,7 @@ public class AddMusicActivity extends AppCompatActivity {
                     setupSong(data.getData());
                 }
         }
+        songListService.setSongList(songService.getSongs()); //Reset song list
         Intent intent = new Intent(AddMusicActivity.this, MainActivity.class);
         AddMusicActivity.this.startActivity(intent);
     }

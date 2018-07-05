@@ -81,7 +81,13 @@ public class SongListService {
         Collections.shuffle(shuffledList);
         shuffled = true;
     }
-    
+
+    public void removeSongFromList(Song song){
+        if(songList != null){
+            songList.remove(song);
+        }
+    }
+
     public void setAutoplayEnabled(boolean newValue){
         autoplayEnabled = newValue;
     }

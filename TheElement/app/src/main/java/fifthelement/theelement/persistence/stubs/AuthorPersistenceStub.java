@@ -1,7 +1,5 @@
 package fifthelement.theelement.persistence.stubs;
 
-import android.view.animation.AnimationUtils;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;

@@ -7,7 +7,6 @@ import java.util.UUID;
 import fifthelement.theelement.objects.Author;
 import fifthelement.theelement.objects.Song;
 import fifthelement.theelement.persistence.SongPersistence;
-import fifthelement.theelement.persistence.hsqldb.PersistenceException;
 
 public class SongPersistenceStub implements SongPersistence {
 

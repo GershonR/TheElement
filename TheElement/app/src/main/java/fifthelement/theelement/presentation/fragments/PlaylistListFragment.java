@@ -2,9 +2,12 @@ package fifthelement.theelement.presentation.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,23 +31,16 @@ import fifthelement.theelement.presentation.services.MusicService;
 
 public class PlaylistListFragment extends Fragment {
     private View view;
-    //private RecyclerView recyclerView;
     private ListView playlistListView;
-    private SongService songService;
-    private MusicService musicService;
-    private PlaylistService playlistService;
-    private PlaylistListAdapter playlistListAdapter;
-    private SongsListAdapter songListAdapter;
     List<Playlist> playlists;
+    private PlaylistService playlistService;
 
     private static final String LOG_TAG = "PlaylistListFragment";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        //songService = ((MainActivity)getActivity()).getSongService();
-        //musicService = Services.getMusicService();
-        playlistService = Services.getPlaylistService();
+        playlistService = ((MainActivity)getActivity()).getPlaylistService();
         playlists = playlistService.getPlaylists();
         displayView(inflater, container);
         return view;
@@ -53,31 +49,20 @@ public class PlaylistListFragment extends Fragment {
     private void displayView(LayoutInflater inflater, ViewGroup container) {
         view = inflater.inflate(R.layout.fragment_playlist_list, container, false);
         playlistListView = view.findViewById(R.id.playlist_list_view);
+        playlistListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                ((MainActivity)getActivity()).setCurrentPlaylist(playlistService.getPlaylists().get(position));
+                ((MainActivity)getActivity()).openPlaylistSongs();
+            }
+        });
+
         refreshAdapter();
     }
 
-    private void playPlaylist(ListView listView) {
-        if(playlists != null) {
-            final PlaylistListAdapter playlistListAdapter = new PlaylistListAdapter(getActivity(), playlists);
-            listView.setAdapter(playlistListAdapter);
-            //final SongsListAdapter songListAdapter = new SongsListAdapter(getActivity(), songs);
-            //listView.setAdapter(songListAdapter);
-            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view,
-                                        int position, long id) {
-                    boolean result = musicService.playMultipleSongsAsync(playlists.get(position));
-                    if (result) {
-                        ((MainActivity) getActivity()).startNotificationService(view.findViewById(R.id.toolbar));
-                    }
-                }
-            });
-        }
-    }
-
     private void refreshAdapter() {
-        playlistListAdapter = new PlaylistListAdapter(getActivity(), playlists);
+        PlaylistListAdapter playlistListAdapter = new PlaylistListAdapter(getActivity(), playlists);
+        //PlaylistListAdapter playlistListAdapter = new PlaylistListAdapter(getActivity(), playlists);
         playlistListView.setAdapter(playlistListAdapter);
     }
 }

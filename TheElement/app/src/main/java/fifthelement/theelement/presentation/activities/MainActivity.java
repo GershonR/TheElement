@@ -3,6 +3,7 @@ package fifthelement.theelement.presentation.activities;
 
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
@@ -11,8 +12,10 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.ContextThemeWrapper;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,10 +25,15 @@ import fifthelement.theelement.BuildConfig;
 import fifthelement.theelement.R;
 import fifthelement.theelement.application.Helpers;
 import fifthelement.theelement.application.Services;
+import fifthelement.theelement.business.services.PlaylistService;
 import fifthelement.theelement.business.services.SongService;
+import fifthelement.theelement.objects.Playlist;
+import fifthelement.theelement.objects.Song;
+import fifthelement.theelement.presentation.adapters.CompactSongsListAdapter;
+import fifthelement.theelement.presentation.adapters.PlaylistListAdapter;
 import fifthelement.theelement.presentation.constants.NotificationConstants;
-import fifthelement.theelement.presentation.services.MusicService;
 import fifthelement.theelement.presentation.fragments.SeekerFragment;
+import fifthelement.theelement.presentation.services.MusicService;
 import fifthelement.theelement.presentation.services.MusicService.MusicBinder;
 import fifthelement.theelement.presentation.services.NotificationService;
 import fifthelement.theelement.presentation.util.DatabaseUtil;
@@ -37,14 +45,19 @@ public class MainActivity extends AppCompatActivity {
     private NavigationView nvDrawer;
     private SongService songService;
     private MusicService musicService;
+    private PlaylistService playlistService;
     private Intent playIntent;
     private boolean musicBound = false;
+    private Playlist currentPlaylist;
 
     public SongService getSongService() {
         return songService;
     }
     public MusicService getMusicService(){
         return musicService;
+    }
+    public PlaylistService getPlaylistService(){
+        return playlistService;
     }
 
     @Override
@@ -71,6 +84,7 @@ public class MainActivity extends AppCompatActivity {
         DatabaseUtil.copyDatabaseToDevice(this);
 
         songService = new SongService();
+        playlistService = new PlaylistService();
     }
 
 
@@ -83,16 +97,73 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.add_song:
-                Intent myIntent = new Intent(MainActivity.this, AddMusicActivity.class);
-                MainActivity.this.startActivity(myIntent);
-                return true;
             case android.R.id.home:
                 mDrawer.openDrawer(GravityCompat.START);
                 return true;
         }
-
         return super.onOptionsItemSelected(item);
+    }
+
+    public void showDialog(final Song song) {
+        AlertDialog.Builder builderSingle = new AlertDialog.Builder(this);
+        builderSingle.setIcon(R.drawable.ic_add);
+        builderSingle.setTitle("Select a Playlist:");
+
+        final PlaylistListAdapter playlistListAdapter = new PlaylistListAdapter(this, playlistService.getPlaylists());
+
+        builderSingle.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        builderSingle.setAdapter(playlistListAdapter, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                AlertDialog.Builder builderInner = new AlertDialog.Builder(MainActivity.this);
+                Playlist chosenPlaylist =  playlistService.getPlaylists().get(which);
+                chosenPlaylist.addSong(song);
+                //builderInner.setMessage(chosenPlaylist.getName()+" is the chosen playlist");
+                builderInner.setTitle("Added to "+chosenPlaylist.getName());
+                builderInner.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog,int which) {
+                        dialog.dismiss();
+                    }
+                });
+                builderInner.show();
+            }
+        });
+        builderSingle.show();
+    }
+
+    public Playlist getCurrentPlaylist(){ return currentPlaylist;}
+    public void setCurrentPlaylist(Playlist newPlaylist){ this.currentPlaylist = newPlaylist;}
+
+    public void openPlaylistSongs(){
+        AlertDialog.Builder builderSingle = new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.alert_dialog_custom));
+        builderSingle.setIcon(R.drawable.ic_song_list);
+        builderSingle.setTitle(currentPlaylist.getName()+" songs:");
+
+        //final CompactSongsListAdapter compactSongsListAdapter = new CompactSongsListAdapter(this, currentPlaylist.getSongs());
+
+        builderSingle.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        final CompactSongsListAdapter compactSongsListAdapter = new CompactSongsListAdapter(this, currentPlaylist.getSongs());
+        builderSingle.setAdapter(compactSongsListAdapter, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                musicService.playSongAsync(currentPlaylist.getSongs().get(which), which);
+            }
+        });
+
+        builderSingle.show();
     }
 
     public void startNotificationService(View v) {

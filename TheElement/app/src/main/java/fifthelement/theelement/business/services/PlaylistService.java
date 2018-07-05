@@ -41,10 +41,10 @@ public class PlaylistService {
         return playlistPersistence.updatePlaylist(playlist);
     }
 
-    public boolean deletePlaylist(Author author) throws IllegalArgumentException {
-        if(author == null)
+    public boolean deletePlaylist(Playlist playlist) throws IllegalArgumentException {
+        if(playlist == null)
             throw new IllegalArgumentException();
-        return playlistPersistence.deletePlaylist(author.getUUID());
+        return playlistPersistence.deletePlaylist(playlist.getUUID());
     }
 
 }

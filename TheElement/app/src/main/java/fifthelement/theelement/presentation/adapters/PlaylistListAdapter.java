@@ -2,6 +2,8 @@ package fifthelement.theelement.presentation.adapters;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatImageButton;
 import android.support.v7.widget.PopupMenu;
 import android.util.Log;
@@ -11,6 +13,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.List;
@@ -18,19 +22,17 @@ import java.util.List;
 import fifthelement.theelement.R;
 import fifthelement.theelement.application.Helpers;
 import fifthelement.theelement.application.Services;
+import fifthelement.theelement.business.services.PlaylistService;
 import fifthelement.theelement.objects.Playlist;
 import fifthelement.theelement.persistence.hsqldb.PersistenceException;
 import fifthelement.theelement.presentation.activities.MainActivity;
-import fifthelement.theelement.presentation.fragments.HomeFragment;
-import fifthelement.theelement.presentation.fragments.PlaylistListFragment;
-import fifthelement.theelement.presentation.fragments.SearchFragment;
-import fifthelement.theelement.presentation.fragments.SongListFragment;
 import fifthelement.theelement.presentation.services.MusicService;
 
 public class PlaylistListAdapter extends BaseAdapter {
     Context context;
     List<Playlist> playlists;
     LayoutInflater inflater;
+    PlaylistService playlistService;
     private static final String LOG_TAG = "SongsListAdapter";
 
     public PlaylistListAdapter(Context context, List<Playlist> playlists) {
@@ -60,13 +62,14 @@ public class PlaylistListAdapter extends BaseAdapter {
         view = inflater.inflate(R.layout.fragment_list_item, null);
 
         TextView songName = (TextView) view.findViewById(R.id.primary_string);
-        //TextView authorName = (TextView) view.findViewById(R.id.author_name_list);
+        TextView songCount = (TextView) view.findViewById(R.id.secondary_string);
+
         final Playlist playlist = playlists.get(i);
-        //Author author = printSong.getAuthor();
-        //String authors = "";
         songName.setText(playlist.getName());
-        //authorName.setText(authors);
+        songCount.setText((playlist.getSongs().size())+" Songs");
+
         AppCompatImageButton button = view.findViewById(R.id.popup_button);
+
         playlistOptions(activity, playlist, button);
         return view;
     }
@@ -88,6 +91,7 @@ public class PlaylistListAdapter extends BaseAdapter {
                                 playPlaylist(playlist, activity);
                                 break;
                             case R.id.rename_playlist:
+                                renamePlaylist(playlist);
                                 break;
                             default:
                                 break;
@@ -100,10 +104,41 @@ public class PlaylistListAdapter extends BaseAdapter {
         });
     }
 
+    private void renamePlaylist(final Playlist playlist){
+        final AlertDialog.Builder builderSingle = new AlertDialog.Builder(this.context);
+        builderSingle.setIcon(R.drawable.ic_edit);
+        builderSingle.setTitle("Rename "+playlist.getName()+" to:");
+        final EditText newNameInput = new EditText(context);
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT);
+        newNameInput.setLayoutParams(lp);
+        builderSingle.setView(newNameInput);
+
+        builderSingle.setPositiveButton("Done", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //take the text and change the name of the playlist
+                String newName = newNameInput.getText().toString();
+                playlist.setName(newName);
+                dialog.dismiss();
+            }
+        });
+
+        builderSingle.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        builderSingle.show();
+    }
+
     private void deletePlaylist(Playlist playlist, MainActivity activity) {
         try { // TODO: Possible code smell?
             Helpers.getToastHelper(context).sendToast("Deleted " + playlist.getName());
-            playlists.remove(playlist);
+            activity.getPlaylistService().deletePlaylist(playlist);
+            //playlists.remove(playlist);
             notifyDataSetChanged();
         } catch(PersistenceException p) {
             Helpers.getToastHelper(context).sendToast("Could not delete " + playlist.getName());
@@ -112,13 +147,12 @@ public class PlaylistListAdapter extends BaseAdapter {
     }
 
     private void playPlaylist(Playlist playlist, MainActivity activity) {
-        try { // TODO: Possible code smell?
+        try {
             Helpers.getToastHelper(context).sendToast("Playing " + playlist.getName());
 
             MusicService musicService = Services.getMusicService();
             musicService.playMultipleSongsAsync(playlist);
 
-            //playlists.remove(playlist);
         } catch(PersistenceException p) {
             Helpers.getToastHelper(context).sendToast("Could not play " + playlist.getName());
             Log.e(LOG_TAG, p.getMessage());

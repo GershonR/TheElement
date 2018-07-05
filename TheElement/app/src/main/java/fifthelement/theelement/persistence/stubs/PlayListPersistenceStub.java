@@ -23,18 +23,57 @@ public class PlaylistPersistenceStub implements PlaylistPersistence {
         song3.setAuthor(new Author("Coldplay"));
 
 
-        Playlist playlist1 = new Playlist("Actual Playlist (3 songs)");
+        Playlist playlist1 = new Playlist("Actual Playlist");
         playlist1.addSong(song1);
         playlist1.addSong(song2);
         playlist1.addSong(song3);
         this.storePlaylist(playlist1);
 
-        Playlist playlist2 = new Playlist("Second Playlist(1 song)");
+        Playlist playlist2 = new Playlist("Second Playlist");
         playlist2.addSong(song1);
         this.storePlaylist(playlist2);
 
         this.storePlaylist(new Playlist("Empty Playlist"));
-        this.storePlaylist(new Playlist("Playlist4"));
+
+        Playlist playlist3 = new Playlist("Duplicate songs");
+        playlist3.addSong(song1);
+        playlist3.addSong(song3);
+        playlist3.addSong(song1);
+        playlist3.addSong(song3);
+        playlist3.addSong(song1);
+        playlist3.addSong(song3);
+        playlist3.addSong(song1);
+        playlist3.addSong(song3);
+        playlist3.addSong(song1);
+        playlist3.addSong(song3);
+        playlist3.addSong(song1);
+        playlist3.addSong(song3);
+        playlist3.addSong(song1);
+        playlist3.addSong(song3);
+        playlist3.addSong(song1);
+        playlist3.addSong(song3);
+        playlist3.addSong(song1);
+        playlist3.addSong(song3);
+        playlist3.addSong(song1);
+        playlist3.addSong(song3);
+        playlist3.addSong(song1);
+        playlist3.addSong(song3);
+        playlist3.addSong(song1);
+        playlist3.addSong(song3);
+        playlist3.addSong(song1);
+        playlist3.addSong(song3);
+        playlist3.addSong(song1);
+        playlist3.addSong(song3);
+        playlist3.addSong(song1);
+        playlist3.addSong(song3);
+        playlist3.addSong(song1);
+        playlist3.addSong(song3);
+        playlist3.addSong(song1);
+        playlist3.addSong(song3);
+        playlist3.addSong(song1);
+        playlist3.addSong(song3);
+        this.storePlaylist(playlist3);
+
     }
 
     @Override

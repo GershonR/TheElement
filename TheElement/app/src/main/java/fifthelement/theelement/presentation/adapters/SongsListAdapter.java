@@ -55,7 +55,7 @@ public class SongsListAdapter extends BaseAdapter {
         final MainActivity activity = (MainActivity)context;
         view = inflater.inflate(R.layout.fragment_list_item, null);
         TextView songName = (TextView) view.findViewById(R.id.primary_string);
-        TextView authorName = (TextView) view.findViewById(R.id.secondary_name);
+        TextView authorName = (TextView) view.findViewById(R.id.secondary_string);
         final Song printSong = songs.get(i);
         Author author = printSong.getAuthor();
         String authors = "";
@@ -78,7 +78,16 @@ public class SongsListAdapter extends BaseAdapter {
                 activity.getMenuInflater().inflate(R.menu.song_list_item_menu, popup.getMenu());
                 popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     public boolean onMenuItemClick(MenuItem item) {
-                        deleteSong(song, activity);
+                        switch(item.getItemId()) {
+                            case R.id.add_song:
+                                deleteSong(song, activity);
+                                break;
+                            // pass the song to the main activity, to find out
+                            // which playlist it needs to be added too
+                            case R.id.add_to_playlist:
+                                activity.showDialog(song);
+                                break;
+                        }
                         return true;
                     }
                 });

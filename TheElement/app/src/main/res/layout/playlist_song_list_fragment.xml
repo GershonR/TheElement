@@ -2,29 +2,15 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/song_list"
+    android:id="@+id/playlist_songlist"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingBottom="75dp"
     tools:context=".presentation.fragments.SongListFragment">
 
-    <LinearLayout
-        android:id="@+id/listview_parent"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <Button
-            android:id="@+id/button_organize_list"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Organize" />
-
         <ListView
             android:id="@+id/song_list_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
-    </LinearLayout>
-
 
 </LinearLayout>

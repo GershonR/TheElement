@@ -1,5 +1,7 @@
 package fifthelement.theelement.persistence.hsqldb;
 
+import android.util.Log;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -133,6 +135,7 @@ public class PlaylistPersistenceHSQLDB implements PlaylistPersistence {
 
             return true;
         } catch (final SQLException e) {
+            Log.e("PLAYLISTS", e.getMessage());
             throw new PersistenceException(e);
         }
     }
@@ -150,9 +153,13 @@ public class PlaylistPersistenceHSQLDB implements PlaylistPersistence {
         if(uuid == null)
             throw new IllegalArgumentException("Cannot delete with a null UUID");
         try {
-            final PreparedStatement st = c.prepareStatement("DELETE FROM playlists WHERE playlistUUID = ?");
-            st.setString(1, uuid.toString());
-            st.executeUpdate();
+            final PreparedStatement st1 = c.prepareStatement("DELETE FROM playlistsongs WHERE playlistUUID = ?");
+            st1.setString(1, uuid.toString());
+            st1.executeUpdate();
+
+            final PreparedStatement st2 = c.prepareStatement("DELETE FROM playlists WHERE playlistUUID = ?");
+            st2.setString(1, uuid.toString());
+            st2.executeUpdate();
         } catch (final SQLException e) {
             throw new PersistenceException(e);
         }

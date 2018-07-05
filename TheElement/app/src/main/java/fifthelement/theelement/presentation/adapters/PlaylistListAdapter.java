@@ -21,6 +21,7 @@ import java.util.List;
 
 import fifthelement.theelement.R;
 import fifthelement.theelement.application.Helpers;
+import fifthelement.theelement.application.Services;
 import fifthelement.theelement.business.services.PlaylistService;
 import fifthelement.theelement.business.services.SongListService;
 import fifthelement.theelement.objects.Playlist;
@@ -40,6 +41,7 @@ public class PlaylistListAdapter extends BaseAdapter {
     public PlaylistListAdapter(Context context, List<Playlist> playlists) {
         this.context = context;
         this.playlists = playlists;
+        this.playlistService = Services.getPlaylistService();
         inflater = (LayoutInflater.from(context));
     }
 
@@ -123,6 +125,7 @@ public class PlaylistListAdapter extends BaseAdapter {
                 String newName = newNameInput.getText().toString();
                 if ( validText(newName)){
                     playlist.setName(newName);
+                    playlistService.updatePlaylist(playlist, newName);
                 }
                 else{
                     Helpers.getToastHelper(context).sendToast(newName+" is an invalid name, try again");

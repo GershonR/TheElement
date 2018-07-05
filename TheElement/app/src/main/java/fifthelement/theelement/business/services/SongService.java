@@ -25,12 +25,16 @@ public class SongService {
     private AlbumPersistence albumPersistence;
     private AuthorPersistence authorPersistence;
     private PlaylistPersistence playlistPersistence;
+    private AuthorService authorService;
+    private AlbumService albumService;
 
     public SongService() {
         songPersistence = Persistence.getSongPersistence();
         albumPersistence = Persistence.getAlbumPersistence();
         authorPersistence = Persistence.getAuthorPersistence();
         playlistPersistence = Persistence.getPlaylistPersistence();
+        authorService = Services.getAuthorService();
+        albumService = Services.getAlbumService();
     }
 
     public SongService(SongPersistence songPersistence, AlbumPersistence albumPersistence, AuthorPersistence authorPersistence, PlaylistPersistence playlistPersistence) {
@@ -38,6 +42,9 @@ public class SongService {
         this.albumPersistence = albumPersistence;
         this.authorPersistence = authorPersistence;
         this.playlistPersistence = playlistPersistence;
+        this.albumService = new AlbumService(albumPersistence, songPersistence);
+        this.authorService = new AuthorService(authorPersistence);
+
     }
 
     public Song getSongByUUID(UUID uuid) {
@@ -103,8 +110,6 @@ public class SongService {
         if(!songName.equals("")){
             song.setName(songName);
         }
-        AuthorService authorService = Services.getAuthorService();
-        AlbumService  albumService = Services.getAlbumService();
 
         Author newAuthor = new Author(author);
         if(!author.equals("")) { // TODO: Seperate Method For This?

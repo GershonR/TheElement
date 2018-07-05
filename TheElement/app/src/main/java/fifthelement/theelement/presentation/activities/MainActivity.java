@@ -41,8 +41,9 @@ import fifthelement.theelement.persistence.hsqldb.PersistenceException;
 import fifthelement.theelement.presentation.adapters.CompactSongsListAdapter;
 import fifthelement.theelement.presentation.adapters.PlaylistListAdapter;
 import fifthelement.theelement.presentation.constants.NotificationConstants;
-import fifthelement.theelement.presentation.fragments.PlaylistListFragment;
+import fifthelement.theelement.presentation.fragments.HomeFragment;
 import fifthelement.theelement.presentation.fragments.SeekerFragment;
+import fifthelement.theelement.presentation.fragments.SongInfoFragment;
 import fifthelement.theelement.presentation.fragments.SongListFragment;
 import fifthelement.theelement.presentation.services.MusicService;
 import fifthelement.theelement.presentation.services.MusicService.MusicBinder;
@@ -102,11 +103,20 @@ public class MainActivity extends AppCompatActivity {
         //Sets current song list to the list of all songs in app
         songListService.setSongList(songService.getSongs());
 
-
-        if ( savedInstanceState == null)
-            mDrawer.openDrawer(GravityCompat.START);
+        createDefaultPage();
     }
 
+    private void createDefaultPage() {
+        Fragment fragment = null;
+        Class fragmentClass = HomeFragment.class;
+        try{
+            fragment = (Fragment) fragmentClass.newInstance();
+        }
+        catch (Exception e){
+            Log.e(LOG_TAG, e.getMessage());
+        }
+        Helpers.getFragmentHelper(this).createFragment(R.id.flContent, fragment);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -272,12 +282,11 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
             MusicBinder binder = (MusicBinder)service;
-            //get service
             musicService = binder.getService();
             Services.setMusicService(musicService);
             musicBound = true;
-
             createSeeker();
+            musicService.reset();
         }
 
         @Override

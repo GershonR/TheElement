@@ -85,7 +85,7 @@ public class SongsListAdapter extends BaseAdapter {
                 popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     public boolean onMenuItemClick(MenuItem item) {
                         switch(item.getItemId()) {
-                            case R.id.add_song:
+                            case R.id.delete_song:
                                 deleteSong(song, activity);
                                 break;
                             case R.id.song_info:

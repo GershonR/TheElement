@@ -5,6 +5,8 @@ import android.support.v7.app.AppCompatActivity;
 
 import fifthelement.theelement.business.services.AlbumService;
 import fifthelement.theelement.business.services.AuthorService;
+import fifthelement.theelement.business.services.SongListService;
+import fifthelement.theelement.business.services.SongService;
 import fifthelement.theelement.presentation.services.DrawerService;
 import fifthelement.theelement.presentation.services.MusicService;
 
@@ -13,6 +15,8 @@ public class Services {
     private static MusicService musicService = null;
     private static AuthorService authorService = null;
     private static AlbumService albumService = null;
+    private static SongService songService = null;
+    private static SongListService songListService = null;
 
     public static synchronized DrawerService getDrawerService(AppCompatActivity appCompatActivity) {
 
@@ -38,6 +42,22 @@ public class Services {
         }
 
         return albumService;
+    }
+
+    public static synchronized SongService getSongService(){
+        if( songService == null ) {
+            songService = new SongService();
+        }
+
+        return songService;
+    }
+
+    public static synchronized SongListService getSongListService(){
+        if( songListService == null ) {
+            songListService = new SongListService();
+        }
+
+        return songListService;
     }
 
     public static synchronized MusicService getMusicService() {

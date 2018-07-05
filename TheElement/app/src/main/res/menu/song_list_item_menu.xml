@@ -6,4 +6,9 @@
             android:id="@+id/add_song"
             android:icon="@drawable/ic_add"
             android:title="Delete Song" />
+
+        <item
+            android:id="@+id/add_to_playlist"
+            android:icon="@drawable/ic_playlist_add"
+            android:title="Add to Playlist" />
 </menu>

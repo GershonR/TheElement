@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/linearLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:descendantFocusability="blocksDescendants"
+    tools:context=".presentation.fragments.SongListItemFragment">
+
+
+    <TextView
+        android:id="@+id/primary_string"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="10dp"
+        android:paddingTop="0dp"
+        android:text="TextView"
+        android:textColor="@android:color/black"
+        android:textSize="20sp"
+        android:textStyle="normal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/secondary_string"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:singleLine="true"
+        android:text="TextView2"
+        android:textColor="@android:color/darker_gray"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/primary_string"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!--
+    <ImageButton
+        android:id="@+id/popup_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="8dp"
+        android:adjustViewBounds="true"
+        android:background="?android:selectableItemBackground"
+        android:fadingEdge="none"
+        android:maxHeight="30dp"
+        android:maxWidth="30dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_popup"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+    -->
+</android.support.constraint.ConstraintLayout>

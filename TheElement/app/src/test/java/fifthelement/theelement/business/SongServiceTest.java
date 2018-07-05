@@ -15,7 +15,7 @@ import fifthelement.theelement.business.exceptions.SongAlreadyExistsException;
 import fifthelement.theelement.objects.Song;
 import fifthelement.theelement.persistence.stubs.AlbumPersistenceStub;
 import fifthelement.theelement.persistence.stubs.AuthorPersistenceStub;
-import fifthelement.theelement.persistence.stubs.PlayListPersistenceStub;
+import fifthelement.theelement.persistence.stubs.PlaylistPersistenceStub;
 import fifthelement.theelement.persistence.stubs.SongPersistenceStub;
 
 import static org.junit.Assert.fail;
@@ -28,7 +28,7 @@ public class SongServiceTest {
     @Before
     public void setup() {
 
-        classUnderTest = new SongService(new SongPersistenceStub(), new AlbumPersistenceStub(), new AuthorPersistenceStub(), new PlayListPersistenceStub());
+        classUnderTest = new SongService(new SongPersistenceStub(), new AlbumPersistenceStub(), new AuthorPersistenceStub(), new PlaylistPersistenceStub());
         List<Song> songs = classUnderTest.getSongs();
         classUnderTest.getSongs().clear();
         this.songsList = classUnderTest.getSongs();

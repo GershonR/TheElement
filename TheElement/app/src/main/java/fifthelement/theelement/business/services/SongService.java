@@ -71,12 +71,12 @@ public class SongService {
         Author author = null;
         Album album = null;
         Song song = new Song(songName, realPath);
-        if(songArtist != null) { // TODO: Seperate Method For This?
+        if(songArtist != null) {
             author = new Author(songArtist);
             song.setAuthor(author);
             Services.getAuthorService().insertAuthor(author);
         }
-        if(songAlbum != null) { // TODO: Seperate Method For This?
+        if(songAlbum != null) {
             album = new Album(songAlbum);
             if(author != null)
                 album.setAuthor(author);
@@ -112,14 +112,14 @@ public class SongService {
         }
 
         Author newAuthor = new Author(author);
-        if(!author.equals("")) { // TODO: Seperate Method For This?
+        if(!author.equals("")) {
             song.setAuthor(newAuthor);
             authorService.insertAuthor(newAuthor);
         }else {
             song.setAuthor(null);
         }
 
-        if(!album.equals("")) { // TODO: Seperate Method For This?
+        if(!album.equals("")) {
             Album newAlbum = new Album(album);
             if(!author.equals(""))
                 newAlbum.setAuthor(newAuthor);

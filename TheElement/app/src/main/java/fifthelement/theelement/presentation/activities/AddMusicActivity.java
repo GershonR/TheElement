@@ -123,7 +123,6 @@ public class AddMusicActivity extends AppCompatActivity {
     }
 
     private void createSong(Uri path, String songName, String songArtist, String songAlbum, String songGenre) {
-        // TODO: Fix Code Smell
         try {
             String realPath = PathUtil.getPath(getApplicationContext(), path);
             songService.createSong(realPath, songName, songArtist, songAlbum, songGenre);

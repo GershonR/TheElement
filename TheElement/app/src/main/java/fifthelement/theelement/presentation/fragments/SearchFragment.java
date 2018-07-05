@@ -97,9 +97,9 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
 
     // These methods override the below two, but the below two
     // must be present to satisfy the implement requirements
+    // currently only searching through song names
     private OnQueryTextListener createNewOnQueryTextListener(){
         return new OnQueryTextListener() {
-            //TODO implement different type of search when search submitted?
             @Override
             // Search on submit button
             public boolean onQueryTextSubmit(String query) {

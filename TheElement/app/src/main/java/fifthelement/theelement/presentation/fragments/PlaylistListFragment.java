@@ -58,7 +58,6 @@ public class PlaylistListFragment extends Fragment {
         playlistListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //((MainActivity)getActivity()).setCurrentPlaylist(playlistService.getPlaylists().get(position));
                 ((MainActivity)getActivity()).openPlaylistSongs(playlistService.getAllPlaylists().get(position));
             }
         });
@@ -66,9 +65,8 @@ public class PlaylistListFragment extends Fragment {
         refreshAdapter();
     }
 
-    private void refreshAdapter() {
-        PlaylistListAdapter playlistListAdapter = new PlaylistListAdapter(getActivity(), playlists);
-        //PlaylistListAdapter playlistListAdapter = new PlaylistListAdapter(getActivity(), playlists);
+    public void refreshAdapter() {
+        PlaylistListAdapter playlistListAdapter = new PlaylistListAdapter(getActivity(), playlistService.getAllPlaylists());
         playlistListView.setAdapter(playlistListAdapter);
     }
 }

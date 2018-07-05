@@ -172,7 +172,7 @@ public class PlaylistListAdapter extends BaseAdapter {
 
             SongListService songListService = getSongListService();
             songListService.setShuffled(true);
-            songListService.setCurrentSongsList(playlist.getSongs());
+            songListService.setSongList(playlist.getSongs());
             songListService.setAutoplayEnabled(true);
 
             getMusicService().start();

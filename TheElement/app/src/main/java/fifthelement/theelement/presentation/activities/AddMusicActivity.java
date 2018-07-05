@@ -83,7 +83,7 @@ public class AddMusicActivity extends AppCompatActivity {
                     setupSong(data.getData());
                 }
         }
-        songListService.setCurrentSongsList(songService.getSongs()); //Reset song list
+        songListService.setSongList(songService.getSongs()); //Reset song list
         Intent intent = new Intent(AddMusicActivity.this, MainActivity.class);
         AddMusicActivity.this.startActivity(intent);
     }

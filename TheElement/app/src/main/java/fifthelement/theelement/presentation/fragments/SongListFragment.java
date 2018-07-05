@@ -69,20 +69,20 @@ public class SongListFragment extends Fragment {
     }
 
     private void refreshAdapter() {
-        List<Song> songs = songListService.getAllSongsList();
+        List<Song> songs = songListService.getSongList();
         songListAdapter = new SongsListAdapter(getActivity(), songs);
         listView.setAdapter(songListAdapter);
     }
 
     private void sortSongs() {
-        List<Song> songs = songListService.getAllSongsList();
+        List<Song> songs = songListService.getSongList();
         songListService.sortSongs(songs);
-        songListService.setAllSongsList(songs);
+        songListService.setSongList(songs);
         refreshAdapter();
     }
 
     private void playSong(ListView listView) {
-        List<Song> songs = songListService.getCurrentSongsList();
+        List<Song> songs = songListService.getSongList();
         if(songs != null) {
             final SongsListAdapter songListAdapter = new SongsListAdapter(getActivity(), songs);
             listView.setAdapter(songListAdapter);

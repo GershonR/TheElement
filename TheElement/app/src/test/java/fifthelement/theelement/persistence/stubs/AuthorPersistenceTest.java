@@ -67,7 +67,7 @@ public class AuthorPersistenceTest {
         Assert.assertTrue("testValidStoreAuthor: author id != 4",author.getUUID().compareTo(authorUUID) == 0);
     }
 
-    @Test(expected = ArrayStoreException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void testInvalidAuthorStore() {
         Author author = new Author("Some Author");
         author.setUUID(uuidOne);

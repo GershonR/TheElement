@@ -66,6 +66,8 @@ public class PlaylistPersistenceHSQLDB implements PlaylistPersistence {
     }
 
     public List<Song> getAllSongsByPlaylist(UUID uuid) throws PersistenceException {
+        if(uuid == null)
+            throw new IllegalArgumentException("Cannot get songs from playlist with a null UUID");
 
         final List<Song> songs = new ArrayList<>();
 
@@ -93,6 +95,8 @@ public class PlaylistPersistenceHSQLDB implements PlaylistPersistence {
 
     @Override
     public Playlist getPlaylistByUUID(UUID uuid) throws PersistenceException {
+        if(uuid == null)
+            throw new IllegalArgumentException("Cannot get playlist with a null UUID");
         try {
             final PreparedStatement st = c.prepareStatement("SELECT * FROM playlists WHERE playlistUUID = ?");
             st.setString(1, uuid.toString());
@@ -111,6 +115,10 @@ public class PlaylistPersistenceHSQLDB implements PlaylistPersistence {
 
     @Override
     public boolean storePlaylist(Playlist playList) throws PersistenceException {
+        if(playList == null)
+            throw new IllegalArgumentException("Cant store a playlist with null Playlist");
+        if(playlistExists(playList.getUUID()))
+            throw new IllegalArgumentException("Cant store a playlist with existing UUID");
         try {
             final PreparedStatement st = c.prepareStatement("INSERT INTO playlists VALUES(?, ?)");
             st.setString(1, playList.getUUID().toString());
@@ -126,6 +134,12 @@ public class PlaylistPersistenceHSQLDB implements PlaylistPersistence {
 
     @Override
     public boolean storeSongForPlaylist(Playlist playList, Song song) throws PersistenceException {
+        if(playList == null){
+            throw new IllegalArgumentException("Cannot add song to a playlist with null Playlist");
+        }
+        if( song == null ) {
+            throw new IllegalArgumentException("Cannot add null Song to playlist");
+        }
         try {
             final PreparedStatement st = c.prepareStatement("INSERT INTO playlistsongs VALUES(?, ?)");
             st.setString(1, playList.getUUID().toString());
@@ -141,6 +155,12 @@ public class PlaylistPersistenceHSQLDB implements PlaylistPersistence {
 
     @Override
     public boolean updatePlaylist(Playlist playlist, String newName) throws PersistenceException {
+        if(playlist == null){
+            throw new IllegalArgumentException("Cannot update a playlist with null Playlist");
+        }
+        if( newName == null ) {
+            throw new IllegalArgumentException("Cannot update a playlist with null name");
+        }
         try {
             final PreparedStatement st = c.prepareStatement("UPDATE playlists SET playlistName = ? WHERE playlistUUID = ?");
             st.setString(1, newName);
@@ -157,7 +177,7 @@ public class PlaylistPersistenceHSQLDB implements PlaylistPersistence {
     @Override
     public boolean deletePlaylist(Playlist playList) throws PersistenceException {
         if(playList == null)
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Cannot delete a playlist with a null Playlist");
         return deletePlaylist(playList.getUUID());
     }
 
@@ -165,7 +185,7 @@ public class PlaylistPersistenceHSQLDB implements PlaylistPersistence {
     public boolean deletePlaylist(UUID uuid) throws PersistenceException {
         boolean removed = false;
         if(uuid == null)
-            throw new IllegalArgumentException("Cannot delete with a null UUID");
+            throw new IllegalArgumentException("Cannot delete a playlist with a null UUID");
         try {
             final PreparedStatement st1 = c.prepareStatement("DELETE FROM playlistsongs WHERE playlistUUID = ?");
             st1.setString(1, uuid.toString());
@@ -184,11 +204,15 @@ public class PlaylistPersistenceHSQLDB implements PlaylistPersistence {
 
     @Override
     public boolean playlistExists(Playlist playList) throws PersistenceException {
+        if(playList == null)
+            throw new IllegalArgumentException("Cannot check exists with a null Playlist");
         return playlistExists(playList.getUUID());
     }
 
     @Override
     public boolean playlistExists(UUID uuid) throws PersistenceException {
+        if(uuid == null)
+            throw new IllegalArgumentException("Cannot check exists with a null UUID");
         Playlist playlist = getPlaylistByUUID(uuid);
         return playlist != null;
     }

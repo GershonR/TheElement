@@ -1,7 +1,5 @@
 package fifthelement.theelement.persistence.stubs;
 
-import android.view.animation.AnimationUtils;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -30,7 +28,9 @@ public class AuthorPersistenceStub implements AuthorPersistence {
     }
 
     @Override
-    public Author getAuthorByUUID(UUID uuid) {
+    public Author getAuthorByUUID(UUID uuid) throws IllegalArgumentException {
+        if(uuid == null)
+            throw new IllegalArgumentException("Cannot get author with a null UUID");
         for(Author a : this.authorList)
             if(a.getUUID().compareTo(uuid) == 0)
                 return a;
@@ -38,11 +38,11 @@ public class AuthorPersistenceStub implements AuthorPersistence {
     }
 
     @Override
-    public boolean storeAuthor(Author author) throws ArrayStoreException, IllegalArgumentException {
+    public boolean storeAuthor(Author author) throws IllegalArgumentException {
         if(author == null)
             throw new IllegalArgumentException("Cannot insert a null author");
         if(authorExists(author.getUUID()))
-            throw new ArrayStoreException();
+            throw new IllegalArgumentException("Cant store an author with existing UUID");
         this.authorList.add(author);
         return true;
     }
@@ -65,7 +65,7 @@ public class AuthorPersistenceStub implements AuthorPersistence {
     @Override
     public boolean deleteAuthor(Author author) throws IllegalArgumentException {
         if (author == null)
-            throw new IllegalArgumentException("Cannot delete a null author");
+            throw new IllegalArgumentException("Cannot delete an author with a null author");
         return this.deleteAuthor(author.getUUID());
     }
 
@@ -73,7 +73,7 @@ public class AuthorPersistenceStub implements AuthorPersistence {
     public boolean deleteAuthor(UUID uuid) throws IllegalArgumentException {
         boolean removed = false;
         if(uuid == null)
-            throw new IllegalArgumentException("Cannot delete a null author");
+            throw new IllegalArgumentException("Cannot delete an author with a null UUID");
         for(int index = 0; index < authorList.size(); index++) {
             if(authorList.get(index).getUUID().compareTo(uuid) == 0) {
                 this.authorList.remove(index);
@@ -85,11 +85,15 @@ public class AuthorPersistenceStub implements AuthorPersistence {
 
     @Override
     public boolean authorExists(Author author) {
+        if(author == null)
+            throw new IllegalArgumentException("Cannot check exists with a null Author");
         return this.authorExists(author.getUUID());
     }
 
     @Override
     public boolean authorExists(UUID uuid) {
+        if(uuid == null)
+            throw new IllegalArgumentException("Cannot check exists with a null UUID");
         boolean exists = false;
         for(Author a : this.authorList)
             if(a.getUUID().compareTo(uuid) == 0) {

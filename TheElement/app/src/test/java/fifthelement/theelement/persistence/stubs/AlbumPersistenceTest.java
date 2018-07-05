@@ -69,7 +69,7 @@ public class AlbumPersistenceTest {
         Assert.assertTrue("testValidStoreAlbum: album id != 4",album.getUUID().compareTo(albumUUID) == 0);
     }
 
-    @Test(expected = ArrayStoreException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void testInvalidAlbumStore() {
         Album album = new Album("Some Album");
         album.setUUID(uuidOne);

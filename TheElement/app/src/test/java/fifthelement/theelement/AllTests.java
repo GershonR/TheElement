@@ -5,6 +5,7 @@ import org.junit.runners.Suite;
 
 import fifthelement.theelement.business.AlbumServiceTest;
 import fifthelement.theelement.business.AuthorServiceTest;
+import fifthelement.theelement.business.SongListServiceTest;
 import fifthelement.theelement.business.SongServiceTest;
 import fifthelement.theelement.persistence.stubs.AlbumPersistenceTest;
 import fifthelement.theelement.persistence.stubs.AuthorPersistenceTest;
@@ -14,6 +15,7 @@ import fifthelement.theelement.persistence.stubs.SongPersistenceTest;
 @Suite.SuiteClasses({
         SongPersistenceTest.class,
         SongServiceTest.class,
+        SongListServiceTest.class,
         AuthorServiceTest.class,
         AlbumServiceTest.class,
         AuthorPersistenceTest.class,

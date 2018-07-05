@@ -18,6 +18,7 @@ import java.util.List;
 import fifthelement.theelement.R;
 import fifthelement.theelement.application.Helpers;
 import fifthelement.theelement.application.Services;
+import fifthelement.theelement.business.services.SongListService;
 import fifthelement.theelement.business.services.SongService;
 import fifthelement.theelement.objects.Song;
 import fifthelement.theelement.presentation.activities.MainActivity;
@@ -27,17 +28,15 @@ import fifthelement.theelement.presentation.adapters.SongsListAdapter;
 public class SongListFragment extends Fragment {
     private View view;
     private ListView listView;
-    private SongService songService;
+    private SongListService songListService;
     private MusicService musicService;
     private SongsListAdapter songListAdapter;
-    List<Song> songs;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        songService = ((MainActivity)getActivity()).getSongService();
+        songListService = Services.getSongListService();
         musicService = Services.getMusicService();
-        songs = songService.getSongs();
         displayView(inflater, container);
         return view;
     }
@@ -48,38 +47,45 @@ public class SongListFragment extends Fragment {
 
         refreshAdapter();
 
-        sortSongsButton();
         autoPlaySwitch();
+        shuffleSwitch();
         playSong(listView);
     }
 
     private void autoPlaySwitch() {
         Switch autoplaySwitch = view.findViewById(R.id.autoplaySwitch);
-        autoplaySwitch.setChecked(musicService.getAutoplayEnabled());
+        autoplaySwitch.setChecked(songListService.getAutoplayEnabled());
         autoplaySwitch.setOnCheckedChangeListener(new Switch.OnCheckedChangeListener(){
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                musicService.setAutoplayEnabled(isChecked);
+                songListService.setAutoplayEnabled(isChecked);
+            }
+        });
+    }
+
+    private void shuffleSwitch() {
+        Button shuffle = view.findViewById(R.id.shuffle);
+        shuffle.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v) {
+                musicService.shuffle();
             }
         });
     }
 
     private void refreshAdapter() {
+        List<Song> songs = songListService.getSongList();
         songListAdapter = new SongsListAdapter(getActivity(), songs);
         listView.setAdapter(songListAdapter);
     }
 
-    private void sortSongsButton() {
-        Button buttonOrganize = view.findViewById(R.id.button_organize_list);
-        buttonOrganize.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v) {
-                songService.sortSongs(songs);
-                musicService.setSongs(songs);
-                refreshAdapter();
-            }
-        });
+    private void sortSongs() {
+        List<Song> songs = songListService.getSongList();
+        songListService.sortSongs(songs);
+        songListService.setSongList(songs);
+        refreshAdapter();
     }
 
     private void playSong(ListView listView) {
+        List<Song> songs = songListService.getSongList();
         if(songs != null) {
             final SongsListAdapter songListAdapter = new SongsListAdapter(getActivity(), songs);
             listView.setAdapter(songListAdapter);
@@ -88,8 +94,9 @@ public class SongListFragment extends Fragment {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view,
                                         int position, long id) {
-                    boolean result = musicService.playSongAsync(songs.get(position), position);
+                    boolean result = musicService.playSongAsync(songListService.getSongAtIndex(position));
                     if (result) {
+                        songListService.setShuffleEnabled(false);
                         ((MainActivity) getActivity()).startNotificationService(view.findViewById(R.id.toolbar));
                     }
                 }
@@ -101,9 +108,8 @@ public class SongListFragment extends Fragment {
     public void onResume() {
         super.onResume();
         if(songListAdapter != null) {
-            songs = songService.getSongs();
-            musicService.setSongs(songs);
-            refreshAdapter();
+            sortSongs();
+            songListService.updateShuffledList();
         }
     }
 

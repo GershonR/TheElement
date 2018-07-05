@@ -92,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
         songListService = Services.getSongListService();
         playlistService = new PlaylistService();
         //Sets current song list to the list of all songs in app
-        songListService.setCurrentSongsList(songService.getSongs());
+        songListService.setSongList(songService.getSongs());
     }
 
 

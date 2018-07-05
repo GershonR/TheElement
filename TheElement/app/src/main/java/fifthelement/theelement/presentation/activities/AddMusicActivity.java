@@ -19,9 +19,6 @@ import fifthelement.theelement.business.services.AuthorService;
 import fifthelement.theelement.business.services.SongListService;
 import fifthelement.theelement.business.services.SongService;
 import fifthelement.theelement.business.exceptions.SongAlreadyExistsException;
-import fifthelement.theelement.objects.Album;
-import fifthelement.theelement.objects.Author;
-import fifthelement.theelement.objects.Song;
 import fifthelement.theelement.persistence.hsqldb.PersistenceException;
 import fifthelement.theelement.presentation.util.PathUtil;
 
@@ -86,7 +83,7 @@ public class AddMusicActivity extends AppCompatActivity {
                     setupSong(data.getData());
                 }
         }
-        songListService.setSongList(songService.getSongs()); //Reset song list
+        songListService.setCurrentSongsList(songService.getSongs()); //Reset song list
         Intent intent = new Intent(AddMusicActivity.this, MainActivity.class);
         AddMusicActivity.this.startActivity(intent);
     }

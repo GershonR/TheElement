@@ -2,7 +2,6 @@ package fifthelement.theelement.presentation.fragments;
 
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,10 +15,8 @@ import android.widget.Switch;
 import java.util.List;
 
 import fifthelement.theelement.R;
-import fifthelement.theelement.application.Helpers;
 import fifthelement.theelement.application.Services;
 import fifthelement.theelement.business.services.SongListService;
-import fifthelement.theelement.business.services.SongService;
 import fifthelement.theelement.objects.Song;
 import fifthelement.theelement.presentation.activities.MainActivity;
 import fifthelement.theelement.presentation.services.MusicService;
@@ -72,20 +69,20 @@ public class SongListFragment extends Fragment {
     }
 
     private void refreshAdapter() {
-        List<Song> songs = songListService.getSongList();
+        List<Song> songs = songListService.getAllSongsList();
         songListAdapter = new SongsListAdapter(getActivity(), songs);
         listView.setAdapter(songListAdapter);
     }
 
     private void sortSongs() {
-        List<Song> songs = songListService.getSongList();
+        List<Song> songs = songListService.getAllSongsList();
         songListService.sortSongs(songs);
-        songListService.setSongList(songs);
+        songListService.setAllSongsList(songs);
         refreshAdapter();
     }
 
     private void playSong(ListView listView) {
-        List<Song> songs = songListService.getSongList();
+        List<Song> songs = songListService.getCurrentSongsList();
         if(songs != null) {
             final SongsListAdapter songListAdapter = new SongsListAdapter(getActivity(), songs);
             listView.setAdapter(songListAdapter);

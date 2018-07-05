@@ -10,15 +10,15 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
+import java.net.URISyntaxException;
+
 import fifthelement.theelement.application.Helpers;
 import fifthelement.theelement.application.Services;
 import fifthelement.theelement.business.services.AlbumService;
 import fifthelement.theelement.business.services.AuthorService;
+import fifthelement.theelement.business.services.SongListService;
 import fifthelement.theelement.business.services.SongService;
 import fifthelement.theelement.business.exceptions.SongAlreadyExistsException;
-import fifthelement.theelement.objects.Album;
-import fifthelement.theelement.objects.Author;
-import fifthelement.theelement.objects.Song;
 import fifthelement.theelement.persistence.hsqldb.PersistenceException;
 import fifthelement.theelement.presentation.util.PathUtil;
 
@@ -31,6 +31,7 @@ public class AddMusicActivity extends AppCompatActivity {
     private static final String LOG_TAG = "AddMusicActivity";
 
     SongService songService;
+    SongListService songListService;
     AlbumService albumService;
     AuthorService authorService;
 
@@ -40,7 +41,8 @@ public class AddMusicActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        songService = new SongService();
+        songService = Services.getSongService();
+        songListService = Services.getSongListService();
         authorService = Services.getAuthorService();
         albumService = Services.getAlbumService();
 
@@ -81,6 +83,7 @@ public class AddMusicActivity extends AppCompatActivity {
                     setupSong(data.getData());
                 }
         }
+        songListService.setSongList(songService.getSongs()); //Reset song list
         Intent intent = new Intent(AddMusicActivity.this, MainActivity.class);
         AddMusicActivity.this.startActivity(intent);
     }
@@ -106,9 +109,6 @@ public class AddMusicActivity extends AppCompatActivity {
         String songGenre = "";
 
         try {
-            //art = metaRetriver.getEmbeddedPicture();
-            //Bitmap songImage = BitmapFactory
-            //       .decodeByteArray(art, 0, art.length);
             songName = metaRetriver.extractMetadata(MediaMetadataRetriever.METADATA_KEY_TITLE);
             if(songName == null)
                     songName = PathUtil.getFileName(getContentResolver(), path); // Use the filename if no metadata
@@ -126,34 +126,15 @@ public class AddMusicActivity extends AppCompatActivity {
         // TODO: Fix Code Smell
         try {
             String realPath = PathUtil.getPath(getApplicationContext(), path);
-            Author author = null;
-            Album album = null;
-            Song song = new Song(songName, realPath);
-            if(songArtist != null) { // TODO: Seperate Method For This?
-                author = new Author(songArtist);
-                song.setAuthor(author);
-                authorService.insertAuthor(author);
-            }
-            if(songAlbum != null) { // TODO: Seperate Method For This?
-                album = new Album(songAlbum);
-                if(author != null)
-                    album.setAuthor(author);
-                else
-                    album.setAuthor(null);
-                song.setAlbum(album);
-                albumService.insertAlbum(album);
-            }
-            if(songGenre != null)
-                song.setGenre(songGenre);
-            songService.insertSong(song);
-            Helpers.getToastHelper(getApplicationContext()).sendToast("Added " + song.getName(), "GREEN");
+            songService.createSong(realPath, songName, songArtist, songAlbum, songGenre);
+            Helpers.getToastHelper(getApplicationContext()).sendToast("Added " + songName, "GREEN");
         } catch (PersistenceException p) {
             Helpers.getToastHelper(getApplicationContext()).sendToast("Error saving song!", "RED");
             Log.e(LOG_TAG, p.getMessage());
         } catch (SongAlreadyExistsException s) {
             Helpers.getToastHelper(getApplicationContext()).sendToast("Song already exists!", "RED");
             Log.e(LOG_TAG, s.getMessage());
-        } catch (Exception e) {
+        } catch (URISyntaxException e) {
             Helpers.getToastHelper(getApplicationContext()).sendToast("Could not get the songs path!", "RED");
             Log.e(LOG_TAG, e.getMessage());
         }

@@ -29,7 +29,8 @@
         <activity android:name=".presentation.activities.AddMusicActivity"/>
 
         <service android:name=".presentation.services.MusicService" />
-        <service android:name=".presentation.services.NotificationService" />
+        <service android:name=".presentation.services.NotificationService"
+            android:stopWithTask="true"/>
     </application>
 
 </manifest>

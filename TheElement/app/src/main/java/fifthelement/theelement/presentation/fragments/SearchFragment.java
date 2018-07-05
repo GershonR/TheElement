@@ -13,8 +13,8 @@ import android.widget.ListView;
 import java.util.List;
 
 import fifthelement.theelement.R;
-import fifthelement.theelement.application.Helpers;
 import fifthelement.theelement.application.Services;
+import fifthelement.theelement.business.services.SongListService;
 import fifthelement.theelement.business.services.SongService;
 import fifthelement.theelement.objects.Song;
 import fifthelement.theelement.presentation.activities.MainActivity;
@@ -26,10 +26,11 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
     private ListView mListView;
     private View view;
     private SongService songService;
+    private SongListService songListService;
     private MusicService musicService;
-    List<Song> songs;
     private SongsListAdapter songsListAdapter;
     private SearchView.OnQueryTextListener onQueryTextListener;
+    private List<Song> prevSongList;
 
     private void setupSearchView()
     {
@@ -42,10 +43,13 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        songService = ((MainActivity)getActivity()).getSongService();
-        musicService = ((MainActivity)getActivity()).getMusicService();
-        songs = songService.getSongs();
-        musicService.setSongs(songs);
+        songService = Services.getSongService();
+        songListService = Services.getSongListService();
+        musicService = Services.getMusicService();
+
+        prevSongList = songListService.getSongList(); //Get previous list of songs so we can restore it after
+        List<Song> songs = songService.getSongs();
+        songListService.setSongList(songs);
 
         view = inflater.inflate(R.layout.search_fragment, container, false);
         ListView listView = view.findViewById(R.id.search_song_list_view_item);
@@ -65,6 +69,7 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
     }
 
     private void playSongOnClick(ListView listView) {
+        List<Song> songs = songListService.getSongList();
         if(songs != null) {
             final SongsListAdapter songListAdapter = new SongsListAdapter(getActivity(), songs);
             listView.setAdapter(songListAdapter);
@@ -74,7 +79,7 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view,
                                         int position, long id) {
-                    boolean result = musicService.playSongAsync(songs.get(position), position);
+                    boolean result = musicService.playSongAsync(songListService.getSongAtIndex(position));
                     if(result) {
                         ((MainActivity)getActivity()).startNotificationService(view.findViewById(R.id.toolbar));
                     }
@@ -98,7 +103,8 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
             @Override
             // Search on submit button
             public boolean onQueryTextSubmit(String query) {
-                songs = songService.search(query);
+                List<Song> songs = songService.search(query);
+                songListService.setSongList(songs);
                 songsListAdapter = new SongsListAdapter(getActivity(), songs);
                 mListView.setAdapter(songsListAdapter);
                 songsListAdapter.notifyDataSetChanged();
@@ -107,7 +113,8 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                songs = songService.search(newText);
+                List<Song> songs = songService.search(newText);
+                songListService.setSongList(songs);
                 songsListAdapter = new SongsListAdapter(getActivity(), songs);
                 mListView.setAdapter(songsListAdapter);
                 songsListAdapter.notifyDataSetChanged();
@@ -124,5 +131,17 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
     @Override
     public boolean onQueryTextChange(String newText) {
         return false;
+    }
+
+    @Override
+    public void onPause(){
+        super.onPause();
+        songListService.setSongList(prevSongList);
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        prevSongList = songListService.getSongList();
     }
 }

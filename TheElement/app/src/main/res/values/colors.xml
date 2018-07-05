@@ -20,6 +20,7 @@
 
     <!-- Black -->
     <color name="black">#ff000000</color>
+    <color name="gray">#b4b9c1</color>
 
     <!-- White -->
     <color name="white">#ffffffff</color>

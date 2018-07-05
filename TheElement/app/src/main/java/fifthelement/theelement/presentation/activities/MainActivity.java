@@ -5,6 +5,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.design.widget.NavigationView;
@@ -29,6 +30,7 @@ import fifthelement.theelement.presentation.fragments.SeekerFragment;
 import fifthelement.theelement.presentation.services.MusicService.MusicBinder;
 import fifthelement.theelement.presentation.services.NotificationService;
 import fifthelement.theelement.presentation.util.DatabaseUtil;
+import fifthelement.theelement.presentation.util.ThemeUtil;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -50,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ThemeUtil.onActivityCreateSetTheme(this);
         setContentView(R.layout.activity_main);
 
         // Set a Toolbar to replace the ActionBar.

@@ -3,6 +3,7 @@ package fifthelement.theelement.presentation.fragments;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -13,6 +14,8 @@ import android.widget.ListView;
 import android.view.View;
 import android.support.v7.widget.Toolbar;
 import fifthelement.theelement.R;
+import fifthelement.theelement.presentation.activities.MainActivity;
+import fifthelement.theelement.presentation.util.ThemeUtil;
 
 public class SettingFragment extends Fragment {
 
@@ -43,18 +46,8 @@ public class SettingFragment extends Fragment {
         mainListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                ThemeUtil.changeToTheme(getActivity(), position);
                 System.out.println("Called: " + position);
-                switch(position) {
-                    case 0:
-                        getActivity().setTheme(R.style.AppTheme5);
-                        break;
-                    case 1:
-                        getActivity().setTheme(R.style.AppTheme);
-                        break;
-                    case 2:
-                        getActivity().setTheme(R.style.AppTheme3);
-                }
-
             }
         });
 

@@ -23,6 +23,12 @@ public class Playlist {
         this.songList = songList;
     }
 
+    public Playlist(UUID uuid, String name, List<Song> songList) {
+        this.uuid = uuid;
+        this.listName = name;
+        this.songList = songList;
+    }
+
     // getters
     public UUID getUUID() {
         return uuid;

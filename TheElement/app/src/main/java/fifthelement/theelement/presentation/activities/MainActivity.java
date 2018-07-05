@@ -184,6 +184,7 @@ public class MainActivity extends AppCompatActivity {
                 AlertDialog.Builder builderInner = new AlertDialog.Builder(MainActivity.this);
                 Playlist chosenPlaylist =  playlistService.getAllPlaylists().get(which);
                 chosenPlaylist.addSong(song);
+                playlistService.insertSongForPlaylist(chosenPlaylist, song);
                 //builderInner.setMessage(chosenPlaylist.getName()+" is the chosen playlist");
                 builderInner.setTitle("Added to "+chosenPlaylist.getName());
                 builderInner.setPositiveButton("Ok", new DialogInterface.OnClickListener() {

@@ -10,15 +10,10 @@ import android.os.IBinder;
 import android.os.PowerManager;
 import android.util.Log;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-import fifthelement.theelement.R;
 import fifthelement.theelement.application.Helpers;
-import fifthelement.theelement.objects.Playlist;
+import fifthelement.theelement.application.Services;
+import fifthelement.theelement.business.services.SongListService;
 import fifthelement.theelement.objects.Song;
-import fifthelement.theelement.presentation.activities.MainActivity;
 import fifthelement.theelement.presentation.fragments.SeekerFragment;
 
 
@@ -30,14 +25,8 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
 
     private MediaPlayer player;
     private boolean playerPrepared;
-    private boolean shuffled;
-    private boolean autoplayEnabled;
-    private List<Song> songs;
-    private List<Song> shuffledList;
+    private SongListService songListService;
     private Song currentSongPlaying;
-    private int currentSongPlayingIndex;
-    private int lastSongPlayedIndex = 0;
-    private boolean currentSongModified = false;
     private final IBinder musicBind = new MusicBinder();
     private SeekerFragment.SeekerPlaybackStartStopListener seekerPlaybackListener;
     private NotificationService.NotificationPlaybackStartStopListener notificationPlaybackListener;
@@ -62,6 +51,7 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
     //This function is called when the service is created, it will initialize the MediaPlayer
     public void onCreate() {
         super.onCreate();
+        songListService = Services.getSongListService();
         player = new MediaPlayer();
         initMusicPlayer();
     }
@@ -78,7 +68,7 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
             notificationPlaybackListener.onPlaybackStop();
         }
         //If autoplay is on, we "skip" to next song on completion
-        if(autoplayEnabled){
+        if(songListService.getAutoplayEnabled()){
             skip();
         }
     }
@@ -108,14 +98,19 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
             player.setOnPreparedListener(this);
             player.setOnCompletionListener(this);
             player.setOnErrorListener(this);
+            playerPrepared = true;
         }
     }
 
+    public void playSongAsync() {
+        if (songListService.getSongAtIndex(0) != null)
+            playSongAsync( songListService.getSongAtIndex(0));
+    }
+
     // This function will attempt to set the media player up asynchronously and play the media.
-    public boolean playSongAsync(Song song, int index) {
+    public boolean playSongAsync(Song song) {
         reset();
         Uri uri = Uri.parse(song.getPath());
-        currentSongPlayingIndex = index;
         try {
             player.setDataSource(getApplication(), uri);
             player.prepareAsync();
@@ -139,7 +134,7 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
         });
         return true;
     }
-
+/*
     public boolean playMultipleSongsAsync(Playlist playlist) {
         songs = playlist.getSongs();
         currentSongPlayingIndex = 0;
@@ -192,7 +187,7 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
 
         return true;
     }
-
+*/
     // This function will reset the MediaPlayer instance and reset seekbar UI positions to start.
     public void reset() {
         if(seekerPlaybackListener != null){
@@ -216,7 +211,9 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
             }
             player.start();
         } else if(!playerPrepared) {
-            Helpers.getToastHelper(getApplicationContext()).sendToast("No Song Selected!", "RED");
+            initMusicPlayer();
+            start(); // retry starting
+            //Helpers.getToastHelper(getApplicationContext()).sendToast("No Song Selected!", "RED");
         }
     }
 
@@ -235,66 +232,30 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
 
     // Skips to the next song in the list
     public void skip() {
-        if(songs != null) {
-            currentSongPlayingIndex++;
-            if (currentSongPlayingIndex > songs.size() - 1) {
-                currentSongPlayingIndex = 0;
-                if(shuffled)
-                    playSongAsync(shuffledList.get(0), 0);
-                else
-                    playSongAsync(songs.get(0), 0);
-            } else {
-                if(shuffled)
-                    playSongAsync(shuffledList.get(currentSongPlayingIndex), currentSongPlayingIndex);
-                else
-                    playSongAsync(songs.get(currentSongPlayingIndex), currentSongPlayingIndex);
-            }
-            currentSongModified = true;
-
-            if(notificationPlaybackListener != null){
-                notificationPlaybackListener.onSkip();
-            }
+        playSongAsync(songListService.skipToNextSong());
+        if(notificationPlaybackListener != null){
+            notificationPlaybackListener.onSkip();
         }
     }
 
     // Skips to the previous song in the list
     public void prev() {
-        if(songs != null) {
-            currentSongPlayingIndex--;
-            if (currentSongPlayingIndex < 0) {
-                currentSongPlayingIndex = songs.size() - 1;
-                if(shuffled)
-                    playSongAsync(shuffledList.get(currentSongPlayingIndex), currentSongPlayingIndex);
-                else
-                    playSongAsync(songs.get(currentSongPlayingIndex), currentSongPlayingIndex);
-            } else {
-                if(shuffled)
-                    playSongAsync(shuffledList.get(currentSongPlayingIndex), currentSongPlayingIndex);
-                else
-                    playSongAsync(songs.get(currentSongPlayingIndex), currentSongPlayingIndex);
-
-            }
-            currentSongModified = true;
-
-            if(notificationPlaybackListener != null){
-                notificationPlaybackListener.onSkip();
-            }
+        playSongAsync(songListService.goToPrevSong());
+        if(notificationPlaybackListener != null){
+            notificationPlaybackListener.onSkip();
         }
     }
 
     public void shuffle() {
-       shuffledList = new ArrayList<>();
-       shuffledList.addAll(songs);
-       Collections.shuffle(shuffledList);
-       shuffled = true;
-       playSongAsync(shuffledList.get(0), 0);
+       songListService.shuffle();
+       playSongAsync(songListService.skipToNextSong());
     }
-
+/*
     public void updateShuffledList() {
         shuffledList = new ArrayList<>();
         shuffledList.addAll(songs);
         Collections.shuffle(shuffledList);
-    }
+    }*/
 
     // This function will return the duration of the currently loaded music file.
     public int getDuration() {
@@ -328,10 +289,6 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
         return player.isPlaying();
     }
 
-    public boolean getShuffled() { return shuffled; }
-
-    public void setShuffleEnabled(boolean shuffled) { this.shuffled = shuffled; }
-
     public Song getCurrentSongPlaying() {
         return this.currentSongPlaying;
     }
@@ -344,30 +301,10 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
         notificationPlaybackListener = listener;
     }
 
-    public void setAutoplayEnabled(boolean newValue){
-        autoplayEnabled = newValue;
-    }
-
-    public boolean getAutoplayEnabled(){
-        return autoplayEnabled;
-    }
-
     //Public helper class for binding this service to an activity
     public class MusicBinder extends Binder {
         public MusicService getService() {
             return MusicService.this;
         }
-    }
-
-    public int getCurrentSongPlayingIndex() {
-        return currentSongPlayingIndex;
-    }
-
-    public List<Song> getSongs() {
-        return songs;
-    }
-
-    public void setSongs(List<Song> songs) {
-        this.songs = songs;
     }
 }

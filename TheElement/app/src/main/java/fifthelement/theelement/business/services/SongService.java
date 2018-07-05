@@ -8,7 +8,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import fifthelement.theelement.application.Persistence;
+import fifthelement.theelement.application.Services;
 import fifthelement.theelement.business.exceptions.SongAlreadyExistsException;
+import fifthelement.theelement.objects.Album;
+import fifthelement.theelement.objects.Author;
 import fifthelement.theelement.objects.Song;
 import fifthelement.theelement.persistence.AlbumPersistence;
 import fifthelement.theelement.persistence.AuthorPersistence;
@@ -22,8 +25,6 @@ public class SongService {
     private AlbumPersistence albumPersistence;
     private AuthorPersistence authorPersistence;
     private PlaylistPersistence playlistPersistence;
-
-    private List<Song> songs;
 
     public SongService() {
         songPersistence = Persistence.getSongPersistence();
@@ -44,7 +45,7 @@ public class SongService {
     }
 
     public List<Song> getSongs() throws PersistenceException {
-        songs = songPersistence.getAllSongs();
+        List<Song> songs = songPersistence.getAllSongs();
 
         if(songs != null) {
             for(Song song : songs) {
@@ -57,6 +58,29 @@ public class SongService {
         }
 
         return songs;
+    }
+
+    public void createSong(String realPath, String songName, String songArtist, String songAlbum, String songGenre) throws PersistenceException, IllegalArgumentException, SongAlreadyExistsException {
+        Author author = null;
+        Album album = null;
+        Song song = new Song(songName, realPath);
+        if(songArtist != null) { // TODO: Seperate Method For This?
+            author = new Author(songArtist);
+            song.setAuthor(author);
+            Services.getAuthorService().insertAuthor(author);
+        }
+        if(songAlbum != null) { // TODO: Seperate Method For This?
+            album = new Album(songAlbum);
+            if(author != null)
+                album.setAuthor(author);
+            else
+                album.setAuthor(null);
+            song.setAlbum(album);
+            Services.getAlbumService().insertAlbum(album);
+        }
+        if(songGenre != null)
+            song.setGenre(songGenre);
+        insertSong(song);
     }
 
     public boolean insertSong(Song song) throws PersistenceException, IllegalArgumentException, SongAlreadyExistsException {
@@ -108,10 +132,6 @@ public class SongService {
             }
         }
         return toReturn;
-    }
-
-    public void sortSongs(List<Song> songs) {
-        Collections.sort(songs);
     }
 
     public List<Song> search(String query) {

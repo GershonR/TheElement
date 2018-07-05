@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import java.util.List;
@@ -64,12 +65,12 @@ public class SongsListAdapter extends BaseAdapter {
         }
         songName.setText(printSong.getName());
         authorName.setText(authors);
-        AppCompatImageButton button = view.findViewById(R.id.popup_button);
+        ImageButton button = view.findViewById(R.id.popup_button);
         songOptions(activity, printSong, button);
         return view;
     }
 
-    private void songOptions(final MainActivity activity, final Song song, AppCompatImageButton button) {
+    private void songOptions(final MainActivity activity, final Song song, ImageButton button) {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -106,6 +107,7 @@ public class SongsListAdapter extends BaseAdapter {
             }
             activity.getSongService().deleteSong(song);
             songs.remove(song);
+            Services.getSongListService().removeSongFromList(song);
             notifyDataSetChanged();
         } catch(PersistenceException p) {
             Helpers.getToastHelper(context).sendToast("Could not delete " + song.getName());

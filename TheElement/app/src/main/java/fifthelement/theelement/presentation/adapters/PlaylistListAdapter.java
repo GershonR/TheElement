@@ -18,15 +18,21 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import fifthelement.theelement.R;
 import fifthelement.theelement.application.Helpers;
 import fifthelement.theelement.application.Services;
 import fifthelement.theelement.business.services.PlaylistService;
+import fifthelement.theelement.business.services.SongListService;
 import fifthelement.theelement.objects.Playlist;
 import fifthelement.theelement.persistence.hsqldb.PersistenceException;
 import fifthelement.theelement.presentation.activities.MainActivity;
 import fifthelement.theelement.presentation.services.MusicService;
+
+import static fifthelement.theelement.application.Services.getMusicService;
+import static fifthelement.theelement.application.Services.getSongListService;
 
 public class PlaylistListAdapter extends BaseAdapter {
     Context context;
@@ -119,7 +125,12 @@ public class PlaylistListAdapter extends BaseAdapter {
             public void onClick(DialogInterface dialog, int which) {
                 //take the text and change the name of the playlist
                 String newName = newNameInput.getText().toString();
-                playlist.setName(newName);
+                if ( validText(newName)){
+                    playlist.setName(newName);
+                }
+                else{
+                    Helpers.getToastHelper(context).sendToast(newName+" is an invalid name, try again");
+                }
                 dialog.dismiss();
             }
         });
@@ -134,11 +145,18 @@ public class PlaylistListAdapter extends BaseAdapter {
         builderSingle.show();
     }
 
+    private boolean validText(String text){
+        boolean result = false;
+        String normalChars = "^[a-zA-Z0-9]+$";
+        if (text.matches(normalChars))
+            result = true;
+        return result;
+    }
+
     private void deletePlaylist(Playlist playlist, MainActivity activity) {
         try { // TODO: Possible code smell?
             Helpers.getToastHelper(context).sendToast("Deleted " + playlist.getName());
             activity.getPlaylistService().deletePlaylist(playlist);
-            //playlists.remove(playlist);
             notifyDataSetChanged();
         } catch(PersistenceException p) {
             Helpers.getToastHelper(context).sendToast("Could not delete " + playlist.getName());
@@ -148,10 +166,18 @@ public class PlaylistListAdapter extends BaseAdapter {
 
     private void playPlaylist(Playlist playlist, MainActivity activity) {
         try {
-            Helpers.getToastHelper(context).sendToast("Playing " + playlist.getName());
+            if (playlist.getSongs().size() == 0)
+                Helpers.getToastHelper(context).sendToast("No songs in " + playlist.getName());
+            else
+                Helpers.getToastHelper(context).sendToast("Playing " + playlist.getName());
 
-            MusicService musicService = Services.getMusicService();
-            musicService.playMultipleSongsAsync(playlist);
+            SongListService songListService = getSongListService();
+            songListService.setShuffled(true);
+            songListService.setSongList(playlist.getSongs());
+            songListService.setAutoplayEnabled(true);
+
+            getMusicService().start();
+            getMusicService().playSongAsync();
 
         } catch(PersistenceException p) {
             Helpers.getToastHelper(context).sendToast("Could not play " + playlist.getName());

@@ -45,7 +45,6 @@ public class PlaylistSongsFragment extends Fragment {
         view = inflater.inflate(R.layout.playlist_song_list_fragment, container, false);
         listView = (ListView) view.findViewById(R.id.playlist_list_view);
 
-        sortSongsButton();
         playSong(listView);
     }
 
@@ -53,17 +52,6 @@ public class PlaylistSongsFragment extends Fragment {
         songListAdapter = new SongsListAdapter(getActivity(), songs);
         listView.setAdapter(songListAdapter);
 
-    }
-
-    private void sortSongsButton() {
-        Button buttonOrganize = view.findViewById(R.id.button_organize_list);
-        buttonOrganize.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v) {
-                songService.sortSongs(songs);
-                musicService.setSongs(songs);
-                refreshAdapter();
-            }
-        });
     }
 
     private void playSong(ListView listView) {
@@ -75,7 +63,7 @@ public class PlaylistSongsFragment extends Fragment {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view,
                                         int position, long id) {
-                    boolean result = musicService.playSongAsync(songs.get(position), position);
+                    boolean result = musicService.playSongAsync(songs.get(position));
                     if (result) {
                         ((MainActivity) getActivity()).startNotificationService(view.findViewById(R.id.toolbar));
                     }
@@ -89,7 +77,7 @@ public class PlaylistSongsFragment extends Fragment {
         super.onResume();
         if(songListAdapter != null) {
             songs = songService.getSongs();
-            musicService.setSongs(songs);
+            //musicService.setSongs(songs);
             refreshAdapter();
         }
     }

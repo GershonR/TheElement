@@ -139,26 +139,6 @@ public class SongServiceTest {
     }
 
     @Test
-    public void sortSongListSize() {
-        //sort list
-       classUnderTest.sortSongs(songsList);
-
-        Assert.assertTrue("Size of list after sorting != 5", songsList.size() == 5);
-    }
-
-    @Test
-    public void sortSongOrderTest() {
-        //sort list
-        classUnderTest.sortSongs(songsList);
-
-        Assert.assertTrue("List after sort doesn't match to the sorted list", songsList.get(0).getName().equals("Geyser"));
-        Assert.assertTrue("List after sort doesn't match to the sorted list", songsList.get(1).getName().equals("Nice For What"));
-        Assert.assertTrue("List after sort doesn't match to the sorted list", songsList.get(2).getName().equals("Pristine"));
-        Assert.assertTrue("List after sort doesn't match to the sorted list", songsList.get(3).getName().equals("Purity"));
-        Assert.assertTrue("List after sort doesn't match to the sorted list", songsList.get(4).getName().equals("This is America"));
-    }
-
-    @Test
     public void searchTest_normalQuery() {
         List<Song> searchResults;
         String regex = "i";

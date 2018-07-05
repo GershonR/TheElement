@@ -26,6 +26,7 @@ import fifthelement.theelement.R;
 import fifthelement.theelement.application.Helpers;
 import fifthelement.theelement.application.Services;
 import fifthelement.theelement.business.services.PlaylistService;
+import fifthelement.theelement.business.services.SongListService;
 import fifthelement.theelement.business.services.SongService;
 import fifthelement.theelement.objects.Playlist;
 import fifthelement.theelement.objects.Song;
@@ -44,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private NavigationView nvDrawer;
     private SongService songService;
+    private SongListService songListService;
     private MusicService musicService;
     private PlaylistService playlistService;
     private Intent playIntent;
@@ -83,8 +85,11 @@ public class MainActivity extends AppCompatActivity {
         version.setText("Version: " + versionName + versionCode);
         DatabaseUtil.copyDatabaseToDevice(this);
 
-        songService = new SongService();
+        songService = Services.getSongService();
+        songListService = Services.getSongListService();
         playlistService = new PlaylistService();
+        //Sets current song list to the list of all songs in app
+        songListService.setSongList(songService.getSongs());
     }
 
 
@@ -97,6 +102,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.add_song:
+                Intent myIntent = new Intent(MainActivity.this, AddMusicActivity.class);
+                MainActivity.this.startActivity(myIntent);
+                return true;
             case android.R.id.home:
                 mDrawer.openDrawer(GravityCompat.START);
                 return true;
@@ -159,7 +168,7 @@ public class MainActivity extends AppCompatActivity {
         builderSingle.setAdapter(compactSongsListAdapter, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                musicService.playSongAsync(currentPlaylist.getSongs().get(which), which);
+                musicService.playSongAsync(currentPlaylist.getSongs().get(which));
             }
         });
 

@@ -62,7 +62,6 @@ public class SongInfoFragment extends Fragment {
             @Override
             public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
                 ((MainActivity)getActivity()).getSongService().updateSongWithRating(song, ratingBar.getRating());
-                Helpers.getToastHelper(getContext()).sendToast(String.valueOf(ratingBar.getRating()), "RED");
             }
         });
 
@@ -75,6 +74,22 @@ public class SongInfoFragment extends Fragment {
                     EditSongInfoFragment editSongInfoFragment = EditSongInfoFragment.newInstance();
                     editSongInfoFragment.setSong(song);
                     fragment = (Fragment) editSongInfoFragment;
+                }
+                catch (Exception e){
+                    Log.e(LOG_TAG, e.getMessage());
+                }
+                Helpers.getFragmentHelper((AppCompatActivity)v.getContext()).createFragment(R.id.flContent, fragment);
+            }
+        });
+
+        Button backButton = view.findViewById(R.id.song_info_back_btn);
+        backButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Fragment fragment = null;
+                try{
+                    Class fragmentClass = SongListFragment.class;
+                    fragment = (Fragment) fragmentClass.newInstance();
                 }
                 catch (Exception e){
                     Log.e(LOG_TAG, e.getMessage());

@@ -101,26 +101,38 @@ public class AddMusicActivity extends AppCompatActivity {
 
 
     private void setupSong(Uri path) {
-        metaRetriver = new MediaMetadataRetriever();
-        metaRetriver.setDataSource(getApplication(), path);
 
-        String songName = "";
-        String songArtist = "";
-        String songAlbum = "";
-        String songGenre = "";
+        String stringPath = path.getPath();
 
-        try {
-            songName = metaRetriver.extractMetadata(MediaMetadataRetriever.METADATA_KEY_TITLE);
-            if(songName == null)
+        boolean result = false;
+        String normalChars = "audio";
+        if (stringPath.contains(normalChars))
+            result = true;
+
+        if ( result){
+            metaRetriver = new MediaMetadataRetriever();
+            metaRetriver.setDataSource(getApplication(), path);
+
+            String songName = "";
+            String songArtist = "";
+            String songAlbum = "";
+            String songGenre = "";
+
+            try {
+                songName = metaRetriver.extractMetadata(MediaMetadataRetriever.METADATA_KEY_TITLE);
+                if(songName == null)
                     songName = PathUtil.getFileName(getContentResolver(), path); // Use the filename if no metadata
-            songAlbum = metaRetriver.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ALBUM);
-            songArtist = metaRetriver.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ARTIST);
-            songGenre = metaRetriver.extractMetadata(MediaMetadataRetriever.METADATA_KEY_GENRE);
-        } catch (Exception e) {
-            Log.e(LOG_TAG, e.getMessage());
-        }
+                songAlbum = metaRetriver.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ALBUM);
+                songArtist = metaRetriver.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ARTIST);
+                songGenre = metaRetriver.extractMetadata(MediaMetadataRetriever.METADATA_KEY_GENRE);
+            } catch (Exception e) {
+                Log.e(LOG_TAG, e.getMessage());
+            }
 
-        createSong(path, songName, songArtist, songAlbum, songGenre);
+            createSong(path, songName, songArtist, songAlbum, songGenre);
+        } else {
+            Helpers.getToastHelper(getApplicationContext()).sendToast("That isn't a song, nice try!", "RED");
+        }
     }
 
     private void createSong(Uri path, String songName, String songArtist, String songAlbum, String songGenre) {

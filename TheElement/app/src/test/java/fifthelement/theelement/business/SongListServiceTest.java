@@ -89,4 +89,22 @@ public class SongListServiceTest {
 
         Assert.assertFalse("Remove function did not remove the song from the list", shouldNotEqual.getName().equals("Pristine"));
     }
+
+    @Test
+    public void shuffleValidTest() {
+        classUnderTest.shuffle();
+
+        Assert.assertTrue("Shuffle not true", classUnderTest.getShuffled());
+        Assert.assertTrue("List size is not 5", classUnderTest.getSongList().size() == 5);
+    }
+
+    @Test
+    public void setSongsListValidTest() {
+        classUnderTest.setShuffled(true);
+        classUnderTest.setSongList(songsList);
+
+
+        Assert.assertTrue("Shuffle not true", classUnderTest.getShuffled());
+        Assert.assertTrue("List size is not 5", classUnderTest.getSongList().size() == 5);
+    }
 }

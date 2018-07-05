@@ -84,9 +84,7 @@ public class SongListService {
     }
 
     public void shuffle() {
-        shuffledList = new ArrayList<>();
-        shuffledList.addAll(songList);
-        Collections.shuffle(shuffledList);
+        updateShuffledList();
         shuffled = true;
     }
 
@@ -112,6 +110,10 @@ public class SongListService {
 
     public void setShuffled(boolean value){
         shuffled = value;
+    }
+
+    public boolean getShuffled(){
+        return shuffled;
     }
 
     public boolean getAutoplayEnabled(){

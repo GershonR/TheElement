@@ -23,6 +23,9 @@ public class SongListService {
         this.allSongsList = songs;
     }
 
+    public void setAllSongsList(List<Song> newList){
+        allSongsList = newList;
+    }
     //Method to set the current list of currentSongsList to play currentSongsList from
     public void setCurrentSongsList(List<Song> newList){
         currentSongsList = newList;

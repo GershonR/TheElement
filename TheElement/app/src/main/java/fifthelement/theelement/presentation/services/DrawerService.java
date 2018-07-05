@@ -54,6 +54,7 @@ public class DrawerService {
                 fragmentClass = PlaylistListFragment.class;
                 break;
             case R.id.song_list:
+                Services.getSongListService().setCurrentSongsList(Services.getSongService().getSongs());
                 fragmentClass = SongListFragment.class;
                 break;
             case R.id.search_view_fragment:

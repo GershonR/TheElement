@@ -165,7 +165,6 @@ public class MainActivity extends AppCompatActivity {
                             ((PlaylistListFragment) fragment).refreshAdapter();
                         }
                     }
-
                 }
                 else{
                     Helpers.getToastHelper(getApplicationContext()).sendToast(newName+" is an invalid name, try again");

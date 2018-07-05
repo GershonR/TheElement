@@ -9,6 +9,7 @@
         <item name="mainColor">@color/colorPrimary</item>
         <item name="mainColorDark">@color/colorPrimaryDark</item>
         <item name="accentColor">@color/colorAccent</item>
+
     </style>
 
 
@@ -16,12 +17,14 @@
         <item name="mainColor">@color/greenPrimary</item>
         <item name="mainColorDark">@color/greenPrimaryDark</item>
         <item name="accentColor">@color/greenAccent</item>
+
     </style>
 
     <style name="DarkBlueTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="mainColor">@color/colorPrimary</item>
-        <item name="mainColorDark">@color/colorPrimaryDark</item>
-        <item name="accentColor">@color/black</item>
+        <item name="mainColor">@color/redPrimary</item>
+        <item name="mainColorDark">@color/redPrimaryDark</item>
+        <item name="accentColor">@color/redAccent</item>
+
     </style>
 
 </resources>

@@ -37,7 +37,7 @@ public class SettingFragment extends Fragment {
 
 
         // Create and populate a List of for the library.
-        String[] options = new String[]{"Theme1", "Theme2", "Theme3", "Delete Songs", "Hide album art notification "};
+        String[] options = new String[]{"Theme1", "Theme2", "Theme3", "Delete Songs", "Hide album art notification"};
         ArrayList<String> libraryList = new ArrayList<String>();
         libraryList.addAll(Arrays.asList(options));
 

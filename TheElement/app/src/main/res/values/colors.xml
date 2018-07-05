@@ -1,14 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#C2185B</color>
+    <color name="colorPrimary">#311B92</color>
+    <color name="colorPrimaryDark">#29B6F6</color>
+    <color name="colorAccent">#0277BD</color>
 
-    <color name="greenPrimary">#00838F</color>
-    <color name="greenPrimaryDark">#78909C</color>
-    <color name="greenAccent">#4DD0E1</color>
+    <color name="greenPrimary">#78909C</color>
+    <color name="greenPrimaryDark">#26C6DA</color>
+    <color name="greenAccent">#0899a6</color>
+
+    <color name="redPrimary">#00838F</color>
+    <color name="redPrimaryDark">#f37f62</color>
+    <color name="redAccent">#ef4c24</color>
+    <color name="redBackground">#78909C</color>
     <!-- A transparent black -->
     <color name="transparent_black">#aa000000</color>
+
+
 
     <!-- selected tab text -->
     <color name="selected_tabtext">#bb000000</color>

@@ -126,4 +126,42 @@ public class AuthorServiceTest {
         Assert.assertTrue("deleteAuthorNotExistTest: author size != 3", classUnderTest.getAuthors().size() == 3);
     }
 
+    @Test
+    public void authorStatsTest_SetterGetterTest() {       // initializing them
+        List<Author> authorList = classUnderTest.getAuthors();
+        int i = 0;
+        for( Author author : authorList ) {
+            author.setNumPlayed(i);
+            Assert.assertEquals(author.getNumPlayed(),i);
+            i++;
+        }
+    }
+
+    @Test
+    public void authorStatsTest_getMostPlayedAuthor() {
+        List<Author> authorList = classUnderTest.getAuthors();
+        int i = 8;
+        for( Author author : authorList ) {
+            author.setNumPlayed(i);
+            Assert.assertEquals(author.getNumPlayed(),i);
+            i--;
+        }
+        Author mostPlayedExpected = authorList.get(1);
+        mostPlayedExpected.setNumPlayed(10);
+        Author mostPlayedActual = classUnderTest.getMostPlayedAuthor();
+        Assert.assertEquals(mostPlayedExpected, mostPlayedActual);
+    }
+
+    @Test
+    public void authorStatsTest_getTotalAuthorPlays() {
+        List<Author> authorList = classUnderTest.getAuthors();
+        int i = 0;
+        int expected = 0;
+        for( Author author : authorList ) {
+            author.setNumPlayed(i);
+            expected += i++;
+        }
+        int actual = classUnderTest.getTotalAuthorPlays();
+        Assert.assertEquals(expected, actual);
+    }
 }

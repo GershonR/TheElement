@@ -116,7 +116,9 @@ public class Author {
     }
 
     public void decrNumPlayed() {
-        this.numPlayed--;
+        if( this.numPlayed > 0 ) {
+            this.numPlayed--;
+        }
     }
 
     @Override

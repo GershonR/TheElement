@@ -74,7 +74,7 @@ public class AlbumService {
             Collections.sort(albumList, new Comparator<Album>() {
                 @Override
                 public int compare(Album album, Album t1) {
-                    return Integer.compare(album.getNumPlayed(), t1.getNumPlayed());
+                    return Integer.compare(Integer.valueOf(t1.getNumPlayed()), Integer.valueOf(album.getNumPlayed()));
                 }
             });
         }

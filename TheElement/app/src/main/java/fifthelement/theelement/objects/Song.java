@@ -148,7 +148,9 @@ public class Song implements Comparable<Song>{
     }
 
     public void decrNumPlayed() {
-        this.numPlayed--;
+        if( this.numPlayed > 0 ) {
+            this.numPlayed--;
+        }
     }
 
     @Override

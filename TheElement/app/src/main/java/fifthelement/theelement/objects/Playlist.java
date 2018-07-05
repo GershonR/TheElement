@@ -2,21 +2,29 @@ package fifthelement.theelement.objects;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.UUID;
+import java.util.function.Consumer;
 
-public class PlayList {
+public class Playlist {
     private UUID uuid;
     private String listName;
     private List<Song> songList;
 
-    public PlayList(String name) {
+    public Playlist(String name) {
         this.uuid = UUID.randomUUID();
         this.listName = name;
         this.songList = new ArrayList<>();
     }
 
-    public PlayList(String name, List<Song> songList) {
+    public Playlist(String name, List<Song> songList) {
         this.uuid = UUID.randomUUID();
+        this.listName = name;
+        this.songList = songList;
+    }
+
+    public Playlist(UUID uuid, String name, List<Song> songList) {
+        this.uuid = uuid;
         this.listName = name;
         this.songList = songList;
     }
@@ -61,6 +69,6 @@ public class PlayList {
 
     @Override
     public boolean equals(Object object) {
-        return object instanceof PlayList && ((PlayList) object).getUUID() == this.getUUID();
+        return object instanceof Playlist && ((Playlist) object).getUUID() == this.getUUID();
     }
 }

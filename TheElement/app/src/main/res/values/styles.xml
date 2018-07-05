@@ -27,4 +27,19 @@
 
     </style>
 
+    <style name="ThemeOverlay.AppCompat.navTheme">
+        <!-- Color of text and icon when SELECTED -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+
+        <!-- Background color when SELECTED -->
+        <item name="colorControlHighlight">@color/background_grey</item>
+     </style>
+
+    <style name="alert_dialog_custom" parent="@android:style/Theme.Dialog">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:headerBackground">@color/colorPrimary</item>
+    </style>
+
 </resources>

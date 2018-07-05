@@ -7,6 +7,7 @@ import fifthelement.theelement.business.services.AlbumService;
 import fifthelement.theelement.business.services.AuthorService;
 import fifthelement.theelement.business.services.SongListService;
 import fifthelement.theelement.business.services.SongService;
+import fifthelement.theelement.business.services.PlaylistService;
 import fifthelement.theelement.presentation.services.DrawerService;
 import fifthelement.theelement.presentation.services.MusicService;
 
@@ -17,6 +18,7 @@ public class Services {
     private static AlbumService albumService = null;
     private static SongService songService = null;
     private static SongListService songListService = null;
+	private static PlaylistService playlistService = null;
 
     public static synchronized DrawerService getDrawerService(AppCompatActivity appCompatActivity) {
 
@@ -68,6 +70,15 @@ public class Services {
     public static synchronized void setMusicService(MusicService musicServiceToSet) {
 
         musicService = musicServiceToSet;
+    }
+
+    public static synchronized PlaylistService getPlaylistService() {
+
+        if( playlistService == null ) {
+            playlistService = new PlaylistService();
+        }
+
+        return playlistService;
     }
 
 }

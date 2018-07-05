@@ -80,11 +80,9 @@ public class NotificationService extends Service {
         bigViews = new RemoteViews(getPackageName(),
                 R.layout.status_bar_expanded);
 
-        // showing default album image
-        views.setViewVisibility(R.id.status_bar_icon, View.VISIBLE);
-        views.setViewVisibility(R.id.status_bar_album_art, View.GONE);
-        bigViews.setImageViewBitmap(R.id.status_bar_album_art,
-                SongUtil.getDefaultAlbumArt(this));
+        // showing album image
+        views.setImageViewBitmap(R.id.status_bar_album_art, SongUtil.getSongAlbumArt(this, musicService.getCurrentSongPlaying()));
+        bigViews.setImageViewBitmap(R.id.status_bar_album_art, SongUtil.getSongAlbumArt(this, musicService.getCurrentSongPlaying()));
 
         Intent notificationIntent = new Intent(this, MainActivity.class);
         notificationIntent.setAction(NotificationConstants.MAIN_ACTION + System.currentTimeMillis());
@@ -138,6 +136,8 @@ public class NotificationService extends Service {
         if(musicService.getCurrentSongPlaying() != null) {
             views.setTextViewText(R.id.status_bar_track_name, musicService.getCurrentSongPlaying().getName());
             bigViews.setTextViewText(R.id.status_bar_track_name, musicService.getCurrentSongPlaying().getName());
+            views.setImageViewBitmap(R.id.status_bar_album_art, SongUtil.getSongAlbumArt(this, musicService.getCurrentSongPlaying()));
+            bigViews.setImageViewBitmap(R.id.status_bar_album_art, SongUtil.getSongAlbumArt(this, musicService.getCurrentSongPlaying()));
 
             if(musicService.getCurrentSongPlaying().getAuthor() != null) {
                 views.setTextViewText(R.id.status_bar_artist_name, musicService.getCurrentSongPlaying().getAuthor().getName());

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import fifthelement.theelement.application.Services;
 import fifthelement.theelement.objects.Song;
 
 public class SongListService {
@@ -13,7 +14,15 @@ public class SongListService {
     private boolean autoplayEnabled = false;
     private int currentSongPlayingIndex = 0;
 
-    //Method to set the current list of songList to play songList from
+    public SongListService() {
+        this.songList = Services.getSongService().getSongs();
+    }
+
+    public SongListService(List<Song> songs) {
+        this.songList = songs;
+    }
+
+    //Method to set the current list of currentSongsList to play currentSongsList from
     public void setSongList(List<Song> newList){
         songList = newList;
         if(shuffled){
@@ -21,9 +30,7 @@ public class SongListService {
         }
     }
 
-    public List<Song> getSongList(){
-        return songList;
-    }
+    public List<Song> getSongList() { return songList; }
 
     // Skips to the next song in the list
     public Song skipToNextSong() {
@@ -101,6 +108,10 @@ public class SongListService {
 
     public void setAutoplayEnabled(boolean newValue){
         autoplayEnabled = newValue;
+    }
+
+    public void setShuffled(boolean value){
+        shuffled = value;
     }
 
     public boolean getAutoplayEnabled(){

@@ -47,6 +47,9 @@ public class DrawerService {
             case R.id.home_page:
                 fragmentClass = HomeFragment.class;
                 break;
+            case R.id.playlist_list:
+                fragmentClass = PlaylistListFragment.class;
+                break;
             case R.id.song_list:
                 fragmentClass = SongListFragment.class;
                 break;

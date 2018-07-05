@@ -2,8 +2,17 @@
 <menu
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
         <item
-            android:id="@+id/add_song"
+            android:id="@+id/add_to_playlist"
+            android:icon="@drawable/ic_playlist_add"
+            android:title="Add to Playlist" />
+        <item
+            android:id="@+id/song_info"
+            android:icon="@drawable/ic_add"
+            android:title="Song Information" />
+        <item
+            android:id="@+id/delete_song"
             android:icon="@drawable/ic_add"
             android:title="Delete Song" />
 </menu>

@@ -15,7 +15,7 @@ import fifthelement.theelement.objects.Author;
 import fifthelement.theelement.objects.Song;
 import fifthelement.theelement.persistence.AlbumPersistence;
 import fifthelement.theelement.persistence.AuthorPersistence;
-import fifthelement.theelement.persistence.PlayListPersistence;
+import fifthelement.theelement.persistence.PlaylistPersistence;
 import fifthelement.theelement.persistence.SongPersistence;
 import fifthelement.theelement.persistence.hsqldb.PersistenceException;
 
@@ -24,20 +24,27 @@ public class SongService {
     private SongPersistence songPersistence;
     private AlbumPersistence albumPersistence;
     private AuthorPersistence authorPersistence;
-    private PlayListPersistence playListPersistence;
+    private PlaylistPersistence playlistPersistence;
+    private AuthorService authorService;
+    private AlbumService albumService;
 
     public SongService() {
         songPersistence = Persistence.getSongPersistence();
         albumPersistence = Persistence.getAlbumPersistence();
         authorPersistence = Persistence.getAuthorPersistence();
-        playListPersistence = Persistence.getPlayListPersistence();
+        playlistPersistence = Persistence.getPlaylistPersistence();
+        authorService = Services.getAuthorService();
+        albumService = Services.getAlbumService();
     }
 
-    public SongService(SongPersistence songPersistence, AlbumPersistence albumPersistence, AuthorPersistence authorPersistence, PlayListPersistence playListPersistence) {
+    public SongService(SongPersistence songPersistence, AlbumPersistence albumPersistence, AuthorPersistence authorPersistence, PlaylistPersistence playlistPersistence) {
         this.songPersistence = songPersistence;
         this.albumPersistence = albumPersistence;
         this.authorPersistence = authorPersistence;
-        this.playListPersistence = playListPersistence;
+        this.playlistPersistence = playlistPersistence;
+        this.albumService = new AlbumService(albumPersistence, songPersistence);
+        this.authorService = new AuthorService(authorPersistence);
+
     }
 
     public Song getSongByUUID(UUID uuid) {
@@ -91,11 +98,52 @@ public class SongService {
         return songPersistence.storeSong(song);
     }
 
-    public boolean updateSong(Song song) throws IllegalArgumentException {
+    public boolean updateSong(Song song) throws PersistenceException, IllegalArgumentException {
         if(song == null)
             throw new IllegalArgumentException();
+
         return songPersistence.updateSong(song);
     }
+
+    public boolean updateSongWithParameters(Song song, String songName, String author, String album, String genre) {
+
+        if(!songName.equals("")){
+            song.setName(songName);
+        }
+
+        Author newAuthor = new Author(author);
+        if(!author.equals("")) { // TODO: Seperate Method For This?
+            song.setAuthor(newAuthor);
+            authorService.insertAuthor(newAuthor);
+        }else {
+            song.setAuthor(null);
+        }
+
+        if(!album.equals("")) { // TODO: Seperate Method For This?
+            Album newAlbum = new Album(album);
+            if(!author.equals(""))
+                newAlbum.setAuthor(newAuthor);
+            else
+                newAlbum.setAuthor(null);
+            song.setAlbum(newAlbum);
+            albumService.insertAlbum(newAlbum);
+        } else {
+            song.setAlbum(null);
+        }
+
+        if(genre.equals("")) {
+            song.setGenre(null);
+        } else {
+            song.setGenre(genre);
+        }
+        return updateSong(song);
+    }
+
+    public boolean updateSongWithRating(Song song, double rating){
+        song.setRating(rating);
+        return updateSong(song);
+    }
+
 
     public boolean deleteSong(Song songToRemove) throws PersistenceException, IllegalArgumentException {
         if(songToRemove == null)
@@ -106,10 +154,10 @@ public class SongService {
 
             // deletes songs from existing PlayList if it's there
             // implementation for this hasn't been fully decided. this is a STUB
-            //for( PlayList p : playListPersistence.getAllPlayLists() ) {
+            //for( PlayList p : playlistPersistence.getAllPlayLists() ) {
             //    if( p.contains(song) ) {
             //        p.removeSong(song);
-            //        playListPersistence.updatePlayList(p);
+            //        playlistPersistence.updatePlayList(p);
             //    }
             //}
 

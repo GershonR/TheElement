@@ -31,7 +31,7 @@ public class SongInfoFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_song_info, container, false);
 
         ImageView albumArt = (ImageView) view.findViewById(R.id.song_info_albumArt);
-        albumArt.setImageBitmap(SongUtil.getDefaultAlbumArt(view.getContext()));
+        albumArt.setImageBitmap(SongUtil.getSongAlbumArt(getContext(), song));
         TextView songName = (TextView) view.findViewById(R.id.song_info_name);
         songName.setText(song.getName());
 

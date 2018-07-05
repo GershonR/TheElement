@@ -70,6 +70,7 @@ public class SongListService {
 
         if(songList != null && index >= 0 && index < songList.size()){
             toReturn = songList.get(index);
+            currentSongPlayingIndex = index;
         }
 
         return toReturn;

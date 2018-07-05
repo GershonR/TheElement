@@ -117,8 +117,8 @@ public class PlaylistPersistenceHSQLDB implements PlaylistPersistence {
     public boolean storePlaylist(Playlist playList) throws PersistenceException {
         if(playList == null)
             throw new IllegalArgumentException("Cant store a playlist with null Playlist");
-        if(playlistExists(playList.getUUID()))
-            throw new IllegalArgumentException("Cant store a playlist with existing UUID");
+//        if(playlistExists(playList.getUUID()))
+//            throw new IllegalArgumentException("Cant store a playlist with existing UUID");
         try {
             final PreparedStatement st = c.prepareStatement("INSERT INTO playlists VALUES(?, ?)");
             st.setString(1, playList.getUUID().toString());

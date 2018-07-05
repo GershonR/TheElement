@@ -92,8 +92,8 @@ public class AlbumPersistenceHSQLDB implements AlbumPersistence {
     public boolean storeAlbum(Album album) throws PersistenceException, IllegalArgumentException {
         if(album == null)
             throw new IllegalArgumentException("Cant store an album with null Album");
-        if(albumExists(album.getUUID()))
-            throw new IllegalArgumentException("Cant store an album with existing UUID");
+//        if(albumExists(album.getUUID()))
+//            throw new IllegalArgumentException("Cant store an album with existing UUID");
         try {
             final PreparedStatement st = c.prepareStatement("INSERT INTO albums VALUES(?, ?, ?)");
             st.setString(1, album.getUUID().toString());

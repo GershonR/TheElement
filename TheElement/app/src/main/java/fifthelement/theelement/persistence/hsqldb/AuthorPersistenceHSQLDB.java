@@ -81,8 +81,8 @@ public class AuthorPersistenceHSQLDB implements AuthorPersistence {
     public boolean storeAuthor(Author author) throws PersistenceException, IllegalArgumentException {
         if(author == null)
             throw new IllegalArgumentException("Cannot insert a null author");
-        if(authorExists(author.getUUID()))
-            throw new IllegalArgumentException("Cant store an author with existing UUID");
+//        if(authorExists(author.getUUID()))
+//            throw new IllegalArgumentException("Cant store an author with existing UUID");
         try {
             final PreparedStatement st = c.prepareStatement("INSERT INTO authors VALUES(?, ?)");
             st.setString(1, author.getUUID().toString());

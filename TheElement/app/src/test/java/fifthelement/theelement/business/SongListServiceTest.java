@@ -20,15 +20,13 @@ public class SongListServiceTest {
 
     @Before
     public void setup() {
-
-        classUnderTest = new SongListService();
         songsList = new ArrayList<Song>();
         songsList.add(new Song( "Pristine", "data/song1"));
         songsList.add(new Song( "This is America", "data/song2"));
         songsList.add(new Song( "Nice For What", "data/song3"));
         songsList.add(new Song( "Geyser", "data/song4"));
         songsList.add(new Song( "Purity", "data/song5"));
-        classUnderTest.setCurrentSongsList(songsList);
+        classUnderTest = new SongListService(songsList);
     }
 
     @Test

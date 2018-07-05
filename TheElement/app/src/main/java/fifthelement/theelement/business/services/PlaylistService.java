@@ -8,18 +8,22 @@ import fifthelement.theelement.application.Persistence;
 import fifthelement.theelement.objects.Playlist;
 import fifthelement.theelement.objects.Song;
 import fifthelement.theelement.persistence.PlaylistPersistence;
+import fifthelement.theelement.persistence.SongPersistence;
 
 
 public class PlaylistService {
 
     private PlaylistPersistence playlistPersistence;
+    private SongPersistence songPersistence;
 
     public PlaylistService() {
         playlistPersistence = Persistence.getPlaylistPersistence();
+        songPersistence = Persistence.getSongPersistence();
     }
 
-    public PlaylistService(PlaylistPersistence playlistPersistence) {
+    public PlaylistService(PlaylistPersistence playlistPersistence, SongPersistence songPersistence) {
         this.playlistPersistence = playlistPersistence;
+        this.songPersistence = songPersistence;
     }
 
     public Playlist getPlaylistByUUID(UUID uuid) {
@@ -36,7 +40,7 @@ public class PlaylistService {
                 List<Song> updatedSongs = new ArrayList<>();
                 if(songs != null) {
                     for(Song song : songs) {
-                        song = Persistence.getSongPersistence().getSongByUUID(song.getUUID());
+                        song = songPersistence.getSongByUUID(song.getUUID());
                         updatedSongs.add(song);
                     }
                 }

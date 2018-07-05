@@ -12,6 +12,7 @@ import java.util.UUID;
 import fifthelement.theelement.business.services.PlaylistService;
 import fifthelement.theelement.objects.Playlist;
 import fifthelement.theelement.persistence.stubs.PlaylistPersistenceStub;
+import fifthelement.theelement.persistence.stubs.SongPersistenceStub;
 
 @RunWith(JUnit4.class)
 public class PlaylistServiceTest {
@@ -19,7 +20,7 @@ public class PlaylistServiceTest {
 
     @Before
     public void setup() {
-        classUnderTest = new PlaylistService(new PlaylistPersistenceStub());
+        classUnderTest = new PlaylistService(new PlaylistPersistenceStub(), new SongPersistenceStub());
         classUnderTest.getAllPlaylists().clear();
 
         classUnderTest.insertPlaylist(new Playlist("Thriller"));

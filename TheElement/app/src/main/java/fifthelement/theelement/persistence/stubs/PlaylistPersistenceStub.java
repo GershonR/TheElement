@@ -82,7 +82,9 @@ public class PlaylistPersistenceStub implements PlaylistPersistence {
     }
 
     @Override
-    public Playlist getPlaylistByUUID(UUID uuid) {
+    public Playlist getPlaylistByUUID(UUID uuid) throws IllegalArgumentException {
+        if(uuid == null)
+            throw new IllegalArgumentException("Cannot get playlist with a null UUID");
         for( Playlist p : playlists) {
             if( p.getUUID() == uuid ) {
                 return p;
@@ -92,18 +94,22 @@ public class PlaylistPersistenceStub implements PlaylistPersistence {
     }
 
     @Override
-    public boolean storePlaylist(Playlist playList) {
-        if( playlistExists(playList.getUUID()) ) {
-            throw new ArrayStoreException();
-        }
+    public boolean storePlaylist(Playlist playList) throws IllegalArgumentException {
+        if(playList == null)
+            throw new IllegalArgumentException("Cant store a playlist with null Playlist");
+        if(playlistExists(playList.getUUID()))
+            throw new IllegalArgumentException("Cant store a playlist with existing UUID");
         playlists.add(playList);
         return true;
     }
 
     @Override
-    public boolean updatePlaylist(Playlist playlist, String newName) {
-        if( newName == null || playlist == null) {
-            throw new IllegalArgumentException("Cannot update a playlist with null string");
+    public boolean updatePlaylist(Playlist playlist, String newName) throws IllegalArgumentException {
+        if(playlist == null){
+            throw new IllegalArgumentException("Cannot update a playlist with null Playlist");
+        }
+        if( newName == null ) {
+            throw new IllegalArgumentException("Cannot update a playlist with null name");
         }
         playlist.setName(newName);
         return true;
@@ -112,7 +118,7 @@ public class PlaylistPersistenceStub implements PlaylistPersistence {
     @Override
     public boolean deletePlaylist(Playlist playList) throws IllegalArgumentException {
         if(playList == null)
-            throw new IllegalArgumentException("Cannot delete a null playlist");
+            throw new IllegalArgumentException("Cannot delete a playlist with a null Playlist");
         return this.deletePlaylist(playList.getUUID());
     }
 
@@ -120,7 +126,7 @@ public class PlaylistPersistenceStub implements PlaylistPersistence {
     public boolean deletePlaylist(UUID uuid) throws IllegalArgumentException {
         boolean removed = false;
         if(uuid == null)
-            throw new IllegalArgumentException("Cannot delete a null author");
+            throw new IllegalArgumentException("Cannot delete a playlist with a null UUID");
         for(int index = 0; index < playlists.size(); index++) {
             if(playlists.get(index).getUUID().compareTo(uuid) == 0) {
                 this.playlists.remove(index);
@@ -131,23 +137,35 @@ public class PlaylistPersistenceStub implements PlaylistPersistence {
     }
 
 
-    public boolean playlistExists(Playlist playList) {
+    public boolean playlistExists(Playlist playList) throws IllegalArgumentException {
+        if(playList == null)
+            throw new IllegalArgumentException("Cannot check exists with a null Playlist");
         return this.playlistExists(playList.getUUID());
     }
 
     @Override
-    public boolean playlistExists(UUID uuid) {
+    public boolean playlistExists(UUID uuid) throws IllegalArgumentException {
+        if(uuid == null)
+            throw new IllegalArgumentException("Cannot check exists with a null UUID");
         return getPlaylistByUUID(uuid) != null;
     }
 
     @Override
-    public List<Song> getAllSongsByPlaylist(UUID uuid) {
+    public List<Song> getAllSongsByPlaylist(UUID uuid) throws IllegalArgumentException {
+        if(uuid == null)
+            throw new IllegalArgumentException("Cannot get songs from playlist with a null UUID");
         Playlist playlist = getPlaylistByUUID(uuid);
         return playlist.getSongs();
     }
 
     @Override
-    public boolean storeSongForPlaylist(Playlist playList, Song song) {
+    public boolean storeSongForPlaylist(Playlist playList, Song song) throws IllegalArgumentException {
+        if(playList == null){
+            throw new IllegalArgumentException("Cannot add song to a playlist with null Playlist");
+        }
+        if( song == null ) {
+            throw new IllegalArgumentException("Cannot add null Song to playlist");
+        }
         playList.addSong(song);
         return true;
     }

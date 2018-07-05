@@ -51,7 +51,7 @@ public class AlbumServiceTest {
         classUnderTest.insertAlbum(album);
     }
 
-    @Test(expected = ArrayStoreException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void insertAlbumDuplicateTest() {
         Album albumOne = new Album("21");
         albumOne.setUUID(UUID.fromString("493410b3-dd0b-4b78-97bf-289f50f6e74f"));

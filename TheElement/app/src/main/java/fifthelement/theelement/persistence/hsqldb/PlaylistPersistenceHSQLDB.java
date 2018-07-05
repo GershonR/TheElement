@@ -125,6 +125,21 @@ public class PlaylistPersistenceHSQLDB implements PlaylistPersistence {
     }
 
     @Override
+    public boolean storeSongForPlaylist(Playlist playList, Song song) {
+        try {
+            final PreparedStatement st = c.prepareStatement("INSERT INTO playlistsongs VALUES(?, ?)");
+            st.setString(1, playList.getUUID().toString());
+            st.setString(2, song.getUUID().toString());
+
+            st.executeUpdate();
+
+            return true;
+        } catch (final SQLException e) {
+            throw new PersistenceException(e);
+        }
+    }
+
+    @Override
     public boolean updatePlaylist(Playlist playlist, String newName) {
         try {
             final PreparedStatement st = c.prepareStatement("UPDATE playlists SET playlistName = ? WHERE playlistUUID = ?");

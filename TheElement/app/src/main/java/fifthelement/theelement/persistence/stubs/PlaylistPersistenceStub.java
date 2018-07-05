@@ -146,4 +146,9 @@ public class PlaylistPersistenceStub implements PlaylistPersistence {
         return playlist.getSongs();
     }
 
+    @Override
+    public boolean storeSongForPlaylist(Playlist playList, Song song) {
+        playList.addSong(song);
+        return true;
+    }
 }

@@ -54,6 +54,12 @@ public class PlaylistService {
         return playlistPersistence.storePlaylist(playlist);
     }
 
+    public boolean insertSongForPlaylist(Playlist playlist, Song song) throws IllegalArgumentException {
+        if(playlist == null || song == null)
+            throw new IllegalArgumentException();
+        return playlistPersistence.storeSongForPlaylist(playlist, song);
+    }
+
     public boolean storePlaylist(Playlist playlist) {
         if(playlist == null)
             throw new IllegalArgumentException();

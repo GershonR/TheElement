@@ -17,6 +17,8 @@ public interface PlaylistPersistence {
     // using boolean since its a stub. would make changes when implementing db anyway
     boolean storePlaylist(Playlist playList);
 
+    boolean storeSongForPlaylist(Playlist playList, Song song);
+
     boolean updatePlaylist(Playlist playlist, String newName);
 
     boolean deletePlaylist(Playlist playList);

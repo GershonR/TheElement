@@ -9,7 +9,7 @@
 
 
     <TextView
-        android:id="@+id/song_name_list"
+        android:id="@+id/primary_string"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:singleLine="true"
@@ -23,7 +23,7 @@
         android:textStyle="normal" />
 
     <TextView
-        android:id="@+id/author_name_list"
+        android:id="@+id/secondary_string"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"

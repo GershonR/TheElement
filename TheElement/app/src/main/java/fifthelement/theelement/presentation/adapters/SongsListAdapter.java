@@ -58,9 +58,9 @@ public class SongsListAdapter extends BaseAdapter {
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
         final MainActivity activity = (MainActivity)context;
-        view = inflater.inflate(R.layout.fragment_song_list_item, null);
-        TextView songName = (TextView) view.findViewById(R.id.song_name_list);
-        TextView authorName = (TextView) view.findViewById(R.id.author_name_list);
+        view = inflater.inflate(R.layout.fragment_list_item, null);
+        TextView songName = (TextView) view.findViewById(R.id.primary_string);
+        TextView authorName = (TextView) view.findViewById(R.id.secondary_string);
         final Song printSong = songs.get(i);
         Author author = printSong.getAuthor();
         String authors = "";
@@ -83,21 +83,15 @@ public class SongsListAdapter extends BaseAdapter {
                 activity.getMenuInflater().inflate(R.menu.song_list_item_menu, popup.getMenu());
                 popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     public boolean onMenuItemClick(MenuItem item) {
-                        if(item.getItemId() == R.id.add_song){
-                            deleteSong(song, activity);
-                        }
-                        if(item.getItemId() == R.id.song_info){
-                            Fragment fragment = null;
-                            try{
-                                SongInfoFragment songInfoFragment = SongInfoFragment.newInstance();
-                                songInfoFragment.setSong(song);
-                                songInfoFragment.setActivity(activity);
-                                fragment = (Fragment) songInfoFragment;
-                            }
-                            catch (Exception e){
-                                Log.e(LOG_TAG, e.getMessage());
-                            }
-                            Helpers.getFragmentHelper(activity).createFragment(R.id.song_list, fragment);
+                        switch(item.getItemId()) {
+                            case R.id.add_song:
+                                deleteSong(song, activity);
+                                break;
+                            // pass the song to the main activity, to find out
+                            // which playlist it needs to be added too
+                            case R.id.add_to_playlist:
+                                activity.showDialog(song);
+                                break;
                         }
                         return true;
                     }

@@ -20,7 +20,6 @@ import fifthelement.theelement.application.Services;
 import fifthelement.theelement.business.services.SongListService;
 import fifthelement.theelement.business.services.SongService;
 import fifthelement.theelement.objects.Song;
-import fifthelement.theelement.presentation.activities.MainActivity;
 import fifthelement.theelement.presentation.fragments.SeekerFragment;
 
 
@@ -106,7 +105,13 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
             player.setOnPreparedListener(this);
             player.setOnCompletionListener(this);
             player.setOnErrorListener(this);
+            playerPrepared = true;
         }
+    }
+
+    public void playSongAsync() {
+        if (songListService.getSongAtIndex(0) != null)
+            playSongAsync( songListService.getSongAtIndex(0));
     }
 
     // This function will attempt to set the media player up asynchronously and play the media.
@@ -137,7 +142,60 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
         });
         return true;
     }
+/*
+    public boolean playMultipleSongsAsync(Playlist playlist) {
+        songs = playlist.getSongs();
+        currentSongPlayingIndex = 0;
+        lastSongPlayedIndex = 0;
 
+        //start playing the first song
+        if (songs.size() > 0)
+            playSongAsync(songs.get(currentSongPlayingIndex), currentSongPlayingIndex);
+        else
+            Helpers.getToastHelper(getApplicationContext()).sendToast("No songs in playlist", "PINK");
+
+
+        player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mp) {
+                try{
+                    // if modified, we skipped or prev'd
+                    if (!currentSongModified){
+                        // listened to the song completely, behave normally
+                        if (currentSongPlayingIndex == lastSongPlayedIndex)
+                            currentSongPlayingIndex++;
+                            //We skipped a song (increased currentSongPlayingIndex, and don't want to do it again
+                        else if (currentSongPlayingIndex - lastSongPlayedIndex > 1)
+                            currentSongPlayingIndex = lastSongPlayedIndex+1;
+                        else
+                            currentSongPlayingIndex = 0;
+
+                        Song nextSong = songs.get(currentSongPlayingIndex);
+                        playSongAsync(nextSong, currentSongPlayingIndex);
+                    }
+                    else
+                        currentSongModified = false;
+
+                    lastSongPlayedIndex = currentSongPlayingIndex;
+                }
+                catch(Exception e) {
+                    Helpers.getToastHelper(getApplicationContext()).sendToast("Finished Playlist", "LIGHT BLUE");
+                    Log.e(LOG_TAG, e.getMessage());
+                }
+            }
+        });
+
+
+        player.setOnErrorListener(new MediaPlayer.OnErrorListener() {
+            @Override
+            public boolean onError(MediaPlayer mp, int what, int extra) {
+                return true;
+            }
+        });
+
+        return true;
+    }
+*/
     // This function will reset the MediaPlayer instance and reset seekbar UI positions to start.
     public void reset() {
         if(seekerPlaybackListener != null){
@@ -161,7 +219,9 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
             }
             player.start();
         } else if(!playerPrepared) {
-            Helpers.getToastHelper(getApplicationContext()).sendToast("No Song Selected!", "RED");
+            initMusicPlayer();
+            start(); // retry starting
+            //Helpers.getToastHelper(getApplicationContext()).sendToast("No Song Selected!", "RED");
         }
     }
 

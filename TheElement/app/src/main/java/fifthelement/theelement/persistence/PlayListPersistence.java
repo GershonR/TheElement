@@ -3,24 +3,24 @@ package fifthelement.theelement.persistence;
 import java.util.List;
 import java.util.UUID;
 
-import fifthelement.theelement.objects.PlayList;
+import fifthelement.theelement.objects.Playlist;
 
-public interface PlayListPersistence {
+public interface PlaylistPersistence {
 
-    List<PlayList> getAllPlayLists();
+    List<Playlist> getAllPlaylists();
 
-    PlayList getPlayListByUUID(UUID uuid);
+    Playlist getPlaylistByUUID(UUID uuid);
 
     // using boolean since its a stub. would make changes when implementing db anyway
-    boolean storePlayList(PlayList playList);
+    boolean storePlaylist(Playlist playList);
 
-    boolean updatePlayList(PlayList playList);
+    boolean updatePlaylist(Playlist playlist, String newName);
 
-    boolean deletePlayList(PlayList playList);
+    boolean deletePlaylist(Playlist playList);
 
-    boolean deletePlayList(UUID uuid);
+    boolean deletePlaylist(UUID uuid);
 
-    boolean playListExists(PlayList playList);
+    boolean playlistExists(Playlist playList);
 
-    boolean playListExists(UUID uuid);
+    boolean playlistExists(UUID uuid);
 }

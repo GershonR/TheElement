@@ -18,10 +18,7 @@ public class SongListItemFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_song_list_item, container, false);
-//        TextView songName = (TextView) view.findViewById(R.id.song_name_list);
-//        songName.setMovementMethod(new ScrollingMovementMethod());
-        return view;
+        return inflater.inflate(R.layout.fragment_list_item, container, false);
     }
 
 }

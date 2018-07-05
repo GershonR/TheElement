@@ -31,6 +31,7 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
     private MusicService musicService;
     private SongsListAdapter songsListAdapter;
     private SearchView.OnQueryTextListener onQueryTextListener;
+    private List<Song> prevSongList;
 
     private void setupSearchView()
     {
@@ -46,6 +47,8 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
         songService = Services.getSongService();
         songListService = Services.getSongListService();
         musicService = Services.getMusicService();
+
+        prevSongList = songListService.getSongList(); //Get previous list of songs so we can restore it after
         List<Song> songs = songService.getSongs();
         songListService.setSongList(songs);
 
@@ -129,5 +132,17 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
     @Override
     public boolean onQueryTextChange(String newText) {
         return false;
+    }
+
+    @Override
+    public void onPause(){
+        super.onPause();
+        songListService.setSongList(prevSongList);
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        prevSongList = songListService.getSongList();
     }
 }

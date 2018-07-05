@@ -56,16 +56,16 @@ public class PlayerStatsFragment extends Fragment {
         Album album = albumService.getMostPlayedAlbum();
         Author author = authorService.getMostPlayedAuthor();
 
-        if( song != null /*&& song.getNumPlayed() != 0*/ ) {
+        if( song != null && song.getNumPlayed() != 0 ) {
             String mostPlayedSongString = String.format(Locale.getDefault(), "%s (%d plays)", song.getName(), song.getNumPlayed());
             mostPlayedSong.setText(mostPlayedSongString);
         }
 
-        if( album != null /*&& album.getNumPlayed() != 0 */) {
+        if( album != null && album.getNumPlayed() != 0 ) {
             String mostPlayedAlbumString = String.format(Locale.getDefault(), "%s (%d plays)", album.getName(), album.getNumPlayed());
             mostPlayedAlbum.setText(mostPlayedAlbumString);
         }
-        if( author != null /*&& author.getNumPlayed() != 0*/ ) {
+        if( author != null && author.getNumPlayed() != 0 ) {
             String mostPlayedAuthorString = String.format(Locale.getDefault(), "%s (%d plays)", author.getName(), author.getNumPlayed());
             mostPlayedAuthor.setText(mostPlayedAuthorString);
         }

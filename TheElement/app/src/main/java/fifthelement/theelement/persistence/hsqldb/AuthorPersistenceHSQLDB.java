@@ -93,7 +93,17 @@ public class AuthorPersistenceHSQLDB implements AuthorPersistence {
 
     @Override
     public boolean updateAuthor(Author author) {
-        return false;
+        try {
+            final PreparedStatement st = c.prepareStatement("UPDATE authors SET authorName = ?, numPlayed = ? WHERE authorUUID = ? ");
+            st.setString(1, author.getName());
+            st.setInt(2, author.getNumPlayed());
+            st.setString(3, author.getUUID().toString());
+
+            st.executeUpdate();
+            return true;
+        } catch (final SQLException e) {
+            throw new PersistenceException(e);
+        }
     }
 
     @Override

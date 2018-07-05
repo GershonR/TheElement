@@ -69,12 +69,12 @@ public class AlbumService {
     }
 
     public List<Album> getSortedAlbumListByMostPlayed() {
-        List<Album> albumList = getAlbums();
+        List<Album> albumList = this.getAlbums();
         if( albumList != null ) {
             Collections.sort(albumList, new Comparator<Album>() {
                 @Override
                 public int compare(Album album, Album t1) {
-                    return Integer.compare(t1.getNumPlayed(), album.getNumPlayed());
+                    return Integer.compare(album.getNumPlayed(), t1.getNumPlayed());
                 }
             });
         }

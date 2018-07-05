@@ -109,7 +109,18 @@ public class AlbumPersistenceHSQLDB implements AlbumPersistence {
 
     @Override
     public boolean updateAlbum(Album album) {
-        return false;
+        //TODO: authorUUID not updated due to conflict with foreign key. needs someone who's expert in db to do this :D
+        try {
+            final PreparedStatement st = c.prepareStatement("UPDATE albums SET albumName = ?, numPlayed = ? WHERE albumUUID = ? ");
+            st.setString(1, album.getName());
+            st.setInt(2, album.getNumPlayed());
+            st.setString(3, album.getUUID().toString());
+
+            st.executeUpdate();
+            return true;
+        } catch (final SQLException e) {
+            throw new PersistenceException(e);
+        }
     }
 
     @Override

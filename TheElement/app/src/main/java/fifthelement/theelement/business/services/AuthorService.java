@@ -53,18 +53,18 @@ public class AuthorService {
         Author author = null;
         List<Author> authorList = getSortedAuthorListByMostPlayed();
         if( authorList != null ) {
-            author = authorList.get(0);
+            author = authorList.get(authorList.size()-1);
         }
         return author;
     }
 
     public List<Author> getSortedAuthorListByMostPlayed() {
-       List<Author> authorList = getAuthors();
+       List<Author> authorList = this.getAuthors();
         if( authorList != null ) {
             Collections.sort(authorList, new Comparator<Author>() {
                 @Override
                 public int compare(Author author, Author t1) {
-                    return Integer.compare(t1.getNumPlayed(), author.getNumPlayed());
+                    return Integer.compare(author.getNumPlayed(), t1.getNumPlayed());
                 }
             });
         }

@@ -27,8 +27,6 @@ public class SongService {
     private AuthorPersistence authorPersistence;
     private PlayListPersistence playListPersistence;
 
-    private List<Song> songs;
-
     public SongService() {
         songPersistence = Persistence.getSongPersistence();
         albumPersistence = Persistence.getAlbumPersistence();
@@ -48,7 +46,7 @@ public class SongService {
     }
 
     public List<Song> getSongs() throws PersistenceException {
-        songs = songPersistence.getAllSongs();
+        List<Song> songs = songPersistence.getAllSongs();
 
         if(songs != null) {
             for(Song song : songs) {
@@ -61,6 +59,29 @@ public class SongService {
         }
 
         return songs;
+    }
+
+    public void createSong(String realPath, String songName, String songArtist, String songAlbum, String songGenre) throws PersistenceException, IllegalArgumentException, SongAlreadyExistsException {
+        Author author = null;
+        Album album = null;
+        Song song = new Song(songName, realPath);
+        if(songArtist != null) { // TODO: Seperate Method For This?
+            author = new Author(songArtist);
+            song.setAuthor(author);
+            Services.getAuthorService().insertAuthor(author);
+        }
+        if(songAlbum != null) { // TODO: Seperate Method For This?
+            album = new Album(songAlbum);
+            if(author != null)
+                album.setAuthor(author);
+            else
+                album.setAuthor(null);
+            song.setAlbum(album);
+            Services.getAlbumService().insertAlbum(album);
+        }
+        if(songGenre != null)
+            song.setGenre(songGenre);
+        insertSong(song);
     }
 
     public boolean insertSong(Song song) throws PersistenceException, IllegalArgumentException, SongAlreadyExistsException {
@@ -112,10 +133,6 @@ public class SongService {
             }
         }
         return toReturn;
-    }
-
-    public void sortSongs(List<Song> songs) {
-        Collections.sort(songs);
     }
 
     public List<Song> search(String query) {
@@ -189,15 +206,15 @@ public class SongService {
             if( song.getAuthor() != null ) {
                 author = song.getAuthor();
                 author.incrNumPlayed();
+                Services.getAuthorService().updateAuthor(author);
             }
             if( song.getAlbum() != null ) {
                 album = song.getAlbum();
                 album.incrNumPlayed();
+                Services.getAlbumService().updateAlbum(album);
             }
         }
         this.updateSong(song);
-        Services.getAuthorService().updateAuthor(author);
-        Services.getAlbumService().updateAlbum(album);
     }
 
     // if the song is skipped then we shouldn't count it as a played

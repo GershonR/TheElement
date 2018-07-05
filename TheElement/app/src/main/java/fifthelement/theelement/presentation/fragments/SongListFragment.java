@@ -20,7 +20,6 @@ import fifthelement.theelement.application.Helpers;
 import fifthelement.theelement.application.Services;
 import fifthelement.theelement.business.services.SongListService;
 import fifthelement.theelement.business.services.SongService;
-import fifthelement.theelement.objects.Playlist;
 import fifthelement.theelement.objects.Song;
 import fifthelement.theelement.presentation.activities.MainActivity;
 import fifthelement.theelement.presentation.services.MusicService;
@@ -32,7 +31,6 @@ public class SongListFragment extends Fragment {
     private SongListService songListService;
     private MusicService musicService;
     private SongsListAdapter songListAdapter;
-    Playlist currentplaylist;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -98,20 +96,21 @@ public class SongListFragment extends Fragment {
                                         int position, long id) {
                     boolean result = musicService.playSongAsync(songListService.getSongAtIndex(position));
                     if (result) {
-                        //musicService.setShuffleEnabled(false);
+                        songListService.setShuffleEnabled(false);
                         ((MainActivity) getActivity()).startNotificationService(view.findViewById(R.id.toolbar));
                     }
                 }
             });
         }
     }
-/*
+
     @Override
     public void onResume() {
         super.onResume();
         if(songListAdapter != null) {
             sortSongs();
-            musicService.updateShuffledList();
+            songListService.updateShuffledList();
         }
-    }*/
+    }
+
 }

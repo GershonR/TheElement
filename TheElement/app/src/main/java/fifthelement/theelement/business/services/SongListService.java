@@ -70,6 +70,7 @@ public class SongListService {
 
         if(songList != null && index >= 0 && index < songList.size()){
             toReturn = songList.get(index);
+            currentSongPlayingIndex = index;
         }
 
         return toReturn;
@@ -82,10 +83,20 @@ public class SongListService {
         shuffled = true;
     }
 
+    public void updateShuffledList() {
+        shuffledList = new ArrayList<>();
+        shuffledList.addAll(songList);
+        Collections.shuffle(shuffledList);
+    }
+
     public void removeSongFromList(Song song){
         if(songList != null){
             songList.remove(song);
         }
+    }
+
+    public void setShuffleEnabled(boolean value){
+        shuffled = value;
     }
 
     public void setAutoplayEnabled(boolean newValue){

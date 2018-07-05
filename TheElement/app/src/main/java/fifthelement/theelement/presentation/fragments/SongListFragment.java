@@ -96,7 +96,7 @@ public class SongListFragment extends Fragment {
                                         int position, long id) {
                     boolean result = musicService.playSongAsync(songListService.getSongAtIndex(position));
                     if (result) {
-                        musicService.setShuffleEnabled(false);
+                        songListService.setShuffleEnabled(false);
                         ((MainActivity) getActivity()).startNotificationService(view.findViewById(R.id.toolbar));
                     }
                 }
@@ -109,7 +109,7 @@ public class SongListFragment extends Fragment {
         super.onResume();
         if(songListAdapter != null) {
             sortSongs();
-            musicService.updateShuffledList();
+            songListService.updateShuffledList();
         }
     }
 

@@ -196,12 +196,6 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
        playSongAsync(songListService.skipToNextSong());
     }
 
-    public void updateShuffledList() {
-        shuffledList = new ArrayList<>();
-        shuffledList.addAll(songs);
-        Collections.shuffle(shuffledList);
-    }
-
     // This function will return the duration of the currently loaded music file.
     public int getDuration() {
         if(playerPrepared) {

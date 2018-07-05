@@ -24,6 +24,7 @@ import fifthelement.theelement.business.services.PlaylistService;
 import fifthelement.theelement.business.services.SongService;
 import fifthelement.theelement.objects.Playlist;
 import fifthelement.theelement.objects.Song;
+import fifthelement.theelement.persistence.hsqldb.PersistenceException;
 import fifthelement.theelement.presentation.activities.MainActivity;
 import fifthelement.theelement.presentation.adapters.PlaylistListAdapter;
 import fifthelement.theelement.presentation.adapters.SongsListAdapter;
@@ -41,7 +42,12 @@ public class PlaylistListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         playlistService = ((MainActivity)getActivity()).getPlaylistService();
-        playlists = playlistService.getAllPlaylists();
+        try {
+            playlists = playlistService.getAllPlaylists();
+        } catch (PersistenceException p) {
+            Log.e(LOG_TAG, p.getMessage());
+            Helpers.getToastHelper(getContext()).sendToast("Could not retrieve playlists", "RED");
+        }
         displayView(inflater, container);
         return view;
     }

@@ -1,6 +1,7 @@
 package fifthelement.theelement.presentation.activities;
 
 
+import android.app.FragmentManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -144,6 +145,5 @@ public class MainActivity extends AppCompatActivity {
         musicService = null;
         super.onDestroy();
     }
-
 
 }

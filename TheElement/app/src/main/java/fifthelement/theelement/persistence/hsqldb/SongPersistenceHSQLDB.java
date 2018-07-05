@@ -41,7 +41,8 @@ public class SongPersistenceHSQLDB implements SongPersistence {
         if(albumUUID != null && albumUUID.length() == 36)
             songAlbum = new Album(UUID.fromString(albumUUID), "");
         final String songGenre = rs.getString("songGenre");
-        return new Song(songUUID, songName, songPath, songAuthor, songAlbum, songGenre);
+        final int numPlayed = rs.getInt("NUMPLAYED");
+        return new Song(songUUID, songName, songPath, songAuthor, songAlbum, songGenre, numPlayed);
     }
 
 
@@ -122,7 +123,7 @@ public class SongPersistenceHSQLDB implements SongPersistence {
     @Override
     public boolean storeSong(Song song) throws PersistenceException {
         try {
-            final PreparedStatement st = c.prepareStatement("INSERT INTO songs VALUES(?, ?, ?, ?, ?, ?)");
+            final PreparedStatement st = c.prepareStatement("INSERT INTO songs VALUES(?, ?, ?, ?, ?, ?, ?)");
             st.setString(1, song.getUUID().toString());
             st.setString(2, song.getName());
             st.setString(3, song.getPath());
@@ -135,6 +136,7 @@ public class SongPersistenceHSQLDB implements SongPersistence {
             else
                 st.setString(5, null);
             st.setString(6, song.getGenre());
+            st.setInt(7, song.getNumPlayed());
 
             st.executeUpdate();
 
@@ -148,10 +150,11 @@ public class SongPersistenceHSQLDB implements SongPersistence {
     @Override
     public boolean updateSong(Song song) throws IllegalArgumentException {
         try {
-            final PreparedStatement st = c.prepareStatement("UPDATE songs SET songName = ?, songPath = ? WHERE songUUID = ?");
+            final PreparedStatement st = c.prepareStatement("UPDATE songs SET songName = ?, songPath = ?, numPlayed = ? WHERE songUUID = ? ");
             st.setString(1, song.getName());
             st.setString(2, song.getPath());
-            st.setString(3, song.getUUID().toString());
+            st.setInt(3, song.getNumPlayed());
+            st.setString(4, song.getUUID().toString());
 
             st.executeUpdate();
 

@@ -11,6 +11,7 @@ public class Song implements Comparable<Song>{
     private String genre;
     private Author author;
     private Album album;
+    private int numPlayed;
 
     public Song(String name, String path){
         this.uuid = UUID.randomUUID();
@@ -19,6 +20,7 @@ public class Song implements Comparable<Song>{
         this.genre = "";
         author = null;
         album = null;
+        this.numPlayed = 0;
     }
 
     public Song(UUID uuid, String name, String path){
@@ -28,6 +30,7 @@ public class Song implements Comparable<Song>{
         this.genre = "";
         author = null;
         album = null;
+        this.numPlayed = 0;
     }
 
     public Song(UUID uuid, String name, String path, Author author, Album album, String genre){
@@ -37,8 +40,18 @@ public class Song implements Comparable<Song>{
         this.author = author;
         this.album = album;
         this.genre = genre;
+        this.numPlayed = 0;
     }
 
+    public Song(UUID uuid, String name, String path, Author author, Album album, String genre, int numPlayed){
+        this.uuid = uuid;
+        this.songName = name;
+        this.path = path;
+        this.author = author;
+        this.album = album;
+        this.genre = genre;
+        this.numPlayed = numPlayed;
+    }
     // getters
     public UUID getUUID(){
         return uuid;
@@ -64,6 +77,10 @@ public class Song implements Comparable<Song>{
         return album;
     }
 
+    public int getNumPlayed() {
+        return numPlayed;
+    }
+
     // setters
     public void setUUID(UUID uuid) {
         this.uuid = uuid;
@@ -87,6 +104,18 @@ public class Song implements Comparable<Song>{
 
     public void setAlbum(Album album){
         this.album =  album;
+    }
+
+    public void setNumPlayed(int numPlayed) {
+        this.numPlayed = numPlayed;
+    }
+
+    public void incrNumPlayed() {
+        this.numPlayed++;
+    }
+
+    public void decrNumPlayed() {
+        this.numPlayed--;
     }
 
     @Override

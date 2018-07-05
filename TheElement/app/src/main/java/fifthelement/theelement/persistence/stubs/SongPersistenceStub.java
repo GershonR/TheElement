@@ -14,7 +14,7 @@ public class SongPersistenceStub implements SongPersistence {
 
     public SongPersistenceStub() {
         this.songList = new ArrayList<>();
-
+/*
         Song song = new Song("This Is America", "android.resource://fifthelement.theelement/raw/childish_gambino_this_is_america");
         song.setAuthor(new Author("Childish Gambino"));
         this.storeSong(song);
@@ -28,6 +28,7 @@ public class SongPersistenceStub implements SongPersistence {
 
         song = new Song("Hall of Fame", "android.resource://fifthelement.theelement/raw/hall_of_fame");
         this.storeSong(song);
+        */
     }
 
     public SongPersistenceStub(List<Song> songList) {

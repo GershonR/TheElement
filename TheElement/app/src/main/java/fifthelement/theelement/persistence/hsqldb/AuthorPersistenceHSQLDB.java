@@ -27,7 +27,8 @@ public class AuthorPersistenceHSQLDB implements AuthorPersistence {
     private Author fromResultSet(final ResultSet rs) throws SQLException {
         final UUID authorUUID = UUID.fromString(rs.getString("authorUUID"));
         final String authorName = rs.getString("authorName");
-        return new Author(authorUUID, authorName);
+        final int numPlayed = rs.getInt("numPlayed");
+        return new Author(authorUUID, authorName, numPlayed);
     }
 
     @Override
@@ -77,9 +78,10 @@ public class AuthorPersistenceHSQLDB implements AuthorPersistence {
     @Override
     public boolean storeAuthor(Author author) {
         try {
-            final PreparedStatement st = c.prepareStatement("INSERT INTO authors VALUES(?, ?)");
+            final PreparedStatement st = c.prepareStatement("INSERT INTO authors VALUES(?, ?, ?)");
             st.setString(1, author.getUUID().toString());
             st.setString(2, author.getName());
+            st.setInt(3, author.getNumPlayed());
 
             st.executeUpdate();
 

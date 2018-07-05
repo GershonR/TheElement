@@ -14,6 +14,8 @@ import java.util.List;
 
 import fifthelement.theelement.R;
 import fifthelement.theelement.application.Helpers;
+import fifthelement.theelement.application.Services;
+import fifthelement.theelement.business.services.SongService;
 import fifthelement.theelement.objects.Song;
 import fifthelement.theelement.presentation.activities.MainActivity;
 import fifthelement.theelement.presentation.fragments.SeekerFragment;
@@ -34,6 +36,7 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
     private final IBinder musicBind = new MusicBinder();
     private SeekerFragment.SeekerPlaybackStartStopListener seekerPlaybackListener;
     private NotificationService.NotificationPlaybackStartStopListener notificationPlaybackListener;
+    private SongService songService = Services.getSongService();
 
     private static final String LOG_TAG = "MusicService";
 
@@ -126,6 +129,7 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
             public void onPrepared(MediaPlayer player) {
                 playerPrepared = true;
                 start();
+                songService.songIsPlayed(currentSongPlaying.getUUID());
                 Helpers.getToastHelper(getApplicationContext()).sendToast("Now Playing: " + currentSongPlaying.getName());
             }
 
@@ -176,6 +180,7 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
     // Skips to the next song in the list
     public void skip() {
         if(songs != null) {
+            songService.songIsSkipped(songs.get(currentSongPlayingIndex).getUUID());
             currentSongPlayingIndex++;
             if (currentSongPlayingIndex > songs.size() - 1) {
                 playSongAsync(songs.get(0), 0);
@@ -192,6 +197,7 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
     // Skips to the previous song in the list
     public void prev() {
         if(songs != null) {
+            songService.songIsSkipped(songs.get(currentSongPlayingIndex).getUUID());
             currentSongPlayingIndex--;
             if (currentSongPlayingIndex < 0) {
                 playSongAsync(songs.get(songs.size() - 1), songs.size() - 1);

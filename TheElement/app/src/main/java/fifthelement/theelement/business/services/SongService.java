@@ -2,13 +2,17 @@ package fifthelement.theelement.business.services;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import fifthelement.theelement.application.Persistence;
+import fifthelement.theelement.application.Services;
 import fifthelement.theelement.business.exceptions.SongAlreadyExistsException;
+import fifthelement.theelement.objects.Album;
+import fifthelement.theelement.objects.Author;
 import fifthelement.theelement.objects.Song;
 import fifthelement.theelement.persistence.AlbumPersistence;
 import fifthelement.theelement.persistence.AuthorPersistence;
@@ -142,5 +146,78 @@ public class SongService {
         if (matcher.find() == false)
             result = true;
         return result;
+    }
+
+    public Song getMostPlayedSong() {
+        List<Song> songList = getSortedSongListByMostPlayed();
+        Song song = null;
+        if( songList != null ) {
+            song =  this.getSortedSongListByMostPlayed().get(0);
+        }
+        return song;
+    }
+
+    public List<Song> getSortedSongListByMostPlayed() {
+        List<Song> songList = this.getSongs();
+        if( songList != null ) {
+            Collections.sort(songList, new Comparator<Song>() {
+                @Override
+                public int compare(Song song, Song t1) {
+                    return Integer.compare(t1.getNumPlayed(), song.getNumPlayed());
+                }
+            });
+        }
+        return  songList;
+    }
+
+    public int getTotalSongPlays() {
+        List<Song> songList = this.getSongs();
+        int totalPlays = 0;
+        for( Song song : songList ) {
+            totalPlays += song.getNumPlayed();
+        }
+        return totalPlays;
+    }
+
+    // called every time a song is skipped.
+    public void songIsPlayed(UUID songId) {
+        Song song = this.getSongByUUID(songId);
+        Author author = null;
+        Album album = null;
+        if( song != null ) {
+            song.incrNumPlayed();
+            if( song.getAuthor() != null ) {
+                author = song.getAuthor();
+                author.incrNumPlayed();
+            }
+            if( song.getAlbum() != null ) {
+                album = song.getAlbum();
+                album.incrNumPlayed();
+            }
+        }
+        this.updateSong(song);
+        Services.getAuthorService().updateAuthor(author);
+        Services.getAlbumService().updateAlbum(album);
+    }
+
+    // if the song is skipped then we shouldn't count it as a played
+    public void songIsSkipped(UUID songId) {
+        Song song = this.getSongByUUID(songId);
+        Author author = null;
+        Album album = null;
+        if( song != null ) {
+            song.decrNumPlayed();
+            if( song.getAuthor() != null ) {
+                author = song.getAuthor();
+                author.decrNumPlayed();
+            }
+            if( song.getAlbum() != null ) {
+                album = song.getAlbum();
+                album.decrNumPlayed();
+            }
+        }
+        this.updateSong(song);
+        Services.getAuthorService().updateAuthor(author);
+        Services.getAlbumService().updateAlbum(album);
     }
 }

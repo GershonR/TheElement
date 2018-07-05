@@ -41,7 +41,7 @@ public class PlaylistPersistenceHSQLDB implements PlaylistPersistence {
     }
 
     @Override
-    public List<Playlist> getAllPlaylists() {
+    public List<Playlist> getAllPlaylists() throws PersistenceException {
 
         final List<Playlist> playlists = new ArrayList<>();
 
@@ -65,7 +65,7 @@ public class PlaylistPersistenceHSQLDB implements PlaylistPersistence {
         }
     }
 
-    public List<Song> getAllSongsByPlaylist(UUID uuid) {
+    public List<Song> getAllSongsByPlaylist(UUID uuid) throws PersistenceException {
 
         final List<Song> songs = new ArrayList<>();
 
@@ -92,7 +92,7 @@ public class PlaylistPersistenceHSQLDB implements PlaylistPersistence {
     }
 
     @Override
-    public Playlist getPlaylistByUUID(UUID uuid) {
+    public Playlist getPlaylistByUUID(UUID uuid) throws PersistenceException {
         try {
             final PreparedStatement st = c.prepareStatement("SELECT * FROM playlists WHERE playlistUUID = ?");
             st.setString(1, uuid.toString());
@@ -110,7 +110,7 @@ public class PlaylistPersistenceHSQLDB implements PlaylistPersistence {
     }
 
     @Override
-    public boolean storePlaylist(Playlist playList) {
+    public boolean storePlaylist(Playlist playList) throws PersistenceException {
         try {
             final PreparedStatement st = c.prepareStatement("INSERT INTO playlists VALUES(?, ?)");
             st.setString(1, playList.getUUID().toString());
@@ -125,7 +125,7 @@ public class PlaylistPersistenceHSQLDB implements PlaylistPersistence {
     }
 
     @Override
-    public boolean storeSongForPlaylist(Playlist playList, Song song) {
+    public boolean storeSongForPlaylist(Playlist playList, Song song) throws PersistenceException {
         try {
             final PreparedStatement st = c.prepareStatement("INSERT INTO playlistsongs VALUES(?, ?)");
             st.setString(1, playList.getUUID().toString());
@@ -140,7 +140,7 @@ public class PlaylistPersistenceHSQLDB implements PlaylistPersistence {
     }
 
     @Override
-    public boolean updatePlaylist(Playlist playlist, String newName) {
+    public boolean updatePlaylist(Playlist playlist, String newName) throws PersistenceException {
         try {
             final PreparedStatement st = c.prepareStatement("UPDATE playlists SET playlistName = ? WHERE playlistUUID = ?");
             st.setString(1, newName);
@@ -150,20 +150,19 @@ public class PlaylistPersistenceHSQLDB implements PlaylistPersistence {
 
             return true;
         } catch (final SQLException e) {
-            Log.e("PLAYLISTS", e.getMessage());
             throw new PersistenceException(e);
         }
     }
 
     @Override
-    public boolean deletePlaylist(Playlist playList) {
+    public boolean deletePlaylist(Playlist playList) throws PersistenceException {
         if(playList == null)
             throw new IllegalArgumentException();
         return deletePlaylist(playList.getUUID());
     }
 
     @Override
-    public boolean deletePlaylist(UUID uuid) {
+    public boolean deletePlaylist(UUID uuid) throws PersistenceException {
         boolean removed = false;
         if(uuid == null)
             throw new IllegalArgumentException("Cannot delete with a null UUID");
@@ -183,10 +182,12 @@ public class PlaylistPersistenceHSQLDB implements PlaylistPersistence {
     }
 
     @Override
-    public boolean playlistExists(Playlist playList){ return playlistExists(playList.getUUID()); }
+    public boolean playlistExists(Playlist playList) throws PersistenceException {
+        return playlistExists(playList.getUUID());
+    }
 
     @Override
-    public boolean playlistExists(UUID uuid) {
+    public boolean playlistExists(UUID uuid) throws PersistenceException {
         Playlist playlist = getPlaylistByUUID(uuid);
         return playlist != null;
     }

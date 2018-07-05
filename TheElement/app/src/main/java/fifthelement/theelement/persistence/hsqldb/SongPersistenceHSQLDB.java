@@ -47,7 +47,7 @@ public class SongPersistenceHSQLDB implements SongPersistence {
 
 
     @Override
-    public List<Song> getAllSongs() {
+    public List<Song> getAllSongs() throws PersistenceException {
 
         final List<Song> songs = new ArrayList<>();
 
@@ -74,7 +74,7 @@ public class SongPersistenceHSQLDB implements SongPersistence {
     }
 
     @Override
-    public Song getSongByUUID(final UUID uuid) {
+    public Song getSongByUUID(final UUID uuid) throws PersistenceException {
         try {
             final PreparedStatement st = c.prepareStatement("SELECT * FROM songs WHERE songUUID = ?");
             st.setString(1, uuid.toString());
@@ -93,7 +93,7 @@ public class SongPersistenceHSQLDB implements SongPersistence {
     }
 
     @Override
-    public List<Song> getSongsByAlbumUUID(final UUID uuid) {
+    public List<Song> getSongsByAlbumUUID(final UUID uuid) throws PersistenceException {
 
         final List<Song> songs = new ArrayList<>();
 
@@ -188,7 +188,7 @@ public class SongPersistenceHSQLDB implements SongPersistence {
     }
 
     @Override
-    public boolean deleteSong(UUID uuid) throws IllegalArgumentException {
+    public boolean deleteSong(UUID uuid) throws IllegalArgumentException, PersistenceException {
         boolean removed = false;
         if(uuid == null)
             throw new IllegalArgumentException("Cannot delete with a null UUID");
@@ -204,12 +204,12 @@ public class SongPersistenceHSQLDB implements SongPersistence {
     }
 
     @Override
-    public boolean songExists(Song song) {
+    public boolean songExists(Song song) throws PersistenceException {
         return songExists(song.getUUID());
     }
 
     @Override
-    public boolean songExists(UUID uuid) {
+    public boolean songExists(UUID uuid) throws PersistenceException {
         Song song = getSongByUUID(uuid);
         return song != null;
     }

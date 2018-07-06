@@ -17,5 +17,9 @@
             android:id="@+id/search_view_fragment"
             android:icon="@drawable/ic_search_black"
             android:title="Search" />
+        <item
+            android:id="@+id/nav_manage"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="Settings" />
     </group>
 </menu>

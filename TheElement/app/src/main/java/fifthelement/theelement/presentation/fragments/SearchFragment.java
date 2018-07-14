@@ -31,6 +31,7 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
     private SongsListAdapter songsListAdapter;
     private SearchView.OnQueryTextListener onQueryTextListener;
     private List<Song> prevSongList;
+    private List<Song> currentSearchResults;
 
     private void setupSearchView()
     {
@@ -47,9 +48,9 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
         songListService = Services.getSongListService();
         musicService = Services.getMusicService();
 
-        prevSongList = songListService.getAllSongsList(); //Get previous list of songs so we can restore it after
-        List<Song> songs = songService.getSongs();
-        songListService.setCurrentSongsList(songs);
+        prevSongList = songListService.getCurrentSongsList(); //Get previous list of songs so we can restore it after
+        currentSearchResults = songService.getSongs();
+//        songListService.setCurrentSongsList(songs);
 
         view = inflater.inflate(R.layout.search_fragment, container, false);
         ListView listView = view.findViewById(R.id.search_song_list_view_item);
@@ -68,9 +69,8 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
     }
 
     private void playSongOnClick(ListView listView) {
-        List<Song> songs = songListService.getAllSongsList();
-        if(songs != null) {
-            final SongsListAdapter songListAdapter = new SongsListAdapter(getActivity(), songs);
+        if(currentSearchResults != null) {
+            final SongsListAdapter songListAdapter = new SongsListAdapter(getActivity(), currentSearchResults);
             listView.setAdapter(songListAdapter);
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener()
             {
@@ -78,6 +78,8 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view,
                                         int position, long id) {
+                    songListService.setCurrentSongsList(currentSearchResults);
+                    songListService.setAutoplayEnabled(false);
                     boolean result = musicService.playSongAsync(songListService.getSongAtIndex(position));
                     if(result) {
                         ((MainActivity)getActivity()).startNotificationService(view.findViewById(R.id.toolbar));
@@ -102,9 +104,9 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
             @Override
             // Search on submit button
             public boolean onQueryTextSubmit(String query) {
-                List<Song> songs = songService.search(query);
-                songListService.setCurrentSongsList(songs);
-                songsListAdapter = new SongsListAdapter(getActivity(), songs);
+                currentSearchResults = songService.search(query);
+//                songListService.setCurrentSongsList(songs);
+                songsListAdapter = new SongsListAdapter(getActivity(), currentSearchResults);
                 mListView.setAdapter(songsListAdapter);
                 songsListAdapter.notifyDataSetChanged();
                 return false;
@@ -112,9 +114,9 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                List<Song> songs = songService.search(newText);
-                songListService.setCurrentSongsList(songs);
-                songsListAdapter = new SongsListAdapter(getActivity(), songs);
+                currentSearchResults = songService.search(newText);
+//                songListService.setCurrentSongsList(songs);
+                songsListAdapter = new SongsListAdapter(getActivity(), currentSearchResults);
                 mListView.setAdapter(songsListAdapter);
                 songsListAdapter.notifyDataSetChanged();
                 return false;
@@ -141,6 +143,6 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
     @Override
     public void onResume(){
         super.onResume();
-        prevSongList = songListService.getAllSongsList();
+        prevSongList = songListService.getCurrentSongsList();
     }
 }

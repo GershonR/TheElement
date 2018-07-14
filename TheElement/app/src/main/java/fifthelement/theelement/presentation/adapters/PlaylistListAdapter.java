@@ -172,9 +172,7 @@ public class PlaylistListAdapter extends BaseAdapter {
                 SongListService songListService = getSongListService();
                 songListService.setCurrentSongsList(playlist.getSongs());
                 songListService.setAutoplayEnabled(true);
-
-                getMusicService().start();
-                getMusicService().playSongAsync();
+                getMusicService().playSongAsync(songListService.getSongAtIndex(0));
                 activity.startNotificationService(null);
             }
         } catch(PersistenceException p) {

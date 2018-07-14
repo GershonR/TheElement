@@ -14,6 +14,7 @@ import android.widget.ListView;
 import android.view.View;
 import android.support.v7.widget.Toolbar;
 import fifthelement.theelement.R;
+import fifthelement.theelement.application.Services;
 import fifthelement.theelement.presentation.activities.MainActivity;
 import fifthelement.theelement.presentation.util.ThemeUtil;
 
@@ -22,6 +23,9 @@ public class SettingFragment extends Fragment {
     private View view;
     private ListView mainListView;
     private ArrayAdapter<String> listAdapter;
+
+    public final static int THEME_HIGH_VAL = 2;
+    public final static int DELETE_SONGS = 3;
 
     /**
      * Called when the activity is first created.
@@ -37,7 +41,7 @@ public class SettingFragment extends Fragment {
 
 
         // Create and populate a List of for the library.
-        String[] options = new String[]{"Theme1", "Theme2", "Theme3", "Delete Songs", "Hide album art notification"};
+        String[] options = new String[]{"Theme1", "Theme2", "Theme3", "Delete Songs"};
         ArrayList<String> libraryList = new ArrayList<String>();
         libraryList.addAll(Arrays.asList(options));
 
@@ -46,8 +50,12 @@ public class SettingFragment extends Fragment {
         mainListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                ThemeUtil.changeToTheme(getActivity(), position);
-                System.out.println("Called: " + position);
+                if(position <= THEME_HIGH_VAL) {
+                    ThemeUtil.changeToTheme(getActivity(), position);
+                    System.out.println("Called: " + position);
+                } else if(position == DELETE_SONGS){
+                    Services.getSongService().clearAllSongs();
+                }
             }
         });
 

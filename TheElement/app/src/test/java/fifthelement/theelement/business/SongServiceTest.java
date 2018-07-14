@@ -7,6 +7,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -15,12 +16,15 @@ import fifthelement.theelement.business.exceptions.SongAlreadyExistsException;
 import fifthelement.theelement.objects.Album;
 import fifthelement.theelement.objects.Author;
 import fifthelement.theelement.objects.Song;
+import fifthelement.theelement.persistence.SongPersistence;
 import fifthelement.theelement.persistence.stubs.AlbumPersistenceStub;
 import fifthelement.theelement.persistence.stubs.AuthorPersistenceStub;
 import fifthelement.theelement.persistence.stubs.PlaylistPersistenceStub;
 import fifthelement.theelement.persistence.stubs.SongPersistenceStub;
 
 import static org.junit.Assert.fail;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 @RunWith(JUnit4.class)
 public class SongServiceTest {
@@ -246,5 +250,33 @@ public class SongServiceTest {
         searchResults = classUnderTest.search(regex);
 
         Assert.assertTrue("Invalid Regex single special character", searchResults.size()==0);
+    }
+
+    @Test
+    public void clearAllSongsTest(){
+        //Recreate classUnder test but with a mock SongPersistenceStub
+        SongPersistence songPersistenceMock = mock(SongPersistenceStub.class);
+        classUnderTest = new SongService(songPersistenceMock, new AlbumPersistenceStub(), new AuthorPersistenceStub(), new PlaylistPersistenceStub());
+        classUnderTest.getSongs().clear();
+        this.songsList = classUnderTest.getSongs();
+
+        //Re add songs to the song list in stub mock
+        Song[] testSongs = new Song[5];
+        testSongs[0] = new Song( "Pristine", "data/song1");
+        testSongs[1] = new Song( "This is America", "data/song2");
+        testSongs[2] = new Song( "Nice For What", "data/song3");
+        testSongs[3] = new Song( "Geyser", "data/song4");
+        testSongs[4] = new Song( "Purity", "data/song5");
+        for(Song song : testSongs){
+            songsList.add(song);
+        }
+
+        //Call the test
+        classUnderTest.clearAllSongs();
+
+        //Verify that all the testSongs were deleted
+        for(Song song : testSongs){
+            verify(songPersistenceMock).deleteSong(song);
+        }
     }
 }

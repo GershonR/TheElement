@@ -216,4 +216,12 @@ public class SongService {
             result = true;
         return result;
     }
+
+    public void clearAllSongs(){
+        List<Song> allSongs = songPersistence.getAllSongs();
+
+        for(Song song : allSongs){
+            songPersistence.deleteSong(song);
+        }
+    }
 }

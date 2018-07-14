@@ -60,9 +60,6 @@ public class DrawerService {
             case R.id.search_view_fragment:
                 fragmentClass = SearchFragment.class;
                 break;
-            case R.id.player_statistics:
-                fragmentClass = PlayerStatsFragment.class;
-                break;
             default:
                 fragmentClass = SettingFragment.class;
                 break;

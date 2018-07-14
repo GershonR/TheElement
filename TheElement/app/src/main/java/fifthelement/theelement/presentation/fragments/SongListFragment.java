@@ -72,20 +72,21 @@ public class SongListFragment extends Fragment {
     }
 
     private void refreshAdapter() {
-        List<Song> songs = songListService.getAllSongsList();
+        List<Song> songs = songService.getSongs();
+        songListService.sortSongs(songs);
         songListAdapter = new SongsListAdapter(getActivity(), songs);
         listView.setAdapter(songListAdapter);
     }
 
-    private void sortSongs() {
-        List<Song> songs = songListService.getAllSongsList();
-        songListService.sortSongs(songs);
-        songListService.setCurrentSongsList(songs);
-        refreshAdapter();
-    }
+//    private void sortSongs() {
+//        List<Song> songs = songService.getSongs();
+//        songListService.sortSongs(songs);
+//        songListService.setCurrentSongsList(songs);
+//        refreshAdapter();
+//    }
 
     private void playSong(ListView listView) {
-        List<Song> songs = songListService.getAllSongsList();
+        List<Song> songs = songService.getSongs();
         if(songs != null) {
             final SongsListAdapter songListAdapter = new SongsListAdapter(getActivity(), songs);
             listView.setAdapter(songListAdapter);
@@ -94,6 +95,7 @@ public class SongListFragment extends Fragment {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view,
                                         int position, long id) {
+                    songListService.setCurrentSongsList(songService.getSongs());
                     boolean result = musicService.playSongAsync(songListService.getSongAtIndex(position));
                     if (result) {
                         songListService.setShuffleEnabled(false);
@@ -107,11 +109,9 @@ public class SongListFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        if(songListAdapter != null) {
-            songListService.setCurrentSongsList(songService.getSongs());
-            sortSongs();
-            songListService.updateShuffledList();
-        }
+//        if(songListAdapter != null) {
+//            sortSongs();
+//        }
     }
 
 }

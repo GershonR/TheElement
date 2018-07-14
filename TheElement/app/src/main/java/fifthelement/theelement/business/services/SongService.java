@@ -221,8 +221,8 @@ public class SongService {
     public Song getMostPlayedSong() {
         List<Song> songList = getSortedSongListByMostPlayed();
         Song song = null;
-        if( songList != null ) {
-            song =  this.getSortedSongListByMostPlayed().get(0);
+        if( songList != null && songList.size() > 0 ) {
+            song = songList.get(0);
         }
         return song;
     }

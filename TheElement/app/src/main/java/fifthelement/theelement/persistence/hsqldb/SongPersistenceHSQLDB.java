@@ -94,13 +94,41 @@ public class SongPersistenceHSQLDB implements SongPersistence {
     }
 
     @Override
-    public List<Song> getSongsByAlbumUUID(final UUID uuid) {
+    public List<Song> getSongsByAuthorUUID(final UUID uuid) {
 
         final List<Song> songs = new ArrayList<>();
 
         try
         {
             final PreparedStatement st = c.prepareStatement("SELECT * FROM songs WHERE albumUUID = ?");
+            st.setString(1, uuid.toString());
+            final ResultSet rs = st.executeQuery();
+            while (rs.next())
+            {
+                final Song song = fromResultSet(rs);
+                songs.add(song);
+            }
+
+            rs.close();
+            st.close();
+
+            return songs;
+        }
+        catch (final SQLException e)
+        {
+            throw new PersistenceException(e);
+        }
+
+    }
+
+    @Override
+    public List<Song> getSongsByAlbumUUID(final UUID uuid) {
+
+        final List<Song> songs = new ArrayList<>();
+
+        try
+        {
+            final PreparedStatement st = c.prepareStatement("SELECT * FROM songs WHERE authorUUID = ?");
             st.setString(1, uuid.toString());
             final ResultSet rs = st.executeQuery();
             while (rs.next())

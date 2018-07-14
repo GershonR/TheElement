@@ -115,6 +115,13 @@ public class SongPersistenceStub implements SongPersistence {
     }
 
     @Override
+    public List<Song> getSongsByAuthorUUID(UUID uuid) throws IllegalArgumentException {
+        if(uuid == null)
+            throw new IllegalArgumentException("Cannot get song with a null author UUID");
+        return null;
+    }
+
+    @Override
     public List<Song> getSongsByAlbumUUID(UUID uuid) throws IllegalArgumentException {
         if(uuid == null)
             throw new IllegalArgumentException("Cannot get song with a null album UUID");

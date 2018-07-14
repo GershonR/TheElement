@@ -14,6 +14,8 @@ public interface SongPersistence {
 
     List<Song> getSongsByAlbumUUID(UUID ID) throws PersistenceException, IllegalArgumentException; // get a song by UUID
 
+    List<Song> getSongsByAuthorUUID(UUID ID) throws PersistenceException, IllegalArgumentException; // get a song by UUID
+
     // using boolean since its a stub. would make changes when implementing db anyway
     boolean storeSong(Song song) throws PersistenceException, IllegalArgumentException; // checks & ignores duplicates
 

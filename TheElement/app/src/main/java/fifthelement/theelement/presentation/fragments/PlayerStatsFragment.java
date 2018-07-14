@@ -47,14 +47,21 @@ public class PlayerStatsFragment extends Fragment {
     }
 
     private void refresh(View view) {
+        TextView totalSongsOwned= (TextView) view.findViewById(R.id.total_songs_owned);
         TextView mostPlayedSong = (TextView) view.findViewById(R.id.most_played_song);
         TextView mostPlayedAlbum = (TextView) view.findViewById(R.id.most_played_album);
         TextView mostPlayedAuthor = (TextView) view.findViewById(R.id.most_played_author);
         TextView totalSongPlays = (TextView) view.findViewById(R.id.total_song_plays);
 
+        int numOwnedSongs = songService.getSongs().size();
         Song song = songService.getMostPlayedSong();
         Album album = albumService.getMostPlayedAlbum();
         Author author = authorService.getMostPlayedAuthor();
+
+        if( numOwnedSongs != -1 ) {
+            String totalOwnedSongsString = String.format(Locale.getDefault(), "%d Songs", numOwnedSongs);
+            totalSongsOwned.setText(totalOwnedSongsString);
+        }
 
         if( song != null && song.getNumPlayed() != 0 ) {
             String mostPlayedSongString = String.format(Locale.getDefault(), "%s (%d plays)", song.getName(), song.getNumPlayed());

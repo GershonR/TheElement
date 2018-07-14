@@ -264,7 +264,9 @@ public class MainActivity extends AppCompatActivity {
         builderSingle.setAdapter(compactSongsListAdapter, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                musicService.playSongAsync(currentPlaylist.getSongs().get(which));
+                songListService.setCurrentSongsList(currentPlaylist.getSongs());
+                songListService.setAutoplayEnabled(true);
+                musicService.playSongAsync(songListService.getSongAtIndex(which));
                 startNotificationService(null);
             }
         });

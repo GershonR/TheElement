@@ -14,7 +14,10 @@ import android.widget.ListView;
 import android.view.View;
 import android.support.v7.widget.Toolbar;
 import fifthelement.theelement.R;
+import fifthelement.theelement.application.Helpers;
 import fifthelement.theelement.application.Services;
+import fifthelement.theelement.business.services.SongListService;
+import fifthelement.theelement.business.services.SongService;
 import fifthelement.theelement.presentation.activities.MainActivity;
 import fifthelement.theelement.presentation.util.ThemeUtil;
 
@@ -54,7 +57,13 @@ public class SettingFragment extends Fragment {
                     ThemeUtil.changeToTheme(getActivity(), position);
                     System.out.println("Called: " + position);
                 } else if(position == DELETE_SONGS){
-                    Services.getSongService().clearAllSongs();
+                    SongService songService = Services.getSongService();
+                    SongListService songListService = Services.getSongListService();
+                    songService.clearAllSongs();
+                    songListService.setCurrentSongsList(songService.getSongs());
+                    songListService.setAllSongsList(songService.getSongs());
+                    Services.getMusicService().reset();
+                    Helpers.getToastHelper((getActivity()).getApplicationContext()).sendToast("Deleted all songs");
                 }
             }
         });

@@ -110,29 +110,32 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
     // This function will attempt to set the media player up asynchronously and play the media.
     public boolean playSongAsync(Song song) {
         reset();
-        Uri uri = Uri.parse(song.getPath());
-        try {
-            player.setDataSource(getApplication(), uri);
-            player.prepareAsync();
-            currentSongPlaying = song;
-        } catch(Exception e) {
-            Helpers.getToastHelper(getApplicationContext()).sendToast("Invalid Song!", "RED");
-            Log.e(LOG_TAG, e.getMessage());
-            return false;
-        }
-        playerPrepared = false;
-
-        player.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-
-            @Override
-            public void onPrepared(MediaPlayer player) {
-                playerPrepared = true;
-                start();
-                Helpers.getToastHelper(getApplicationContext()).sendToast("Now Playing: " + currentSongPlaying.getName());
+        if(song != null) {
+            Uri uri = Uri.parse(song.getPath());
+            try {
+                player.setDataSource(getApplication(), uri);
+                player.prepareAsync();
+                currentSongPlaying = song;
+            } catch (Exception e) {
+                Helpers.getToastHelper(getApplicationContext()).sendToast("Invalid Song!", "RED");
+                Log.e(LOG_TAG, e.getMessage());
+                return false;
             }
+            playerPrepared = false;
 
-        });
-        return true;
+            player.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+
+                @Override
+                public void onPrepared(MediaPlayer player) {
+                    playerPrepared = true;
+                    start();
+                    Helpers.getToastHelper(getApplicationContext()).sendToast("Now Playing: " + currentSongPlaying.getName());
+                }
+
+            });
+            return true;
+        }
+        return false;
     }
 /*
     public boolean playMultipleSongsAsync(Playlist playlist) {

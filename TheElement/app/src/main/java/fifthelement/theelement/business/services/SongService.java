@@ -168,6 +168,24 @@ public class SongService {
             //}
 
             songPersistence.deleteSong(song);
+
+            Album album = song.getAlbum();
+            if( album != null ) {
+                List<Song> songListByAlbum = songPersistence.getSongsByAlbumUUID(album.getUUID());
+                if( songListByAlbum == null || songListByAlbum.size() <= 0 ) {
+                    albumPersistence.deleteAlbum(album.getUUID());
+                }
+            }
+
+            Author author = song.getAuthor();
+            if( author != null ) {
+                List<Song> songListByAlbum = songPersistence.getSongsByAlbumUUID(author.getUUID());
+                if( songListByAlbum == null || songListByAlbum.size() <= 0 ) {
+                    authorPersistence.deleteAuthor(author.getUUID());
+                }
+            }
+
+
             return true;
         }
         return false;

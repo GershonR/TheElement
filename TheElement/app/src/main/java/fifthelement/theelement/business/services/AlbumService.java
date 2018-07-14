@@ -62,7 +62,7 @@ public class AlbumService {
     public Album getMostPlayedAlbum() {
         Album album = null;
         List<Album> albumList = getSortedAlbumListByMostPlayed();
-        if( albumList != null ) {
+        if( albumList != null && albumList.size() > 0 ) {
             album = albumList.get(0);
         }
         return album;

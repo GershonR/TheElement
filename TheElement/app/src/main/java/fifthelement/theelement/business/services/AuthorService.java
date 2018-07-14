@@ -52,7 +52,7 @@ public class AuthorService {
     public Author getMostPlayedAuthor() {
         Author author = null;
         List<Author> authorList = getSortedAuthorListByMostPlayed();
-        if( authorList != null ) {
+        if( authorList != null && authorList.size() > 0 ) {
             author = authorList.get(0);
         }
         return author;

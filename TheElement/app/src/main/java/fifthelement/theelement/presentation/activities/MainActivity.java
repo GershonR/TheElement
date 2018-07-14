@@ -252,7 +252,6 @@ public class MainActivity extends AppCompatActivity {
         AlertDialog.Builder builderSingle = new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.alert_dialog_custom));
         builderSingle.setIcon(R.drawable.ic_song_list);
         builderSingle.setTitle(currentPlaylist.getName()+" songs:");
-        songListService.setCurrentSongsList(currentPlaylist.getSongs());
 
         builderSingle.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
             @Override
@@ -265,6 +264,8 @@ public class MainActivity extends AppCompatActivity {
         builderSingle.setAdapter(compactSongsListAdapter, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                songListService.setCurrentSongsList(currentPlaylist.getSongs());
+                songListService.setAutoplayEnabled(true);
                 musicService.playSongAsync(songListService.getSongAtIndex(which));
                 startNotificationService(null);
             }

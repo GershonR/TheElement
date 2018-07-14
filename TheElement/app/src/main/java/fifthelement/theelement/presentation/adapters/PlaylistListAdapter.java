@@ -146,16 +146,16 @@ public class PlaylistListAdapter extends BaseAdapter {
 
     private boolean validText(String text){
         boolean result = false;
-        String normalChars = "^[a-zA-Z0-9]+$";
+        String normalChars = "^[a-zA-Z0-9 ]+$";
         if (text.matches(normalChars))
             result = true;
         return result;
     }
 
     private void deletePlaylist(Playlist playlist, MainActivity activity) {
-        try { // TODO: Possible code smell?
+        try {
             Helpers.getToastHelper(context).sendToast("Deleted " + playlist.getName());
-            activity.getPlaylistService().deletePlaylist(playlist);
+            activity.deletePlaylist(playlist);
             notifyDataSetChanged();
         } catch(PersistenceException p) {
             Helpers.getToastHelper(context).sendToast("Could not delete " + playlist.getName());
@@ -167,17 +167,16 @@ public class PlaylistListAdapter extends BaseAdapter {
         try {
             if (playlist.getSongs().size() == 0)
                 Helpers.getToastHelper(context).sendToast("No songs in " + playlist.getName());
-            else
+            else{
                 Helpers.getToastHelper(context).sendToast("Playing " + playlist.getName());
+                SongListService songListService = getSongListService();
+                songListService.setCurrentSongsList(playlist.getSongs());
+                songListService.setAutoplayEnabled(true);
 
-            SongListService songListService = getSongListService();
-            songListService.setShuffled(true);
-            songListService.setSongList(playlist.getSongs());
-            songListService.setAutoplayEnabled(true);
-
-            getMusicService().start();
-            getMusicService().playSongAsync();
-
+                getMusicService().start();
+                getMusicService().playSongAsync();
+                activity.startNotificationService(null);
+            }
         } catch(PersistenceException p) {
             Helpers.getToastHelper(context).sendToast("Could not play " + playlist.getName());
             Log.e(LOG_TAG, p.getMessage());

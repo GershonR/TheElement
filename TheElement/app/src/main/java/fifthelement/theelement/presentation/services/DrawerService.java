@@ -2,8 +2,6 @@ package fifthelement.theelement.presentation.services;
 
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -13,10 +11,11 @@ import fifthelement.theelement.R;
 import fifthelement.theelement.application.Helpers;
 import fifthelement.theelement.application.Services;
 import fifthelement.theelement.presentation.fragments.HomeFragment;
-import fifthelement.theelement.presentation.fragments.PlaylistListFragment;
+import fifthelement.theelement.presentation.fragments.SettingFragment;
 import fifthelement.theelement.presentation.fragments.PlayerStatsFragment;
 import fifthelement.theelement.presentation.fragments.SearchFragment;
 import fifthelement.theelement.presentation.fragments.SongListFragment;
+import fifthelement.theelement.presentation.fragments.PlaylistListFragment;
 
 public class DrawerService {
     AppCompatActivity application;
@@ -55,6 +54,7 @@ public class DrawerService {
                 fragmentClass = PlaylistListFragment.class;
                 break;
             case R.id.song_list:
+                Services.getSongListService().setCurrentSongsList(Services.getSongService().getSongs());
                 fragmentClass = SongListFragment.class;
                 break;
             case R.id.search_view_fragment:
@@ -64,7 +64,7 @@ public class DrawerService {
                 fragmentClass = PlayerStatsFragment.class;
                 break;
             default:
-                fragmentClass = HomeFragment.class;
+                fragmentClass = SettingFragment.class;
                 break;
         }
 

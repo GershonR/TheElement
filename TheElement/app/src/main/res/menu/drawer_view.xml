@@ -18,6 +18,10 @@
             android:icon="@drawable/ic_search_black"
             android:title="Search" />
         <item
+            android:id="@+id/nav_manage"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="Settings" />
+        <item
             android:id="@+id/player_statistics"
             android:icon="@drawable/ic_profile"
             android:title="@string/statistics" />

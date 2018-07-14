@@ -69,7 +69,7 @@ public class PlaylistPersistenceTest {
         Assert.assertTrue("testValidStorePlaylist: playlist id != 4",playlist.getUUID().compareTo(playlistUUID) == 0);
     }
 
-    @Test(expected = ArrayStoreException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void testInvalidPlaylistStore() {
         Playlist playlist = new Playlist("Some Playlist");
         playlist.setId(uuidOne);

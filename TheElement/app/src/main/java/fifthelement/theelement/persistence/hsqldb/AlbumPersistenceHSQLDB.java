@@ -68,7 +68,9 @@ public class AlbumPersistenceHSQLDB implements AlbumPersistence {
     }
 
     @Override
-    public Album getAlbumByUUID(UUID uuid) throws PersistenceException{
+    public Album getAlbumByUUID(UUID uuid) throws PersistenceException, IllegalArgumentException {
+        if(uuid == null)
+            throw new IllegalArgumentException("Cannot get album with a null UUID");
         try {
             final PreparedStatement st = c.prepareStatement("SELECT * FROM albums WHERE albumUUID = ?");
             String uuidString = uuid.toString();
@@ -88,7 +90,11 @@ public class AlbumPersistenceHSQLDB implements AlbumPersistence {
     }
 
     @Override
-    public boolean storeAlbum(Album album) throws PersistenceException {
+    public boolean storeAlbum(Album album) throws PersistenceException, IllegalArgumentException {
+        if(album == null)
+            throw new IllegalArgumentException("Cant store an album with null Album");
+//        if(albumExists(album.getUUID()))
+//            throw new IllegalArgumentException("Cant store an album with existing UUID");
         try {
             final PreparedStatement st = c.prepareStatement("INSERT INTO albums VALUES(?, ?, ?, ?)");
             st.setString(1, album.getUUID().toString());
@@ -108,7 +114,9 @@ public class AlbumPersistenceHSQLDB implements AlbumPersistence {
     }
 
     @Override
-    public boolean updateAlbum(Album album) throws PersistenceException {
+    public boolean updateAlbum(Album album) throws PersistenceException, IllegalArgumentException {
+        if(album == null)
+            throw new IllegalArgumentException("Cannot update a null album");
         try {
             final PreparedStatement st = c.prepareStatement("UPDATE albums SET albumName = ?, numPlayed = ? WHERE albumUUID = ? ");
             st.setString(1, album.getName());
@@ -124,8 +132,8 @@ public class AlbumPersistenceHSQLDB implements AlbumPersistence {
 
     @Override
     public boolean deleteAlbum(Album album) throws PersistenceException, IllegalArgumentException {
-        if(album == null)
-            throw new IllegalArgumentException();
+        if (album == null)
+            throw new IllegalArgumentException("Cannot delete album with a null album");
         return deleteAlbum(album.getUUID());
     }
 
@@ -133,7 +141,7 @@ public class AlbumPersistenceHSQLDB implements AlbumPersistence {
     public boolean deleteAlbum(UUID uuid) throws PersistenceException, IllegalArgumentException {
         boolean removed = false;
         if(uuid == null)
-            throw new IllegalArgumentException("Cannot delete with a null UUID");
+            throw new IllegalArgumentException("Cannot delete album with a null UUID");
         try {
             final PreparedStatement st = c.prepareStatement("DELETE FROM albums WHERE albumUUID = ?");
             st.setString(1, uuid.toString());
@@ -148,12 +156,16 @@ public class AlbumPersistenceHSQLDB implements AlbumPersistence {
     }
 
     @Override
-    public boolean albumExists(Album album) throws PersistenceException {
+    public boolean albumExists(Album album) throws PersistenceException, IllegalArgumentException {
+        if(album == null)
+            throw new IllegalArgumentException("Cannot check exists with a null Album");
         return albumExists(album.getUUID());
     }
 
     @Override
-    public boolean albumExists(UUID uuid) throws PersistenceException {
+    public boolean albumExists(UUID uuid) throws PersistenceException, IllegalArgumentException {
+        if(uuid == null)
+            throw new IllegalArgumentException("Cannot check exists with a null UUID");
         Album album = getAlbumByUUID(uuid);
         return album != null;
     }

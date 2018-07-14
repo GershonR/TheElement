@@ -27,6 +27,7 @@ public class SongListServiceTest {
         songsList.add(new Song( "Geyser", "data/song4"));
         songsList.add(new Song( "Purity", "data/song5"));
         classUnderTest = new SongListService(songsList);
+        classUnderTest.setCurrentSongsList(classUnderTest.getAllSongsList());
     }
 
     @Test
@@ -95,16 +96,16 @@ public class SongListServiceTest {
         classUnderTest.shuffle();
 
         Assert.assertTrue("Shuffle not true", classUnderTest.getShuffled());
-        Assert.assertTrue("List size is not 5", classUnderTest.getSongList().size() == 5);
+        Assert.assertTrue("List size is not 5", classUnderTest.getAllSongsList().size() == 5);
     }
 
     @Test
     public void setSongsListValidTest() {
         classUnderTest.setShuffled(true);
-        classUnderTest.setSongList(songsList);
+        classUnderTest.setCurrentSongsList(songsList);
 
 
         Assert.assertTrue("Shuffle not true", classUnderTest.getShuffled());
-        Assert.assertTrue("List size is not 5", classUnderTest.getSongList().size() == 5);
+        Assert.assertTrue("List size is not 5", classUnderTest.getAllSongsList().size() == 5);
     }
 }

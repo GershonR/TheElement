@@ -62,7 +62,7 @@ public class SongPersistenceTest {
         Assert.assertTrue("testValidStoreSong: song id != 4",song.getUUID().compareTo(songUUID) == 0);
     }
 
-    @Test(expected = ArrayStoreException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void testInvalidSongStore() {
         Song song = new Song("Some Song", "");
         song.setUUID(uuidOne);

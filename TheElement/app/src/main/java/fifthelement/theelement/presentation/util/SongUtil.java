@@ -58,4 +58,17 @@ public class SongUtil {
         return bm;
     }
 
+    public static boolean supportedAudioFileExtension(String extension){
+        boolean toReturn = false;
+        final String[] supportedFormats = {"mp3", "mkv", "wav", "ogg", "mid",
+                                           "rtx", "mp4", "m4a", "aac", "3gp",
+                                           "flac", "xmf", "mxmf", "rtttl", "ota",
+                                           "imy"};
+
+        for(String format : supportedFormats){
+            toReturn = toReturn || extension.equals(format);
+        }
+
+        return toReturn;
+    }
 }

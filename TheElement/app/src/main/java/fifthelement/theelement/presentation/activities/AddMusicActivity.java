@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.webkit.MimeTypeMap;
 
 import java.net.URISyntaxException;
 
@@ -21,6 +22,7 @@ import fifthelement.theelement.business.services.SongService;
 import fifthelement.theelement.business.exceptions.SongAlreadyExistsException;
 import fifthelement.theelement.persistence.hsqldb.PersistenceException;
 import fifthelement.theelement.presentation.util.PathUtil;
+import fifthelement.theelement.presentation.util.SongUtil;
 
 
 public class AddMusicActivity extends AppCompatActivity {
@@ -101,13 +103,10 @@ public class AddMusicActivity extends AppCompatActivity {
 
 
     private void setupSong(Uri path) {
-
         String stringPath = path.getPath();
+        String extension = MimeTypeMap.getFileExtensionFromUrl(stringPath);
 
-        boolean result = false;
-        String normalChars = "audio";
-        if (stringPath.contains(normalChars))
-            result = true;
+        boolean result = SongUtil.supportedAudioFileExtension(extension);
 
         if ( result){
             metaRetriver = new MediaMetadataRetriever();

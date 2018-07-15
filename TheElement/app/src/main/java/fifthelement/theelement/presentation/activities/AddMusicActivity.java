@@ -121,7 +121,7 @@ public class AddMusicActivity extends AppCompatActivity {
             type = typeBackup;
 
         // Check if file type is supported
-        boolean result = SongUtil.supportedAudioFileExtension(type);
+        boolean result = SongMetaUtil.supportedAudioFileExtension(type);
         if ( result){
             metaRetriver = new MediaMetadataRetriever();
             metaRetriver.setDataSource(getApplication(), path);

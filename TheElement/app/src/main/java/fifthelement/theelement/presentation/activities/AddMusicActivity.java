@@ -20,6 +20,7 @@ import fifthelement.theelement.business.services.AuthorService;
 import fifthelement.theelement.business.services.SongListService;
 import fifthelement.theelement.business.services.SongService;
 import fifthelement.theelement.business.exceptions.SongAlreadyExistsException;
+import fifthelement.theelement.business.util.SongMetaUtil;
 import fifthelement.theelement.persistence.hsqldb.PersistenceException;
 import fifthelement.theelement.presentation.util.PathUtil;
 import fifthelement.theelement.presentation.util.SongUtil;
@@ -104,11 +105,11 @@ public class AddMusicActivity extends AppCompatActivity {
 
     private void setupSong(Uri path) {
         String stringPath = path.getPath();
-        String extension = MimeTypeMap.getFileExtensionFromUrl(stringPath);
+        String extension = SongMetaUtil.getExtension(stringPath);
 
-        boolean result = SongUtil.supportedAudioFileExtension(extension);
+        boolean result = SongMetaUtil.supportedAudioFileExtension(extension);
 
-        if ( result){
+        if (result){
             metaRetriver = new MediaMetadataRetriever();
             metaRetriver.setDataSource(getApplication(), path);
 

@@ -24,6 +24,7 @@ import fifthelement.theelement.application.Helpers;
 import fifthelement.theelement.application.Services;
 import fifthelement.theelement.business.services.PlaylistService;
 import fifthelement.theelement.business.services.SongListService;
+import fifthelement.theelement.business.util.SongMetaUtil;
 import fifthelement.theelement.objects.Playlist;
 import fifthelement.theelement.persistence.hsqldb.PersistenceException;
 import fifthelement.theelement.presentation.activities.MainActivity;
@@ -125,7 +126,7 @@ public class PlaylistListAdapter extends BaseAdapter {
             public void onClick(DialogInterface dialog, int which) {
                 //take the text and change the name of the playlist
                 String newName = newNameInput.getText().toString();
-                if ( SongUtil.validName(newName)){
+                if ( SongMetaUtil.validName(newName)){
                     playlist.setName(newName);
                     playlistService.updatePlaylist(playlist, newName);
                 }

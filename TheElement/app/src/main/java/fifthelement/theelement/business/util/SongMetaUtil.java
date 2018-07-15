@@ -32,4 +32,12 @@ public class SongMetaUtil {
 
         return toReturn;
     }
+
+    public static boolean validName(String newName){
+        boolean result = false;
+        String normalChars = "^[a-zA-Z0-9 ]+$";
+        if (newName.matches(normalChars))
+            result = true;
+        return result;
+    }
 }

@@ -109,9 +109,7 @@ public class SongListFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-//        if(songListAdapter != null) {
-//            sortSongs();
-//        }
+        refreshAdapter();
     }
 
 }

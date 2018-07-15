@@ -28,17 +28,6 @@ public class SongPersistenceHSQLDB implements SongPersistence {
 
     }
 
-    public void closeConnection() {
-        try {
-            final PreparedStatement st = c.prepareStatement("SHUTDOWN");
-            st.execute();
-            c.close();
-
-        } catch (final SQLException e) {
-            throw new PersistenceException(e);
-        }
-    }
-
     private Song fromResultSet(final ResultSet rs) throws SQLException {
         final UUID songUUID = UUID.fromString(rs.getString("songUUID"));
         final String songName = rs.getString("songName");

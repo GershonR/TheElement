@@ -53,9 +53,6 @@ public class Persistence {
     }
 
     public static synchronized void resetPersistence() {
-        if(songPersistence != null) {
-            songPersistence.closeConnection();
-        }
         songPersistence = null;
         albumPersistence = null;
         authorPersistence = null;

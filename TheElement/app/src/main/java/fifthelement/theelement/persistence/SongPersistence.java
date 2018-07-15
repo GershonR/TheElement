@@ -27,6 +27,4 @@ public interface SongPersistence {
 
     boolean songExists(UUID uuid) throws PersistenceException, IllegalArgumentException; // sees if a song exists by UUID
 
-    void closeConnection();
-
 }

@@ -10,6 +10,10 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.UUID;
 
@@ -21,14 +25,6 @@ import fifthelement.theelement.business.services.SongService;
 import fifthelement.theelement.objects.Album;
 import fifthelement.theelement.objects.Author;
 import fifthelement.theelement.objects.Song;
-import fifthelement.theelement.persistence.AlbumPersistence;
-import fifthelement.theelement.persistence.AuthorPersistence;
-import fifthelement.theelement.persistence.PlaylistPersistence;
-import fifthelement.theelement.persistence.SongPersistence;
-import fifthelement.theelement.persistence.hsqldb.AlbumPersistenceHSQLDB;
-import fifthelement.theelement.persistence.hsqldb.AuthorPersistenceHSQLDB;
-import fifthelement.theelement.persistence.hsqldb.PlaylistPersistenceHSQLDB;
-import fifthelement.theelement.persistence.hsqldb.SongPersistenceHSQLDB;
 import fifthelement.theelement.utils.TestDatabaseUtil;
 
 public class SongServiceIT {
@@ -38,11 +34,7 @@ public class SongServiceIT {
     @Before
     public void setUpTestDB() throws IOException {
         this.tempDB = TestDatabaseUtil.copyDB();
-        SongPersistence sp = new SongPersistenceHSQLDB(Main.getDBPathName());
-        AlbumPersistence alp = new AlbumPersistenceHSQLDB(Main.getDBPathName());
-        AuthorPersistence aup = new AuthorPersistenceHSQLDB(Main.getDBPathName());
-        PlaylistPersistence pp = new PlaylistPersistenceHSQLDB(Main.getDBPathName());
-        songService = new SongService(sp, alp, aup, pp);
+        songService = Services.getSongService();
     }
 
     @Test
@@ -254,16 +246,8 @@ public class SongServiceIT {
 
     @After
     public void tearDownTestDB() {
-        this.tempDB.delete();
+        TestDatabaseUtil.killDB(tempDB);
         Persistence.resetPersistence();
         Services.resetServices();
-        Path script = Paths.get(this.tempDB.getAbsolutePath());
-        Path properties = Paths.get(this.tempDB.getAbsolutePath().replace(".script", ".properties"));
-        try {
-            Files.delete(script);
-            Files.delete(properties);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
     }
 }

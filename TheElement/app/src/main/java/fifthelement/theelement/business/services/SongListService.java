@@ -5,12 +5,13 @@ import java.util.Collections;
 import java.util.List;
 
 import fifthelement.theelement.application.Services;
+import fifthelement.theelement.objects.Playlist;
 import fifthelement.theelement.objects.Song;
 
 public class SongListService {
     private List<Song> allSongsList = null;
     private List<Song> currentSongsList = null;
-    private List<Song> shuffledList = null;
+    //private List<Song> shuffledList = null;
     private boolean shuffled = false;
     private boolean autoplayEnabled = false;
     private int currentSongPlayingIndex = 0;
@@ -46,14 +47,15 @@ public class SongListService {
                 currentSongPlayingIndex = 0;
             }
 
-            if(shuffled) {
-                toReturn = shuffledList.get(currentSongPlayingIndex);
-            } else {
-                toReturn = currentSongsList.get(currentSongPlayingIndex);
-            }
+            toReturn = currentSongsList.get(currentSongPlayingIndex);
         }
 
         return toReturn;
+    }
+
+    public void setPlayerCurrentSongs(Playlist playlist){
+        setCurrentSongsList(playlist.getSongs());
+        setAutoplayEnabled(true);
     }
 
     // Skips to the previous song in the list
@@ -66,11 +68,7 @@ public class SongListService {
                 currentSongPlayingIndex = currentSongsList.size() - 1;
             }
 
-            if(shuffled) {
-                toReturn = shuffledList.get(currentSongPlayingIndex);
-            } else {
-                toReturn = currentSongsList.get(currentSongPlayingIndex);
-            }
+            toReturn = currentSongsList.get(currentSongPlayingIndex);
         }
 
         return toReturn;
@@ -93,9 +91,9 @@ public class SongListService {
     }
 
     public void updateShuffledList() {
-        shuffledList = new ArrayList<>();
-        shuffledList.addAll(currentSongsList);
-        Collections.shuffle(shuffledList);
+        //shuffledList = new ArrayList<>();
+        //shuffledList.addAll(currentSongsList);
+        Collections.shuffle(currentSongsList);
     }
 
     public void removeSongFromList(Song song){

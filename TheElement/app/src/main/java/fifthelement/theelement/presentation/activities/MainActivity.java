@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.design.widget.NavigationView;
@@ -48,6 +47,7 @@ import fifthelement.theelement.presentation.services.MusicService;
 import fifthelement.theelement.presentation.services.MusicService.MusicBinder;
 import fifthelement.theelement.presentation.services.NotificationService;
 import fifthelement.theelement.presentation.util.DatabaseUtil;
+import fifthelement.theelement.presentation.util.SongUtil;
 import fifthelement.theelement.presentation.util.ThemeUtil;
 
 
@@ -157,7 +157,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
                 //take the text and change the name of the playlist
                 String newName = newNameInput.getText().toString();
-                if ( validText(newName)){
+                if ( SongUtil.validName(newName)){
                     Playlist newPlaylist = new Playlist(newName);
                     getPlaylistService().insertPlaylist(newPlaylist);
                     Helpers.getToastHelper(getApplicationContext()).sendToast(newName+" created!");
@@ -186,15 +186,7 @@ public class MainActivity extends AppCompatActivity {
         builderSingle.show();
     }
 
-    private boolean validText(String text){
-        boolean result = false;
-        String normalChars = "^[a-zA-Z0-9 ]+$";
-        if (text.matches(normalChars))
-            result = true;
-        return result;
-    }
-
-    public void showDialog(final Song song) {
+    public void addSongsToPlaylist(final Song song) {
         AlertDialog.Builder builderSingle = new AlertDialog.Builder(this);
         builderSingle.setIcon(R.drawable.ic_add);
         builderSingle.setTitle("Select a Playlist:");
@@ -264,8 +256,7 @@ public class MainActivity extends AppCompatActivity {
         builderSingle.setAdapter(compactSongsListAdapter, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                songListService.setCurrentSongsList(currentPlaylist.getSongs());
-                songListService.setAutoplayEnabled(true);
+                songListService.setPlayerCurrentSongs(currentPlaylist);
                 musicService.playSongAsync(songListService.getSongAtIndex(which));
                 startNotificationService(null);
             }

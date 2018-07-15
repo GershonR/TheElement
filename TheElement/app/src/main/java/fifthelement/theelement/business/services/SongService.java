@@ -117,14 +117,14 @@ public class SongService {
         }
 
         Author newAuthor = new Author(author);
-        if(!author.equals("")) { // TODO: Seperate Method For This?
+        if(!author.equals("")) {
             song.setAuthor(newAuthor);
             authorService.insertAuthor(newAuthor);
         }else {
             song.setAuthor(null);
         }
 
-        if(!album.equals("")) { // TODO: Seperate Method For This?
+        if(!album.equals("")) {
             Album newAlbum = new Album(album);
             if(!author.equals(""))
                 newAlbum.setAuthor(newAuthor);
@@ -158,14 +158,6 @@ public class SongService {
         if( song != null ) {
 
             // deletes songs from existing PlayList if it's there
-            // implementation for this hasn't been fully decided. this is a STUB
-            //for( PlayList p : playlistPersistence.getAllPlayLists() ) {
-            //    if( p.contains(song) ) {
-            //        p.removeSong(song);
-            //        playlistPersistence.updatePlayList(p);
-            //    }
-            //}
-
             songPersistence.deleteSong(song);
             return true;
         }

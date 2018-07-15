@@ -14,6 +14,8 @@ import fifthelement.theelement.persistence.stubs.AlbumPersistenceTest;
 import fifthelement.theelement.persistence.stubs.AuthorPersistenceTest;
 import fifthelement.theelement.persistence.stubs.PlaylistPersistenceTest;
 import fifthelement.theelement.persistence.stubs.SongPersistenceTest;
+import fifthelement.theelement.presentation.SongUtilTest;
+import fifthelement.theelement.presentation.util.SongUtil;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
@@ -26,7 +28,7 @@ import fifthelement.theelement.persistence.stubs.SongPersistenceTest;
         AuthorPersistenceTest.class,
         AlbumPersistenceTest.class,
         PlaylistPersistenceTest.class,
-        SongMetaUtilTest.class
+        SongUtilTest.class
 })
 
 public class AllTests {

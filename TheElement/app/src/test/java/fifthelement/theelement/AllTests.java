@@ -8,14 +8,11 @@ import fifthelement.theelement.business.AuthorServiceTest;
 import fifthelement.theelement.business.PlaylistServiceTest;
 import fifthelement.theelement.business.SongListServiceTest;
 import fifthelement.theelement.business.SongServiceTest;
-import fifthelement.theelement.business.services.PlaylistService;
 import fifthelement.theelement.business.util.SongMetaUtilTest;
 import fifthelement.theelement.persistence.stubs.AlbumPersistenceTest;
 import fifthelement.theelement.persistence.stubs.AuthorPersistenceTest;
 import fifthelement.theelement.persistence.stubs.PlaylistPersistenceTest;
 import fifthelement.theelement.persistence.stubs.SongPersistenceTest;
-import fifthelement.theelement.presentation.SongUtilTest;
-import fifthelement.theelement.presentation.util.SongUtil;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
@@ -28,7 +25,7 @@ import fifthelement.theelement.presentation.util.SongUtil;
         AuthorPersistenceTest.class,
         AlbumPersistenceTest.class,
         PlaylistPersistenceTest.class,
-        SongUtilTest.class
+        SongMetaUtilTest.class
 })
 
 public class AllTests {

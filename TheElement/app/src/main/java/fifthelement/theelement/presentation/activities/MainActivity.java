@@ -48,7 +48,6 @@ import fifthelement.theelement.presentation.services.MusicService;
 import fifthelement.theelement.presentation.services.MusicService.MusicBinder;
 import fifthelement.theelement.presentation.services.NotificationService;
 import fifthelement.theelement.presentation.util.DatabaseUtil;
-import fifthelement.theelement.presentation.util.SongUtil;
 import fifthelement.theelement.presentation.util.ThemeUtil;
 
 

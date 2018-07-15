@@ -2,13 +2,13 @@ package fifthelement.theelement.presentation.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.widget.AdapterView;
-import android.widget.SearchView;
-import android.widget.SearchView.OnQueryTextListener;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.SearchView;
+import android.widget.SearchView.OnQueryTextListener;
 
 import java.util.List;
 
@@ -18,8 +18,8 @@ import fifthelement.theelement.business.services.SongListService;
 import fifthelement.theelement.business.services.SongService;
 import fifthelement.theelement.objects.Song;
 import fifthelement.theelement.presentation.activities.MainActivity;
-import fifthelement.theelement.presentation.services.MusicService;
 import fifthelement.theelement.presentation.adapters.SongsListAdapter;
+import fifthelement.theelement.presentation.services.MusicService;
 
 public class SearchFragment extends Fragment implements SearchView.OnQueryTextListener {
     private SearchView mSearchView;

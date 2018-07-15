@@ -28,7 +28,6 @@ import fifthelement.theelement.business.util.SongMetaUtil;
 import fifthelement.theelement.objects.Playlist;
 import fifthelement.theelement.persistence.hsqldb.PersistenceException;
 import fifthelement.theelement.presentation.activities.MainActivity;
-import fifthelement.theelement.presentation.util.SongUtil;
 
 import static fifthelement.theelement.application.Services.getMusicService;
 

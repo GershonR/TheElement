@@ -1,10 +1,6 @@
 package fifthelement.theelement.objects;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
-
-import fifthelement.theelement.application.Services;
 
 public class Song implements Comparable<Song>{
     private UUID uuid;

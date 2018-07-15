@@ -17,15 +17,14 @@ import java.net.URISyntaxException;
 
 import fifthelement.theelement.application.Helpers;
 import fifthelement.theelement.application.Services;
+import fifthelement.theelement.business.exceptions.SongAlreadyExistsException;
 import fifthelement.theelement.business.services.AlbumService;
 import fifthelement.theelement.business.services.AuthorService;
 import fifthelement.theelement.business.services.SongListService;
 import fifthelement.theelement.business.services.SongService;
-import fifthelement.theelement.business.exceptions.SongAlreadyExistsException;
 import fifthelement.theelement.business.util.SongMetaUtil;
 import fifthelement.theelement.persistence.hsqldb.PersistenceException;
 import fifthelement.theelement.presentation.util.PathUtil;
-import fifthelement.theelement.presentation.util.SongUtil;
 
 
 public class AddMusicActivity extends AppCompatActivity {

@@ -1,6 +1,5 @@
 package fifthelement.theelement.business.services;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -11,7 +10,6 @@ import fifthelement.theelement.objects.Song;
 public class SongListService {
     private List<Song> allSongsList = null;
     private List<Song> currentSongsList = null;
-    //private List<Song> shuffledList = null;
     private boolean shuffled = false;
     private boolean autoplayEnabled = false;
     private int currentSongPlayingIndex = 0;
@@ -91,8 +89,6 @@ public class SongListService {
     }
 
     public void updateShuffledList() {
-        //shuffledList = new ArrayList<>();
-        //shuffledList.addAll(currentSongsList);
         Collections.shuffle(currentSongsList);
     }
 

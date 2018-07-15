@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.UUID;
 
 import fifthelement.theelement.objects.Author;
-import fifthelement.theelement.objects.Playlist;
 import fifthelement.theelement.persistence.AuthorPersistence;
 
 public class AuthorPersistenceHSQLDB implements AuthorPersistence {

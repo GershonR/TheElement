@@ -1,20 +1,18 @@
 package fifthelement.theelement.presentation.fragments;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.view.View;
-import android.support.v7.widget.Toolbar;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import fifthelement.theelement.R;
-import fifthelement.theelement.presentation.activities.MainActivity;
 import fifthelement.theelement.presentation.util.ThemeUtil;
 
 public class SettingFragment extends Fragment {

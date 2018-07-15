@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
+import fifthelement.theelement.application.Main;
 import fifthelement.theelement.application.Persistence;
 import fifthelement.theelement.business.exceptions.SongAlreadyExistsException;
 import fifthelement.theelement.business.services.SongService;
@@ -20,6 +21,10 @@ import fifthelement.theelement.persistence.AlbumPersistence;
 import fifthelement.theelement.persistence.AuthorPersistence;
 import fifthelement.theelement.persistence.PlaylistPersistence;
 import fifthelement.theelement.persistence.SongPersistence;
+import fifthelement.theelement.persistence.hsqldb.AlbumPersistenceHSQLDB;
+import fifthelement.theelement.persistence.hsqldb.AuthorPersistenceHSQLDB;
+import fifthelement.theelement.persistence.hsqldb.PlaylistPersistenceHSQLDB;
+import fifthelement.theelement.persistence.hsqldb.SongPersistenceHSQLDB;
 import fifthelement.theelement.utils.TestDatabaseUtil;
 
 public class SongServiceIT {
@@ -205,6 +210,46 @@ public class SongServiceIT {
         boolean result = songService.deleteSong(song);
         Assert.assertFalse("deleteSongNotExistTest: result != false", result);
         Assert.assertTrue("deleteSongNotExistTest: album size != 5", songService.getSongs().size() == 5);
+    }
+
+    @Test
+    public void searchTest_normalQuery() {
+        List<Song> searchResults;
+        String regex = "i";
+
+        searchResults = songService.search(regex);
+
+        Assert.assertTrue("Normal search, should find 4 songs", searchResults.size() == 4);
+    }
+
+    @Test
+    public void searchTest_emptyQuery() {
+        List<Song> searchResults;
+        String regex = "";
+
+        searchResults = songService.search(regex);
+
+        Assert.assertTrue("Empty search, should be 5 | Actual size = "+searchResults.size(), searchResults.size() == 5);
+    }
+
+    @Test
+    public void searchTest_specialCharactersRegex() {
+        List<Song> searchResults;
+        String regex = "[!@#$%&*()_+=|<>?{}\\[\\]~-]";
+
+        searchResults = songService.search(regex);
+
+        Assert.assertTrue("Invalid Regex string,", searchResults.size()==0);
+    }
+
+    @Test
+    public void searchTest_invalidRegex() {
+        List<Song> searchResults;
+        String regex = "[";
+
+        searchResults = songService.search(regex);
+
+        Assert.assertTrue("Invalid Regex single special character", searchResults.size()==0);
     }
 
     @After

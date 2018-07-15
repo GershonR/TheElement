@@ -35,7 +35,11 @@ public class SongServiceIT {
     @Before
     public void setUpTestDB() throws IOException {
         this.tempDB = TestDatabaseUtil.copyDB();
-        songService = Services.getSongService();
+        SongPersistence sp = new SongPersistenceHSQLDB(Main.getDBPathName());
+        AlbumPersistence alp = new AlbumPersistenceHSQLDB(Main.getDBPathName());
+        AuthorPersistence aup = new AuthorPersistenceHSQLDB(Main.getDBPathName());
+        PlaylistPersistence pp = new PlaylistPersistenceHSQLDB(Main.getDBPathName());
+        songService = new SongService(sp, alp, aup, pp);
     }
 
     @Test

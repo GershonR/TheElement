@@ -7,6 +7,9 @@ import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.UUID;
 
@@ -248,5 +251,15 @@ public class SongServiceIT {
     @After
     public void tearDownTestDB() {
         this.tempDB.delete();
+        Persistence.resetPersistence();
+        Services.resetServices();
+        Path script = Paths.get(this.tempDB.getAbsolutePath());
+        Path properties = Paths.get(this.tempDB.getAbsolutePath().replace(".script", ".properties"));
+        try {
+            Files.delete(script);
+            Files.delete(properties);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 }

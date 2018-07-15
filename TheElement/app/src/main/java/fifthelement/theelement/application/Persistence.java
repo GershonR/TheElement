@@ -51,4 +51,14 @@ public class Persistence {
 
         return playlistPersistence;
     }
+
+    public static synchronized void resetPersistence() {
+        if(songPersistence != null) {
+            songPersistence.closeConnection();
+        }
+        songPersistence = null;
+        albumPersistence = null;
+        authorPersistence = null;
+        playlistPersistence = null;
+    }
 }

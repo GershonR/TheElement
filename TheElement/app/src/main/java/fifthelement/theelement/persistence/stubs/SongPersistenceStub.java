@@ -119,4 +119,7 @@ public class SongPersistenceStub implements SongPersistence {
             throw new IllegalArgumentException("Cannot get song with a null album UUID");
         return null;
     }
+
+    @Override
+    public void closeConnection(){}
 }

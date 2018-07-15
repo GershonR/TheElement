@@ -11,7 +11,8 @@ public class TestDatabaseUtil {
     private static final File DB_SRC = new File("src/main/assets/db/Element.script");
 
     public static File copyDB() throws IOException {
-        final File target = File.createTempFile("temp-db", ".script");
+        File directory = new File("../");
+        final File target = File.createTempFile("temp-db", ".script", directory);
         Files.copy(DB_SRC, target);
         Main.setDBPathName(target.getAbsolutePath().replace(".script", ""));
         return target;

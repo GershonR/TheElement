@@ -9,7 +9,7 @@ import java.nio.channels.FileChannel;
 import fifthelement.theelement.application.Main;
 
 public class TestDatabaseUtil {
-    private static final File DB_SRC = new File("src/main/assets/db/Element.script");
+    private static final File DB_SRC = new File("app/src/main/assets/db/Element.script");
 
     public static File copyDB() throws IOException {
         final File target = File.createTempFile("temp-db", ".script");

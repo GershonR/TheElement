@@ -12,6 +12,7 @@ import java.util.UUID;
 
 import fifthelement.theelement.application.Main;
 import fifthelement.theelement.application.Persistence;
+import fifthelement.theelement.application.Services;
 import fifthelement.theelement.business.exceptions.SongAlreadyExistsException;
 import fifthelement.theelement.business.services.SongService;
 import fifthelement.theelement.objects.Album;
@@ -29,27 +30,19 @@ import fifthelement.theelement.utils.TestDatabaseUtil;
 
 public class SongServiceIT {
     private SongService songService;
-    private SongPersistence songPersistence;
-    private AlbumPersistence albumPersistence;
-    private AuthorPersistence authorPersistence;
-    private PlaylistPersistence playlistPersistence;
     private File tempDB;
 
     @Before
     public void setUpTestDB() throws IOException {
         this.tempDB = TestDatabaseUtil.copyDB();
-        songPersistence = Persistence.getSongPersistence();
-        albumPersistence = Persistence.getAlbumPersistence();
-        authorPersistence = Persistence.getAuthorPersistence();
-        playlistPersistence = Persistence.getPlaylistPersistence();
-        songService = new SongService(songPersistence, albumPersistence, authorPersistence, playlistPersistence);
+        songService = Services.getSongService();
     }
 
     @Test
     public void getAllSongsTest() {
-        List<Song> albums = songService.getSongs(); // Stub creates 3
+        List<Song> albums = songService.getSongs(); // Should start with 4 songs in db
 
-        Assert.assertTrue("getAllSongsTest: song size != 5", albums.size() == 5);
+        Assert.assertTrue("getAllSongsTest: song size != 4", albums.size() == 4);
     }
 
     @Test
@@ -57,7 +50,7 @@ public class SongServiceIT {
         Song song = new Song("Some song", "Path");
         songService.insertSong(song);
 
-        Assert.assertTrue("insertSongValidTest: song size != 6", songService.getSongs().size() == 6);
+        Assert.assertTrue("insertSongValidTest: song size != 5", songService.getSongs().size() == 5);
     }
 
 
@@ -91,7 +84,7 @@ public class SongServiceIT {
 
         Assert.assertTrue("updateSongValidTest: insertReturn != true", insertReturn);
         Assert.assertTrue("updateSongValidTest: updateReturn != true", updateReturn);
-        Assert.assertTrue("updateSongValidTest: album size != 6", songService.getSongs().size() == 6);
+        Assert.assertTrue("updateSongValidTest: album size != 5", songService.getSongs().size() == 5);
 
         Song song = songService.getSongByUUID(UUID.fromString("493410b3-dd0b-4b78-97bf-289f50f6e74f"));
         Assert.assertTrue("updateSongValidTest: song name != Changed Song Name", "Other song".equals(song.getName()));
@@ -150,7 +143,7 @@ public class SongServiceIT {
         Song song = new Song("Gold", "Path");
         boolean result = songService.updateSong(song);
         Assert.assertFalse("updateSongNotExistTest: result != false", result);
-        Assert.assertTrue("updateSongNotExistTest: song size != 5", songService.getSongs().size() == 5);
+        Assert.assertTrue("updateSongNotExistTest: song size != 4", songService.getSongs().size() == 4);
 
     }
 
@@ -163,7 +156,7 @@ public class SongServiceIT {
         String genre = "Test Genere";
 
         songService.createSong(path, name, artist, album, genre);
-        Assert.assertTrue("updateSongNotExistTest: song size != 6", songService.getSongs().size() == 6);
+        Assert.assertTrue("updateSongNotExistTest: song size != 5", songService.getSongs().size() == 5);
 
     }
 
@@ -176,7 +169,7 @@ public class SongServiceIT {
         String genre = null;
 
         songService.createSong(path, name, artist, album, genre);
-        Assert.assertTrue("updateSongNotExistTest: song size != 6", songService.getSongs().size() == 5);
+        Assert.assertTrue("updateSongNotExistTest: song size != 5", songService.getSongs().size() == 5);
 
     }
 
@@ -188,11 +181,11 @@ public class SongServiceIT {
         boolean insertReturn = songService.insertSong(songOne);
 
         Assert.assertTrue("deleteSongValidTest: insertReturn != true", insertReturn);
-        Assert.assertTrue("deleteSongValidTest: song size != 6", songService.getSongs().size() == 6);
+        Assert.assertTrue("deleteSongValidTest: song size != 5", songService.getSongs().size() == 5);
 
         boolean deleteReturn = songService.deleteSong(songOne);
         Assert.assertTrue("deleteSongValidTest: deleteReturn != true", deleteReturn);
-        Assert.assertTrue("deleteSongValidTest: song size != 5", songService.getSongs().size() == 5);
+        Assert.assertTrue("deleteSongValidTest: song size != 4", songService.getSongs().size() == 4);
 
         Song deletedSong = songService.getSongByUUID(songUUID);
         Assert.assertNull("deleteSongValidTest: deletedSong != null", deletedSong);
@@ -209,7 +202,7 @@ public class SongServiceIT {
         Song song = new Song("Gold", "Path");
         boolean result = songService.deleteSong(song);
         Assert.assertFalse("deleteSongNotExistTest: result != false", result);
-        Assert.assertTrue("deleteSongNotExistTest: album size != 5", songService.getSongs().size() == 5);
+        Assert.assertTrue("deleteSongNotExistTest: album size != 4", songService.getSongs().size() == 4);
     }
 
     @Test
@@ -219,7 +212,7 @@ public class SongServiceIT {
 
         searchResults = songService.search(regex);
 
-        Assert.assertTrue("Normal search, should find 4 songs", searchResults.size() == 4);
+        Assert.assertTrue("Normal search, should find 3 songs", searchResults.size() == 3);
     }
 
     @Test
@@ -229,7 +222,7 @@ public class SongServiceIT {
 
         searchResults = songService.search(regex);
 
-        Assert.assertTrue("Empty search, should be 5 | Actual size = "+searchResults.size(), searchResults.size() == 5);
+        Assert.assertTrue("Empty search, should be 4 | Actual size = "+searchResults.size(), searchResults.size() == 4);
     }
 
     @Test

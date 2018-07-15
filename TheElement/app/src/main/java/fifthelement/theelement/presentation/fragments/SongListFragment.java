@@ -95,7 +95,9 @@ public class SongListFragment extends Fragment {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view,
                                         int position, long id) {
-                    songListService.setCurrentSongsList(songService.getSongs());
+                    List<Song> songs = songService.getSongs();
+                    songListService.sortSongs(songs);
+                    songListService.setCurrentSongsList(songs);
                     boolean result = musicService.playSongAsync(songListService.getSongAtIndex(position));
                     if (result) {
                         songListService.setShuffleEnabled(false);

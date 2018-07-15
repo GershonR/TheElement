@@ -8,7 +8,7 @@ import java.io.IOException;
 import fifthelement.theelement.application.Main;
 
 public class TestDatabaseUtil {
-    private static final File DB_SRC = new File("src/main/assets/db/Element.script");
+    private static final File DB_SRC = new File("app/src/main/assets/db/Element.script");
 
     public static File copyDB() throws IOException {
         File directory = new File("../");

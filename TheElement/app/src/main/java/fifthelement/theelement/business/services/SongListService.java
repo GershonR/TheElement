@@ -39,7 +39,7 @@ public class SongListService {
     public Song skipToNextSong() {
         Song toReturn = null;
 
-        if(currentSongsList != null) {
+        if(currentSongsList != null && currentSongsList.size() > 0) {
             currentSongPlayingIndex++;
             if (currentSongPlayingIndex > currentSongsList.size() - 1) {
                 currentSongPlayingIndex = 0;
@@ -60,7 +60,7 @@ public class SongListService {
     public Song goToPrevSong() {
         Song toReturn = null;
 
-        if(currentSongsList != null) {
+        if(currentSongsList != null && currentSongsList.size() > 0) {
             currentSongPlayingIndex--;
             if (currentSongPlayingIndex < 0) {
                 currentSongPlayingIndex = currentSongsList.size() - 1;

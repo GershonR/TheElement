@@ -14,12 +14,15 @@ import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import fifthelement.theelement.R;
+import fifthelement.theelement.objects.Author;
+import fifthelement.theelement.objects.Song;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
@@ -83,6 +86,19 @@ public class DeleteSongTest {
         Assert.assertTrue("Song Size Is Not 3", mActivityTestRule.getActivity().getSongService().getSongs().size() == 3);
         SystemClock.sleep(500);
 
+    }
+
+    @After
+    public void restore() {
+        Song song = new Song("Adventure of a Lifetime", "android.resource://fifthelement.theelement/raw/coldplay_adventure_of_a_lifetime");
+        song.setAuthor(new Author("Coldplay"));
+        song.setGenre("Pop");
+        song.setRating(3.5);
+        try {
+            mActivityTestRule.getActivity().getSongService().insertSong(song);
+        } catch(Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     private <T> Matcher<T> first(final Matcher<T> matcher) {

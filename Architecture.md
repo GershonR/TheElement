@@ -61,10 +61,10 @@ The Business.Service package contains the Java classes that manage Persistence s
 
 ### Objects
 The Objects package  stores the data needed by the three tiers. 
--Album.java
--Author.java
--PlayList.java
--Song.java
+- Album.java
+- Author.java
+- PlayList.java
+- Song.java
 
 ### Persistence
 The persistence package is where data would be stored. It contains the stub package and ultimately the database of the application. The stub package is for storage and retrieval of data needed for the application and closely simulates how a database would behave. The stub store the data as a list implemented as an arrayList.

@@ -15,7 +15,7 @@ import fifthelement.theelement.presentation.activities.SettingsTest;
         MusicLibraryTests.class,
         PlaylistTests.class,
         PlayMusicTests.class,
-        SettingsTest.class
+        SettingsTest.class,
         PlayerStatsTest.class
 })
 public class AllAcceptanceTests {

@@ -254,7 +254,9 @@ public class SongService {
         List<Song> allSongs = songPersistence.getAllSongs();
 
         for(Song song : allSongs){
-            songPersistence.deleteSong(song);
+//            songPersistence.deleteSong(song);
+            // checks if Authors and Albums are empty
+            this.deleteSong(song);
         }
     }
 

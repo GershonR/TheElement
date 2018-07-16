@@ -25,7 +25,7 @@ public class SongListService {
     public void setAllSongsList(List<Song> newList){
         allSongsList = newList;
     }
-    //Method to set the current list of currentSongsList to play currentSongsList from
+
     public void setCurrentSongsList(List<Song> newList){
         currentSongsList = newList;
     }
@@ -84,7 +84,6 @@ public class SongListService {
     }
 
     public void shuffle() {
-        // shuffling is only available for all songs at the moment
         setCurrentSongsList(getAllSongsList());
         updateShuffledList();
         shuffled = true;
@@ -103,8 +102,6 @@ public class SongListService {
                     removed = true;
                 }
             }
-            System.out.println("Removed Song " + song.getName());
-            System.out.println(currentSongsList.size());
         }
     }
 

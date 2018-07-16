@@ -54,7 +54,6 @@ import fifthelement.theelement.presentation.util.ThemeUtil;
 public class MainActivity extends AppCompatActivity {
     private DrawerLayout mDrawer;
     private Toolbar toolbar;
-    private NavigationView nvDrawer;
     private SongService songService;
     private SongListService songListService;
     private MusicService musicService;
@@ -69,7 +68,6 @@ public class MainActivity extends AppCompatActivity {
     public MusicService getMusicService(){
         return musicService;
     }
-    public SongListService getSongListService() { return songListService; }
     public PlaylistService getPlaylistService(){
         return playlistService;
     }

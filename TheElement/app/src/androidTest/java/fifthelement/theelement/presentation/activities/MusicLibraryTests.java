@@ -127,6 +127,71 @@ public class MusicLibraryTests {
     }
 
     @Test
+    public void organizeMusicCollectionTest() {
+        ViewInteraction appCompatImageButton = onView(
+                allOf(withContentDescription("Navigate up"),
+                        childAtPosition(
+                                allOf(withId(R.id.toolbar),
+                                        childAtPosition(
+                                                withClassName(is("android.widget.LinearLayout")),
+                                                0)),
+                                1),
+                        isDisplayed()));
+        appCompatImageButton.perform(click());
+
+        ViewInteraction navigationMenuItemView = onView(
+                allOf(childAtPosition(
+                        allOf(withId(R.id.design_navigation_view),
+                                childAtPosition(
+                                        withId(R.id.nvView),
+                                        0)),
+                        2),
+                        isDisplayed()));
+        navigationMenuItemView.perform(click());
+
+        ViewInteraction textView = onView(
+                allOf(withId(R.id.primary_string), withText("Adventure of a Lifetime"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(R.id.song_list_view),
+                                        0),
+                                0),
+                        isDisplayed()));
+        textView.check(matches(withText("Adventure of a Lifetime")));
+
+        ViewInteraction textView2 = onView(
+                allOf(withId(R.id.primary_string), withText("Classical Music"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(R.id.song_list_view),
+                                        1),
+                                0),
+                        isDisplayed()));
+        textView2.check(matches(withText("Classical Music")));
+
+        ViewInteraction textView3 = onView(
+                allOf(withId(R.id.primary_string), withText("Hall of Fame"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(R.id.song_list_view),
+                                        2),
+                                0),
+                        isDisplayed()));
+        textView3.check(matches(withText("Hall of Fame")));
+
+        ViewInteraction textView4 = onView(
+                allOf(withId(R.id.primary_string), withText("This Is America"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(R.id.song_list_view),
+                                        3),
+                                0),
+                        isDisplayed()));
+        textView4.check(matches(withText("This Is America")));
+
+    }
+
+    @Test
     public void deleteSongTest() {
         Assert.assertTrue("Song Service Cannot Be Null", mActivityTestRule.getActivity().getSongService() != null);
         ViewInteraction appCompatImageButton = onView(

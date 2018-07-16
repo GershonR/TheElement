@@ -234,6 +234,9 @@ public class PlayMusicTests {
                                         0),
                                 1),
                         isDisplayed()));
+
+        SystemClock.sleep(500);
+
         appCompatButton.perform(click());
 
     }

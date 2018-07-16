@@ -2,7 +2,6 @@ package fifthelement.theelement.objects;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.List;
 import java.util.UUID;
 
 public class Album{

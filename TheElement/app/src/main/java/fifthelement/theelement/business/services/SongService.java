@@ -26,16 +26,12 @@ public class SongService {
     private AlbumPersistence albumPersistence;
     private AuthorPersistence authorPersistence;
     private PlaylistPersistence playlistPersistence;
-    private AuthorService authorService;
-    private AlbumService albumService;
 
     public SongService() {
         songPersistence = Persistence.getSongPersistence();
         albumPersistence = Persistence.getAlbumPersistence();
         authorPersistence = Persistence.getAuthorPersistence();
         playlistPersistence = Persistence.getPlaylistPersistence();
-        authorService = Services.getAuthorService();
-        albumService = Services.getAlbumService();
     }
 
     public SongService(SongPersistence songPersistence, AlbumPersistence albumPersistence, AuthorPersistence authorPersistence, PlaylistPersistence playlistPersistence) {
@@ -43,13 +39,22 @@ public class SongService {
         this.albumPersistence = albumPersistence;
         this.authorPersistence = authorPersistence;
         this.playlistPersistence = playlistPersistence;
-        this.albumService = new AlbumService(albumPersistence, songPersistence);
-        this.authorService = new AuthorService(authorPersistence);
 
     }
 
     public Song getSongByUUID(UUID uuid) {
-        return songPersistence.getSongByUUID(uuid);
+        Song toReturn =  songPersistence.getSongByUUID(uuid);
+        if(toReturn != null) {
+            if (toReturn.getAlbum() != null) {
+                Album albumToFetch = toReturn.getAlbum();
+                toReturn.setAlbum(albumPersistence.getAlbumByUUID(albumToFetch.getUUID()));
+            }
+            if (toReturn.getAuthor() != null) {
+                Author authorToFetch = toReturn.getAuthor();
+                toReturn.setAuthor(authorPersistence.getAuthorByUUID(authorToFetch.getUUID()));
+            }
+        }
+        return toReturn;
     }
 
     public List<Song> getSongs() throws PersistenceException {
@@ -60,7 +65,11 @@ public class SongService {
                 if(song.getAuthor() != null)
                     song.setAuthor(authorPersistence.getAuthorByUUID(song.getAuthor().getUUID()));
                 if(song.getAlbum() != null) {
-                    song.setAlbum(albumPersistence.getAlbumByUUID(song.getAlbum().getUUID()));
+                    Album album = albumPersistence.getAlbumByUUID(song.getAlbum().getUUID());
+                    if(album.getAuthor() != null){
+                        album.setAuthor(authorPersistence.getAuthorByUUID(album.getAuthor().getUUID()));
+                    }
+                    song.setAlbum(album);
                 }
             }
         }
@@ -78,7 +87,6 @@ public class SongService {
         if(songArtist != null) {
             author = new Author(songArtist);
             song.setAuthor(author);
-            authorService.insertAuthor(author);
         }
 
         if(songAlbum != null) {
@@ -88,7 +96,6 @@ public class SongService {
             else
                 album.setAuthor(null);
             song.setAlbum(album);
-            albumService.insertAlbum(album);
         }
 
         if(songGenre != null)
@@ -101,6 +108,23 @@ public class SongService {
             throw new IllegalArgumentException();
         if(pathExists(song.getPath()))
             throw new SongAlreadyExistsException(song.getPath());
+
+        Author author = null;
+        Album album = null;
+        if(song.getAuthor() != null) {
+            author = song.getAuthor();
+            authorPersistence.storeAuthor(author);
+        }
+
+        if(song.getAlbum() != null) {
+            album = song.getAlbum();
+            if(author != null)
+                album.setAuthor(author);
+            else
+                album.setAuthor(null);
+            albumPersistence.storeAlbum(album);
+        }
+
         return songPersistence.storeSong(song);
     }
 
@@ -118,21 +142,21 @@ public class SongService {
         }
 
         Author newAuthor = new Author(author);
-        if(!author.equals("")) { // TODO: Seperate Method For This?
+        if(!author.equals("")) {
             song.setAuthor(newAuthor);
-            authorService.insertAuthor(newAuthor);
+            authorPersistence.storeAuthor(newAuthor);
         }else {
             song.setAuthor(null);
         }
 
-        if(!album.equals("")) { // TODO: Seperate Method For This?
+        if(!album.equals("")) {
             Album newAlbum = new Album(album);
             if(!author.equals(""))
                 newAlbum.setAuthor(newAuthor);
             else
                 newAlbum.setAuthor(null);
             song.setAlbum(newAlbum);
-            albumService.insertAlbum(newAlbum);
+            albumPersistence.storeAlbum(newAlbum);
         } else {
             song.setAlbum(null);
         }
@@ -157,16 +181,6 @@ public class SongService {
         Song song = songPersistence.getSongByUUID(songToRemove.getUUID());
 
         if( song != null ) {
-
-            // deletes songs from existing PlayList if it's there
-            // implementation for this hasn't been fully decided. this is a STUB
-            //for( PlayList p : playlistPersistence.getAllPlayLists() ) {
-            //    if( p.contains(song) ) {
-            //        p.removeSong(song);
-            //        playlistPersistence.updatePlayList(p);
-            //    }
-            //}
-
             songPersistence.deleteSong(song);
 
             Album album = song.getAlbum();
@@ -234,6 +248,14 @@ public class SongService {
         if (matcher.find() == false)
             result = true;
         return result;
+    }
+
+    public void clearAllSongs(){
+        List<Song> allSongs = songPersistence.getAllSongs();
+
+        for(Song song : allSongs){
+            songPersistence.deleteSong(song);
+        }
     }
 
     public Song getMostPlayedSong() {

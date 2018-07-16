@@ -1,8 +1,8 @@
 apply plugin: 'com.android.application'
 
-def versionMajor = 1 // bump for each iteration
-def versionMinor = 17 // bump for each merge
-def versionPatch = 7 // bump for each hotfix
+def versionMajor = 2 // bump for each iteration
+def versionMinor = 2 // bump for each merge
+def versionPatch = 5 // bump for each hotfix
 def versionBuild = 0 // bump for dogfood builds, changes on your local
 
 android {
@@ -34,6 +34,7 @@ dependencies {
     testImplementation "org.mockito:mockito-core:2.8.9"
     testImplementation 'org.powermock:powermock-module-junit4:1.7.0'
     testImplementation 'org.powermock:powermock-api-mockito2:1.7.0RC2'
+    testImplementation group: 'com.google.guava', name: 'guava', version: '25.1-jre'
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.android.support:appcompat-v7:27.1.1'
     implementation 'com.android.support:support-v4:27.1.1'
@@ -42,6 +43,7 @@ dependencies {
     implementation 'com.android.support:design:27.1.1'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test:rules:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     implementation group: 'org.hsqldb', name: 'hsqldb', version: '2.4.1'
     implementation 'com.android.support:cardview-v7:27.1.1'

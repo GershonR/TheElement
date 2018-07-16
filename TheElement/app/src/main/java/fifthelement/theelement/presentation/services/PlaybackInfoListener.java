@@ -5,9 +5,6 @@ import android.support.annotation.IntDef;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
-import fifthelement.theelement.presentation.fragments.SeekerFragment;
-import fifthelement.theelement.presentation.services.MusicService;
-
 
 // Allows MusicService to report media playback duration and progress updates to
 // the SeekerFragment.

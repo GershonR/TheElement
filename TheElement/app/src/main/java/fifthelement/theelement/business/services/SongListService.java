@@ -1,16 +1,15 @@
 package fifthelement.theelement.business.services;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import fifthelement.theelement.application.Services;
+import fifthelement.theelement.objects.Playlist;
 import fifthelement.theelement.objects.Song;
 
 public class SongListService {
     private List<Song> allSongsList = null;
     private List<Song> currentSongsList = null;
-    private List<Song> shuffledList = null;
     private boolean shuffled = false;
     private boolean autoplayEnabled = false;
     private int currentSongPlayingIndex = 0;
@@ -26,7 +25,7 @@ public class SongListService {
     public void setAllSongsList(List<Song> newList){
         allSongsList = newList;
     }
-    //Method to set the current list of currentSongsList to play currentSongsList from
+
     public void setCurrentSongsList(List<Song> newList){
         currentSongsList = newList;
     }
@@ -44,37 +43,34 @@ public class SongListService {
     public Song skipToNextSong() {
         Song toReturn = null;
 
-        if(currentSongsList != null) {
+        if(currentSongsList != null && currentSongsList.size() > 0) {
             currentSongPlayingIndex++;
             if (currentSongPlayingIndex > currentSongsList.size() - 1) {
                 currentSongPlayingIndex = 0;
             }
 
-            if(shuffled) {
-                toReturn = shuffledList.get(currentSongPlayingIndex);
-            } else {
-                toReturn = currentSongsList.get(currentSongPlayingIndex);
-            }
+            toReturn = currentSongsList.get(currentSongPlayingIndex);
         }
 
         return toReturn;
+    }
+
+    public void setPlayerCurrentSongs(Playlist playlist){
+        setCurrentSongsList(playlist.getSongs());
+        setAutoplayEnabled(true);
     }
 
     // Skips to the previous song in the list
     public Song goToPrevSong() {
         Song toReturn = null;
 
-        if(currentSongsList != null) {
+        if(currentSongsList != null && currentSongsList.size() > 0) {
             currentSongPlayingIndex--;
             if (currentSongPlayingIndex < 0) {
                 currentSongPlayingIndex = currentSongsList.size() - 1;
             }
 
-            if(shuffled) {
-                toReturn = shuffledList.get(currentSongPlayingIndex);
-            } else {
-                toReturn = currentSongsList.get(currentSongPlayingIndex);
-            }
+            toReturn = currentSongsList.get(currentSongPlayingIndex);
         }
 
         return toReturn;
@@ -92,19 +88,24 @@ public class SongListService {
     }
 
     public void shuffle() {
+        setCurrentSongsList(getAllSongsList());
         updateShuffledList();
         shuffled = true;
     }
 
     public void updateShuffledList() {
-        shuffledList = new ArrayList<>();
-        shuffledList.addAll(currentSongsList);
-        Collections.shuffle(shuffledList);
+        Collections.shuffle(currentSongsList);
     }
 
     public void removeSongFromList(Song song){
-        if(currentSongsList != null){
-            currentSongsList.remove(song);
+        if(currentSongsList != null && song != null){
+            boolean removed = false;
+            for(int i = 0; i < currentSongsList.size() && !removed; i++){
+                if(song.getUUID().equals(currentSongsList.get(i).getUUID())){
+                    currentSongsList.remove(i);
+                    removed = true;
+                }
+            }
         }
     }
 

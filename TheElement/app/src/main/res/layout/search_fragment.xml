@@ -16,12 +16,13 @@
         android:layout_marginBottom="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
         android:text="Search"
         android:textSize="50sp"
         app:layout_constraintBottom_toTopOf="@+id/search_view_item"
         app:layout_constraintEnd_toEndOf="@+id/search_view_item"
-        app:layout_constraintStart_toStartOf="@+id/search_view_item" />
-
+        app:layout_constraintStart_toStartOf="@+id/search_view_item"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
     <SearchView
@@ -30,10 +31,11 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="156dp"
+        android:layout_marginTop="80dp"
         android:backgroundTint="#e8e8e8"
         android:gravity="top"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.499"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 

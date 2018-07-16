@@ -6,9 +6,11 @@ import java.util.List;
 import java.util.UUID;
 
 import fifthelement.theelement.application.Persistence;
+import fifthelement.theelement.application.Services;
 import fifthelement.theelement.objects.Album;
 import fifthelement.theelement.objects.Author;
 import fifthelement.theelement.persistence.AlbumPersistence;
+import fifthelement.theelement.persistence.AuthorPersistence;
 import fifthelement.theelement.persistence.SongPersistence;
 
 
@@ -16,15 +18,18 @@ public class AlbumService {
 
     private AlbumPersistence albumPersistence;
     private SongPersistence songPersistence;
+    private AuthorPersistence authorPersistence;
 
     public AlbumService() {
         albumPersistence = Persistence.getAlbumPersistence();
         songPersistence = Persistence.getSongPersistence();
+        authorPersistence = Persistence.getAuthorPersistence();
     }
 
-    public AlbumService(AlbumPersistence albumPersistence, SongPersistence songPersistence) {
+    public AlbumService(AlbumPersistence albumPersistence, SongPersistence songPersistence, AuthorPersistence authorPersistence) {
         this.albumPersistence = albumPersistence;
         this.songPersistence = songPersistence;
+        this.authorPersistence = authorPersistence;
     }
 
     public Album getAlbumByUUID(UUID uuid) {
@@ -42,8 +47,16 @@ public class AlbumService {
     }
 
     public boolean insertAlbum(Album album) throws ArrayStoreException, IllegalArgumentException {
-        if(album == null)
+        if(album == null || getAlbumByUUID(album.getUUID()) != null)
             throw new IllegalArgumentException();
+
+        if(album.getAuthor() != null) {
+            Author author = album.getAuthor();
+            if(authorPersistence.getAuthorByUUID(author.getUUID()) == null) {
+                authorPersistence.storeAuthor(author);
+            }
+        }
+
         return albumPersistence.storeAlbum(album);
     }
 

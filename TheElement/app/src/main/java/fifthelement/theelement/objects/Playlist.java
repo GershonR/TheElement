@@ -2,9 +2,7 @@ package fifthelement.theelement.objects;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.UUID;
-import java.util.function.Consumer;
 
 public class Playlist {
     private UUID uuid;

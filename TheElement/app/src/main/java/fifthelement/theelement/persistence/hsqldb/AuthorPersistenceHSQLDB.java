@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.UUID;
 
 import fifthelement.theelement.objects.Author;
-import fifthelement.theelement.objects.Playlist;
 import fifthelement.theelement.persistence.AuthorPersistence;
 
 public class AuthorPersistenceHSQLDB implements AuthorPersistence {
@@ -66,9 +65,11 @@ public class AuthorPersistenceHSQLDB implements AuthorPersistence {
             String uuidString = uuid.toString();
             st.setString(1, uuidString);
 
+            Author author = null;
             final ResultSet rs = st.executeQuery();
-            rs.next();
-            final Author author = fromResultSet(rs);
+            if(rs.next()) {
+                author = fromResultSet(rs);
+            }
             rs.close();
             st.close();
 
@@ -103,13 +104,17 @@ public class AuthorPersistenceHSQLDB implements AuthorPersistence {
         if(author == null)
             throw new IllegalArgumentException("Cannot update a null author");
         try {
-            final PreparedStatement st = c.prepareStatement("UPDATE authors SET authorName = ?, numPlayed = ? WHERE authorUUID = ? ");
-            st.setString(1, author.getName());
-            st.setInt(2, author.getNumPlayed());
-            st.setString(3, author.getUUID().toString());
+            if(authorExists(author.getUUID())) {
+                final PreparedStatement st = c.prepareStatement("UPDATE authors SET authorName = ?, numPlayed = ? WHERE authorUUID = ? ");
+                st.setString(1, author.getName());
+                st.setInt(2, author.getNumPlayed());
+                st.setString(3, author.getUUID().toString());
 
-            st.executeUpdate();
-            return true;
+                st.executeUpdate();
+
+                return true;
+            }
+            return false;
         } catch (final SQLException e) {
             throw new PersistenceException(e);
         }
@@ -128,11 +133,13 @@ public class AuthorPersistenceHSQLDB implements AuthorPersistence {
         if(uuid == null)
             throw new IllegalArgumentException("Cannot delete an author with a null UUID");
         try {
-            final PreparedStatement st = c.prepareStatement("DELETE FROM authors WHERE authorUUID = ?");
-            st.setString(1, uuid.toString());
+            if(getAuthorByUUID(uuid) != null) {
+                final PreparedStatement st = c.prepareStatement("DELETE FROM authors WHERE authorUUID = ?");
+                st.setString(1, uuid.toString());
 
-            st.executeUpdate();
-
+                st.executeUpdate();
+                removed = true;
+            }
         } catch (final SQLException e) {
             throw new PersistenceException(e);
         }

@@ -73,10 +73,10 @@ public class AuthorServiceIT {
 
         Assert.assertTrue("updateAuthorValidTest: insertReturn != true", insertReturn);
         Assert.assertTrue("updateAuthorValidTest: updateReturn != true", updateReturn);
-        Assert.assertTrue("updateAuthorValidTest: song size != 4", authorService.getAuthors().size() == 4);
+        Assert.assertTrue("updateAuthorValidTest: author list size != 3", authorService.getAuthors().size() == 3);
 
         Author author = authorService.getAuthorByUUID(UUID.fromString("493410b3-dd0b-4b78-97bf-289f50f6e74f"));
-        Assert.assertTrue("updateAuthorValidTest: song name != Changed Author Name", "Bob Jim".equals(author.getName()));
+        Assert.assertTrue("updateAuthorValidTest: author name != Changed Author Name", "Bob Jim".equals(author.getName()));
     }
 
     @Test(expected = IllegalArgumentException.class)

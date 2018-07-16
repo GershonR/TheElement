@@ -75,9 +75,11 @@ public class AlbumPersistenceHSQLDB implements AlbumPersistence {
             String uuidString = uuid.toString();
             st.setString(1, uuidString);
 
+            Album album = null;
             final ResultSet rs = st.executeQuery();
-            rs.next();
-            final Album album = fromResultSet(rs);
+            if(rs.next()) {
+                album = fromResultSet(rs);
+            }
             rs.close();
             st.close();
 
@@ -116,13 +118,16 @@ public class AlbumPersistenceHSQLDB implements AlbumPersistence {
         if(album == null)
             throw new IllegalArgumentException("Cannot update a null album");
         try {
-            final PreparedStatement st = c.prepareStatement("UPDATE albums SET albumName = ? WHERE albumUUID = ?");
-            st.setString(1, album.getName());
-            st.setString(2, album.getUUID().toString());
+            if(albumExists(album)) {
+                final PreparedStatement st = c.prepareStatement("UPDATE albums SET albumName = ? WHERE albumUUID = ?");
+                st.setString(1, album.getName());
+                st.setString(2, album.getUUID().toString());
 
-            st.executeUpdate();
+                st.executeUpdate();
 
-            return true;
+                return true;
+            }
+            return false;
         } catch (final SQLException e) {
             throw new PersistenceException(e);
         }
@@ -141,16 +146,18 @@ public class AlbumPersistenceHSQLDB implements AlbumPersistence {
         if(uuid == null)
             throw new IllegalArgumentException("Cannot delete album with a null UUID");
         try {
-            final PreparedStatement st = c.prepareStatement("DELETE FROM albums WHERE albumUUID = ?");
-            st.setString(1, uuid.toString());
+            if(getAlbumByUUID(uuid) != null) {
+                final PreparedStatement st = c.prepareStatement("DELETE FROM albums WHERE albumUUID = ?");
+                st.setString(1, uuid.toString());
 
-            st.executeUpdate();
-
+                st.executeUpdate();
+                removed = true;
+            }
         } catch (final SQLException e) {
             throw new PersistenceException(e);
         }
 
-        return  removed;
+        return removed;
     }
 
     @Override

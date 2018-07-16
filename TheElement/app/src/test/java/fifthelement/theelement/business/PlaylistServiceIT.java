@@ -12,6 +12,7 @@ import java.util.UUID;
 
 import fifthelement.theelement.application.Persistence;
 import fifthelement.theelement.application.Services;
+import fifthelement.theelement.business.exceptions.SongAlreadyExistsException;
 import fifthelement.theelement.business.services.AlbumService;
 import fifthelement.theelement.business.services.AuthorService;
 import fifthelement.theelement.business.services.PlaylistService;
@@ -129,6 +130,12 @@ public class PlaylistServiceIT {
         Playlist playlist = new Playlist("Led Zepplin");
         playlist.setId(UUID.fromString("493410b3-dd0b-4b78-97bf-289f50f6e74f"));
         Song song = new Song("Test", "");
+
+        try {
+            Services.getSongService().insertSong(song);
+        } catch (SongAlreadyExistsException e) {
+            e.printStackTrace();
+        }
 
         boolean insertReturn = playlistService.insertPlaylist(playlist);
         Assert.assertTrue("insertSongForPlaylistValidTest: insertReturn != true", insertReturn);

@@ -101,9 +101,11 @@ public class PlaylistPersistenceHSQLDB implements PlaylistPersistence {
             final PreparedStatement st = c.prepareStatement("SELECT * FROM playlists WHERE playlistUUID = ?");
             st.setString(1, uuid.toString());
 
+            Playlist playlist = null;
             final ResultSet rs = st.executeQuery();
-            rs.next();
-            final Playlist playlist = fromResultSet(rs);
+            if(rs.next()) {
+                playlist = fromResultSet(rs);
+            }
             rs.close();
             st.close();
 
@@ -187,14 +189,16 @@ public class PlaylistPersistenceHSQLDB implements PlaylistPersistence {
         if(uuid == null)
             throw new IllegalArgumentException("Cannot delete a playlist with a null UUID");
         try {
-            final PreparedStatement st1 = c.prepareStatement("DELETE FROM playlistsongs WHERE playlistUUID = ?");
-            st1.setString(1, uuid.toString());
-            st1.executeUpdate();
+            if(getPlaylistByUUID(uuid) != null) {
+                final PreparedStatement st1 = c.prepareStatement("DELETE FROM playlistsongs WHERE playlistUUID = ?");
+                st1.setString(1, uuid.toString());
+                st1.executeUpdate();
 
-            final PreparedStatement st2 = c.prepareStatement("DELETE FROM playlists WHERE playlistUUID = ?");
-            st2.setString(1, uuid.toString());
-            st2.executeUpdate();
-            removed = true;
+                final PreparedStatement st2 = c.prepareStatement("DELETE FROM playlists WHERE playlistUUID = ?");
+                st2.setString(1, uuid.toString());
+                st2.executeUpdate();
+                removed = true;
+            }
         } catch (final SQLException e) {
             throw new PersistenceException(e);
         }

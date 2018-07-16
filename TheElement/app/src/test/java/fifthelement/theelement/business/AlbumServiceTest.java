@@ -12,6 +12,7 @@ import java.util.UUID;
 import fifthelement.theelement.business.services.AlbumService;
 import fifthelement.theelement.objects.Album;
 import fifthelement.theelement.persistence.stubs.AlbumPersistenceStub;
+import fifthelement.theelement.persistence.stubs.AuthorPersistenceStub;
 import fifthelement.theelement.persistence.stubs.SongPersistenceStub;
 
 @RunWith(JUnit4.class)
@@ -20,7 +21,7 @@ public class AlbumServiceTest {
 
     @Before
     public void setup() {
-        classUnderTest = new AlbumService(new AlbumPersistenceStub(), new SongPersistenceStub());
+        classUnderTest = new AlbumService(new AlbumPersistenceStub(), new SongPersistenceStub(), new AuthorPersistenceStub());
         classUnderTest.getAlbums().clear();
 
         classUnderTest.insertAlbum(new Album("Thriller"));

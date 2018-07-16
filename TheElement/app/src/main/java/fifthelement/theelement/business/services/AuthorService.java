@@ -29,7 +29,7 @@ public class AuthorService {
     }
 
     public boolean insertAuthor(Author author) throws ArrayStoreException, IllegalArgumentException {
-        if(author == null)
+        if(author == null || getAuthorByUUID(author.getUUID()) != null)
             throw new IllegalArgumentException();
         return authorPersistence.storeAuthor(author);
     }

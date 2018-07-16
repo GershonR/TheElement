@@ -12,16 +12,19 @@ import java.util.UUID;
 import fifthelement.theelement.business.services.PlaylistService;
 import fifthelement.theelement.objects.Playlist;
 import fifthelement.theelement.objects.Song;
+import fifthelement.theelement.persistence.SongPersistence;
 import fifthelement.theelement.persistence.stubs.PlaylistPersistenceStub;
 import fifthelement.theelement.persistence.stubs.SongPersistenceStub;
 
 @RunWith(JUnit4.class)
 public class PlaylistServiceTest {
     PlaylistService classUnderTest;
+    SongPersistence songPersistence;
 
     @Before
     public void setup() {
-        classUnderTest = new PlaylistService(new PlaylistPersistenceStub(), new SongPersistenceStub());
+        songPersistence = new SongPersistenceStub();
+        classUnderTest = new PlaylistService(new PlaylistPersistenceStub(), songPersistence);
         classUnderTest.getAllPlaylists().clear();
 
         classUnderTest.insertPlaylist(new Playlist("Thriller"));
@@ -128,6 +131,8 @@ public class PlaylistServiceTest {
         Playlist playlist = new Playlist("Led Zepplin");
         playlist.setId(UUID.fromString("493410b3-dd0b-4b78-97bf-289f50f6e74f"));
         Song song = new Song("Test", "");
+
+        songPersistence.storeSong(song); //Song needs to exist in songPersistence for this test to pass
 
         boolean insertReturn = classUnderTest.insertPlaylist(playlist);
         Assert.assertTrue("insertSongForPlaylistValidTest: insertReturn != true", insertReturn);

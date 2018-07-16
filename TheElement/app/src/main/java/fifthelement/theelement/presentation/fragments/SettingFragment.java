@@ -60,7 +60,7 @@ public class SettingFragment extends Fragment {
                 else if(position == 1){
                     deleteSongsConfirmDialog();
                 }
-                if( position == 3 ) {
+                if( position == 2 ) {
                     System.out.println("Called PlayerStatsFragment");
                     Fragment fragment = null;
                     Class fragmentClass = PlayerStatsFragment.class;

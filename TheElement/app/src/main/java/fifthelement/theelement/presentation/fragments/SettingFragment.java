@@ -33,9 +33,6 @@ public class SettingFragment extends Fragment {
     private ListView mainListView;
     private ArrayAdapter<String> listAdapter;
 
-    public final static int THEME_HIGH_VAL = 2;
-    public final static int DELETE_SONGS = 3;
-
     /**
      * Called when the activity is first created.
      */
@@ -49,7 +46,6 @@ public class SettingFragment extends Fragment {
 
 
         // Create and populate a List of for the library.
-        String[] options = new String[]{"Theme1", "Theme2", "Theme3", "Delete Songs"};
         ArrayList<String> libraryList = new ArrayList<String>();
         libraryList.addAll(Arrays.asList(SettingsConstants.SETTING_OPTIONS));
 
@@ -61,10 +57,7 @@ public class SettingFragment extends Fragment {
                 if(position == 0) {
                     selectTheme();
                 }
-                if(position <= THEME_HIGH_VAL) {
-                    ThemeUtil.changeToTheme(getActivity(), position);
-                    System.out.println("Called: " + position);
-                } else if(position == DELETE_SONGS){
+                else if(position == 1){
                     SongService songService = Services.getSongService();
                     SongListService songListService = Services.getSongListService();
                     songService.clearAllSongs();

@@ -256,6 +256,15 @@ public class SongServiceIT {
         Assert.assertTrue("Invalid Regex single special character", searchResults.size()==0);
     }
 
+    @Test
+    public void clearAllSongsTest(){
+        List<Song> allSongs;
+        songService.clearAllSongs();
+        allSongs = songService.getSongs();
+
+        Assert.assertTrue("Not all songs were deleted from library!", allSongs.isEmpty());
+    }
+
     @After
     public void tearDownTestDB() {
         TestDatabaseUtil.killDB(tempDB);

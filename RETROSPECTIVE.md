@@ -26,4 +26,4 @@ As a group we were able to accomplish most of what we set out to do, our applica
 
 
 ### Project Velocity:
-![Project Velocity Chart](https://i.imgur.com/N2c4CgY.png)  
+![Project Velocity Chart](https://i.imgur.com/ZeTuLBx.png)  

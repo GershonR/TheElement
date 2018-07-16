@@ -31,6 +31,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withClassName;
 import static android.support.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static android.support.test.espresso.matcher.ViewMatchers.withParent;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.anything;
@@ -79,7 +80,7 @@ public class MainActivityTest {
     }
 
     @Test
-    public void playSongFromSongsList() {
+    public void playSongFromSongsListTest() {
         ViewInteraction appCompatImageButton = onView(
                 allOf(withContentDescription("Navigate up"),
                         childAtPosition(
@@ -123,9 +124,53 @@ public class MainActivityTest {
         String toCheck = "Now Playing:";
         toastStringChecker(toCheck);
     }
-    
-    private void toastStringChecker(String stringToFind){
-        onView(withText(containsString(stringToFind))).inRoot(withDecorView(not(mActivityTestRule.getActivity().getWindow().getDecorView()))).check(matches(isDisplayed()));
+
+    @Test
+    public void playPlaylistTest() {
+        ViewInteraction appCompatImageButton = onView(
+                allOf(withContentDescription("Navigate up"),
+                        childAtPosition(
+                                allOf(withId(R.id.toolbar),
+                                        childAtPosition(
+                                                withClassName(is("android.widget.LinearLayout")),
+                                                0)),
+                                1),
+                        isDisplayed()));
+        appCompatImageButton.perform(click());
+
+        ViewInteraction navigationMenuItemView = onView(
+                allOf(childAtPosition(
+                        allOf(withId(R.id.design_navigation_view),
+                                childAtPosition(
+                                        withId(R.id.nvView),
+                                        0)),
+                        3),
+                        isDisplayed()));
+        navigationMenuItemView.perform(click());
+
+        onView(withIndex(withId(R.id.popup_button),0)).perform(click());
+
+//        ViewInteraction appCompatImageButton2 = onView(
+//                allOf(withId(R.id.popup_button),
+//                        childAtPosition(
+//                                withParent(withId(R.id.playlist_list_view)),
+//                                2),
+//                        isDisplayed()));
+//        appCompatImageButton2.perform(click());
+
+        ViewInteraction appCompatTextView = onView(
+                allOf(withId(R.id.title), withText("Play"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withClassName(is("android.support.v7.view.menu.ListMenuItemView")),
+                                        0),
+                                0),
+                        isDisplayed()));
+        appCompatTextView.perform(click());
+
+        // The important part of the test
+        String toCheck = "Now Playing:";
+        toastStringChecker(toCheck);
     }
 
     @Test
@@ -182,6 +227,28 @@ public class MainActivityTest {
                                 0),
                         isDisplayed()));
         textView.check(matches(withText("Adventure of a Lifetime")));
+    }
+
+    private void toastStringChecker(String stringToFind){
+        onView(withText(containsString(stringToFind))).inRoot(withDecorView(not(mActivityTestRule.getActivity().getWindow().getDecorView()))).check(matches(isDisplayed()));
+    }
+
+    public static Matcher<View> withIndex(final Matcher<View> matcher, final int index) {
+        return new TypeSafeMatcher<View>() {
+            int currentIndex = 0;
+
+            @Override
+            public void describeTo(Description description) {
+                description.appendText("with index: ");
+                description.appendValue(index);
+                matcher.describeTo(description);
+            }
+
+            @Override
+            public boolean matchesSafely(View view) {
+                return matcher.matches(view) && currentIndex++ == index;
+            }
+        };
     }
 
     private static Matcher<View> childAtPosition(

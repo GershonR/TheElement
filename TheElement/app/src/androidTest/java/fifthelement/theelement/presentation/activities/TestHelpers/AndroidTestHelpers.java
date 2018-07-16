@@ -5,9 +5,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 
+import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
+
+import java.io.File;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
@@ -55,6 +58,27 @@ public class AndroidTestHelpers {
                 ViewParent parent = view.getParent();
                 return parent instanceof ViewGroup && parentMatcher.matches(parent)
                         && view.equals(((ViewGroup) parent).getChildAt(position));
+            }
+        };
+    }
+
+    public static <T> Matcher<T> first(final Matcher<T> matcher) {
+        return new BaseMatcher<T>() {
+            boolean isFirst = true;
+
+            @Override
+            public boolean matches(final Object item) {
+                if (isFirst && matcher.matches(item)) {
+                    isFirst = false;
+                    return true;
+                }
+
+                return false;
+            }
+
+            @Override
+            public void describeTo(final Description description) {
+                description.appendText("should return first matching item");
             }
         };
     }

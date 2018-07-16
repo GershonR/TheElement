@@ -14,12 +14,14 @@ import java.sql.SQLException;
 import fifthelement.theelement.application.Main;
 
 public class TestDatabaseUtil {
-    private static final File DB_SRC = new File("app/src/main/assets/db/Element.script");
+    private static File DB_SRC = new File("app/src/main/assets/db/Element.script");
     private static Connection c;
 
     public static File copyDB() throws IOException {
         File directory = new File("../");
         final File target = File.createTempFile("temp-db", ".script", directory);
+        if(!DB_SRC.exists())
+            DB_SRC = new File("src/main/assets/db/Element.script");
         Files.copy(DB_SRC, target);
         Main.setDBPathName(target.getAbsolutePath().replace(".script", ""));
         try {

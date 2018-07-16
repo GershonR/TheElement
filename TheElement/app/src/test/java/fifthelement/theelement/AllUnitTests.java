@@ -28,6 +28,6 @@ import fifthelement.theelement.persistence.stubs.SongPersistenceTest;
         SongMetaUtilTest.class
 })
 
-public class AllTests {
+public class AllUnitTests {
 
 }

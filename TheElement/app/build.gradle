@@ -34,6 +34,7 @@ dependencies {
     testImplementation "org.mockito:mockito-core:2.8.9"
     testImplementation 'org.powermock:powermock-module-junit4:1.7.0'
     testImplementation 'org.powermock:powermock-api-mockito2:1.7.0RC2'
+    testImplementation group: 'com.google.guava', name: 'guava', version: '25.1-jre'
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.android.support:appcompat-v7:27.1.1'
     implementation 'com.android.support:support-v4:27.1.1'

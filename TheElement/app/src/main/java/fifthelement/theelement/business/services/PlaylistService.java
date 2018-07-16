@@ -60,7 +60,7 @@ public class PlaylistService {
     }
 
     public boolean insertSongForPlaylist(Playlist playlist, Song song) throws IllegalArgumentException {
-        if(playlist == null || song == null)
+        if(playlist == null || song == null || !songPersistence.songExists(song))
             throw new IllegalArgumentException();
         return playlistPersistence.storeSongForPlaylist(playlist, song);
     }

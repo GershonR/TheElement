@@ -80,4 +80,14 @@ public class Services {
         return playlistService;
     }
 
+    public static synchronized void resetServices() {
+        songService = null;
+        songListService = null;
+        albumService = null;
+        authorService = null;
+        playlistService = null;
+        drawerService = null;
+        musicService = null;
+    }
+
 }

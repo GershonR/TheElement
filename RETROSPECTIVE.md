@@ -16,6 +16,8 @@ Estimation of tickets was difficult, we did not consider the minor details of im
 
 Time management and accountability could improve, issues should be started earlier rather than later, and members should of kept each other in check, to ensure they are working on their issues, and not spending alot of time trying to debug code.
 
+We should of attempted to practice test driven development more often, to get a better feel on writing tests, and be able to think about the code you are trying to implement.
+
 Some issues pulling from master, some code that had bugs was merged in, code should of been more thoroughly checked before being merged into master.
 
 ### How we would improve:

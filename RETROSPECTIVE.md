@@ -23,3 +23,7 @@ For organization, we would have more meetings to decide on who is working on wha
 
 ### Summary:
 As a group we were able to accomplish most of what we set out to do, our application works well and matches our core vision.
+
+
+### Project Velocity:
+![Project Velocity Chart](https://i.imgur.com/N2c4CgY.png)  

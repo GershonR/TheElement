@@ -5,7 +5,7 @@ We were able to achieve the core functionality of our vision. Our application is
 
 We were able to effictively communicate on Slack, it was one our first things we setup to allow us to ask when other group members are available to have meetings, or if they have any issues when working on features.
 
-The actual architecture of our application was well organized, and classes were put into their logical places.
+The actual architecture of our application was well organized, and classes were put into their logical places. We put effort into refactoring our code, to ensure we were following the three tier architecture as discussed in class.
 
 In our first iteration, we made alot of progress with tackling difficult challanges, and by the end of the iteration we had a functioning application.
 
@@ -14,7 +14,7 @@ Lastly, our testing is done really well, it has good coverage for the entire app
 ### What did not go well:
 Estimation of tickets was difficult, we did not consider the minor details of implementation, and thus our issues were off the actual time that an issue requires.
 
-Time management and accountability could improve, issues should be started earlier rather than later, and members should of kept each other in check.
+Time management and accountability could improve, issues should be started earlier rather than later, and members should of kept each other in check, to ensure they are working on their issues, and not spending alot of time trying to debug code.
 
 Some issues pulling from master, some code that had bugs was merged in, code should of been more thoroughly checked before being merged into master.
 

@@ -1,6 +1,7 @@
 package fifthelement.theelement.presentation.fragments;
 
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -63,7 +64,7 @@ public class SongInfoFragment extends Fragment {
             }
         });
 
-        Button editButton = view.findViewById(R.id.song_info_edit_btn);
+        FloatingActionButton editButton = view.findViewById(R.id.song_info_edit_btn);
         editButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

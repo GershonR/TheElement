@@ -18,7 +18,7 @@ The Presentation package contains the layouts to display our application data an
 * Adapters
  * CompactSongsListAdapter.java
  * PlaylistListAdapter.java
- * SongListAdapter - generates list view item for the song lists.java
+ * SongListAdapter.java - generates list view item for the song lists.java
 * Constants
  * NotificationConstants.java
 * Fragments

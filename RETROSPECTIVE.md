@@ -3,6 +3,8 @@
 ### What went well:
 We were able to achieve the core functionality of our vision. Our application is able to play music, have playlists, edit songs, and add new songs.
 
+We were able to effictively communicate on Slack, it was one our first things we setup to allow us to ask when other group members are available to have meetings, or if they have any issues when working on features.
+
 The actual architecture of our application was well organized, and classes were put into their logical places.
 
 In our first iteration, we made alot of progress with tackling difficult challanges, and by the end of the iteration we had a functioning application.
@@ -17,13 +19,14 @@ Time management and accountability could improve, issues should be started earli
 Some issues pulling from master, some code that had bugs was merged in, code should of been more thoroughly checked before being merged into master.
 
 ### How we would improve:
-Perferebly not having other courses interfere with our project, and be able to dedicate more time to our work.
+Preferably not having other courses interfere with our project, and be able to dedicate more time to our work.
 
 For organization, we would have more meetings to decide on who is working on what, and any issues other group members came across.
 
 ### Summary:
 As a group we were able to accomplish most of what we set out to do, our application works well and matches our core vision.
 
+We were a bit too ambitious in the beginning, but we were able to reevaluate our times for iteration 2, and we were able to accomplish more than we we originally set out to do in iteration 2. In regards to our project, we believe that we did a good job on our application, we feel that it looks great and works exactly how a user would expect a music player to be.
 
 ### Project Velocity:
 ![Project Velocity Chart](https://i.imgur.com/ZeTuLBx.png)  

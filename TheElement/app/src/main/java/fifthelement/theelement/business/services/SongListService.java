@@ -35,6 +35,10 @@ public class SongListService {
     public List<Song> getCurrentSongsList() { return currentSongsList; }
 
 
+    public int getCurrentSongPlayingIndex() {
+        return currentSongPlayingIndex;
+    }
+
     // Skips to the next song in the list
     public Song skipToNextSong() {
         Song toReturn = null;

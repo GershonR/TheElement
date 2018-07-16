@@ -14,6 +14,7 @@ import fifthelement.theelement.objects.Album;
 import fifthelement.theelement.persistence.stubs.AlbumPersistenceStub;
 import fifthelement.theelement.persistence.stubs.AuthorPersistenceStub;
 import fifthelement.theelement.persistence.stubs.SongPersistenceStub;
+import fifthelement.theelement.presentation.util.SongUtil;
 
 @RunWith(JUnit4.class)
 public class AlbumServiceTest {
@@ -128,4 +129,61 @@ public class AlbumServiceTest {
         Assert.assertTrue("deleteAlbumNotExistTest: album size != 3", classUnderTest.getAlbums().size() == 3);
     }
 
+    @Test
+    public void albumStatsTest_SetterGetterTest() {       // initializing them
+        List<Album> albumList = classUnderTest.getAlbums();
+        int i = 0;
+        for( Album album : albumList ) {
+            album.setNumPlayed(i);
+            Assert.assertEquals(album.getNumPlayed(),i);
+            i++;
+        }
+    }
+
+    @Test
+    public void albumStatsTest_incrDecrPlays() {       // initializing them
+        List<Album> albumList = classUnderTest.getAlbums();
+        for( Album album : albumList ) {
+            album.setNumPlayed(0);
+        }
+        albumList.get(0).incrNumPlayed();
+        albumList.get(0).incrNumPlayed();
+        albumList.get(0).decrNumPlayed();
+        int actual = classUnderTest.getAlbumByUUID(albumList.get(0).getUUID()).getNumPlayed();
+        Assert.assertEquals(1, actual);
+        albumList.get(1).incrNumPlayed();
+        albumList.get(1).decrNumPlayed();
+        albumList.get(1).decrNumPlayed();
+        actual = classUnderTest.getAlbumByUUID(albumList.get(1).getUUID()).getNumPlayed();
+        Assert.assertEquals(0, actual);
+    }
+
+    @Test
+    public void albumStatsTest_getMostPlayedAlbum() {
+        List<Album> albumList = classUnderTest.getAlbums();
+        int i = 8;
+        for( Album album : albumList ) {
+            album.setNumPlayed(i);
+            Assert.assertEquals(album.getNumPlayed(),i);
+            i--;
+        }
+        Album mostPlayedExpected = albumList.get(1);
+        mostPlayedExpected.setNumPlayed(10);
+        Album mostPlayedActual = classUnderTest.getMostPlayedAlbum();
+        System.out.print(mostPlayedExpected.getNumPlayed() + " " + mostPlayedActual.getNumPlayed());
+        Assert.assertEquals(mostPlayedExpected.getNumPlayed(), mostPlayedActual.getNumPlayed());
+    }
+
+    @Test
+    public void albumStatsTest_getTotalAlbumPlays() {
+        List<Album> albumList = classUnderTest.getAlbums();
+        int i = 0;
+        int expected = 0;
+        for( Album album : albumList ) {
+            album.setNumPlayed(i);
+            expected += i++;
+        }
+        int actual = classUnderTest.getTotalAlbumPlays();
+        Assert.assertEquals(expected, actual);
+    }
 }

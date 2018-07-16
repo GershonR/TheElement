@@ -36,7 +36,8 @@ public class AlbumPersistenceHSQLDB implements AlbumPersistence {
         if(authorUUID != null)
             author = new Author(UUID.fromString(authorUUID), "");
         final List<Song> songs = null;
-        return new Album(albumUUID, albumName, author, songs);
+        final int numPlayed = rs.getInt("numPlayed");
+        return new Album(albumUUID, albumName, author, songs, numPlayed);
     }
 
     @Override
@@ -96,13 +97,14 @@ public class AlbumPersistenceHSQLDB implements AlbumPersistence {
 //        if(albumExists(album.getUUID()))
 //            throw new IllegalArgumentException("Cant store an album with existing UUID");
         try {
-            final PreparedStatement st = c.prepareStatement("INSERT INTO albums VALUES(?, ?, ?)");
+            final PreparedStatement st = c.prepareStatement("INSERT INTO albums VALUES(?, ?, ?, ?)");
             st.setString(1, album.getUUID().toString());
             st.setString(2, album.getName());
             if(album.getAuthor() != null)
                 st.setString(3, album.getAuthor().getUUID().toString());
             else
                 st.setString(3, null);
+            st.setInt(4, album.getNumPlayed());
 
             st.executeUpdate();
 
@@ -118,9 +120,10 @@ public class AlbumPersistenceHSQLDB implements AlbumPersistence {
             throw new IllegalArgumentException("Cannot update a null album");
         try {
             if(albumExists(album)) {
-                final PreparedStatement st = c.prepareStatement("UPDATE albums SET albumName = ? WHERE albumUUID = ?");
+                final PreparedStatement st = c.prepareStatement("UPDATE albums SET albumName = ?, numPlayed = ? WHERE albumUUID = ?");
                 st.setString(1, album.getName());
-                st.setString(2, album.getUUID().toString());
+                st.setInt(2, album.getNumPlayed());
+                st.setString(3, album.getUUID().toString());
 
                 st.executeUpdate();
 

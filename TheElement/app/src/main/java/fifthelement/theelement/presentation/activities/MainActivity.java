@@ -1,6 +1,7 @@
 package fifthelement.theelement.presentation.activities;
 
 
+import android.app.FragmentManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -31,8 +32,8 @@ import fifthelement.theelement.BuildConfig;
 import fifthelement.theelement.R;
 import fifthelement.theelement.application.Helpers;
 import fifthelement.theelement.application.Services;
-import fifthelement.theelement.business.services.PlaylistService;
 import fifthelement.theelement.business.services.SongListService;
+import fifthelement.theelement.business.services.PlaylistService;
 import fifthelement.theelement.business.services.SongService;
 import fifthelement.theelement.business.util.SongMetaUtil;
 import fifthelement.theelement.objects.Playlist;
@@ -309,6 +310,5 @@ public class MainActivity extends AppCompatActivity {
         musicService = null;
         super.onDestroy();
     }
-
 
 }

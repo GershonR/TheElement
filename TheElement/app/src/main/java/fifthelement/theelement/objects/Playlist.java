@@ -8,17 +8,20 @@ public class Playlist {
     private UUID uuid;
     private String listName;
     private List<Song> songList;
+    private int numPlayed;
 
     public Playlist(String name) {
         this.uuid = UUID.randomUUID();
         this.listName = name;
         this.songList = new ArrayList<>();
+        this.numPlayed = 0;
     }
 
     public Playlist(String name, List<Song> songList) {
         this.uuid = UUID.randomUUID();
         this.listName = name;
         this.songList = songList;
+        this.numPlayed = 0;
     }
 
     public Playlist(UUID uuid, String name, List<Song> songList) {
@@ -38,6 +41,10 @@ public class Playlist {
 
     public List<Song> getSongs() {
         return songList;
+    }
+
+    public int getNumPlayed() {
+        return numPlayed;
     }
 
     // setters
@@ -63,6 +70,18 @@ public class Playlist {
 
     public boolean contains(Song song) {
         return songList.contains(song);
+    }
+
+    public void setNumPlayed(int numPlayed) {
+        this.numPlayed = numPlayed;
+    }
+
+    public void incrNumPlayed() {
+        this.numPlayed++;
+    }
+
+    public void decrNumPlayed() {
+        this.numPlayed--;
     }
 
     @Override

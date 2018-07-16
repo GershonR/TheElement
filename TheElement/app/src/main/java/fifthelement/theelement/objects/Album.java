@@ -9,12 +9,14 @@ public class Album{
     private String albumName;
     private Author author;
     private List<Song> songList;
+    private int numPlayed;
 
     public Album(String name){
         this.uuid = UUID.randomUUID();
         this.albumName = name;
         this.songList = new ArrayList<>();
         this.author = new Author("");
+        this.numPlayed = 0;
     }
 
     public Album(UUID uuid, String name){
@@ -22,6 +24,7 @@ public class Album{
         this.albumName = name;
         this.songList = new ArrayList<>();
         this.author = new Author("");
+        this.numPlayed = 0;
     }
 
     public Album(String name, List<Song> songList, Author author){
@@ -29,6 +32,7 @@ public class Album{
         this.albumName = name;
         this.songList = songList;
         this.author = author;
+        this.numPlayed = 0;
     }
 
     public Album(UUID uuid, String name, Author author, List<Song> songList){
@@ -36,6 +40,15 @@ public class Album{
         this.albumName = name;
         this.songList = songList;
         this.author = author;
+        this.numPlayed = 0;
+    }
+
+    public Album(UUID uuid, String name, Author author, List<Song> songList, int numPlayed){
+        this.uuid = uuid;
+        this.albumName = name;
+        this.songList = songList;
+        this.author = author;
+        this.numPlayed = numPlayed;
     }
 
     // getters
@@ -53,6 +66,10 @@ public class Album{
 
     public List<Song> getSongs() {
         return songList;
+    }
+
+    public int getNumPlayed() {
+        return numPlayed;
     }
 
     // setters
@@ -76,6 +93,20 @@ public class Album{
 
     public void deleteSong(Song song) {
         this.songList.remove(song);
+    }
+
+    public void setNumPlayed(int numPlayed) {
+        this.numPlayed = numPlayed;
+    }
+
+    public void incrNumPlayed() {
+        this.numPlayed++;
+    }
+
+    public void decrNumPlayed() {
+        if( this.numPlayed > 0 ) {
+            this.numPlayed--;
+        }
     }
 
     @Override

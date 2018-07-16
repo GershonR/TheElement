@@ -41,8 +41,9 @@ public class SongPersistenceHSQLDB implements SongPersistence {
         if(albumUUID != null && albumUUID.length() == 36)
             songAlbum = new Album(UUID.fromString(albumUUID), "");
         final String songGenre = rs.getString("songGenre");
+        final int numPlayed = rs.getInt("numPlayed");
         final double songRating = rs.getDouble("songRating");
-        return new Song(songUUID, songName, songPath, songAuthor, songAlbum, songGenre, songRating);
+        return new Song(songUUID, songName, songPath, songAuthor, songAlbum, songGenre, numPlayed, songRating);
     }
 
 
@@ -95,7 +96,7 @@ public class SongPersistenceHSQLDB implements SongPersistence {
     }
 
     @Override
-    public List<Song> getSongsByAlbumUUID(final UUID uuid) {
+    public List<Song> getSongsByAuthorUUID(final UUID uuid) {
 
         final List<Song> songs = new ArrayList<>();
 
@@ -123,9 +124,37 @@ public class SongPersistenceHSQLDB implements SongPersistence {
     }
 
     @Override
+    public List<Song> getSongsByAlbumUUID(final UUID uuid) {
+
+        final List<Song> songs = new ArrayList<>();
+
+        try
+        {
+            final PreparedStatement st = c.prepareStatement("SELECT * FROM songs WHERE authorUUID = ?");
+            st.setString(1, uuid.toString());
+            final ResultSet rs = st.executeQuery();
+            while (rs.next())
+            {
+                final Song song = fromResultSet(rs);
+                songs.add(song);
+            }
+
+            rs.close();
+            st.close();
+
+            return songs;
+        }
+        catch (final SQLException e)
+        {
+            throw new PersistenceException(e);
+        }
+
+    }
+
+    @Override
     public boolean storeSong(Song song) throws PersistenceException {
         try {
-            final PreparedStatement st = c.prepareStatement("INSERT INTO songs VALUES(?, ?, ?, ?, ?, ?, ?)");
+            final PreparedStatement st = c.prepareStatement("INSERT INTO songs VALUES(?, ?, ?, ?, ?, ?, ?, ?)");
             st.setString(1, song.getUUID().toString());
             st.setString(2, song.getName());
             st.setString(3, song.getPath());
@@ -138,7 +167,8 @@ public class SongPersistenceHSQLDB implements SongPersistence {
             else
                 st.setString(5, null);
             st.setString(6, song.getGenre());
-            st.setDouble(7, song.getRating());
+            st.setInt(7, song.getNumPlayed());
+            st.setDouble(8, song.getRating());
 
             st.executeUpdate();
 
@@ -153,7 +183,7 @@ public class SongPersistenceHSQLDB implements SongPersistence {
     public boolean updateSong(Song song) throws IllegalArgumentException {
         try {
             if(songExists(song)) {
-                final PreparedStatement st = c.prepareStatement("UPDATE songs SET songName = ?, songPath = ?, authorUUID = ?, albumUUID = ?, songGenre = ?, songRating = ? WHERE songUUID = ?");
+                final PreparedStatement st = c.prepareStatement("UPDATE songs SET songName = ?, songPath = ?, authorUUID = ?, albumUUID = ?, songGenre = ?, numPlayed = ?, songRating = ? WHERE songUUID = ?");
                 st.setString(1, song.getName());
                 st.setString(2, song.getPath());
                 if (song.getAuthor() != null) {
@@ -169,10 +199,9 @@ public class SongPersistenceHSQLDB implements SongPersistence {
                 }
 
                 st.setString(5, song.getGenre());
-
-                st.setDouble(6, song.getRating());
-
-                st.setString(7, song.getUUID().toString());
+                st.setInt(6, song.getNumPlayed());
+                st.setDouble(7, song.getRating());
+                st.setString(8, song.getUUID().toString());
 
                 st.executeUpdate();
 

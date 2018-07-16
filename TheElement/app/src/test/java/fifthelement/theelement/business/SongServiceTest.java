@@ -270,4 +270,58 @@ public class SongServiceTest {
             verify(songPersistenceMock).deleteSong(song);
         }
     }
+
+    @Test
+    public void songStatsTest_SetterGetterTest() {       // initializing them
+        List<Song> songList = classUnderTest.getSongs();
+        int i = 0;
+        for( Song song : songList ) {
+            song.setNumPlayed(i);
+            Assert.assertEquals(song.getNumPlayed(),i);
+            i++;
+        }
+    }
+
+    @Test
+    public void songStatsTest_getMostPlayedSong() {
+        List<Song> songList = classUnderTest.getSongs();
+        for( Song song : songList ) {
+            song.setNumPlayed(0);
+        }
+        Song mostPlayedExpected = songList.get(2);
+        mostPlayedExpected.setNumPlayed(10);
+        Song mostPlayedActual = classUnderTest.getMostPlayedSong();
+        Assert.assertEquals(mostPlayedExpected, mostPlayedActual);
+    }
+
+    @Test
+    public void songStatsTest_getTotalSongPlays() {
+        List<Song> songList = classUnderTest.getSongs();
+        int i = 0;
+        int expected = 0;
+        for( Song song : songList ) {
+            song.setNumPlayed(i);
+            expected += i++;
+        }
+        int actual = classUnderTest.getTotalSongPlays();
+        Assert.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void songStatsTest_songPlayedSkipped() {
+        List<Song> songList = classUnderTest.getSongs();
+        for( Song song : songList ) {
+            song.setNumPlayed(0);
+        }
+        classUnderTest.songIsPlayed(songList.get(0).getUUID());
+        classUnderTest.songIsPlayed(songList.get(0).getUUID());
+        classUnderTest.songIsSkipped(songList.get(0).getUUID());
+        Song song = classUnderTest.getSongByUUID(songList.get(0).getUUID());
+        Assert.assertEquals(song.getNumPlayed(), 1);
+        classUnderTest.songIsPlayed(songList.get(1).getUUID());
+        classUnderTest.songIsSkipped(songList.get(1).getUUID());
+        classUnderTest.songIsSkipped(songList.get(1).getUUID());
+        song = classUnderTest.getSongByUUID(songList.get(1).getUUID());
+        Assert.assertEquals(song.getNumPlayed(), 0);
+    }
 }

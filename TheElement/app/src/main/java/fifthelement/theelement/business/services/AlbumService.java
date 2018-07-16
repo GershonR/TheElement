@@ -1,5 +1,7 @@
 package fifthelement.theelement.business.services;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 
@@ -69,5 +71,37 @@ public class AlbumService {
             throw new IllegalArgumentException();
         return albumPersistence.deleteAlbum(album.getUUID());
     }
+
+    public Album getMostPlayedAlbum() {
+        Album album = null;
+        List<Album> albumList = getSortedAlbumListByMostPlayed();
+        if( albumList != null && albumList.size() > 0 ) {
+            album = albumList.get(0);
+        }
+        return album;
+    }
+
+    public List<Album> getSortedAlbumListByMostPlayed() {
+        List<Album> albumList = this.getAlbums();
+        if( albumList != null ) {
+            Collections.sort(albumList, new Comparator<Album>() {
+                @Override
+                public int compare(Album album, Album t1) {
+                    return Integer.compare(Integer.valueOf(t1.getNumPlayed()), Integer.valueOf(album.getNumPlayed()));
+                }
+            });
+        }
+        return albumList;
+    }
+
+    public int getTotalAlbumPlays() {
+        List<Album> albumList = this.getAlbums();
+        int totalPlays = 0;
+        for( Album album : albumList ) {
+            totalPlays += album.getNumPlayed();
+        }
+        return totalPlays;
+    }
+
 
 }

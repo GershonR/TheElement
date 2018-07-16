@@ -10,9 +10,15 @@ import android.os.IBinder;
 import android.os.PowerManager;
 import android.util.Log;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import fifthelement.theelement.R;
 import fifthelement.theelement.application.Helpers;
 import fifthelement.theelement.application.Services;
 import fifthelement.theelement.business.services.SongListService;
+import fifthelement.theelement.business.services.SongService;
 import fifthelement.theelement.objects.Song;
 import fifthelement.theelement.presentation.fragments.SeekerFragment;
 
@@ -30,6 +36,7 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
     private final IBinder musicBind = new MusicBinder();
     private SeekerFragment.SeekerPlaybackStartStopListener seekerPlaybackListener;
     private NotificationService.NotificationPlaybackStartStopListener notificationPlaybackListener;
+    private SongService songService = Services.getSongService();
 
     private static final String LOG_TAG = "MusicService";
 
@@ -129,6 +136,7 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
                 public void onPrepared(MediaPlayer player) {
                     playerPrepared = true;
                     start();
+                    songService.songIsPlayed(currentSongPlaying.getUUID());
                     Helpers.getToastHelper(getApplicationContext()).sendToast("Now Playing: " + currentSongPlaying.getName());
                 }
 
@@ -181,6 +189,7 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
 
     // Skips to the next song in the list
     public void skip() {
+        songService.songIsSkipped(songListService.getSongAtIndex(songListService.getCurrentSongPlayingIndex()).getUUID());
         playSongAsync(songListService.skipToNextSong());
         if(notificationPlaybackListener != null){
             notificationPlaybackListener.onSkip();
@@ -189,6 +198,7 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
 
     // Skips to the previous song in the list
     public void prev() {
+        songService.songIsSkipped(songListService.getSongAtIndex(songListService.getCurrentSongPlayingIndex()).getUUID());
         playSongAsync(songListService.goToPrevSong());
         if(notificationPlaybackListener != null){
             notificationPlaybackListener.onSkip();

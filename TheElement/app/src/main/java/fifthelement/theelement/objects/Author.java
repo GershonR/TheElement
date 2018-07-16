@@ -10,6 +10,7 @@ public class Author {
     private String name;
     private List<Song> songList;
     private List<Album> albumList;
+    private int numPlayed;
 
 
     public Author(String name) {
@@ -17,6 +18,7 @@ public class Author {
         this.name = name;
         this.songList = new ArrayList<>();
         this.albumList = new ArrayList<>();
+        this.numPlayed = 0;
     }
 
     public Author(UUID uuid, String name) {
@@ -24,6 +26,15 @@ public class Author {
         this.name = name;
         this.songList = new ArrayList<>();
         this.albumList = new ArrayList<>();
+        this.numPlayed = 0;
+    }
+
+    public Author(UUID uuid, String name, int numPlayed) {
+        this.uuid = uuid;
+        this.name = name;
+        this.songList = new ArrayList<>();
+        this.albumList = new ArrayList<>();
+        this.numPlayed = numPlayed;
     }
 
     public Author(String name, List<Song> songList, List<Album> albumList) {
@@ -31,6 +42,15 @@ public class Author {
         this.name = name;
         this.songList = songList;
         this.albumList = albumList;
+        this.numPlayed = 0;
+    }
+
+    public Author(String name, List<Song> songList, List<Album> albumList, int numPlayed) {
+        this.uuid = UUID.randomUUID();
+        this.name = name;
+        this.songList = songList;
+        this.albumList = albumList;
+        this.numPlayed = numPlayed;
     }
 
     // getters
@@ -48,6 +68,10 @@ public class Author {
 
     public List<Album> getAlbumList() {
         return albumList;
+    }
+
+    public int getNumPlayed() {
+        return numPlayed;
     }
 
     // setters
@@ -81,6 +105,20 @@ public class Author {
 
     public void deleteAlbum(Album album) {
         this.albumList.remove(album);
+    }
+
+    public void setNumPlayed(int numPlayed) {
+        this.numPlayed = numPlayed;
+    }
+
+    public void incrNumPlayed() {
+        this.numPlayed++;
+    }
+
+    public void decrNumPlayed() {
+        if( this.numPlayed > 0 ) {
+            this.numPlayed--;
+        }
     }
 
     @Override

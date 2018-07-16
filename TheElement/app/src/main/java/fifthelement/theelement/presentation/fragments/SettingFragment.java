@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,6 +59,17 @@ public class SettingFragment extends Fragment {
                 }
                 else if(position == 1){
                     deleteSongsConfirmDialog();
+                }
+                if( position == 3 ) {
+                    System.out.println("Called PlayerStatsFragment");
+                    Fragment fragment = null;
+                    Class fragmentClass = PlayerStatsFragment.class;
+                    try {
+                        fragment = (Fragment) fragmentClass.newInstance();
+                    } catch (Exception e) {
+                        Log.e("PlayerStatsFragment", e.getMessage());
+                    }
+                    Helpers.getFragmentHelper((MainActivity)getActivity()).createFragment(R.id.flContent, fragment);
                 }
             }
         });

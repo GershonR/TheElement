@@ -2,33 +2,22 @@ package fifthelement.theelement.presentation.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.ContextMenu;
 import android.view.LayoutInflater;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ListView;
 
 import java.util.List;
 
 import fifthelement.theelement.R;
 import fifthelement.theelement.application.Helpers;
-import fifthelement.theelement.application.Services;
 import fifthelement.theelement.business.services.PlaylistService;
-import fifthelement.theelement.business.services.SongService;
 import fifthelement.theelement.objects.Playlist;
-import fifthelement.theelement.objects.Song;
 import fifthelement.theelement.persistence.hsqldb.PersistenceException;
 import fifthelement.theelement.presentation.activities.MainActivity;
 import fifthelement.theelement.presentation.adapters.PlaylistListAdapter;
-import fifthelement.theelement.presentation.adapters.SongsListAdapter;
-import fifthelement.theelement.presentation.services.MusicService;
 
 public class PlaylistListFragment extends Fragment {
     private View view;

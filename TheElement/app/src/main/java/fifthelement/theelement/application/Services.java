@@ -1,13 +1,12 @@
 package fifthelement.theelement.application;
 
-import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 
 import fifthelement.theelement.business.services.AlbumService;
 import fifthelement.theelement.business.services.AuthorService;
+import fifthelement.theelement.business.services.PlaylistService;
 import fifthelement.theelement.business.services.SongListService;
 import fifthelement.theelement.business.services.SongService;
-import fifthelement.theelement.business.services.PlaylistService;
 import fifthelement.theelement.presentation.services.DrawerService;
 import fifthelement.theelement.presentation.services.MusicService;
 
@@ -80,5 +79,4 @@ public class Services {
 
         return playlistService;
     }
-
 }

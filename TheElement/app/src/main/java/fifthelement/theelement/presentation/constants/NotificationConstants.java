@@ -1,11 +1,5 @@
 package fifthelement.theelement.presentation.constants;
 
-import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-
-import fifthelement.theelement.R;
-
 public class NotificationConstants {
     public static final int NOTIFICATION_ID = 101;
     public static final String CHANNEL_ID = "THE_ELEMENT_01";

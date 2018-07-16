@@ -35,9 +35,6 @@ public class SettingFragment extends Fragment {
     private ListView mainListView;
     private ArrayAdapter<String> listAdapter;
 
-    /**
-     * Called when the activity is first created.
-     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

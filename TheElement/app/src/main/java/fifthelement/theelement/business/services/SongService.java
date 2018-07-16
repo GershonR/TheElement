@@ -24,16 +24,12 @@ public class SongService {
     private AlbumPersistence albumPersistence;
     private AuthorPersistence authorPersistence;
     private PlaylistPersistence playlistPersistence;
-    private AuthorService authorService;
-    private AlbumService albumService;
 
     public SongService() {
         songPersistence = Persistence.getSongPersistence();
         albumPersistence = Persistence.getAlbumPersistence();
         authorPersistence = Persistence.getAuthorPersistence();
         playlistPersistence = Persistence.getPlaylistPersistence();
-        authorService = Services.getAuthorService();
-        albumService = Services.getAlbumService();
     }
 
     public SongService(SongPersistence songPersistence, AlbumPersistence albumPersistence, AuthorPersistence authorPersistence, PlaylistPersistence playlistPersistence) {
@@ -41,8 +37,6 @@ public class SongService {
         this.albumPersistence = albumPersistence;
         this.authorPersistence = authorPersistence;
         this.playlistPersistence = playlistPersistence;
-        this.albumService = new AlbumService(albumPersistence, songPersistence, authorPersistence);
-        this.authorService = new AuthorService(authorPersistence);
 
     }
 
@@ -117,7 +111,7 @@ public class SongService {
         Album album = null;
         if(song.getAuthor() != null) {
             author = song.getAuthor();
-            authorService.insertAuthor(author);
+            authorPersistence.storeAuthor(author);
         }
 
         if(song.getAlbum() != null) {
@@ -126,7 +120,7 @@ public class SongService {
                 album.setAuthor(author);
             else
                 album.setAuthor(null);
-            albumService.insertAlbum(album);
+            albumPersistence.storeAlbum(album);
         }
 
         return songPersistence.storeSong(song);
@@ -148,7 +142,7 @@ public class SongService {
         Author newAuthor = new Author(author);
         if(!author.equals("")) {
             song.setAuthor(newAuthor);
-            authorService.insertAuthor(newAuthor);
+            authorPersistence.storeAuthor(newAuthor);
         }else {
             song.setAuthor(null);
         }
@@ -160,7 +154,7 @@ public class SongService {
             else
                 newAlbum.setAuthor(null);
             song.setAlbum(newAlbum);
-            albumService.insertAlbum(newAlbum);
+            albumPersistence.storeAlbum(newAlbum);
         } else {
             song.setAlbum(null);
         }
@@ -185,8 +179,6 @@ public class SongService {
         Song song = songPersistence.getSongByUUID(songToRemove.getUUID());
 
         if( song != null ) {
-
-            // deletes songs from existing PlayList if it's there
             songPersistence.deleteSong(song);
             return true;
         }

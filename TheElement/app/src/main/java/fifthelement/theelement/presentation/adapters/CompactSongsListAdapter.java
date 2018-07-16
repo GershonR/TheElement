@@ -55,14 +55,6 @@ public class CompactSongsListAdapter extends BaseAdapter {
         }
         songName.setText(printSong.getName());
         authorName.setText(authors);
-        //AppCompatImageButton button = view.findViewById(R.id.popup_button);
-        /*
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                System.out.println("Clicked a song in the Compact songs list");
-            }
-        });*/
         return view;
     }
 

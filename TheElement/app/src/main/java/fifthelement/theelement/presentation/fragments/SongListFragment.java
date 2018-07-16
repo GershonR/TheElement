@@ -77,13 +77,6 @@ public class SongListFragment extends Fragment {
         listView.setAdapter(songListAdapter);
     }
 
-//    private void sortSongs() {
-//        List<Song> songs = songService.getSongs();
-//        songListService.sortSongs(songs);
-//        songListService.setCurrentSongsList(songs);
-//        refreshAdapter();
-//    }
-
     private void playSong(ListView listView) {
         List<Song> songs = songService.getSongs();
         if(songs != null) {

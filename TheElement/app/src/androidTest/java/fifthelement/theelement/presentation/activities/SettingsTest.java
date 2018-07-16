@@ -7,14 +7,10 @@ import android.support.test.espresso.ViewInteraction;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewParent;
 
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
-import org.hamcrest.TypeSafeMatcher;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
@@ -25,7 +21,6 @@ import java.util.List;
 import fifthelement.theelement.R;
 import fifthelement.theelement.business.exceptions.SongAlreadyExistsException;
 import fifthelement.theelement.objects.Song;
-import fifthelement.theelement.presentation.activities.TestHelpers.AndroidTestHelpers;
 
 import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
@@ -131,6 +126,8 @@ public class SettingsTest {
 
     @Test
     public void deleteSongsTest() {
+        List<Song> songsToRestore = mActivityTestRule.getActivity().getSongService().getSongs();
+
         // Delete one song first and see if Stats Page reflects changes
         this.deleteSongWithStatsCheck();
 
@@ -216,6 +213,18 @@ public class SettingsTest {
         // some manual check if there's anything. We should know this would work by now
         this.checkStatsPage();
         SystemClock.sleep(1000);
+
+        deleteAllSongsRestore(songsToRestore);
+    }
+
+    private void deleteAllSongsRestore(List<Song> listToRestore){
+        for(Song song : listToRestore){
+            try {
+                mActivityTestRule.getActivity().getSongService().insertSong(song);
+            } catch (SongAlreadyExistsException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private void checkStatsPage() {

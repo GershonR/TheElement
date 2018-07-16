@@ -47,7 +47,6 @@ public class SettingFragment extends Fragment {
 
         // Create and populate a List of for the library.
         ArrayList<String> libraryList = new ArrayList<String>();
-        //TODO
         libraryList.addAll(Arrays.asList(SettingsConstants.SETTING_OPTIONS));
 
         // Create ArrayAdapter using the library list.
@@ -61,7 +60,7 @@ public class SettingFragment extends Fragment {
                 else if(position == 1){
                     deleteSongsConfirmDialog();
                 }
-                if( position == 2 ) {
+                if( position == 3 ) {
                     System.out.println("Called PlayerStatsFragment");
                     Fragment fragment = null;
                     Class fragmentClass = PlayerStatsFragment.class;

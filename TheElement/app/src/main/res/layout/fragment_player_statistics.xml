@@ -25,7 +25,7 @@
             android:layout_gravity="center"
             android:layout_marginTop="15dp"
             android:padding="5dp"
-            android:text="Total Owned Songs"
+            android:text="Total Owned"
             android:textColor="@color/colorAccent"
             android:textSize="30sp"
             android:textStyle="bold" />
@@ -40,13 +40,31 @@
             android:textSize="18sp" />
 
         <TextView
-            android:id="@+id/total_song_plays_label"
+            android:id="@+id/total_albums_owned"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="20dp"
             android:padding="5dp"
-            android:text="Total Song Plays"
+            android:text="no info found"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/total_authors_owned"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:padding="5dp"
+            android:text="no info found"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/total_plays_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:padding="5dp"
+            android:text="Total Plays"
             android:textColor="@color/colorAccent"
             android:textSize="30sp"
             android:textStyle="bold" />
@@ -61,11 +79,28 @@
             android:textSize="18sp" />
 
         <TextView
+            android:id="@+id/total_album_plays"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:padding="5dp"
+            android:text="no info found"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/total_author_plays"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:padding="5dp"
+            android:text="no info found"
+            android:textSize="18sp" />
+        <TextView
             android:id="@+id/most_played_song_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             android:padding="5dp"
             android:text="Most Played Song"
             android:textColor="@color/colorAccent"
@@ -86,7 +121,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             android:padding="5dp"
             android:text="Most Played Author"
             android:textColor="@color/colorAccent"
@@ -107,7 +142,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             android:padding="5dp"
             android:text="Most Played Album"
             android:textColor="@color/colorAccent"

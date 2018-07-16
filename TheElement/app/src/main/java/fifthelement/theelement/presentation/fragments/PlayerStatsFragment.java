@@ -48,19 +48,29 @@ public class PlayerStatsFragment extends Fragment {
 
     private void refresh(View view) {
         TextView totalSongsOwned= (TextView) view.findViewById(R.id.total_songs_owned);
+        TextView totalAlbumsOwned= (TextView) view.findViewById(R.id.total_albums_owned);
+        TextView totalAuthorsOwned= (TextView) view.findViewById(R.id.total_authors_owned);
         TextView mostPlayedSong = (TextView) view.findViewById(R.id.most_played_song);
         TextView mostPlayedAlbum = (TextView) view.findViewById(R.id.most_played_album);
         TextView mostPlayedAuthor = (TextView) view.findViewById(R.id.most_played_author);
         TextView totalSongPlays = (TextView) view.findViewById(R.id.total_song_plays);
+        TextView totalAlbumPlays = (TextView) view.findViewById(R.id.total_album_plays);
+        TextView totalAuthorPlays = (TextView) view.findViewById(R.id.total_author_plays);
 
         int numOwnedSongs = songService.getSongs().size();
+        int numOwnedAlbums = albumService.getAlbums().size();
+        int numOwnedAuthors = authorService.getAuthors().size();
         Song song = songService.getMostPlayedSong();
         Album album = albumService.getMostPlayedAlbum();
         Author author = authorService.getMostPlayedAuthor();
 
         if( numOwnedSongs != -1 ) {
             String totalOwnedSongsString = String.format(Locale.getDefault(), "%d Songs", numOwnedSongs);
+            String totalOwnedAlbumsString = String.format(Locale.getDefault(), "%d Albums", numOwnedAlbums);
+            String totalOwnedAuthorsString = String.format(Locale.getDefault(), "%d Authors", numOwnedAuthors);
             totalSongsOwned.setText(totalOwnedSongsString);
+            totalAlbumsOwned.setText(totalOwnedAlbumsString);
+            totalAuthorsOwned.setText(totalOwnedAuthorsString);
         }
 
         if( song != null && song.getNumPlayed() != 0 ) {
@@ -77,7 +87,11 @@ public class PlayerStatsFragment extends Fragment {
             mostPlayedAuthor.setText(mostPlayedAuthorString);
         }
 
-        String totalSongPlaysString = String.format(Locale.getDefault(), "%d total plays", songService.getTotalSongPlays());
+        String totalSongPlaysString = String.format(Locale.getDefault(), "%d total song plays", songService.getTotalSongPlays());
+        String totalAlbumPlaysString = String.format(Locale.getDefault(), "%d total album plays", albumService.getTotalAlbumPlays(), authorService.getTotalAuthorPlays());
+        String totalAuthorPlaysString = String.format(Locale.getDefault(), "%d total author plays", authorService.getTotalAuthorPlays());
         totalSongPlays.setText(totalSongPlaysString);
+        totalAlbumPlays.setText(totalAlbumPlaysString);
+        totalAuthorPlays.setText(totalAuthorPlaysString);
     }
 }

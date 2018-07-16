@@ -15,3 +15,11 @@ Estimation of tickets was difficult, we did not consider the minor details of im
 Time management and accountability could improve, issues should be started earlier rather than later, and members should of kept each other in check.
 
 Some issues pulling from master, some code that had bugs was merged in, code should of been more thoroughly checked before being merged into master.
+
+### How we would improve:
+Perferebly not having other courses interfere with our project, and be able to dedicate more time to our work.
+
+For organization, we would have more meetings to decide on who is working on what, and any issues other group members came across.
+
+### Summary:
+As a group we were able to accomplish most of what we set out to do, our application works well and matches our core vision.

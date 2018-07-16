@@ -5,7 +5,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.MediaMetadataRetriever;
 import android.net.Uri;
-import android.provider.DocumentsContract;
 import android.util.Log;
 
 import fifthelement.theelement.R;
@@ -56,19 +55,5 @@ public class SongUtil {
             bm = getDefaultAlbumArt(context);
 
         return bm;
-    }
-
-    public static boolean supportedAudioFileExtension(String extension){
-        boolean toReturn = false;
-        final String[] supportedFormats = {"mp3", "mkv", "wav", "ogg", "mid",
-                                           "rtx", "mp4", "m4a", "aac", "3gp",
-                                           "flac", "xmf", "mxmf", "rtttl", "ota",
-                                           "imy"};
-
-        for(String format : supportedFormats){
-            toReturn = toReturn || extension.equals(format);
-        }
-
-        return toReturn;
     }
 }

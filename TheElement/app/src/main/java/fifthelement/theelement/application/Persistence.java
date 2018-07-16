@@ -8,7 +8,6 @@ import fifthelement.theelement.persistence.hsqldb.AlbumPersistenceHSQLDB;
 import fifthelement.theelement.persistence.hsqldb.AuthorPersistenceHSQLDB;
 import fifthelement.theelement.persistence.hsqldb.PlaylistPersistenceHSQLDB;
 import fifthelement.theelement.persistence.hsqldb.SongPersistenceHSQLDB;
-import fifthelement.theelement.persistence.stubs.PlaylistPersistenceStub;
 
 public class Persistence {
     private static SongPersistence songPersistence = null;

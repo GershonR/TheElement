@@ -9,12 +9,11 @@ import android.view.MenuItem;
 
 import fifthelement.theelement.R;
 import fifthelement.theelement.application.Helpers;
-import fifthelement.theelement.application.Services;
 import fifthelement.theelement.presentation.fragments.HomeFragment;
-import fifthelement.theelement.presentation.fragments.SettingFragment;
-import fifthelement.theelement.presentation.fragments.SearchFragment;
-import fifthelement.theelement.presentation.fragments.SongListFragment;
 import fifthelement.theelement.presentation.fragments.PlaylistListFragment;
+import fifthelement.theelement.presentation.fragments.SearchFragment;
+import fifthelement.theelement.presentation.fragments.SettingFragment;
+import fifthelement.theelement.presentation.fragments.SongListFragment;
 
 public class DrawerService {
     AppCompatActivity application;

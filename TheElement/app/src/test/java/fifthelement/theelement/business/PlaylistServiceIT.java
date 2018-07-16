@@ -1,41 +1,47 @@
 package fifthelement.theelement.business;
 
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
+import fifthelement.theelement.application.Main;
+import fifthelement.theelement.application.Persistence;
+import fifthelement.theelement.application.Services;
+import fifthelement.theelement.business.exceptions.SongAlreadyExistsException;
+import fifthelement.theelement.business.services.AlbumService;
+import fifthelement.theelement.business.services.AuthorService;
 import fifthelement.theelement.business.services.PlaylistService;
+import fifthelement.theelement.objects.Album;
+import fifthelement.theelement.objects.Author;
 import fifthelement.theelement.objects.Playlist;
 import fifthelement.theelement.objects.Song;
+import fifthelement.theelement.persistence.PlaylistPersistence;
 import fifthelement.theelement.persistence.SongPersistence;
-import fifthelement.theelement.persistence.stubs.PlaylistPersistenceStub;
-import fifthelement.theelement.persistence.stubs.SongPersistenceStub;
+import fifthelement.theelement.persistence.hsqldb.PlaylistPersistenceHSQLDB;
+import fifthelement.theelement.persistence.hsqldb.SongPersistenceHSQLDB;
+import fifthelement.theelement.utils.TestDatabaseUtil;
 
-@RunWith(JUnit4.class)
-public class PlaylistServiceTest {
-    PlaylistService classUnderTest;
-    SongPersistence songPersistence;
+public class PlaylistServiceIT {
+    private PlaylistService playlistService;
+    private File tempDB;
 
     @Before
-    public void setup() {
-        songPersistence = new SongPersistenceStub();
-        classUnderTest = new PlaylistService(new PlaylistPersistenceStub(), songPersistence);
-        classUnderTest.getAllPlaylists().clear();
-
-        classUnderTest.insertPlaylist(new Playlist("Thriller"));
-        classUnderTest.insertPlaylist(new Playlist("The Wall"));
-        classUnderTest.insertPlaylist(new Playlist("Hotel California"));
+    public void setUpTestDB() throws IOException {
+        this.tempDB = TestDatabaseUtil.copyDB();
+        PlaylistPersistence pp = new PlaylistPersistenceHSQLDB(Main.getDBPathName());
+        SongPersistence sp = new SongPersistenceHSQLDB(Main.getDBPathName());
+        playlistService = new PlaylistService(pp, sp);
     }
-
 
     @Test
     public void getAllPlaylistsTest() {
-        List<Playlist> playlists = classUnderTest.getAllPlaylists(); // Stub creates 3
+        List<Playlist> playlists = playlistService.getAllPlaylists(); // Database has 3
 
         Assert.assertTrue("getAllPlaylistsTest: playlist size != 3", playlists.size() == 3);
     }
@@ -43,16 +49,16 @@ public class PlaylistServiceTest {
     @Test
     public void insertPlaylistValidTest() {
         Playlist playlist = new Playlist("Bad");
-        classUnderTest.insertPlaylist(playlist);
+        playlistService.insertPlaylist(playlist);
 
-        Assert.assertTrue("insertAuthorValidTest: playlist size != 4", classUnderTest.getAllPlaylists().size() == 4);
+        Assert.assertTrue("insertAuthorValidTest: playlist size != 4", playlistService.getAllPlaylists().size() == 4);
     }
 
 
     @Test(expected = IllegalArgumentException.class)
     public void insertPlaylistInValidTest() {
         Playlist playlist = null;
-        classUnderTest.insertPlaylist(playlist);
+        playlistService.insertPlaylist(playlist);
     }
 
     @Test
@@ -62,12 +68,12 @@ public class PlaylistServiceTest {
         Playlist playlistTwo = new Playlist("Gold");
         playlistTwo.setId(UUID.fromString("493410b3-dd0b-4b78-97bf-289f50f6e74f"));
 
-        boolean insertReturn = classUnderTest.insertPlaylist(playlistOne);
+        boolean insertReturn = playlistService.insertPlaylist(playlistOne);
 
         Assert.assertTrue("updatePlaylistValidTest: insertReturn != true", insertReturn);
-        Assert.assertTrue("updatePlaylistValidTest: playlist size != 4", classUnderTest.getAllPlaylists().size() == 4);
+        Assert.assertTrue("updatePlaylistValidTest: playlist size != 4", playlistService.getAllPlaylists().size() == 4);
 
-        Playlist playlist = classUnderTest.getPlaylistByUUID(UUID.fromString("493410b3-dd0b-4b78-97bf-289f50f6e74f"));
+        Playlist playlist = playlistService.getPlaylistByUUID(UUID.fromString("493410b3-dd0b-4b78-97bf-289f50f6e74f"));
     }
 
     @Test
@@ -76,30 +82,30 @@ public class PlaylistServiceTest {
         UUID playlistUUID = UUID.fromString("793410b3-dd0b-4b78-97bf-289f50f6e74f");
         playlistOne.setId(playlistUUID);
 
-        boolean insertReturn = classUnderTest.insertPlaylist(playlistOne);
+        boolean insertReturn = playlistService.insertPlaylist(playlistOne);
         Assert.assertTrue("deletePlaylistValidTest: insertReturn != true", insertReturn);
-        Assert.assertTrue("deletePlaylistValidTest: song size != 4", classUnderTest.getAllPlaylists().size() == 4);
+        Assert.assertTrue("deletePlaylistValidTest: song size != 4", playlistService.getAllPlaylists().size() == 4);
 
-        boolean deleteReturn = classUnderTest.deletePlaylist(playlistOne);
+        boolean deleteReturn = playlistService.deletePlaylist(playlistOne);
         Assert.assertTrue("deletePlaylistValidTest: deleteReturn != true", deleteReturn);
-        Assert.assertTrue("deletePlaylistValidTest: song size != 3", classUnderTest.getAllPlaylists().size() == 3);
+        Assert.assertTrue("deletePlaylistValidTest: song size != 3", playlistService.getAllPlaylists().size() == 3);
 
-        Playlist deletedPlaylist = classUnderTest.getPlaylistByUUID(playlistUUID);
+        Playlist deletedPlaylist = playlistService.getPlaylistByUUID(playlistUUID);
         Assert.assertNull("deletePlaylistValidTest: deletedPlaylist != null", deletedPlaylist);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void deletePlaylistInValidTest() {
         Playlist playlist = null;
-        classUnderTest.deletePlaylist(playlist);
+        playlistService.deletePlaylist(playlist);
     }
 
     @Test
     public void deletePlaylistNotExistTest() {
         Playlist playlist = new Playlist("Led Zepplin");
-        boolean result = classUnderTest.deletePlaylist(playlist);
+        boolean result = playlistService.deletePlaylist(playlist);
         Assert.assertFalse("deletePlaylistNotExistTest: result != false", result);
-        Assert.assertTrue("deletePlaylistNotExistTest: playlist size != 3", classUnderTest.getAllPlaylists().size() == 3);
+        Assert.assertTrue("deletePlaylistNotExistTest: playlist size != 3", playlistService.getAllPlaylists().size() == 3);
     }
 
     @Test
@@ -108,12 +114,12 @@ public class PlaylistServiceTest {
         playlist.setId(UUID.fromString("493410b3-dd0b-4b78-97bf-289f50f6e74f"));
         UUID playlistUUID = playlist.getUUID();
 
-        boolean insertReturn = classUnderTest.insertPlaylist(playlist);
+        boolean insertReturn = playlistService.insertPlaylist(playlist);
         Assert.assertTrue("updatePlaylistValidTest: insertReturn != true", insertReturn);
 
-        boolean result = classUnderTest.updatePlaylist(playlist, "Barney");
+        boolean result = playlistService.updatePlaylist(playlist, "Barney");
 
-        Playlist playlistFound = classUnderTest.getPlaylistByUUID(playlistUUID);
+        Playlist playlistFound = playlistService.getPlaylistByUUID(playlistUUID);
 
         Assert.assertTrue("updatePlaylistValidTest: result != true", result);
         Assert.assertTrue("updatePlaylistValidTest name != Barney", playlistFound.getName().equals("Barney"));
@@ -123,7 +129,7 @@ public class PlaylistServiceTest {
     public void updatePlaylistInValidTest() {
         Playlist playlist = null;
 
-        boolean result = classUnderTest.updatePlaylist(playlist, "Fred");
+        boolean result = playlistService.updatePlaylist(playlist, "Fred");
     }
 
     @Test
@@ -132,12 +138,16 @@ public class PlaylistServiceTest {
         playlist.setId(UUID.fromString("493410b3-dd0b-4b78-97bf-289f50f6e74f"));
         Song song = new Song("Test", "");
 
-        songPersistence.storeSong(song); //Song needs to exist in songPersistence for this test to pass
+        try {
+            Services.getSongService().insertSong(song);
+        } catch (SongAlreadyExistsException e) {
+            e.printStackTrace();
+        }
 
-        boolean insertReturn = classUnderTest.insertPlaylist(playlist);
+        boolean insertReturn = playlistService.insertPlaylist(playlist);
         Assert.assertTrue("insertSongForPlaylistValidTest: insertReturn != true", insertReturn);
 
-        boolean result = classUnderTest.insertSongForPlaylist(playlist, song);
+        boolean result = playlistService.insertSongForPlaylist(playlist, song);
         Assert.assertTrue("insertSongForPlaylistValidTest: result != true", result);
     }
 
@@ -146,7 +156,11 @@ public class PlaylistServiceTest {
         Playlist playlist = null;
         Song song = null;
 
-        boolean result = classUnderTest.insertSongForPlaylist(playlist, song);
+        boolean result = playlistService.insertSongForPlaylist(playlist, song);
     }
 
+    @After
+    public void tearDownTestDB() {
+        TestDatabaseUtil.killDB(tempDB);
+    }
 }

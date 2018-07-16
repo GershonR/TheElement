@@ -1,7 +1,7 @@
 package fifthelement.theelement.presentation.fragments;
 
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +11,6 @@ import android.widget.CompoundButton;
 import android.widget.ListView;
 import android.widget.Switch;
 
-
 import java.util.List;
 
 import fifthelement.theelement.R;
@@ -20,8 +19,8 @@ import fifthelement.theelement.business.services.SongListService;
 import fifthelement.theelement.business.services.SongService;
 import fifthelement.theelement.objects.Song;
 import fifthelement.theelement.presentation.activities.MainActivity;
-import fifthelement.theelement.presentation.services.MusicService;
 import fifthelement.theelement.presentation.adapters.SongsListAdapter;
+import fifthelement.theelement.presentation.services.MusicService;
 
 public class SongListFragment extends Fragment {
     private View view;
@@ -95,7 +94,9 @@ public class SongListFragment extends Fragment {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view,
                                         int position, long id) {
-                    songListService.setCurrentSongsList(songService.getSongs());
+                    List<Song> songs = songService.getSongs();
+                    songListService.sortSongs(songs);
+                    songListService.setCurrentSongsList(songs);
                     boolean result = musicService.playSongAsync(songListService.getSongAtIndex(position));
                     if (result) {
                         songListService.setShuffleEnabled(false);
@@ -109,9 +110,7 @@ public class SongListFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-//        if(songListAdapter != null) {
-//            sortSongs();
-//        }
+        refreshAdapter();
     }
 
 }

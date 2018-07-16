@@ -21,7 +21,7 @@ import fifthelement.theelement.presentation.activities.SkipSongsTest;
         DeleteSongTest.class,
         SettingsTest.class
 })
-public class AllSystemTests {
+public class AllAcceptanceTests {
 
 
 }

@@ -31,6 +31,7 @@ The Presentation package contains the layouts to display our application data an
  * SongInfoFragment.java
  * SongListFragment.java
  * SongListItemFragment.java
+ * PlayerStatsFragment.java
 * Helpers
  * FragmentHelper.java
  * ToastHelper.java

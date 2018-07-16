@@ -3,9 +3,11 @@ package fifthelement.theelement;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
+import fifthelement.theelement.presentation.activities.DeleteSongTest;
 import fifthelement.theelement.presentation.activities.MainActivityTest;
 import fifthelement.theelement.presentation.activities.PlayPausingTest;
 import fifthelement.theelement.presentation.activities.SeekTest;
+import fifthelement.theelement.presentation.activities.SettingsTest;
 import fifthelement.theelement.presentation.activities.ShuffleSongTest;
 import fifthelement.theelement.presentation.activities.SkipSongsTest;
 
@@ -15,7 +17,9 @@ import fifthelement.theelement.presentation.activities.SkipSongsTest;
         PlayPausingTest.class,
         ShuffleSongTest.class,
         SkipSongsTest.class,
-        SeekTest.class
+        SeekTest.class,
+        DeleteSongTest.class,
+        SettingsTest.class
 })
 public class AllSystemTests {
 

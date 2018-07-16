@@ -5,7 +5,6 @@ import android.support.test.espresso.DataInteraction;
 import android.support.test.espresso.ViewInteraction;
 import android.support.test.rule.ActivityTestRule;
 
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
@@ -13,7 +12,6 @@ import org.junit.Test;
 import fifthelement.theelement.R;
 import fifthelement.theelement.objects.Author;
 import fifthelement.theelement.objects.Song;
-import fifthelement.theelement.presentation.activities.TestHelpers.AndroidTestHelpers;
 
 import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
@@ -172,10 +170,10 @@ public class MusicLibraryTests {
         Assert.assertTrue("Song Size Is Not 3", mActivityTestRule.getActivity().getSongService().getSongs().size() == 3);
         SystemClock.sleep(500);
 
+        deleteSongRestore();
     }
 
-    @After
-    public void restore() {
+    private void deleteSongRestore() {
         Song song = new Song("Adventure of a Lifetime", "android.resource://fifthelement.theelement/raw/coldplay_adventure_of_a_lifetime");
         song.setAuthor(new Author("Coldplay"));
         song.setGenre("Pop");

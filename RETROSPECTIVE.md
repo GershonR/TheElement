@@ -23,6 +23,8 @@ Preferably not having other courses interfere with our project, and be able to d
 
 For organization, we would have more meetings to decide on who is working on what, and any issues other group members came across.
 
+Regarding time estimates, we would record times right as we finish features and user stories, rather than waiting until the last few days, and having to remember how much time we actually spent.
+
 ### Summary:
 As a group we were able to accomplish most of what we set out to do, our application works well and matches our core vision.
 

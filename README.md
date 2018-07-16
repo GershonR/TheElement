@@ -6,9 +6,6 @@ To run the app, you may either run the app to an emulator or USB connected devic
 
 Links:
 
-
 [Retrospective Document](https://code.cs.umanitoba.ca/comp3350-summer2018/FifthElement/blob/master/RETROSPECTIVE.md)
-
-
 
 [Vision Statement](https://code.cs.umanitoba.ca/comp3350-summer2018/FifthElement/blob/master/VISION.md)

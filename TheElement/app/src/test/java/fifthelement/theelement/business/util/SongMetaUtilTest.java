@@ -61,4 +61,23 @@ public class SongMetaUtilTest {
         Assert.assertFalse("nullSupportedExtensionTest: Result is not false", result);
     }
 
+    @Test
+    public void validNameTest() {
+        String validBlankName = "";
+        String validName = "Valid Name";
+
+        Assert.assertTrue("The Song name is valid", SongMetaUtil.validName(validName));
+        Assert.assertTrue("The Song name is blank and invalid", !SongMetaUtil.validName(validBlankName));
+    }
+
+    @Test
+    public void invalidNameTest() {
+        String invalidName = "*&&$@()&*)";
+        String invalidName2 = "";
+
+        Assert.assertTrue("The Song name is invalid: "+invalidName, !SongMetaUtil.validName(invalidName));
+        Assert.assertTrue("The Song name is invalid: "+invalidName2, !SongMetaUtil.validName(invalidName2));
+
+
+    }
 }

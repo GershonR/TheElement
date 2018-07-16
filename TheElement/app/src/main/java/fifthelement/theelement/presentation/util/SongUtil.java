@@ -5,7 +5,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.MediaMetadataRetriever;
 import android.net.Uri;
-import android.provider.DocumentsContract;
 import android.util.Log;
 
 import fifthelement.theelement.R;

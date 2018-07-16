@@ -3,7 +3,6 @@ package fifthelement.theelement.presentation.adapters;
 import android.app.Activity;
 import android.content.Context;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.AppCompatImageButton;
 import android.support.v7.widget.PopupMenu;
 import android.util.Log;
 import android.view.Gravity;
@@ -24,9 +23,7 @@ import fifthelement.theelement.objects.Author;
 import fifthelement.theelement.objects.Song;
 import fifthelement.theelement.persistence.hsqldb.PersistenceException;
 import fifthelement.theelement.presentation.activities.MainActivity;
-import fifthelement.theelement.presentation.fragments.SearchFragment;
 import fifthelement.theelement.presentation.fragments.SongInfoFragment;
-import fifthelement.theelement.presentation.fragments.SongListFragment;
 
 public class SongsListAdapter extends BaseAdapter {
     Context context;
@@ -103,7 +100,7 @@ public class SongsListAdapter extends BaseAdapter {
                             // pass the song to the main activity, to find out
                             // which playlist it needs to be added too
                             case R.id.add_to_playlist:
-                                activity.showDialog(song);
+                                activity.addSongsToPlaylist(song);
                                 break;
                         }
                         return true;

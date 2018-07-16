@@ -51,6 +51,9 @@ public class PathUtil {
                 return Environment.getExternalStorageDirectory() + "/" + split[1];
             } else if (isDownloadsDocument(uri)) {
                 final String id = DocumentsContract.getDocumentId(uri);
+                if (id.startsWith("raw:")) {
+                    return id.replaceFirst("raw:", "");
+                }
                 uri = ContentUris.withAppendedId(
                         Uri.parse("content://downloads/public_downloads"), Long.valueOf(id));
             } else if (isMediaDocument(uri)) {

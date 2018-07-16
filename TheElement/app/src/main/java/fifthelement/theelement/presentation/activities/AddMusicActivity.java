@@ -2,12 +2,14 @@ package fifthelement.theelement.presentation.activities;
 
 import android.Manifest;
 import android.content.ActivityNotFoundException;
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.util.Log;
 import android.webkit.MimeTypeMap;
 
@@ -15,15 +17,14 @@ import java.net.URISyntaxException;
 
 import fifthelement.theelement.application.Helpers;
 import fifthelement.theelement.application.Services;
+import fifthelement.theelement.business.exceptions.SongAlreadyExistsException;
 import fifthelement.theelement.business.services.AlbumService;
 import fifthelement.theelement.business.services.AuthorService;
 import fifthelement.theelement.business.services.SongListService;
 import fifthelement.theelement.business.services.SongService;
-import fifthelement.theelement.business.exceptions.SongAlreadyExistsException;
 import fifthelement.theelement.business.util.SongMetaUtil;
 import fifthelement.theelement.persistence.hsqldb.PersistenceException;
 import fifthelement.theelement.presentation.util.PathUtil;
-import fifthelement.theelement.presentation.util.SongUtil;
 
 
 public class AddMusicActivity extends AppCompatActivity {
@@ -104,12 +105,23 @@ public class AddMusicActivity extends AppCompatActivity {
 
 
     private void setupSong(Uri path) {
+        // This must be done here because getContentResolver requires context, which SongUtil doesn't have
+        ContentResolver cR = getContentResolver();
+        MimeTypeMap mime = MimeTypeMap.getSingleton();
+
+        // get actual file type from uri
+        String type = mime.getExtensionFromMimeType(cR.getType(path));
+
+        // Just in case uri returns no file type
         String stringPath = path.getPath();
-        String extension = SongMetaUtil.getExtension(stringPath);
+        String typeBackup = SongMetaUtil.getExtension(stringPath);
 
-        boolean result = SongMetaUtil.supportedAudioFileExtension(extension);
+        if (TextUtils.isEmpty(type))
+            type = typeBackup;
 
-        if (result){
+        // Check if file type is supported
+        boolean result = SongMetaUtil.supportedAudioFileExtension(type);
+        if ( result){
             metaRetriver = new MediaMetadataRetriever();
             metaRetriver.setDataSource(getApplication(), path);
 

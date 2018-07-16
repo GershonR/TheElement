@@ -77,7 +77,5 @@ public class SongMetaUtilTest {
 
         Assert.assertTrue("The Song name is invalid: "+invalidName, !SongMetaUtil.validName(invalidName));
         Assert.assertTrue("The Song name is invalid: "+invalidName2, !SongMetaUtil.validName(invalidName2));
-
-
     }
 }

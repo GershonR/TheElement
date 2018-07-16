@@ -84,6 +84,8 @@ public class SongListService {
     }
 
     public void shuffle() {
+        // shuffling is only available for all songs at the moment
+        setCurrentSongsList(getAllSongsList());
         updateShuffledList();
         shuffled = true;
     }

@@ -3,6 +3,7 @@ package fifthelement.theelement.presentation.activities;
 import android.support.test.espresso.ViewInteraction;
 import android.support.test.rule.ActivityTestRule;
 
+import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -61,5 +62,9 @@ public class PlayPlaylistTest {
         // The important part of the test
         String toCheck = "Now Playing:";
         AndroidTestHelpers.toastStringChecker(toCheck, mActivityTestRule);
+
+        Assert.assertTrue("Music Service Cannot Be Null", mActivityTestRule.getActivity().getMusicService() != null);
+        Assert.assertTrue("Music Service Has To Be Playing", mActivityTestRule.getActivity().getMusicService().isPlaying());
+        Assert.assertTrue("Current Song Playing Cannot Be Null", mActivityTestRule.getActivity().getMusicService().getCurrentSongPlaying() != null);
     }
 }

@@ -4,6 +4,7 @@ import android.support.test.espresso.DataInteraction;
 import android.support.test.espresso.ViewInteraction;
 import android.support.test.rule.ActivityTestRule;
 
+import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -56,5 +57,8 @@ public class PlaySongFromSongsListTest {
                 .atPosition(0);
         frameLayout.perform(click());
 
+        Assert.assertTrue("Music Service Cannot Be Null", mActivityTestRule.getActivity().getMusicService() != null);
+        Assert.assertTrue("Music Service Has To Be Playing", mActivityTestRule.getActivity().getMusicService().isPlaying());
+        Assert.assertTrue("Current Song Playing Cannot Be Null", mActivityTestRule.getActivity().getMusicService().getCurrentSongPlaying() != null);
     }
 }

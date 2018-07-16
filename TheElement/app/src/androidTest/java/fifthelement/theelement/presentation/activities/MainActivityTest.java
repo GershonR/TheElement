@@ -24,6 +24,7 @@ import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.matcher.RootMatchers.withDecorView;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withClassName;
 import static android.support.test.espresso.matcher.ViewMatchers.withContentDescription;
@@ -31,7 +32,9 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.anything;
+import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.core.IsNot.not;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
@@ -114,62 +117,14 @@ public class MainActivityTest {
                 .atPosition(0);
         frameLayout2.perform(click());
 
+        // The important part of the test
+        String toCheck = "Now Playing:";
+        toastStringChecker(toCheck);
     }
-
-    /*
-    @Test
-    public void playSongFromPlaylist() {
-        ViewInteraction appCompatImageButton = onView(
-                allOf(withContentDescription("Navigate up"),
-                        childAtPosition(
-                                allOf(withId(R.id.toolbar),
-                                        childAtPosition(
-                                                withClassName(is("android.widget.LinearLayout")),
-                                                0)),
-                                1),
-                        isDisplayed()));
-        appCompatImageButton.perform(click());
-
-        ViewInteraction navigationMenuItemView = onView(
-                allOf(childAtPosition(
-                        allOf(withId(R.id.design_navigation_view),
-                                childAtPosition(
-                                        withId(R.id.nvView),
-                                        0)),
-                        3),
-                        isDisplayed()));
-        navigationMenuItemView.perform(click());
-
-        DataInteraction frameLayout = onData(anything())
-                .inAdapterView(allOf(withId(R.id.playlist_list_view),
-                        childAtPosition(
-                                withId(R.id.frameLayout),
-                                0)))
-                .atPosition(0);
-        frameLayout.perform(click());
-
-        ViewInteraction textView = onView(
-                allOf(withId(R.id.primary_string), withText("This Is America"),
-                        childAtPosition(
-                                allOf(withId(R.id.linearLayout),
-                                        childAtPosition(
-                                                withId(R.id.select_dialog_listview),
-                                                0)),
-                                0),
-                        isDisplayed()));
-
-        //textView.check(matches(withText("This Is America")));
-
-        DataInteraction constraintLayout = onData(anything())
-                .inAdapterView(allOf(withId(R.id.select_dialog_listview),
-                        childAtPosition(
-                                withId(R.id.contentPanel),
-                                0)))
-                .atPosition(0);
-        constraintLayout.perform(click());
-
+    
+    private void toastStringChecker(String stringToFind){
+        onView(withText(containsString(stringToFind))).inRoot(withDecorView(not(mActivityTestRule.getActivity().getWindow().getDecorView()))).check(matches(isDisplayed()));
     }
-    */
 
     private static Matcher<View> childAtPosition(
             final Matcher<View> parentMatcher, final int position) {

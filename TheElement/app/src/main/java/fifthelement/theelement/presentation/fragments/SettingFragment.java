@@ -5,6 +5,7 @@ import java.util.Arrays;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -25,6 +26,7 @@ import fifthelement.theelement.business.services.SongListService;
 import fifthelement.theelement.business.services.SongService;
 import fifthelement.theelement.presentation.activities.MainActivity;
 import fifthelement.theelement.presentation.constants.SettingsConstants;
+import fifthelement.theelement.presentation.services.NotificationService;
 import fifthelement.theelement.presentation.util.ThemeUtil;
 
 public class SettingFragment extends Fragment {
@@ -94,6 +96,7 @@ public class SettingFragment extends Fragment {
                             songListService.setCurrentSongsList(songService.getSongs());
                             songListService.setAllSongsList(songService.getSongs());
                             Services.getMusicService().reset();
+                            getActivity().stopService(new Intent(getActivity(), NotificationService.class));
                             Helpers.getToastHelper((getActivity()).getApplicationContext()).sendToast("Deleted all songs");
                         }
                     }

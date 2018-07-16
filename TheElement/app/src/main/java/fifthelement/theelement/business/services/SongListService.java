@@ -93,8 +93,16 @@ public class SongListService {
     }
 
     public void removeSongFromList(Song song){
-        if(currentSongsList != null){
-            currentSongsList.remove(song);
+        if(currentSongsList != null && song != null){
+            boolean removed = false;
+            for(int i = 0; i < currentSongsList.size() && !removed; i++){
+                if(song.getUUID().equals(currentSongsList.get(i).getUUID())){
+                    currentSongsList.remove(i);
+                    removed = true;
+                }
+            }
+            System.out.println("Removed Song " + song.getName());
+            System.out.println(currentSongsList.size());
         }
     }
 

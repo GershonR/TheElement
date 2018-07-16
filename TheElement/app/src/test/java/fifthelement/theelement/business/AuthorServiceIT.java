@@ -10,12 +10,15 @@ import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
+import fifthelement.theelement.application.Main;
 import fifthelement.theelement.application.Persistence;
 import fifthelement.theelement.application.Services;
 import fifthelement.theelement.business.services.AlbumService;
 import fifthelement.theelement.business.services.AuthorService;
 import fifthelement.theelement.objects.Album;
 import fifthelement.theelement.objects.Author;
+import fifthelement.theelement.persistence.AuthorPersistence;
+import fifthelement.theelement.persistence.hsqldb.AuthorPersistenceHSQLDB;
 import fifthelement.theelement.utils.TestDatabaseUtil;
 
 public class AuthorServiceIT {
@@ -25,7 +28,8 @@ public class AuthorServiceIT {
     @Before
     public void setUpTestDB() throws IOException {
         this.tempDB = TestDatabaseUtil.copyDB();
-        authorService = Services.getAuthorService();
+        AuthorPersistence ap = new AuthorPersistenceHSQLDB(Main.getDBPathName());
+        authorService = new AuthorService(ap);
     }
 
     @Test
@@ -129,7 +133,5 @@ public class AuthorServiceIT {
     @After
     public void tearDownTestDB() {
         TestDatabaseUtil.killDB(tempDB);
-        Persistence.resetPersistence();
-        Services.resetServices();
     }
 }

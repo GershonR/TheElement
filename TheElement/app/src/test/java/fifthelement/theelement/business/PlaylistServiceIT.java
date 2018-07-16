@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
+import fifthelement.theelement.application.Main;
 import fifthelement.theelement.application.Persistence;
 import fifthelement.theelement.application.Services;
 import fifthelement.theelement.business.exceptions.SongAlreadyExistsException;
@@ -20,6 +21,10 @@ import fifthelement.theelement.objects.Album;
 import fifthelement.theelement.objects.Author;
 import fifthelement.theelement.objects.Playlist;
 import fifthelement.theelement.objects.Song;
+import fifthelement.theelement.persistence.PlaylistPersistence;
+import fifthelement.theelement.persistence.SongPersistence;
+import fifthelement.theelement.persistence.hsqldb.PlaylistPersistenceHSQLDB;
+import fifthelement.theelement.persistence.hsqldb.SongPersistenceHSQLDB;
 import fifthelement.theelement.utils.TestDatabaseUtil;
 
 public class PlaylistServiceIT {
@@ -29,7 +34,9 @@ public class PlaylistServiceIT {
     @Before
     public void setUpTestDB() throws IOException {
         this.tempDB = TestDatabaseUtil.copyDB();
-        playlistService = Services.getPlaylistService();
+        PlaylistPersistence pp = new PlaylistPersistenceHSQLDB(Main.getDBPathName());
+        SongPersistence sp = new SongPersistenceHSQLDB(Main.getDBPathName());
+        playlistService = new PlaylistService(pp, sp);
     }
 
     @Test
@@ -155,7 +162,5 @@ public class PlaylistServiceIT {
     @After
     public void tearDownTestDB() {
         TestDatabaseUtil.killDB(tempDB);
-        Persistence.resetPersistence();
-        Services.resetServices();
     }
 }

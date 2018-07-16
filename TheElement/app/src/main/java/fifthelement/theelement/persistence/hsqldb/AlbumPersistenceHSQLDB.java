@@ -34,7 +34,7 @@ public class AlbumPersistenceHSQLDB implements AlbumPersistence {
         final String authorUUID = rs.getString("authorUUID");
         Author author = null;
         if(authorUUID != null)
-            author = Persistence.getAuthorPersistence().getAuthorByUUID(UUID.fromString(authorUUID));
+            author = new Author(UUID.fromString(authorUUID), "");
         final List<Song> songs = null;
         return new Album(albumUUID, albumName, author, songs);
     }

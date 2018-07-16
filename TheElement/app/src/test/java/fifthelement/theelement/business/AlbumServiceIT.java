@@ -10,10 +10,17 @@ import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
+import fifthelement.theelement.application.Main;
 import fifthelement.theelement.application.Persistence;
 import fifthelement.theelement.application.Services;
 import fifthelement.theelement.business.services.AlbumService;
 import fifthelement.theelement.objects.Album;
+import fifthelement.theelement.persistence.AlbumPersistence;
+import fifthelement.theelement.persistence.AuthorPersistence;
+import fifthelement.theelement.persistence.SongPersistence;
+import fifthelement.theelement.persistence.hsqldb.AlbumPersistenceHSQLDB;
+import fifthelement.theelement.persistence.hsqldb.AuthorPersistenceHSQLDB;
+import fifthelement.theelement.persistence.hsqldb.SongPersistenceHSQLDB;
 import fifthelement.theelement.utils.TestDatabaseUtil;
 
 public class AlbumServiceIT {
@@ -23,7 +30,10 @@ public class AlbumServiceIT {
     @Before
     public void setUpTestDB() throws IOException {
         this.tempDB = TestDatabaseUtil.copyDB();
-        albumService = Services.getAlbumService();
+        AlbumPersistence alp = new AlbumPersistenceHSQLDB(Main.getDBPathName());
+        SongPersistence sp = new SongPersistenceHSQLDB(Main.getDBPathName());
+        AuthorPersistence aup = new AuthorPersistenceHSQLDB(Main.getDBPathName());
+        albumService = new AlbumService(alp, sp, aup);
     }
 
     @Test
@@ -127,7 +137,5 @@ public class AlbumServiceIT {
     @After
     public void tearDownTestDB() {
         TestDatabaseUtil.killDB(tempDB);
-        Persistence.resetPersistence();
-        Services.resetServices();
     }
 }

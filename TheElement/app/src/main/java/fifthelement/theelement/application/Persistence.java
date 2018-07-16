@@ -50,11 +50,4 @@ public class Persistence {
 
         return playlistPersistence;
     }
-
-    public static synchronized void resetPersistence() {
-        songPersistence = null;
-        albumPersistence = null;
-        authorPersistence = null;
-        playlistPersistence = null;
-    }
 }

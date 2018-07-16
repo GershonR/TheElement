@@ -69,7 +69,11 @@ public class SongService {
                 if(song.getAuthor() != null)
                     song.setAuthor(authorPersistence.getAuthorByUUID(song.getAuthor().getUUID()));
                 if(song.getAlbum() != null) {
-                    song.setAlbum(albumPersistence.getAlbumByUUID(song.getAlbum().getUUID()));
+                    Album album = albumPersistence.getAlbumByUUID(song.getAlbum().getUUID());
+                    if(album.getAuthor() != null){
+                        album.setAuthor(authorPersistence.getAuthorByUUID(album.getAuthor().getUUID()));
+                    }
+                    song.setAlbum(album);
                 }
             }
         }

@@ -1,14 +1,10 @@
 package fifthelement.theelement.presentation.activities;
 
-
 import android.support.test.espresso.ViewInteraction;
 import android.support.test.rule.ActivityTestRule;
-import android.support.test.runner.AndroidJUnit4;
-import android.test.suitebuilder.annotation.LargeTest;
 
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
 import fifthelement.theelement.R;
 import fifthelement.theelement.presentation.activities.TestHelpers.AndroidTestHelpers;
@@ -23,15 +19,12 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.is;
 
-@LargeTest
-@RunWith(AndroidJUnit4.class)
-public class ShuffleSongTest {
-
+public class PlayPlaylistTest {
     @Rule
     public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);
 
     @Test
-    public void shuffleSongTest() {
+    public void playPlaylistTest() {
         ViewInteraction appCompatImageButton = onView(
                 allOf(withContentDescription("Navigate up"),
                         AndroidTestHelpers.childAtPosition(
@@ -49,19 +42,24 @@ public class ShuffleSongTest {
                                 AndroidTestHelpers.childAtPosition(
                                         withId(R.id.nvView),
                                         0)),
-                        2),
+                        3),
                         isDisplayed()));
         navigationMenuItemView.perform(click());
 
-        ViewInteraction appCompatButton = onView(
-                allOf(withId(R.id.shuffle), withText(" SHUFFLE"),
+        onView(AndroidTestHelpers.withIndex(withId(R.id.popup_button),0)).perform(click());
+
+        ViewInteraction appCompatTextView = onView(
+                allOf(withId(R.id.title), withText("Play"),
                         AndroidTestHelpers.childAtPosition(
                                 AndroidTestHelpers.childAtPosition(
-                                        withClassName(is("android.widget.LinearLayout")),
+                                        withClassName(is("android.support.v7.view.menu.ListMenuItemView")),
                                         0),
-                                1),
+                                0),
                         isDisplayed()));
-        appCompatButton.perform(click());
+        appCompatTextView.perform(click());
 
+        // The important part of the test
+        String toCheck = "Now Playing:";
+        AndroidTestHelpers.toastStringChecker(toCheck, mActivityTestRule);
     }
 }

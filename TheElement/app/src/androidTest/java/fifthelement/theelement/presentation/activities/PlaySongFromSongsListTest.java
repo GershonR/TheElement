@@ -1,37 +1,32 @@
 package fifthelement.theelement.presentation.activities;
 
-
+import android.support.test.espresso.DataInteraction;
 import android.support.test.espresso.ViewInteraction;
 import android.support.test.rule.ActivityTestRule;
-import android.support.test.runner.AndroidJUnit4;
-import android.test.suitebuilder.annotation.LargeTest;
 
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
 import fifthelement.theelement.R;
 import fifthelement.theelement.presentation.activities.TestHelpers.AndroidTestHelpers;
 
+import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withClassName;
 import static android.support.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.anything;
 import static org.hamcrest.Matchers.is;
 
-@LargeTest
-@RunWith(AndroidJUnit4.class)
-public class ShuffleSongTest {
-
+public class PlaySongFromSongsListTest {
     @Rule
     public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);
 
     @Test
-    public void shuffleSongTest() {
+    public void playSongFromSongsList() {
         ViewInteraction appCompatImageButton = onView(
                 allOf(withContentDescription("Navigate up"),
                         AndroidTestHelpers.childAtPosition(
@@ -53,15 +48,13 @@ public class ShuffleSongTest {
                         isDisplayed()));
         navigationMenuItemView.perform(click());
 
-        ViewInteraction appCompatButton = onView(
-                allOf(withId(R.id.shuffle), withText(" SHUFFLE"),
+        DataInteraction frameLayout = onData(anything())
+                .inAdapterView(allOf(withId(R.id.song_list_view),
                         AndroidTestHelpers.childAtPosition(
-                                AndroidTestHelpers.childAtPosition(
-                                        withClassName(is("android.widget.LinearLayout")),
-                                        0),
-                                1),
-                        isDisplayed()));
-        appCompatButton.perform(click());
+                                withClassName(is("android.widget.LinearLayout")),
+                                1)))
+                .atPosition(0);
+        frameLayout.perform(click());
 
     }
 }

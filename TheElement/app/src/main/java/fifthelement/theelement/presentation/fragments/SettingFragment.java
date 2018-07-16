@@ -58,13 +58,7 @@ public class SettingFragment extends Fragment {
                     selectTheme();
                 }
                 else if(position == 1){
-                    SongService songService = Services.getSongService();
-                    SongListService songListService = Services.getSongListService();
-                    songService.clearAllSongs();
-                    songListService.setCurrentSongsList(songService.getSongs());
-                    songListService.setAllSongsList(songService.getSongs());
-                    Services.getMusicService().reset();
-                    Helpers.getToastHelper((getActivity()).getApplicationContext()).sendToast("Deleted all songs");
+                    deleteSongsConfirmDialog();
                 }
             }
         });
@@ -81,6 +75,27 @@ public class SettingFragment extends Fragment {
                 .setItems(SettingsConstants.THEMES, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int clicked) {
                         ThemeUtil.changeToTheme(getActivity(), clicked);
+                    }
+                });
+        builder.create();
+        builder.show();
+    }
+
+    private void deleteSongsConfirmDialog(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("Are you sure you want to delete all songs?:")
+
+                .setItems(SettingsConstants.YES_NO_OPTIONS, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int clicked) {
+                        if(clicked == 0){
+                            SongService songService = Services.getSongService();
+                            SongListService songListService = Services.getSongListService();
+                            songService.clearAllSongs();
+                            songListService.setCurrentSongsList(songService.getSongs());
+                            songListService.setAllSongsList(songService.getSongs());
+                            Services.getMusicService().reset();
+                            Helpers.getToastHelper((getActivity()).getApplicationContext()).sendToast("Deleted all songs");
+                        }
                     }
                 });
         builder.create();

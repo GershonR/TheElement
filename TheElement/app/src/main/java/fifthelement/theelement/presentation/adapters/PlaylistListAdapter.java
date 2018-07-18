@@ -165,7 +165,6 @@ public class PlaylistListAdapter extends BaseAdapter {
                 songListService.setPlayerCurrentSongs(playlist);
                 Helpers.getToastHelper(context).sendToast("Playing " + playlist.getName());
                 getMusicService().playSongAsync();
-                activity.startNotificationService(null);
             }
         } catch(PersistenceException p) {
             Helpers.getToastHelper(context).sendToast("Could not play " + playlist.getName());

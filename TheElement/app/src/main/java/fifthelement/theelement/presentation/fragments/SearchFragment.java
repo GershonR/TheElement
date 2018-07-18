@@ -79,10 +79,7 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
                                         int position, long id) {
                     songListService.setCurrentSongsList(currentSearchResults);
                     songListService.setAutoplayEnabled(false);
-                    boolean result = musicService.playSongAsync(songListService.getSongAtIndex(position));
-                    if(result) {
-                        ((MainActivity)getActivity()).startNotificationService(view.findViewById(R.id.toolbar));
-                    }
+                    musicService.playSongAsync(songListService.getSongAtIndex(position));
                 }
             });
 

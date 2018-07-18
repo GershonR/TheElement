@@ -257,17 +257,10 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
                 songListService.setPlayerCurrentSongs(currentPlaylist);
                 musicService.playSongAsync(songListService.getSongAtIndex(which));
-                startNotificationService(null);
             }
         });
 
         builderSingle.show();
-    }
-
-    public void startNotificationService(View v) {
-        Intent serviceIntent = new Intent(MainActivity.this, NotificationService.class);
-        serviceIntent.setAction(NotificationConstants.STARTFOREGROUND_ACTION);
-        startService(serviceIntent);
     }
 
     private ServiceConnection musicConnection = new ServiceConnection() {

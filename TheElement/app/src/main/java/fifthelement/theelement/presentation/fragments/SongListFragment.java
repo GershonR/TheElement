@@ -93,7 +93,6 @@ public class SongListFragment extends Fragment {
                     boolean result = musicService.playSongAsync(songListService.getSongAtIndex(position));
                     if (result) {
                         songListService.setShuffleEnabled(false);
-                        ((MainActivity) getActivity()).startNotificationService(view.findViewById(R.id.toolbar));
                     }
                 }
             });

@@ -20,6 +20,8 @@ import fifthelement.theelement.application.Services;
 import fifthelement.theelement.business.services.SongListService;
 import fifthelement.theelement.business.services.SongService;
 import fifthelement.theelement.objects.Song;
+import fifthelement.theelement.presentation.activities.MainActivity;
+import fifthelement.theelement.presentation.constants.NotificationConstants;
 import fifthelement.theelement.presentation.fragments.SeekerFragment;
 
 
@@ -138,12 +140,24 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
                     start();
                     songService.songIsPlayed(currentSongPlaying.getUUID());
                     Helpers.getToastHelper(getApplicationContext()).sendToast("Now Playing: " + currentSongPlaying.getName());
+                    if(notificationPlaybackListener != null){
+                        notificationPlaybackListener.onSkip();
+                    } else {
+                        startNotificationService();
+                    }
                 }
 
             });
             return true;
         }
         return false;
+    }
+
+    // Start the notification service if it did not exist
+    public void startNotificationService() {
+        Intent serviceIntent = new Intent(getApplicationContext(), NotificationService.class);
+        serviceIntent.setAction(NotificationConstants.STARTFOREGROUND_ACTION);
+        startService(serviceIntent);
     }
 
     // This function will reset the MediaPlayer instance and reset seekbar UI positions to start.

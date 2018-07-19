@@ -305,4 +305,9 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
+    @Override
+    public void onBackPressed(){
+        moveTaskToBack(true);
+    }
+
 }

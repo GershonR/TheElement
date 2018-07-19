@@ -39,7 +39,7 @@
     <ImageButton
         android:id="@+id/popup_button"
         style="@style/Widget.AppCompat.ImageButton"
-        android:layout_width="50dp"
+        android:layout_width="30dp"
         android:layout_height="match_parent"
         android:layout_gravity="right"
         android:adjustViewBounds="true"

@@ -298,6 +298,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
+        musicService.stopNotificationService();
         stopService(playIntent);
         unbindService(musicConnection);
         musicService = null;

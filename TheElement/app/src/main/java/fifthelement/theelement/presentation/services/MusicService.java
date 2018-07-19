@@ -160,6 +160,12 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
         startService(serviceIntent);
     }
 
+    public void stopNotificationService() {
+        Intent serviceIntent = new Intent(getApplicationContext(), NotificationService.class);
+        serviceIntent.setAction(NotificationConstants.STARTFOREGROUND_ACTION);
+        stopService(serviceIntent);
+    }
+
     // This function will reset the MediaPlayer instance and reset seekbar UI positions to start.
     public void reset() {
         if(seekerPlaybackListener != null){

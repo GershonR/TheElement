@@ -242,7 +242,7 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
 
     // This function will return the current position of playback in ms.
     public int getCurrentPosition() {
-        if(playerPrepared) {
+        if(playerPrepared && player != null) {
             return player.getCurrentPosition();
         }
         else {

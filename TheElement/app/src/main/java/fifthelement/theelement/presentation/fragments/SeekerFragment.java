@@ -178,10 +178,12 @@ public class SeekerFragment extends Fragment {
             mSeekbarPositionUpdateTask = null;
             if (resetUIPlaybackPosition) {
                 mSeekbarAudio.setProgress(0);
+                currDurr.setText(" 0:00");
             }
         }
         if(songDurationUpdateTask != null) {
             timerHandler.removeCallbacks(songDurationUpdateTask);
+            songDurationUpdateTask = null;
         }
     }
 
@@ -197,6 +199,7 @@ public class SeekerFragment extends Fragment {
             if (!mUserIsSeeking) {
                 mSeekbarAudio.setProgress(currentPosition);
             }
+            currDurr.setText(SongUtil.getTimeString(currentPosition));
         }
     }
 

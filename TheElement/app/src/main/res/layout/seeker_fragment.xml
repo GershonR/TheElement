@@ -20,11 +20,13 @@
 
         <TextView
             android:id="@+id/song_curr_duration"
-            android:layout_width="150dp"
+            android:layout_width="50dp"
             android:layout_height="30dp"
+            android:layout_weight="3"
+            android:paddingLeft="15dp"
             android:gravity="left"
             android:text=""
-            android:textSize="15sp" />
+            android:textSize="13sp" />
 
         <ImageButton
             android:id="@+id/button_prev"
@@ -56,11 +58,13 @@
 
         <TextView
             android:id="@+id/song_duration"
-            android:layout_width="150dp"
+            android:layout_width="50dp"
             android:layout_height="30dp"
+            android:layout_weight="3"
+            android:paddingRight="15dp"
             android:gravity="right"
             android:text=""
-            android:textSize="15sp" />
+            android:textSize="13sp" />
     </LinearLayout>
 
     <SeekBar

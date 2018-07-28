@@ -65,7 +65,6 @@ public class NotificationService extends Service {
                 stopForeground(true);
                 stopSelf();
             }
-            return START_STICKY;
         } catch (Exception e) {
             Log.e(LOG_TAG, e.getMessage());
         }

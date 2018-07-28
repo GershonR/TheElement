@@ -37,6 +37,13 @@ public class PlaylistServiceIT {
         PlaylistPersistence pp = new PlaylistPersistenceHSQLDB(Main.getDBPathName());
         SongPersistence sp = new SongPersistenceHSQLDB(Main.getDBPathName());
         playlistService = new PlaylistService(pp, sp);
+        try {
+            playlistService.insertPlaylist(new Playlist("Test Playlist"));
+            playlistService.insertPlaylist(new Playlist("Another Test Playlist"));
+            playlistService.insertPlaylist(new Playlist("Some Other Test Playlist"));
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     @Test

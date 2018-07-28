@@ -15,6 +15,7 @@ import fifthelement.theelement.application.Persistence;
 import fifthelement.theelement.application.Services;
 import fifthelement.theelement.business.services.AlbumService;
 import fifthelement.theelement.objects.Album;
+import fifthelement.theelement.objects.Song;
 import fifthelement.theelement.persistence.AlbumPersistence;
 import fifthelement.theelement.persistence.AuthorPersistence;
 import fifthelement.theelement.persistence.SongPersistence;
@@ -34,6 +35,11 @@ public class AlbumServiceIT {
         SongPersistence sp = new SongPersistenceHSQLDB(Main.getDBPathName());
         AuthorPersistence aup = new AuthorPersistenceHSQLDB(Main.getDBPathName());
         albumService = new AlbumService(alp, sp, aup);
+        try {
+            albumService.insertAlbum(new Album("A Head Full of Dreams"));
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     @Test

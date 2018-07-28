@@ -18,6 +18,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+        <TextView
+            android:id="@+id/song_curr_duration"
+            android:layout_width="50dp"
+            android:layout_height="30dp"
+            android:layout_weight="3"
+            android:paddingLeft="15dp"
+            android:gravity="left"
+            android:text=""
+            android:textSize="13sp" />
+
         <ImageButton
             android:id="@+id/button_prev"
             android:layout_width="101dp"
@@ -45,13 +55,22 @@
             android:background="@android:color/transparent"
             android:cropToPadding="false"
             android:src="@drawable/ic_skip_big" />
+
+        <TextView
+            android:id="@+id/song_duration"
+            android:layout_width="50dp"
+            android:layout_height="30dp"
+            android:layout_weight="3"
+            android:paddingRight="15dp"
+            android:gravity="right"
+            android:text=""
+            android:textSize="13sp" />
     </LinearLayout>
 
-     <SeekBar
-         android:id="@+id/seekbar_audio"
-         android:layout_width="match_parent"
-         android:layout_height="30dp"
-         android:layout_marginTop="10dp"
-         android:layout_weight="4" />
+    <SeekBar
+        android:id="@+id/seekbar_audio"
+        android:layout_width="match_parent"
+        android:layout_height="15dp"
+        android:layout_weight="4" />
 
 </android.support.constraint.ConstraintLayout>

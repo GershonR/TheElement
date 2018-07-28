@@ -47,6 +47,14 @@ public class SongServiceIT {
         AuthorPersistence aup = new AuthorPersistenceHSQLDB(Main.getDBPathName());
         PlaylistPersistence pp = new PlaylistPersistenceHSQLDB(Main.getDBPathName());
         songService = new SongService(sp, alp, aup, pp);
+        try {
+            songService.insertSong(new Song("This Is America", "example/Path"));
+            songService.insertSong(new Song("Classical", "test/Path1"));
+            songService.insertSong(new Song("Adventure of a Lifetime", "ok/Path2"));
+            songService.insertSong(new Song("Hall of Fame", "another/Path3"));
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     @Test

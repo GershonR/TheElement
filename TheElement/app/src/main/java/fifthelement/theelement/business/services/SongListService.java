@@ -103,6 +103,10 @@ public class SongListService {
             for(int i = 0; i < currentSongsList.size() && !removed; i++){
                 if(song.getUUID().equals(currentSongsList.get(i).getUUID())){
                     currentSongsList.remove(i);
+                    if(i == getCurrentSongPlayingIndex() && i > 0)
+                        setCurrentSongPlayingIndex(i - 1);
+                    else if(i == getCurrentSongPlayingIndex())
+                        setCurrentSongPlayingIndex(currentSongsList.size()-1);
                     removed = true;
                 }
             }
@@ -120,6 +124,8 @@ public class SongListService {
     public void setShuffled(boolean value){
         shuffled = value;
     }
+
+    public void setCurrentSongPlayingIndex(int currentSongPlayingIndex) { this.currentSongPlayingIndex = currentSongPlayingIndex; }
 
     public boolean getShuffled(){
         return shuffled;

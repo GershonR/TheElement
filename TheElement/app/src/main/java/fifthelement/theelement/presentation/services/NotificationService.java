@@ -8,6 +8,7 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.Build;
 import android.os.IBinder;
+import android.util.Log;
 import android.widget.RemoteViews;
 
 import fifthelement.theelement.R;
@@ -41,27 +42,31 @@ public class NotificationService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         musicService = Services.getMusicService();
-        musicService.setNotificationPlaybackListener(new NotificationPlaybackStartStopListener());
-        if (intent.getAction().equals(NotificationConstants.STARTFOREGROUND_ACTION)) {
-            buildNotification();
-        } else if (intent.getAction().equals(NotificationConstants.PREV_ACTION)) {
-            musicService.prev();
-            buildNotification();
-        } else if (intent.getAction().equals(NotificationConstants.PLAY_ACTION)) {
-            if (musicService.isPlaying()) {
-                showPlay();
-                musicService.pause();
-            } else {
-                showPause();
-                musicService.start();
+        try {
+            musicService.setNotificationPlaybackListener(new NotificationPlaybackStartStopListener());
+            if (intent.getAction().equals(NotificationConstants.STARTFOREGROUND_ACTION)) {
+                buildNotification();
+            } else if (intent.getAction().equals(NotificationConstants.PREV_ACTION)) {
+                musicService.prev();
+                buildNotification();
+            } else if (intent.getAction().equals(NotificationConstants.PLAY_ACTION)) {
+                if (musicService.isPlaying()) {
+                    showPlay();
+                    musicService.pause();
+                } else {
+                    showPause();
+                    musicService.start();
+                }
+            } else if (intent.getAction().equals(NotificationConstants.NEXT_ACTION)) {
+                musicService.skip();
+                buildNotification();
+            } else if (intent.getAction().equals(NotificationConstants.STOPFOREGROUND_ACTION)) {
+                Services.getMusicService().pause();
+                stopForeground(true);
+                stopSelf();
             }
-        } else if (intent.getAction().equals(NotificationConstants.NEXT_ACTION)) {
-            musicService.skip();
-            buildNotification();
-        } else if (intent.getAction().equals(NotificationConstants.STOPFOREGROUND_ACTION)) {
-            Services.getMusicService().pause();
-            stopForeground(true);
-            stopSelf();
+        } catch (Exception e) {
+            Log.e(LOG_TAG, e.getMessage());
         }
         return START_STICKY;
     }

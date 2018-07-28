@@ -17,6 +17,7 @@ import fifthelement.theelement.business.services.AlbumService;
 import fifthelement.theelement.business.services.AuthorService;
 import fifthelement.theelement.objects.Album;
 import fifthelement.theelement.objects.Author;
+import fifthelement.theelement.objects.Song;
 import fifthelement.theelement.persistence.AuthorPersistence;
 import fifthelement.theelement.persistence.hsqldb.AuthorPersistenceHSQLDB;
 import fifthelement.theelement.utils.TestDatabaseUtil;
@@ -30,7 +31,14 @@ public class AuthorServiceIT {
         this.tempDB = TestDatabaseUtil.copyDB();
         AuthorPersistence ap = new AuthorPersistenceHSQLDB(Main.getDBPathName());
         authorService = new AuthorService(ap);
+        try {
+            authorService.insertAuthor(new Author("Coldplay"));
+            authorService.insertAuthor(new Author("Childish Gambino"));
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
+
 
     @Test
     public void getAllAuthorsTest() {

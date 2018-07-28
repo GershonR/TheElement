@@ -1,13 +1,16 @@
 package fifthelement.theelement.presentation.fragments;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
+import android.widget.TextView;
 
+import java.util.Observable;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -15,6 +18,7 @@ import java.util.concurrent.TimeUnit;
 import fifthelement.theelement.R;
 import fifthelement.theelement.application.Services;
 import fifthelement.theelement.presentation.services.MusicService;
+import fifthelement.theelement.presentation.util.SongUtil;
 
 public class SeekerFragment extends Fragment {
 
@@ -26,13 +30,18 @@ public class SeekerFragment extends Fragment {
     private boolean mUserIsSeeking = false;
     private ScheduledExecutorService mExecutor;
     private Runnable mSeekbarPositionUpdateTask;
+    private Runnable songDurationUpdateTask;
+    private TextView currDurr;
+    private Handler timerHandler;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         view = inflater.inflate(R.layout.seeker_fragment, container, false);
+        currDurr = view.findViewById(R.id.song_curr_duration);
 
+        timerHandler = new Handler();
         musicService = Services.getMusicService();
         initializeUI();
         initializeSeekbar();
@@ -105,6 +114,7 @@ public class SeekerFragment extends Fragment {
                     public void onStopTrackingTouch(SeekBar seekBar) {
                         mUserIsSeeking = false;
                         musicService.seekTo(userSelectedPosition);
+                        currDurr.setText(SongUtil.getTimeString(userSelectedPosition));
                     }
                 });
 
@@ -144,6 +154,19 @@ public class SeekerFragment extends Fragment {
                 PLAYBACK_POSITION_REFRESH_INTERVAL_MS,
                 TimeUnit.MILLISECONDS
         );
+        updateSongPositionTask();
+    }
+
+    private void updateSongPositionTask() {
+        songDurationUpdateTask = new Runnable() {
+            @Override
+            public void run() {
+                long currentPosition = musicService.getCurrentPosition();
+                currDurr.setText(SongUtil.getTimeString(currentPosition));
+                timerHandler.postDelayed(songDurationUpdateTask,1000);
+            }
+        };
+        timerHandler.post(songDurationUpdateTask);
     }
 
     // This function will stop the scheduled executor from calling UI update function and uses a
@@ -155,7 +178,12 @@ public class SeekerFragment extends Fragment {
             mSeekbarPositionUpdateTask = null;
             if (resetUIPlaybackPosition) {
                 mSeekbarAudio.setProgress(0);
+                currDurr.setText(" 0:00");
             }
+        }
+        if(songDurationUpdateTask != null) {
+            timerHandler.removeCallbacks(songDurationUpdateTask);
+            songDurationUpdateTask = null;
         }
     }
 
@@ -171,6 +199,14 @@ public class SeekerFragment extends Fragment {
             if (!mUserIsSeeking) {
                 mSeekbarAudio.setProgress(currentPosition);
             }
+            currDurr.setText(SongUtil.getTimeString(currentPosition));
+        }
+    }
+
+    private void setDisplayDuration() {
+        if (musicService != null && musicService.getCurrentSongPlaying() != null) {
+            TextView songDuration = view.findViewById(R.id.song_duration);
+            songDuration.setText(SongUtil.getSongDuration(musicService.getCurrentSongPlaying()));
         }
     }
 
@@ -179,6 +215,7 @@ public class SeekerFragment extends Fragment {
             ImageButton mPlayButton = view.findViewById(R.id.button_play_pause);
             mPlayButton.setImageResource(R.drawable.ic_pause_button);
             startUpdatingCallbackWithPosition();
+            setDisplayDuration();
         }
 
         public void onPlaybackStop(boolean resetUIPlaybackPosition){

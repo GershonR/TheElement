@@ -56,4 +56,46 @@ public class SongUtil {
 
         return bm;
     }
+
+    /**
+     * This method will take a song and retrieve its total duration
+     * @param song      The song to extract the total duration from
+     * @return          The songs total duration, formatted as X.XX
+     */
+    public static String getSongDuration(Song song) {
+        String out = "";
+        // load data file
+        try {
+            MediaMetadataRetriever metaRetriever = new MediaMetadataRetriever();
+            metaRetriever.setDataSource(song.getPath());
+
+            String duration = metaRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
+            long dur = Long.parseLong(duration);
+
+            out = getTimeString(dur);
+            metaRetriever.release();
+        } catch (Exception e) {
+            Log.e(LOG_TAG, e.toString());
+        }
+        return out;
+    }
+
+    /**
+     * This method takes milliseconds and converts them into a formatted X:XX time string
+     * @param millis    milliseconds to convert
+     * @return          the converted milliseconds
+     */
+    public static String getTimeString(long millis) {
+        StringBuffer buf = new StringBuffer();
+
+        int minutes = (int) ((millis % (1000 * 60 * 60)) / (1000 * 60));
+        int seconds = (int) (((millis % (1000 * 60 * 60)) % (1000 * 60)) / 1000);
+
+        buf
+                .append(String.format("%2d", minutes))
+                .append(":")
+                .append(String.format("%02d", seconds));
+
+        return buf.toString();
+    }
 }

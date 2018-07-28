@@ -209,18 +209,28 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
 
     // Skips to the next song in the list
     public void skip() {
-        songService.songIsSkipped(songListService.getSongAtIndex(songListService.getCurrentSongPlayingIndex()).getUUID());
-        playSongAsync(songListService.skipToNextSong());
-        if(notificationPlaybackListener != null){
+        Song currentSong = songListService.getSongAtIndex(songListService.getCurrentSongPlayingIndex());
+        if(currentSong != null) {
+            songService.songIsSkipped(currentSong.getUUID());
+            playSongAsync(songListService.skipToNextSong());
+        } else {
+            playSongAsync(songListService.getSongAtIndex(0));
+        }
+        if (notificationPlaybackListener != null) {
             notificationPlaybackListener.onSkip();
         }
     }
 
     // Skips to the previous song in the list
     public void prev() {
-        songService.songIsSkipped(songListService.getSongAtIndex(songListService.getCurrentSongPlayingIndex()).getUUID());
-        playSongAsync(songListService.goToPrevSong());
-        if(notificationPlaybackListener != null){
+        Song currentSong = songListService.getSongAtIndex(songListService.getCurrentSongPlayingIndex());
+        if(currentSong != null) {
+            songService.songIsSkipped(currentSong.getUUID());
+            playSongAsync(songListService.goToPrevSong());
+        } else {
+            playSongAsync(songListService.getSongAtIndex(0));
+        }
+        if (notificationPlaybackListener != null) {
             notificationPlaybackListener.onSkip();
         }
     }

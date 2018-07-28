@@ -306,18 +306,18 @@ public class SongService {
         Album album = null;
         if( song != null ) {
             song.incrNumPlayed();
-            if( song.getAuthor() != null ) {
+            if (song.getAuthor() != null) {
                 author = Services.getAuthorService().getAuthorByUUID(song.getAuthor().getUUID());
                 author.incrNumPlayed();
                 Services.getAuthorService().updateAuthor(author);
             }
-            if( song.getAlbum() != null ) {
+            if (song.getAlbum() != null) {
                 album = Services.getAlbumService().getAlbumByUUID(song.getAlbum().getUUID());
                 album.incrNumPlayed();
                 Services.getAlbumService().updateAlbum(album);
             }
+            this.updateSong(song);
         }
-        this.updateSong(song);
     }
 
     // if the song is skipped then we shouldn't count it as a played

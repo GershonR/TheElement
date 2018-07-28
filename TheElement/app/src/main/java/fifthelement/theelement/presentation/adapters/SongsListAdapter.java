@@ -117,7 +117,6 @@ public class SongsListAdapter extends BaseAdapter {
             if(Services.getMusicService().getCurrentSongPlaying() != null
                     && Services.getMusicService().getCurrentSongPlaying().getUUID().equals(song.getUUID())) {
                 Services.getMusicService().reset();
-
             }
             activity.getSongService().deleteSong(song);
             songs.remove(song);

@@ -2,6 +2,8 @@ package fifthelement.theelement.presentation.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +25,7 @@ import fifthelement.theelement.presentation.services.MusicService;
 
 public class SearchFragment extends Fragment implements SearchView.OnQueryTextListener {
     private SearchView mSearchView;
-    private ListView mListView;
+    private RecyclerView recyclerView;
     private View view;
     private SongService songService;
     private SongListService songListService;
@@ -56,38 +58,19 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
         currentSearchResults = songService.getSongs();
 
         view = inflater.inflate(R.layout.search_fragment, container, false);
-        ListView listView = view.findViewById(R.id.search_song_list_view_item);
+        RecyclerView listView = view.findViewById(R.id.search_song_list_view_item);
         mSearchView = view.findViewById(R.id.search_view_item);
-        mListView = view.findViewById(R.id.search_song_list_view_item);
+        recyclerView = view.findViewById(R.id.search_song_list_view_item);
 
         onQueryTextListener = createNewOnQueryTextListener();
 
         songsListAdapter = new SongsListAdapter(getActivity(), songService.getSongs());
-        mListView.setAdapter(songsListAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.setAdapter(songsListAdapter);
 
         setupSearchView();
 
-        playSongOnClick(listView);
         return view;
-    }
-
-    private void playSongOnClick(ListView listView) {
-        if(currentSearchResults != null) {
-            final SongsListAdapter songListAdapter = new SongsListAdapter(getActivity(), currentSearchResults);
-            listView.setAdapter(songListAdapter);
-            listView.setOnItemClickListener(new AdapterView.OnItemClickListener()
-            {
-
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view,
-                                        int position, long id) {
-                    songListService.setCurrentSongsList(currentSearchResults);
-                    songListService.setAutoplayEnabled(false);
-                    musicService.playSongAsync(songListService.getSongAtIndex(position));
-                }
-            });
-
-        }
     }
 
     private void clearSearchViewResults(){
@@ -105,7 +88,7 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
             public boolean onQueryTextSubmit(String query) {
                 currentSearchResults = songService.search(query);
                 songsListAdapter = new SongsListAdapter(getActivity(), currentSearchResults);
-                mListView.setAdapter(songsListAdapter);
+                recyclerView.setAdapter(songsListAdapter);
                 songsListAdapter.notifyDataSetChanged();
                 return false;
             }
@@ -114,7 +97,7 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
             public boolean onQueryTextChange(String newText) {
                 currentSearchResults = songService.search(newText);
                 songsListAdapter = new SongsListAdapter(getActivity(), currentSearchResults);
-                mListView.setAdapter(songsListAdapter);
+                recyclerView.setAdapter(songsListAdapter);
                 songsListAdapter.notifyDataSetChanged();
                 return false;
             }

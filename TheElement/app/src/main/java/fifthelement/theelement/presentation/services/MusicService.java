@@ -1,6 +1,9 @@
 package fifthelement.theelement.presentation.services;
 
+import android.app.Activity;
+import android.app.Application;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
@@ -20,8 +23,10 @@ import fifthelement.theelement.application.Services;
 import fifthelement.theelement.business.services.SongListService;
 import fifthelement.theelement.business.services.SongService;
 import fifthelement.theelement.objects.Song;
+import fifthelement.theelement.presentation.activities.Delagate;
 import fifthelement.theelement.presentation.activities.MainActivity;
 import fifthelement.theelement.presentation.constants.NotificationConstants;
+import fifthelement.theelement.presentation.fragments.NowPlaying;
 import fifthelement.theelement.presentation.fragments.SeekerFragment;
 
 
@@ -31,6 +36,7 @@ import fifthelement.theelement.presentation.fragments.SeekerFragment;
 public class MusicService extends Service implements MediaPlayer.OnPreparedListener,
         MediaPlayer.OnErrorListener, MediaPlayer.OnCompletionListener {
 
+    private MainActivity mainActivity;
     private MediaPlayer player;
     private boolean playerPrepared;
     private SongListService songListService;
@@ -63,6 +69,7 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
         songListService = Services.getSongListService();
         player = new MediaPlayer();
         initMusicPlayer();
+        mainActivity = Delagate.mainActivity;
     }
 
     //This function acts as a callback that occurs when the private MediaPlayer
@@ -216,9 +223,7 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
         } else {
             playSongAsync(songListService.getSongAtIndex(0));
         }
-        if (notificationPlaybackListener != null) {
-            notificationPlaybackListener.onSkip();
-        }
+        updateSong();
     }
 
     // Skips to the previous song in the list
@@ -230,8 +235,27 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
         } else {
             playSongAsync(songListService.getSongAtIndex(0));
         }
+        updateSong();
+    }
+
+    // Update the notificaction & NowPlaying
+    private void updateSong() {
         if (notificationPlaybackListener != null) {
             notificationPlaybackListener.onSkip();
+        }
+
+        updateFragment();
+    }
+
+
+    // If on NowPlaying page, update the page when a skip happens
+    private void updateFragment() {
+        if(mainActivity == null)
+            return;
+        NowPlaying nowPlaying = (NowPlaying) mainActivity.getSupportFragmentManager().findFragmentByTag("NowPlaying");
+        if (nowPlaying != null && nowPlaying.isVisible()) {
+            NowPlaying newNowPlaying = new NowPlaying();
+            Helpers.getFragmentHelper(mainActivity).createFragment(R.id.flContent, newNowPlaying, "NowPlaying");
         }
     }
 

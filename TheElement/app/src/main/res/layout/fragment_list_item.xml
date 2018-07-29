@@ -5,6 +5,9 @@
     android:layout_height="wrap_content"
     android:padding="10dp"
     android:descendantFocusability="blocksDescendants"
+    android:background="?android:attr/selectableItemBackground"
+    android:clickable="true"
+    android:focusable="true"
     tools:context=".presentation.fragments.SongListItemFragment">
 
 

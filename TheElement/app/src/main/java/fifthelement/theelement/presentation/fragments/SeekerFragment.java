@@ -86,7 +86,6 @@ public class SeekerFragment extends Fragment {
                     @Override
                     public void onClick(View view) {
                         musicService.skip();
-                        updateFragment();
                     }
                 });
 
@@ -95,17 +94,8 @@ public class SeekerFragment extends Fragment {
                     @Override
                     public void onClick(View view) {
                         musicService.prev();
-                        updateFragment();
                     }
                 });
-    }
-
-    private void updateFragment() {
-        NowPlaying nowPlaying = (NowPlaying) mainActivity.getSupportFragmentManager().findFragmentByTag("NowPlaying");
-        if (nowPlaying != null && nowPlaying.isVisible()) {
-            NowPlaying newNowPlaying = new NowPlaying();
-            Helpers.getFragmentHelper(mainActivity).createFragment(R.id.flContent, newNowPlaying, "NowPlaying");
-        }
     }
 
     private void initializeSeekbar() {

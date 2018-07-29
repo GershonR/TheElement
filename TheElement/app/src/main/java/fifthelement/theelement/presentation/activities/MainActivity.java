@@ -102,6 +102,8 @@ public class MainActivity extends AppCompatActivity {
         playlistService = new PlaylistService();
         //Sets current song list to the list of all songs in app
         songListService.setCurrentSongsList(songService.getSongs());
+
+        Delagate.mainActivity = this;
     }
 
     private void setActionBarTitleAsMarquee(){

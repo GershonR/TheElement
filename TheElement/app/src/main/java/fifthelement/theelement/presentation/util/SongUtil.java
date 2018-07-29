@@ -1,11 +1,19 @@
 package fifthelement.theelement.presentation.util;
 
+import android.content.ContentResolver;
+import android.content.ContentUris;
 import android.content.Context;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.MediaMetadataRetriever;
 import android.net.Uri;
+import android.provider.MediaStore;
 import android.util.Log;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 
 import fifthelement.theelement.R;
 import fifthelement.theelement.objects.Song;
@@ -55,6 +63,55 @@ public class SongUtil {
             bm = getDefaultAlbumArt(context);
 
         return bm;
+    }
+
+    public static Uri getSongURIAlbumArt(Context context, Song song) {
+        String[] projections = {MediaStore.Audio.Media.ALBUM_ID};
+        Cursor cursor = null;
+        Uri toReturn;
+        try {
+            Uri songURI = Uri.fromFile(new File(song.getPath()));
+            System.out.println(songURI.getPath());
+            cursor = context.getContentResolver().query(songURI, projections, null, null, null);
+            if(cursor == null)
+                System.out.println("Cursor is null");
+            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM_ID);
+            cursor.moveToFirst();
+
+            Uri songCover = Uri.parse("content://media/external/audio/albumart");
+            toReturn = ContentUris.withAppendedId(songCover, column_index);
+        } finally {
+            if(cursor != null){
+                cursor.close();
+            }
+        }
+        if(toReturn == null)
+            toReturn = Uri.parse("android.resource://"+context.getPackageName()+ R.drawable.default_album_art);
+        return toReturn;
+    }
+
+    public static Uri getArtUriFromMusicFile(Context context, Song song) {
+        final Uri uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+        final String[] cursor_cols = { MediaStore.Audio.Media.ALBUM_ID };
+
+        final String where = MediaStore.Audio.Media.IS_MUSIC + "=1 AND " + MediaStore.Audio.Media.DATA + " = '"
+                + song.getPath() + "'";
+        System.out.println(where);
+        final Cursor cursor = context.getApplicationContext().getContentResolver().query(uri, cursor_cols, where, null, null);
+        /*
+         * If the cusor count is greater than 0 then parse the data and get the art id.
+         */
+        if (cursor != null && cursor.getCount() > 0) {
+            cursor.moveToFirst();
+            Long albumId = cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM_ID));
+
+            Uri sArtworkUri = Uri.parse("content://media/external/audio/albumart");
+            Uri albumArtUri = ContentUris.withAppendedId(sArtworkUri, albumId);
+            cursor.close();
+            return albumArtUri;
+        }
+        cursor.close();
+        return Uri.parse("android.resource://fifthelement.theelement/drawable/default_album_art");
     }
 
     /**

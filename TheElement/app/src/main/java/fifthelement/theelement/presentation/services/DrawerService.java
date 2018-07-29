@@ -5,11 +5,13 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 
 import fifthelement.theelement.R;
 import fifthelement.theelement.application.Helpers;
-import fifthelement.theelement.presentation.fragments.HomeFragment;
+import fifthelement.theelement.application.Services;
+import fifthelement.theelement.presentation.fragments.NowPlaying;
 import fifthelement.theelement.presentation.fragments.PlaylistListFragment;
 import fifthelement.theelement.presentation.fragments.SearchFragment;
 import fifthelement.theelement.presentation.fragments.SettingFragment;
@@ -46,7 +48,7 @@ public class DrawerService {
         Class fragmentClass = null;
         switch(menuItem.getItemId()) {
             case R.id.home_page:
-                fragmentClass = HomeFragment.class;
+                fragmentClass = NowPlaying.class;
                 break;
             case R.id.playlist_list:
                 fragmentClass = PlaylistListFragment.class;

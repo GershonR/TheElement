@@ -26,6 +26,9 @@ public class SongInfoFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        MainActivity activity = (MainActivity) getActivity();
+        activity.getSupportActionBar().setTitle("Song Info");
+
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_song_info, container, false);
 

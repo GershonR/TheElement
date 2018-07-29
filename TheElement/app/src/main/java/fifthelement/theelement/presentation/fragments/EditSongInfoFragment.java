@@ -1,5 +1,6 @@
 package fifthelement.theelement.presentation.fragments;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -27,6 +28,8 @@ public class EditSongInfoFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+        MainActivity activity = (MainActivity) getActivity();
+        activity.getSupportActionBar().setTitle("Edit Song");
 
         View view = inflater.inflate(R.layout.fragment_edit_song_info, container, false);
 

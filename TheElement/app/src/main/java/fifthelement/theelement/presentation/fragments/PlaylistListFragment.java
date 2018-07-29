@@ -30,6 +30,8 @@ public class PlaylistListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        MainActivity activity = (MainActivity) getActivity();
+        activity.getSupportActionBar().setTitle("Playlists");
         playlistService = ((MainActivity)getActivity()).getPlaylistService();
         try {
             playlists = playlistService.getAllPlaylists();

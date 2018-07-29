@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">The Element</string>
 
-    <string name="home_page">Home</string>
+    <string name="now_playing">Now Playing</string>
     <string name="song_list">Song List</string>
     <string name="action_settings">Edit Settings</string>
     <string name="statistics">Player Statistics</string>

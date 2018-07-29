@@ -40,6 +40,9 @@ public class SettingFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+        MainActivity activity = (MainActivity) getActivity();
+        activity.getSupportActionBar().setTitle("Settings");
+
         // Find the ListView resource.
         view = inflater.inflate(R.layout.setting_fragment, container, false);
         mainListView = view.findViewById(R.id.library_view);

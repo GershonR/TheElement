@@ -8,21 +8,26 @@
     tools:context=".presentation.fragments.SongListItemFragment">
 
 
+    <ImageView
+        android:id="@+id/song_list_album_art"
+        android:layout_width="@dimen/song_list_album_art"
+        android:layout_height="@dimen/song_list_album_art"
+        />
+
+
     <TextView
         android:id="@+id/primary_string"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginRight="50dp"
-        android:ellipsize="marquee"
+        android:layout_marginLeft="@dimen/song_list_padding"
         android:focusable="true"
         android:focusableInTouchMode="true"
-        android:marqueeRepeatLimit="marquee_forever"
         android:paddingTop="0dp"
-        android:scrollHorizontally="true"
         android:singleLine="true"
         android:text="TextView"
         android:textColor="@android:color/black"
-        android:textSize="22dp"
+        android:textSize="20dp"
         android:textStyle="normal"/>
 
     <TextView
@@ -30,11 +35,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginRight="50dp"
+        android:layout_marginLeft="@dimen/song_list_padding"
         android:layout_marginTop="30dp"
         android:singleLine="true"
         android:text="TextView2"
         android:textColor="@android:color/black"
-        android:textSize="16dp" />
+        android:textSize="15dp" />
 
     <ImageButton
         android:id="@+id/popup_button"

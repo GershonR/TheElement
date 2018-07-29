@@ -12,11 +12,11 @@ public class FragmentHelper {
         this.application = application;
     }
 
-    public void createFragment(int id, Fragment fragment) {
+    public void createFragment(int id, Fragment fragment, String tag) {
         FragmentManager fragmentManager = application.getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-        transaction.replace(id, fragment);
+        transaction.replace(id, fragment, tag);
 
         transaction.commit();
     }

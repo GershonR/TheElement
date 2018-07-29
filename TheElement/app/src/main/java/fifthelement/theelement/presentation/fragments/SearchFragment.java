@@ -46,6 +46,7 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
                              Bundle savedInstanceState) {
         MainActivity activity = (MainActivity) getActivity();
         activity.getSupportActionBar().setTitle("Search");
+        activity.getSupportActionBar().setSubtitle("");
 
         songService = Services.getSongService();
         songListService = Services.getSongListService();

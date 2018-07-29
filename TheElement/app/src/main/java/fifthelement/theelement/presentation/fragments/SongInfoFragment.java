@@ -28,6 +28,7 @@ public class SongInfoFragment extends Fragment {
                              Bundle savedInstanceState) {
         MainActivity activity = (MainActivity) getActivity();
         activity.getSupportActionBar().setTitle("Song Info");
+        activity.getSupportActionBar().setSubtitle("");
 
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_song_info, container, false);
@@ -80,7 +81,7 @@ public class SongInfoFragment extends Fragment {
                 catch (Exception e){
                     Log.e(LOG_TAG, e.getMessage());
                 }
-                Helpers.getFragmentHelper((MainActivity)getActivity()).createFragment(R.id.flContent, fragment);
+                Helpers.getFragmentHelper((MainActivity)getActivity()).createFragment(R.id.flContent, fragment, "EditSong");
             }
         });
 
@@ -96,7 +97,7 @@ public class SongInfoFragment extends Fragment {
                 catch (Exception e){
                     Log.e(LOG_TAG, e.getMessage());
                 }
-                Helpers.getFragmentHelper((MainActivity)getActivity()).createFragment(R.id.flContent, fragment);
+                Helpers.getFragmentHelper((MainActivity)getActivity()).createFragment(R.id.flContent, fragment, "SongList");
             }
         });
 

@@ -36,6 +36,8 @@ public class SongListFragment extends Fragment {
                              Bundle savedInstanceState) {
         MainActivity activity = (MainActivity) getActivity();
         activity.getSupportActionBar().setTitle("Song List");
+        activity.getSupportActionBar().setSubtitle("");
+
         songListService = Services.getSongListService();
         musicService = Services.getMusicService();
         songService = Services.getSongService();

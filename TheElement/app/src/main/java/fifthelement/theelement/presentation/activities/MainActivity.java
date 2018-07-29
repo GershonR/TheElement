@@ -122,7 +122,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void createDefaultPage() {
         SongListFragment songListFragment = new SongListFragment();
-        Helpers.getFragmentHelper(this).createFragment(R.id.flContent, songListFragment);
+        Helpers.getFragmentHelper(this).createFragment(R.id.flContent, songListFragment, "SongList");
     }
 
     @Override
@@ -303,7 +303,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void createSeeker() {
         SeekerFragment seeker = new SeekerFragment();//create the fragment instance
-        Helpers.getFragmentHelper(this).createFragment(R.id.music_seeker, seeker);
+        Helpers.getFragmentHelper(this).createFragment(R.id.music_seeker, seeker, "Seeker");
     }
 
     @Override

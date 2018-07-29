@@ -32,6 +32,8 @@ public class PlaylistListFragment extends Fragment {
                              Bundle savedInstanceState) {
         MainActivity activity = (MainActivity) getActivity();
         activity.getSupportActionBar().setTitle("Playlists");
+        activity.getSupportActionBar().setSubtitle("");
+
         playlistService = ((MainActivity)getActivity()).getPlaylistService();
         try {
             playlists = playlistService.getAllPlaylists();

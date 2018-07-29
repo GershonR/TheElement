@@ -99,7 +99,7 @@ public class SongsListAdapter extends BaseAdapter {
                                 catch (Exception e){
                                     Log.e(LOG_TAG, e.getMessage());
                                 }
-                                Helpers.getFragmentHelper(activity).createFragment(R.id.flContent, fragment);
+                                Helpers.getFragmentHelper(activity).createFragment(R.id.flContent, fragment, "SongInfo");
                                 break;
                             // pass the song to the main activity, to find out
                             // which playlist it needs to be added too

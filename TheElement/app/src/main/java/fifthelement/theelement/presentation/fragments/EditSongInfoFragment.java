@@ -30,6 +30,7 @@ public class EditSongInfoFragment extends Fragment {
 
         MainActivity activity = (MainActivity) getActivity();
         activity.getSupportActionBar().setTitle("Edit Song");
+        activity.getSupportActionBar().setSubtitle("");
 
         View view = inflater.inflate(R.layout.fragment_edit_song_info, container, false);
 
@@ -56,7 +57,7 @@ public class EditSongInfoFragment extends Fragment {
                 catch (Exception e){
                     Log.e(LOG_TAG, e.getMessage());
                 }
-                Helpers.getFragmentHelper((MainActivity)getActivity()).createFragment(R.id.flContent, fragment);
+                Helpers.getFragmentHelper((MainActivity)getActivity()).createFragment(R.id.flContent, fragment, "EditSong");
             }
         });
 

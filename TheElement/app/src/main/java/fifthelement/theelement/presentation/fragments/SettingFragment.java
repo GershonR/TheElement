@@ -42,6 +42,7 @@ public class SettingFragment extends Fragment {
 
         MainActivity activity = (MainActivity) getActivity();
         activity.getSupportActionBar().setTitle("Settings");
+        activity.getSupportActionBar().setSubtitle("");
 
         // Find the ListView resource.
         view = inflater.inflate(R.layout.setting_fragment, container, false);
@@ -72,7 +73,7 @@ public class SettingFragment extends Fragment {
                     } catch (Exception e) {
                         Log.e("PlayerStatsFragment", e.getMessage());
                     }
-                    Helpers.getFragmentHelper((MainActivity)getActivity()).createFragment(R.id.flContent, fragment);
+                    Helpers.getFragmentHelper((MainActivity)getActivity()).createFragment(R.id.flContent, fragment, "PlayerStats");
                 }
             }
         });

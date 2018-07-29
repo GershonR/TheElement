@@ -160,7 +160,6 @@ public class SeekerFragment extends Fragment {
                 @Override
                 public void run() {
                     updateProgressCallbackTask();
-                    System.out.println("Calling????");
                 }
             };
         }
@@ -170,7 +169,7 @@ public class SeekerFragment extends Fragment {
                 PLAYBACK_POSITION_REFRESH_INTERVAL_MS,
                 TimeUnit.MILLISECONDS
         );
-        //updateSongPositionTask();
+        updateSongPositionTask();
     }
 
     private void updateSongPositionTask() {
@@ -206,9 +205,7 @@ public class SeekerFragment extends Fragment {
     // This function will call the setProgress method on the seekbar with the music player's
     // current position, which will update the position of the seekbar during playback
     private void updateProgressCallbackTask() {
-        System.out.println("Called here?");
         if (musicService != null && musicService.isPlaying()) {
-            System.out.println("Called?");
             int currentPosition = musicService.getCurrentPosition();
             final int duration = musicService.getDuration();
             if (mSeekbarAudio.getMax() != duration){
@@ -217,7 +214,7 @@ public class SeekerFragment extends Fragment {
             if (!mUserIsSeeking) {
                 mSeekbarAudio.setProgress(currentPosition);
             }
-            currDurr.setText(SongUtil.getTimeString(currentPosition));
+            //currDurr.setText(SongUtil.getTimeString(currentPosition));
         }
     }
 

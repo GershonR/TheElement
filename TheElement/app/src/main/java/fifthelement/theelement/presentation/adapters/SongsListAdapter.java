@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
@@ -24,6 +25,7 @@ import fifthelement.theelement.objects.Song;
 import fifthelement.theelement.persistence.hsqldb.PersistenceException;
 import fifthelement.theelement.presentation.activities.MainActivity;
 import fifthelement.theelement.presentation.fragments.SongInfoFragment;
+import fifthelement.theelement.presentation.util.SongUtil;
 
 public class SongsListAdapter extends BaseAdapter {
     Context context;
@@ -69,6 +71,8 @@ public class SongsListAdapter extends BaseAdapter {
         authorName.setText(authors);
         ImageButton button = view.findViewById(R.id.popup_button);
         songOptions(activity, printSong, button);
+        ImageView albumArt = view.findViewById(R.id.song_list_album_art);
+        albumArt.setImageBitmap(SongUtil.getSongAlbumArt(activity, printSong));
         return view;
     }
 
@@ -95,7 +99,7 @@ public class SongsListAdapter extends BaseAdapter {
                                 catch (Exception e){
                                     Log.e(LOG_TAG, e.getMessage());
                                 }
-                                Helpers.getFragmentHelper(activity).createFragment(R.id.flContent, fragment);
+                                Helpers.getFragmentHelper(activity).createFragment(R.id.flContent, fragment, "SongInfo");
                                 break;
                             // pass the song to the main activity, to find out
                             // which playlist it needs to be added too

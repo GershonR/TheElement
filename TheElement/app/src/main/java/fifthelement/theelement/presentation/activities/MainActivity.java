@@ -1,7 +1,6 @@
 package fifthelement.theelement.presentation.activities;
 
 
-import android.app.FragmentManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -17,6 +16,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.Menu;
@@ -41,13 +41,12 @@ import fifthelement.theelement.objects.Song;
 import fifthelement.theelement.persistence.hsqldb.PersistenceException;
 import fifthelement.theelement.presentation.adapters.CompactSongsListAdapter;
 import fifthelement.theelement.presentation.adapters.PlaylistListAdapter;
-import fifthelement.theelement.presentation.constants.NotificationConstants;
-import fifthelement.theelement.presentation.fragments.HomeFragment;
+import fifthelement.theelement.presentation.fragments.NowPlaying;
 import fifthelement.theelement.presentation.fragments.PlaylistListFragment;
 import fifthelement.theelement.presentation.fragments.SeekerFragment;
+import fifthelement.theelement.presentation.fragments.SongListFragment;
 import fifthelement.theelement.presentation.services.MusicService;
 import fifthelement.theelement.presentation.services.MusicService.MusicBinder;
-import fifthelement.theelement.presentation.services.NotificationService;
 import fifthelement.theelement.presentation.util.DatabaseUtil;
 import fifthelement.theelement.presentation.util.ThemeUtil;
 
@@ -87,6 +86,7 @@ public class MainActivity extends AppCompatActivity {
         ActionBar actionbar = getSupportActionBar();
         actionbar.setDisplayHomeAsUpEnabled(true);
         actionbar.setHomeAsUpIndicator(R.drawable.ic_menu);
+        setActionBarTitleAsMarquee();
 
         mDrawer = Services.getDrawerService(this).getmDrawer();
         int versionCode = BuildConfig.VERSION_CODE;
@@ -102,20 +102,27 @@ public class MainActivity extends AppCompatActivity {
         playlistService = new PlaylistService();
         //Sets current song list to the list of all songs in app
         songListService.setCurrentSongsList(songService.getSongs());
+    }
 
-        createDefaultPage();
+    private void setActionBarTitleAsMarquee(){
+        // Get Action Bar's title
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        TextView title = (TextView) toolbar.getChildAt(0);
+
+        // Set the ellipsize mode to MARQUEE and make it scroll only once
+        title.setEllipsize(TextUtils.TruncateAt.MARQUEE);
+        title.setMarqueeRepeatLimit(-1);
+
+        // In order to start strolling, it has to be focusable and focused
+        title.setFocusable(true);
+        title.setFocusableInTouchMode(true);
+        title.requestFocus();
     }
 
     private void createDefaultPage() {
-        Fragment fragment = null;
-        Class fragmentClass = HomeFragment.class;
-        try{
-            fragment = (Fragment) fragmentClass.newInstance();
-        }
-        catch (Exception e){
-            Log.e(LOG_TAG, e.getMessage());
-        }
-        Helpers.getFragmentHelper(this).createFragment(R.id.flContent, fragment);
+        SongListFragment songListFragment = new SongListFragment();
+        Helpers.getFragmentHelper(this).createFragment(R.id.flContent, songListFragment, "SongList");
     }
 
     @Override
@@ -132,6 +139,7 @@ public class MainActivity extends AppCompatActivity {
                 MainActivity.this.startActivity(myIntent);
                 return true;
             case android.R.id.home:
+                hideMenuItems();
                 mDrawer.openDrawer(GravityCompat.START);
                 return true;
             case R.id.new_playlist:
@@ -139,6 +147,17 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void hideMenuItems() {
+        NavigationView nvDrawer = findViewById(R.id.nvView);
+        Menu navMenu = nvDrawer.getMenu();
+        MusicService musicService = Services.getMusicService();
+        if(musicService == null || musicService.getCurrentSongPlaying() == null) {
+            navMenu.findItem(R.id.home_page).setVisible(false);
+        } else {
+            navMenu.findItem(R.id.home_page).setVisible(true);
+        }
     }
 
     public void newPlaylistDialog(){
@@ -270,6 +289,7 @@ public class MainActivity extends AppCompatActivity {
             MusicBinder binder = (MusicBinder)service;
             musicService = binder.getService();
             Services.setMusicService(musicService);
+            createDefaultPage();
             musicBound = true;
             createSeeker();
             musicService.reset();
@@ -283,7 +303,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void createSeeker() {
         SeekerFragment seeker = new SeekerFragment();//create the fragment instance
-        Helpers.getFragmentHelper(this).createFragment(R.id.music_seeker, seeker);
+        Helpers.getFragmentHelper(this).createFragment(R.id.music_seeker, seeker, "Seeker");
     }
 
     @Override

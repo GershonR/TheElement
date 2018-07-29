@@ -44,6 +44,10 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        MainActivity activity = (MainActivity) getActivity();
+        activity.getSupportActionBar().setTitle("Search");
+        activity.getSupportActionBar().setSubtitle("");
+
         songService = Services.getSongService();
         songListService = Services.getSongListService();
         musicService = Services.getMusicService();

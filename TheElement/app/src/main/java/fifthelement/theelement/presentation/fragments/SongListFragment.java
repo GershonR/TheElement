@@ -1,5 +1,6 @@
 package fifthelement.theelement.presentation.fragments;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -33,6 +34,10 @@ public class SongListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        MainActivity activity = (MainActivity) getActivity();
+        activity.getSupportActionBar().setTitle("Song List");
+        activity.getSupportActionBar().setSubtitle("");
+
         songListService = Services.getSongListService();
         musicService = Services.getMusicService();
         songService = Services.getSongService();

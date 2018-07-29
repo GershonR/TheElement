@@ -36,6 +36,10 @@ public class PlayerStatsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        MainActivity activity = (MainActivity) getActivity();
+        activity.getSupportActionBar().setTitle("Player Stats");
+        activity.getSupportActionBar().setSubtitle("");
+
         // Inflate the layout for this fragment
         this.view = getView(inflater, container);
         refresh(view);

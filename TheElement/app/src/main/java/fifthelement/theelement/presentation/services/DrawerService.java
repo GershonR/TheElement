@@ -5,11 +5,13 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 
 import fifthelement.theelement.R;
 import fifthelement.theelement.application.Helpers;
-import fifthelement.theelement.presentation.fragments.HomeFragment;
+import fifthelement.theelement.application.Services;
+import fifthelement.theelement.presentation.fragments.NowPlaying;
 import fifthelement.theelement.presentation.fragments.PlaylistListFragment;
 import fifthelement.theelement.presentation.fragments.SearchFragment;
 import fifthelement.theelement.presentation.fragments.SettingFragment;
@@ -44,21 +46,27 @@ public class DrawerService {
         // Create a new fragment and specify the fragment to show based on nav item clicked
         Fragment fragment = null;
         Class fragmentClass = null;
+        String tag = "";
         switch(menuItem.getItemId()) {
             case R.id.home_page:
-                fragmentClass = HomeFragment.class;
+                fragmentClass = NowPlaying.class;
+                tag = "NowPlaying";
                 break;
             case R.id.playlist_list:
                 fragmentClass = PlaylistListFragment.class;
+                tag = "PlayList";
                 break;
             case R.id.song_list:
                 fragmentClass = SongListFragment.class;
+                tag = "SongList";
                 break;
             case R.id.search_view_fragment:
                 fragmentClass = SearchFragment.class;
+                tag = "Search";
                 break;
             default:
                 fragmentClass = SettingFragment.class;
+                tag = "Settings";
                 break;
         }
 
@@ -68,7 +76,7 @@ public class DrawerService {
             Log.e(LOG_TAG, e.getMessage());
         }
 
-        Helpers.getFragmentHelper(application).createFragment(R.id.flContent, fragment);
+        Helpers.getFragmentHelper(application).createFragment(R.id.flContent, fragment, tag);
 
         // Highlight the selected item has been done by NavigationView
         menuItem.setChecked(true);

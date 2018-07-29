@@ -10,13 +10,15 @@ import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import java.util.Observable;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 import fifthelement.theelement.R;
+import fifthelement.theelement.application.Helpers;
 import fifthelement.theelement.application.Services;
+import fifthelement.theelement.presentation.activities.MainActivity;
+import fifthelement.theelement.presentation.helpers.FragmentHelper;
 import fifthelement.theelement.presentation.services.MusicService;
 import fifthelement.theelement.presentation.util.SongUtil;
 
@@ -24,6 +26,7 @@ public class SeekerFragment extends Fragment {
 
     public static final int PLAYBACK_POSITION_REFRESH_INTERVAL_MS = 500;
 
+    private MainActivity mainActivity;
     private SeekBar mSeekbarAudio;
     private MusicService musicService;
     private View view;
@@ -37,6 +40,8 @@ public class SeekerFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        mainActivity = (MainActivity) getActivity();
 
         view = inflater.inflate(R.layout.seeker_fragment, container, false);
         currDurr = view.findViewById(R.id.song_curr_duration);
@@ -81,6 +86,7 @@ public class SeekerFragment extends Fragment {
                     @Override
                     public void onClick(View view) {
                         musicService.skip();
+                        updateFragment();
                     }
                 });
 
@@ -89,8 +95,17 @@ public class SeekerFragment extends Fragment {
                     @Override
                     public void onClick(View view) {
                         musicService.prev();
+                        updateFragment();
                     }
                 });
+    }
+
+    private void updateFragment() {
+        NowPlaying nowPlaying = (NowPlaying) mainActivity.getSupportFragmentManager().findFragmentByTag("NowPlaying");
+        if (nowPlaying != null && nowPlaying.isVisible()) {
+            NowPlaying newNowPlaying = new NowPlaying();
+            Helpers.getFragmentHelper(mainActivity).createFragment(R.id.flContent, newNowPlaying, "NowPlaying");
+        }
     }
 
     private void initializeSeekbar() {
@@ -199,7 +214,7 @@ public class SeekerFragment extends Fragment {
             if (!mUserIsSeeking) {
                 mSeekbarAudio.setProgress(currentPosition);
             }
-            currDurr.setText(SongUtil.getTimeString(currentPosition));
+            //currDurr.setText(SongUtil.getTimeString(currentPosition));
         }
     }
 

@@ -145,7 +145,7 @@ public class MainActivity extends AppCompatActivity {
                 mDrawer.openDrawer(GravityCompat.START);
                 return true;
             case R.id.new_playlist:
-                newPlaylistDialog();
+                Helpers.getPlaylistHelper().newPlaylistDialog();
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -160,128 +160,6 @@ public class MainActivity extends AppCompatActivity {
         } else {
             navMenu.findItem(R.id.home_page).setVisible(true);
         }
-    }
-
-    public void newPlaylistDialog(){
-        final AlertDialog.Builder builderSingle = new AlertDialog.Builder(this);
-        builderSingle.setIcon(R.drawable.ic_playlist_add);
-        builderSingle.setTitle("Give your playlist a name:");
-        final EditText newNameInput = new EditText(this);
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.MATCH_PARENT);
-        newNameInput.setLayoutParams(lp);
-        builderSingle.setView(newNameInput);
-
-        builderSingle.setPositiveButton("Create", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                //take the text and change the name of the playlist
-                String newName = newNameInput.getText().toString();
-                if ( SongMetaUtil.validName(newName)){
-                    Playlist newPlaylist = new Playlist(newName);
-                    getPlaylistService().insertPlaylist(newPlaylist);
-                    Helpers.getToastHelper(getApplicationContext()).sendToast(newName+" created!");
-                    // find and refresh the playlist list fragment
-                    List<Fragment> allFrags = getSupportFragmentManager().getFragments();
-                    for (Fragment fragment: allFrags){
-                        if (fragment instanceof PlaylistListFragment){
-                            ((PlaylistListFragment) fragment).refreshAdapter();
-                        }
-                    }
-                }
-                else{
-                    Helpers.getToastHelper(getApplicationContext()).sendToast(newName+" is an invalid name, try again");
-                }
-                dialog.dismiss();
-            }
-        });
-
-        builderSingle.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
-
-        builderSingle.show();
-    }
-
-    public void addSongsToPlaylist(final Song song) {
-        AlertDialog.Builder builderSingle = new AlertDialog.Builder(this);
-        builderSingle.setIcon(R.drawable.ic_add);
-        builderSingle.setTitle("Select a Playlist:");
-
-        final PlaylistListAdapter playlistListAdapter = new PlaylistListAdapter(this, playlistService.getAllPlaylists());
-
-        builderSingle.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
-
-        builderSingle.setAdapter(playlistListAdapter, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                AlertDialog.Builder builderInner = new AlertDialog.Builder(MainActivity.this);
-                try {
-                    Playlist chosenPlaylist =  playlistService.getAllPlaylists().get(which);
-                    chosenPlaylist.addSong(song);
-                    playlistService.insertSongForPlaylist(chosenPlaylist, song);
-                    builderInner.setTitle("Added to "+chosenPlaylist.getName());
-                    builderInner.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog,int which) {
-                            dialog.dismiss();
-                        }
-                    });
-                    builderInner.show();
-                } catch (PersistenceException p) {
-                    Log.e(LOG_TAG, p.getMessage());
-                    Helpers.getToastHelper(getApplicationContext()).sendToast("Could not get playlist", "RED");
-                }
-            }
-        });
-        builderSingle.show();
-    }
-
-    public boolean deletePlaylist(Playlist playlist){
-        boolean result = playlistService.deletePlaylist(playlist);
-        List<Fragment> allFrags;
-        if ( result){
-            allFrags = getSupportFragmentManager().getFragments();
-            for (Fragment fragment: allFrags){
-                if (fragment instanceof PlaylistListFragment){
-                    ((PlaylistListFragment) fragment).refreshAdapter();
-                }
-            }
-        }
-        return result;
-    }
-
-    // For choosing to open a single song to play from the playlist
-    public void openPlaylistSongs(final Playlist currentPlaylist){
-        AlertDialog.Builder builderSingle = new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.alert_dialog_custom));
-        builderSingle.setIcon(R.drawable.ic_song_list);
-        builderSingle.setTitle(currentPlaylist.getName()+" songs:");
-
-        builderSingle.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
-
-        final CompactSongsListAdapter compactSongsListAdapter = new CompactSongsListAdapter(this, currentPlaylist.getSongs());
-        builderSingle.setAdapter(compactSongsListAdapter, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                songListService.setPlayerCurrentSongs(currentPlaylist);
-                musicService.playSongAsync(songListService.getSongAtIndex(which));
-            }
-        });
-
-        builderSingle.show();
     }
 
     private ServiceConnection musicConnection = new ServiceConnection() {
@@ -324,6 +202,7 @@ public class MainActivity extends AppCompatActivity {
         stopService(playIntent);
         unbindService(musicConnection);
         musicService = null;
+        DatabaseUtil.killDB();
         super.onDestroy();
     }
 

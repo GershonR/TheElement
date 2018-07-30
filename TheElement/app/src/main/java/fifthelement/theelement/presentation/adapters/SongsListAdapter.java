@@ -148,7 +148,7 @@ public class SongsListAdapter extends RecyclerView.Adapter<SongsListAdapter.View
                                 Helpers.getFragmentHelper(act).createFragment(R.id.flContent, fragment, "SongInfo");
                                 break;
                             case R.id.add_to_playlist:
-                                act.addSongsToPlaylist(song);
+                                Helpers.getPlaylistHelper().addSongsToPlaylist(song);
                                 break;
                         }
                         return true;

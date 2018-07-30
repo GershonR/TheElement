@@ -51,7 +51,7 @@ public class PlaylistListFragment extends Fragment {
         playlistListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                ((MainActivity)getActivity()).openPlaylistSongs(playlistService.getAllPlaylists().get(position));
+                Helpers.getPlaylistHelper().openPlaylistSongs(playlistService.getAllPlaylists().get(position));
             }
         });
 

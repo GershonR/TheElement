@@ -44,7 +44,7 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
     private final IBinder musicBind = new MusicBinder();
     private SeekerFragment.SeekerPlaybackStartStopListener seekerPlaybackListener;
     private NotificationService.NotificationPlaybackStartStopListener notificationPlaybackListener;
-    private SongService songService = Services.getSongService();
+    private SongService songService;
 
     private static final String LOG_TAG = "MusicService";
 
@@ -67,6 +67,7 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
     public void onCreate() {
         super.onCreate();
         songListService = Services.getSongListService();
+        songService = Services.getSongService();
         player = new MediaPlayer();
         initMusicPlayer();
         mainActivity = Delagate.mainActivity;

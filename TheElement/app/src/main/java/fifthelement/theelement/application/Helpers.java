@@ -4,12 +4,14 @@ import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 
 import fifthelement.theelement.presentation.helpers.FragmentHelper;
+import fifthelement.theelement.presentation.helpers.PlaylistHelper;
 import fifthelement.theelement.presentation.helpers.ToastHelper;
 
 public class Helpers {
 
     private static FragmentHelper fragmentHelper = null;
     private static ToastHelper toastHelper = null;
+    private static PlaylistHelper playlistHelper = null;
 
 
     public static synchronized ToastHelper getToastHelper(Context context) {
@@ -27,5 +29,13 @@ public class Helpers {
             fragmentHelper = new FragmentHelper(appCompatActivity);
 
         return fragmentHelper;
+    }
+
+    public static synchronized PlaylistHelper getPlaylistHelper() {
+
+        if(playlistHelper == null)
+            playlistHelper = new PlaylistHelper();
+
+        return playlistHelper;
     }
 }

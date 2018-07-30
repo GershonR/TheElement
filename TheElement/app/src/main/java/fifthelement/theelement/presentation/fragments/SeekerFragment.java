@@ -10,6 +10,8 @@ import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.jakewharton.rxbinding2.view.RxView;
+
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -85,8 +87,9 @@ public class SeekerFragment extends Fragment {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        musicService.skip();
-                        updateFragment();
+                        RxView.clicks(view).throttleFirst(500, TimeUnit.MILLISECONDS).subscribe(empty -> {
+                            musicService.skip();
+                        });
                     }
                 });
 
@@ -94,18 +97,11 @@ public class SeekerFragment extends Fragment {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        musicService.prev();
-                        updateFragment();
+                        RxView.clicks(view).throttleFirst(500, TimeUnit.MILLISECONDS).subscribe(empty -> {
+                            musicService.prev();
+                        });
                     }
                 });
-    }
-
-    private void updateFragment() {
-        NowPlaying nowPlaying = (NowPlaying) mainActivity.getSupportFragmentManager().findFragmentByTag("NowPlaying");
-        if (nowPlaying != null && nowPlaying.isVisible()) {
-            NowPlaying newNowPlaying = new NowPlaying();
-            Helpers.getFragmentHelper(mainActivity).createFragment(R.id.flContent, newNowPlaying, "NowPlaying");
-        }
     }
 
     private void initializeSeekbar() {

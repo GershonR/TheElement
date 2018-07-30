@@ -2,15 +2,19 @@ package fifthelement.theelement.presentation.adapters;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.os.AsyncTask;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.PopupMenu;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -23,71 +27,113 @@ import fifthelement.theelement.application.Services;
 import fifthelement.theelement.objects.Author;
 import fifthelement.theelement.objects.Song;
 import fifthelement.theelement.persistence.hsqldb.PersistenceException;
+import fifthelement.theelement.presentation.activities.Delagate;
 import fifthelement.theelement.presentation.activities.MainActivity;
 import fifthelement.theelement.presentation.fragments.SongInfoFragment;
 import fifthelement.theelement.presentation.util.SongUtil;
 
-public class SongsListAdapter extends BaseAdapter {
+public class SongsListAdapter extends RecyclerView.Adapter<SongsListAdapter.ViewHolder> {
+
+    // Provide a direct reference to each of the views within a data item
+    // Used to cache the views within the item layout for fast access
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        public ImageView albumArt;
+        public TextView songName;
+        public TextView authorName;
+        public ImageButton songOptions;
+        public Song song;
+
+        // Constructor that accepts the entire item row
+        // and does the view lookups to find each subview
+        public ViewHolder(View itemView) {
+            // Stores the itemView in a public final member variable that can be used
+            // to access the context from any ViewHolder instance.
+            super(itemView);
+            albumArt = itemView.findViewById(R.id.song_list_album_art);
+            songName = itemView.findViewById(R.id.primary_string);
+            authorName = itemView.findViewById(R.id.secondary_string);
+            songOptions = itemView.findViewById(R.id.popup_button);
+
+            //set method to handle click events
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+            boolean result = Services.getMusicService().playSongAsync(song);
+            if (result) {
+                Services.getSongListService().setShuffleEnabled(false);
+            }
+        }
+
+    }
+
+
     Context context;
     List<Song> songs;
     LayoutInflater inflater;
     private static final String LOG_TAG = "SongsListAdapter";
 
+
+    // Pass in the song array into the constructor
     public SongsListAdapter(Context context, List<Song> songs) {
         this.context = context;
         this.songs = songs;
-        inflater = (LayoutInflater.from(context));
     }
 
+    // Inflate the layout from XML and returning the holder
+    @NonNull
     @Override
-    public int getCount() {
-        return songs.size();
+    public SongsListAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        Context context = parent.getContext();
+        LayoutInflater inflater = LayoutInflater.from(context);
+
+        // Inflate the custom layout
+        View songListView = inflater.inflate(R.layout.fragment_list_item, parent, false);
+
+
+        // Return a new holder instance
+        return new ViewHolder(songListView);
     }
 
+    // Populate data into the item through holder
     @Override
-    public Object getItem(int position) {
-        return songs.get(position);
-    }
+    public void onBindViewHolder(@NonNull SongsListAdapter.ViewHolder viewHolder, int position) {
+        // Get the data model based on position
+        Song song = songs.get(position);
 
-    @Override
-    public long getItemId(int position) {
-        return (long) getItem(position).hashCode();
-    }
+        // Set item views based on your views and data model
+        ImageView albumArt = viewHolder.albumArt;
+        TextView songName = viewHolder.songName;
+        TextView authorName = viewHolder.authorName;
+        ImageButton songOptions = viewHolder.songOptions;
+        viewHolder.song = song;
 
-    @Override
-    public View getView(int i, View view, ViewGroup viewGroup) {
-        final MainActivity activity = (MainActivity)context;
-        view = inflater.inflate(R.layout.fragment_list_item, null);
-        TextView songName = (TextView) view.findViewById(R.id.primary_string);
         songName.setSelected(true);
-        TextView authorName = (TextView) view.findViewById(R.id.secondary_string);
-        final Song printSong = songs.get(i);
-        Author author = printSong.getAuthor();
+        Author author = song.getAuthor();
         String authors = "";
         if(author != null) {
             authors += author.getName();
         }
-        songName.setText(printSong.getName());
+        songName.setText(song.getName());
         authorName.setText(authors);
-        ImageButton button = view.findViewById(R.id.popup_button);
-        songOptions(activity, printSong, button);
-        ImageView albumArt = view.findViewById(R.id.song_list_album_art);
-        albumArt.setImageBitmap(SongUtil.getSongAlbumArt(activity, printSong));
-        return view;
+        songOptions(song, songOptions);
+        SongAlbumArtTask asyncTask = new SongAlbumArtTask(albumArt, song);
+        asyncTask.execute();
     }
 
-    private void songOptions(final MainActivity activity, final Song song, ImageButton button) {
+    private void songOptions(final Song song, ImageButton button) {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 PopupMenu popup = new PopupMenu(context, v, Gravity.LEFT);
-                Activity act = (MainActivity)context;
-                activity.getMenuInflater().inflate(R.menu.song_list_item_menu, popup.getMenu());
+                final MainActivity act = (MainActivity)context;
+                act.getMenuInflater().inflate(R.menu.song_list_item_menu, popup.getMenu());
                 popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     public boolean onMenuItemClick(MenuItem item) {
                         switch(item.getItemId()) {
                             case R.id.delete_song:
-                                deleteSong(song, activity);
+                                deleteSong(song, act);
                                 break;
                             case R.id.song_info:
                                 Fragment fragment = null;
@@ -99,12 +145,10 @@ public class SongsListAdapter extends BaseAdapter {
                                 catch (Exception e){
                                     Log.e(LOG_TAG, e.getMessage());
                                 }
-                                Helpers.getFragmentHelper(activity).createFragment(R.id.flContent, fragment, "SongInfo");
+                                Helpers.getFragmentHelper(act).createFragment(R.id.flContent, fragment, "SongInfo");
                                 break;
-                            // pass the song to the main activity, to find out
-                            // which playlist it needs to be added too
                             case R.id.add_to_playlist:
-                                activity.addSongsToPlaylist(song);
+                                Helpers.getPlaylistHelper().addSongsToPlaylist(song);
                                 break;
                         }
                         return true;
@@ -132,7 +176,34 @@ public class SongsListAdapter extends BaseAdapter {
         }
     }
 
-    public void notifyDataSetChanged() {
-        super.notifyDataSetChanged();
+    @Override
+    public int getItemCount() {
+        return songs.size();
     }
+
+    public class SongAlbumArtTask extends AsyncTask<Object, Object, Object> {
+
+        ImageView albumArt;
+        Song song;
+
+        public SongAlbumArtTask(ImageView albumArt, Song song) {
+            this.albumArt = albumArt;
+            this.song = song;
+        }
+        @Override
+        protected Object doInBackground(Object... params) {
+            if(albumArt != null && song != null) {
+                final Bitmap bm = SongUtil.getSongAlbumArt(context, song);
+                Delagate.mainActivity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        albumArt.setImageBitmap(bm);
+                    }
+                });
+            }
+            return null;
+
+        }
+    }
+
 }

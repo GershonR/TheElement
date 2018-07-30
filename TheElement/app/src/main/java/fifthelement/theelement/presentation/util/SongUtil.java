@@ -1,11 +1,19 @@
 package fifthelement.theelement.presentation.util;
 
+import android.content.ContentResolver;
+import android.content.ContentUris;
 import android.content.Context;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.MediaMetadataRetriever;
 import android.net.Uri;
+import android.provider.MediaStore;
 import android.util.Log;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 
 import fifthelement.theelement.R;
 import fifthelement.theelement.objects.Song;
@@ -45,9 +53,11 @@ public class SongUtil {
                 metaRetriver.setDataSource(context, Uri.parse(song.getPath()));
             else
                  metaRetriver.setDataSource(song.getPath());
-            byte[] art = metaRetriver.getEmbeddedPicture();
-            if(art != null)
-                bm = BitmapFactory.decodeByteArray(art, 0, art.length);
+            if(metaRetriver != null) {
+                byte[] art = metaRetriver.getEmbeddedPicture();
+                if(art != null)
+                    bm = BitmapFactory.decodeByteArray(art, 0, art.length);
+            }
         } catch (Exception e) {
             Log.e(LOG_TAG, e.toString());
         }

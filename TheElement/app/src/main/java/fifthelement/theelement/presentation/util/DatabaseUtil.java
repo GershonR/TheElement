@@ -7,10 +7,18 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 import fifthelement.theelement.application.Main;
 
 public class DatabaseUtil {
+
+    private static Connection c;
 
     public static void copyDatabaseToDevice(Context context) {
         final String DB_PATH = "db";
@@ -28,9 +36,12 @@ public class DatabaseUtil {
 
             copyAssetsToDirectory(context, assetNames, dataDirectory);
             Main.setDBPathName(dataDirectory.toString() + "/" + Main.getDBPathName());
+            c = DriverManager.getConnection("jdbc:hsqldb:file:" + Main.getDBPathName(), "SA", "");
 
         } catch (final IOException ioe) {
             System.out.println("Unable to access application data: " + ioe.getMessage());
+        } catch (final SQLException sql) {
+            System.out.println("SQL Exception: " + sql.getMessage());
         }
     }
 
@@ -59,6 +70,16 @@ public class DatabaseUtil {
                 out.close();
                 in.close();
             }
+        }
+    }
+
+    public static void killDB() {
+        try {
+            final PreparedStatement st = c.prepareStatement("SHUTDOWN");
+            st.execute();
+            c.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 }

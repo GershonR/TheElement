@@ -3,8 +3,11 @@ package fifthelement.theelement.presentation.fragments;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -25,7 +28,7 @@ import fifthelement.theelement.presentation.services.MusicService;
 
 public class SongListFragment extends Fragment {
     private View view;
-    private ListView listView;
+    private RecyclerView recyclerView;
     private SongListService songListService;
     private SongService songService;
     private MusicService musicService;
@@ -47,13 +50,14 @@ public class SongListFragment extends Fragment {
 
     private void displayView(LayoutInflater inflater, ViewGroup container) {
         view = inflater.inflate(R.layout.song_list_fragment, container, false);
-        listView = (ListView) view.findViewById(R.id.song_list_view);
+        recyclerView = (RecyclerView) view.findViewById(R.id.song_list_view);
+        //recyclerView.setScrollingCacheEnabled(false);
+        //recyclerView.setFriction(ViewConfiguration.getScrollFriction() * 2);
 
         refreshAdapter();
 
         autoPlaySwitch();
         shuffleSwitch();
-        playSong(listView);
     }
 
     private void autoPlaySwitch() {
@@ -78,30 +82,9 @@ public class SongListFragment extends Fragment {
     private void refreshAdapter() {
         List<Song> songs = songService.getSongs();
         songListService.sortSongs(songs);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         songListAdapter = new SongsListAdapter(getActivity(), songs);
-        listView.setAdapter(songListAdapter);
-    }
-
-    private void playSong(ListView listView) {
-        List<Song> songs = songService.getSongs();
-        if(songs != null) {
-            final SongsListAdapter songListAdapter = new SongsListAdapter(getActivity(), songs);
-            listView.setAdapter(songListAdapter);
-            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view,
-                                        int position, long id) {
-                    List<Song> songs = songService.getSongs();
-                    songListService.sortSongs(songs);
-                    songListService.setCurrentSongsList(songs);
-                    boolean result = musicService.playSongAsync(songListService.getSongAtIndex(position));
-                    if (result) {
-                        songListService.setShuffleEnabled(false);
-                    }
-                }
-            });
-        }
+        recyclerView.setAdapter(songListAdapter);
     }
 
     @Override

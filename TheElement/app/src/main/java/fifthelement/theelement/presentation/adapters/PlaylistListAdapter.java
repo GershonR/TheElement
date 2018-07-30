@@ -149,7 +149,7 @@ public class PlaylistListAdapter extends BaseAdapter {
     private void deletePlaylist(Playlist playlist, MainActivity activity) {
         try {
             Helpers.getToastHelper(context).sendToast("Deleted " + playlist.getName());
-            activity.deletePlaylist(playlist);
+            Helpers.getPlaylistHelper().deletePlaylist(playlist);
             notifyDataSetChanged();
         } catch(PersistenceException p) {
             Helpers.getToastHelper(context).sendToast("Could not delete " + playlist.getName());

@@ -6,6 +6,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.IBinder;
 import android.util.Log;
@@ -190,14 +191,6 @@ public class NotificationService extends Service {
         }
     }
 
-    public void updateSong() {
-        if(status != null && manager != null) {
-            createNotificationDisplay(views, bigViews);
-            manager.notify(NotificationConstants.NOTIFICATION_ID, status);
-
-        }
-    }
-
     public class NotificationPlaybackStartStopListener {
         public void onPlaybackStart(){
             showPause();
@@ -208,7 +201,27 @@ public class NotificationService extends Service {
         }
 
         public void onSkip() {
-            updateSong();
+            if(status != null && manager != null) {
+                try {
+                    SkipTask asyncTask = new SkipTask();
+                    asyncTask.execute();
+                } catch (Exception e) {
+                    Log.e(LOG_TAG, e.getMessage());
+                }
+            }
+        }
+    }
+
+    public class SkipTask extends AsyncTask<Object, Object, Object> {
+
+        @Override
+        protected Object doInBackground(Object... params) {
+            if(status != null && manager != null) {
+                createNotificationDisplay(views, bigViews);
+                manager.notify(NotificationConstants.NOTIFICATION_ID, status);
+            }
+            return null;
+
         }
     }
 }

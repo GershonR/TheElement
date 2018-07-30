@@ -202,8 +202,12 @@ public class NotificationService extends Service {
 
         public void onSkip() {
             if(status != null && manager != null) {
-                SkipTask asyncTask = new SkipTask();
-                asyncTask.execute();
+                try {
+                    SkipTask asyncTask = new SkipTask();
+                    asyncTask.execute();
+                } catch (Exception e) {
+                    Log.e(LOG_TAG, e.getMessage());
+                }
             }
         }
     }

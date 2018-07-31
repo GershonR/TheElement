@@ -4,13 +4,12 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ListView;
-import android.widget.SearchView;
-import android.widget.SearchView.OnQueryTextListener;
+import android.widget.ImageView;
 
 import java.util.List;
 
@@ -60,11 +59,22 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
         view = inflater.inflate(R.layout.search_fragment, container, false);
         RecyclerView listView = view.findViewById(R.id.search_song_list_view_item);
         mSearchView = view.findViewById(R.id.search_view_item);
+
+        ImageView closeButton = (ImageView) this.mSearchView.findViewById(android.support.v7.appcompat.R.id.search_close_btn);
+
+        closeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                clearSearchViewResults();
+            }
+        });
         recyclerView = view.findViewById(R.id.search_song_list_view_item);
 
         onQueryTextListener = createNewOnQueryTextListener();
 
-        songsListAdapter = new SongsListAdapter(getActivity(), songService.getSongs());
+        List<Song> songs = songService.getSongs();
+        songListService.sortSongs(songs);
+        songsListAdapter = new SongsListAdapter(getActivity(), songs);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(songsListAdapter);
 
@@ -74,15 +84,19 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
     }
 
     private void clearSearchViewResults(){
-        mSearchView.onActionViewCollapsed();
         mSearchView.setQuery("", false);
         mSearchView.clearFocus();
+        List<Song> songs = songService.getSongs();
+        songListService.sortSongs(songs);
+        songsListAdapter = new SongsListAdapter(getActivity(), songs);
+        recyclerView.setAdapter(songsListAdapter);
+        songsListAdapter.notifyDataSetChanged();
     }
 
     // These methods override the below two, but the below two
     // must be present to satisfy the implement requirements
-    private OnQueryTextListener createNewOnQueryTextListener(){
-        return new OnQueryTextListener() {
+    private SearchView.OnQueryTextListener createNewOnQueryTextListener(){
+        return new SearchView.OnQueryTextListener() {
             @Override
             // Search on submit button
             public boolean onQueryTextSubmit(String query) {

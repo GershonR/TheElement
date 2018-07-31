@@ -1,9 +1,6 @@
 package fifthelement.theelement.presentation.services;
 
-import android.app.Activity;
-import android.app.Application;
 import android.app.Service;
-import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
@@ -13,9 +10,7 @@ import android.os.IBinder;
 import android.os.PowerManager;
 import android.util.Log;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.io.File;
 
 import fifthelement.theelement.R;
 import fifthelement.theelement.application.Helpers;
@@ -26,7 +21,7 @@ import fifthelement.theelement.objects.Song;
 import fifthelement.theelement.presentation.activities.Delagate;
 import fifthelement.theelement.presentation.activities.MainActivity;
 import fifthelement.theelement.presentation.constants.NotificationConstants;
-import fifthelement.theelement.presentation.fragments.NowPlaying;
+import fifthelement.theelement.presentation.fragments.NowPlayingFragment;
 import fifthelement.theelement.presentation.fragments.SeekerFragment;
 
 
@@ -128,7 +123,7 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
     public boolean playSongAsync(Song song) {
         reset();
         if(song != null) {
-            Uri uri = Uri.parse(song.getPath());
+            Uri uri = Uri.fromFile(new File(song.getPath()));
             try {
                 player.setDataSource(getApplication(), uri);
                 player.prepareAsync();
@@ -239,7 +234,7 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
         updateSong();
     }
 
-    // Update the notificaction & NowPlaying
+    // Update the notificaction & NowPlayingFragment
     private void updateSong() {
         if (notificationPlaybackListener != null) {
             notificationPlaybackListener.onSkip();
@@ -249,14 +244,14 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
     }
 
 
-    // If on NowPlaying page, update the page when a skip happens
+    // If on NowPlayingFragment page, update the page when a skip happens
     private void updateFragment() {
         if(mainActivity == null)
             return;
-        NowPlaying nowPlaying = (NowPlaying) mainActivity.getSupportFragmentManager().findFragmentByTag("NowPlaying");
-        if (nowPlaying != null && nowPlaying.isVisible()) {
-            NowPlaying newNowPlaying = new NowPlaying();
-            Helpers.getFragmentHelper(mainActivity).createFragment(R.id.flContent, newNowPlaying, "NowPlaying");
+        NowPlayingFragment nowPlayingFragment = (NowPlayingFragment) mainActivity.getSupportFragmentManager().findFragmentByTag("NowPlayingFragment");
+        if (nowPlayingFragment != null && nowPlayingFragment.isVisible()) {
+            NowPlayingFragment newNowPlayingFragment = new NowPlayingFragment();
+            Helpers.getFragmentHelper(mainActivity).createFragment(R.id.flContent, newNowPlayingFragment, "NowPlayingFragment");
         }
     }
 

@@ -62,7 +62,11 @@ public class SongsListAdapter extends RecyclerView.Adapter<SongsListAdapter.View
         public void onClick(View view) {
             boolean result = Services.getMusicService().playSongAsync(song);
             if (result) {
-                Services.getSongListService().setShuffleEnabled(false);
+               Services.getSongListService().setShuffled(false);
+               List<Song> songs = Services.getSongService().getSongs();
+               Services.getSongListService().sortSongs(songs);
+               Services.getSongListService().setCurrentSongsList(songs);
+               Services.getSongListService().setCurrentSongPlayingIndex(this.getLayoutPosition());
             }
         }
 

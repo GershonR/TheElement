@@ -14,7 +14,7 @@ import fifthelement.theelement.presentation.activities.MainActivity;
 import fifthelement.theelement.presentation.services.MusicService;
 import fifthelement.theelement.presentation.util.SongUtil;
 
-public class NowPlaying extends Fragment {
+public class NowPlayingFragment extends Fragment {
 
     private MusicService musicService;
     private MainActivity mainActivity;

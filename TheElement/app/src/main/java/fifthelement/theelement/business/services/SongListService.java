@@ -113,10 +113,6 @@ public class SongListService {
         }
     }
 
-    public void setShuffleEnabled(boolean value){
-        shuffled = value;
-    }
-
     public void setAutoplayEnabled(boolean newValue){
         autoplayEnabled = newValue;
     }

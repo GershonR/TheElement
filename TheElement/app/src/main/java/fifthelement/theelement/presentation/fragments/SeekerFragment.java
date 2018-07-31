@@ -87,7 +87,7 @@ public class SeekerFragment extends Fragment {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        RxView.clicks(view).throttleFirst(500, TimeUnit.MILLISECONDS).subscribe(empty -> {
+                        RxView.clicks(view).throttleFirst(300, TimeUnit.MILLISECONDS).subscribe(empty -> {
                             musicService.skip();
                         });
                     }
@@ -97,7 +97,7 @@ public class SeekerFragment extends Fragment {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        RxView.clicks(view).throttleFirst(500, TimeUnit.MILLISECONDS).subscribe(empty -> {
+                        RxView.clicks(view).throttleFirst(300, TimeUnit.MILLISECONDS).subscribe(empty -> {
                             musicService.prev();
                         });
                     }

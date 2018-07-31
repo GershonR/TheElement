@@ -3,27 +3,19 @@ package fifthelement.theelement.presentation.activities;
 
 import android.content.ComponentName;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.util.Log;
-import android.view.ContextThemeWrapper;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.List;
@@ -35,14 +27,7 @@ import fifthelement.theelement.application.Services;
 import fifthelement.theelement.business.services.SongListService;
 import fifthelement.theelement.business.services.PlaylistService;
 import fifthelement.theelement.business.services.SongService;
-import fifthelement.theelement.business.util.SongMetaUtil;
-import fifthelement.theelement.objects.Playlist;
 import fifthelement.theelement.objects.Song;
-import fifthelement.theelement.persistence.hsqldb.PersistenceException;
-import fifthelement.theelement.presentation.adapters.CompactSongsListAdapter;
-import fifthelement.theelement.presentation.adapters.PlaylistListAdapter;
-import fifthelement.theelement.presentation.fragments.NowPlaying;
-import fifthelement.theelement.presentation.fragments.PlaylistListFragment;
 import fifthelement.theelement.presentation.fragments.SeekerFragment;
 import fifthelement.theelement.presentation.fragments.SongListFragment;
 import fifthelement.theelement.presentation.services.MusicService;
@@ -99,9 +84,12 @@ public class MainActivity extends AppCompatActivity {
 
         songService = Services.getSongService();
         songListService = Services.getSongListService();
-        playlistService = new PlaylistService();
+        playlistService = Services.getPlaylistService();
+
         //Sets current song list to the list of all songs in app
-        songListService.setCurrentSongsList(songService.getSongs());
+        List<Song> songs = Services.getSongService().getSongs();
+        songListService.sortSongs(songs);
+        songListService.setCurrentSongsList(songs);
 
         Delagate.mainActivity = this;
     }

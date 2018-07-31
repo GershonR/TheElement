@@ -8,9 +8,16 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Looper;
 import android.util.Log;
 import android.widget.RemoteViews;
+
+import java.util.Date;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import fifthelement.theelement.R;
 import fifthelement.theelement.application.Services;
@@ -217,8 +224,7 @@ public class NotificationService extends Service {
         @Override
         protected Object doInBackground(Object... params) {
             if(status != null && manager != null) {
-                createNotificationDisplay(views, bigViews);
-                manager.notify(NotificationConstants.NOTIFICATION_ID, status);
+                buildNotification();
             }
             return null;
 

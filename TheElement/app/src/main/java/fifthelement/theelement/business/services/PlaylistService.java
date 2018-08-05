@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.UUID;
 
 import fifthelement.theelement.application.Persistence;
+import fifthelement.theelement.application.Services;
 import fifthelement.theelement.objects.Playlist;
 import fifthelement.theelement.objects.Song;
 import fifthelement.theelement.persistence.PlaylistPersistence;
@@ -41,7 +42,7 @@ public class PlaylistService {
                 List<Song> updatedSongs = new ArrayList<>();
                 if(songs != null) {
                     for(Song song : songs) {
-                        song = songPersistence.getSongByUUID(song.getUUID());
+                        song = Services.getSongService().getSongByUUID(song.getUUID());
                         updatedSongs.add(song);
                     }
                 }

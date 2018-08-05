@@ -1,5 +1,8 @@
 package fifthelement.theelement.presentation.helpers;
 
+import android.app.KeyguardManager;
+import android.content.Context;
+import android.os.PowerManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -13,12 +16,19 @@ public class FragmentHelper {
     }
 
     public void createFragment(int id, Fragment fragment, String tag) {
+        KeyguardManager myKM = (KeyguardManager) application.getSystemService(Context.KEYGUARD_SERVICE);
+        PowerManager pm = (PowerManager)application.getSystemService(Context.POWER_SERVICE);
+
         FragmentManager fragmentManager = application.getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         transaction.replace(id, fragment, tag);
 
-        transaction.commit();
+        if(myKM.inKeyguardRestrictedInputMode() || !pm.isInteractive()) {
+            transaction.commitAllowingStateLoss();
+        } else {
+            transaction.commit();
+        }
     }
 
     public long getApplicationHashCode() {

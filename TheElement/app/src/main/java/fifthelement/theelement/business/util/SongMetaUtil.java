@@ -24,7 +24,7 @@ public class SongMetaUtil {
         final String[] supportedFormats = {"mp3", "mkv", "wav", "ogg", "mid",
                 "rtx", "mp4", "m4a", "aac", "3gp",
                 "flac", "xmf", "mxmf", "rtttl", "ota",
-                "imy"};
+                "imy", "wma"};
 
         for(String format : supportedFormats){
             toReturn = toReturn || extension.equals(format);

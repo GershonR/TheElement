@@ -26,6 +26,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
 
+    <!--
     <TextView
         android:id="@+id/secondary_string"
         android:layout_width="wrap_content"
@@ -37,6 +38,7 @@
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="@+id/primary_string"
         app:layout_constraintEnd_toEndOf="parent" />
+        -->
 
     <!--
     <ImageButton

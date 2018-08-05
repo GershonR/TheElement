@@ -84,7 +84,15 @@ public class AddMusicActivity extends AppCompatActivity {
         switch (requestCode) {
             case PICKFILE_RESULT_CODE:
                 if (resultCode == RESULT_OK) {
-                    setupSong(data.getData());
+                    if(null != data) { // checking empty selection
+                        if(null != data.getClipData()) { // checking multiple selection or not
+                            for(int i = 0; i < data.getClipData().getItemCount(); i++) {
+                                setupSong(data.getClipData().getItemAt(i).getUri(), true);
+                            }
+                        } else {
+                            setupSong(data.getData(), false);
+                        }
+                    }
                 }
         }
         songListService.setCurrentSongsList(songService.getSongs()); //Reset song list
@@ -94,17 +102,19 @@ public class AddMusicActivity extends AppCompatActivity {
     }
 
     private void openFileExplorer() {
-        Intent fileintent = new Intent(Intent.ACTION_GET_CONTENT);
-        fileintent.setType("*/*");
+        Intent fileintent = new Intent();
+        fileintent.setType("audio/*");
+        fileintent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+        fileintent.setAction(Intent.ACTION_GET_CONTENT);
         try {
-            startActivityForResult(fileintent, PICKFILE_RESULT_CODE);
+            startActivityForResult(Intent.createChooser(fileintent,"Select song(s)"), PICKFILE_RESULT_CODE);
         } catch (ActivityNotFoundException e) {
             Log.e(LOG_TAG, "No activity can handle picking a file. Showing alternatives.");
         }
     }
 
 
-    private void setupSong(Uri path) {
+    private void setupSong(Uri path, boolean multiple) {
         // This must be done here because getContentResolver requires context, which SongUtil doesn't have
         ContentResolver cR = getContentResolver();
         MimeTypeMap mime = MimeTypeMap.getSingleton();
@@ -113,11 +123,8 @@ public class AddMusicActivity extends AppCompatActivity {
         String type = mime.getExtensionFromMimeType(cR.getType(path));
 
         // Just in case uri returns no file type
-        String stringPath = path.getPath();
-        String typeBackup = SongMetaUtil.getExtension(stringPath);
-
         if (TextUtils.isEmpty(type))
-            type = typeBackup;
+            type = SongMetaUtil.getExtension(path.getPath());
 
         // Check if file type is supported
         boolean result = SongMetaUtil.supportedAudioFileExtension(type);
@@ -141,25 +148,29 @@ public class AddMusicActivity extends AppCompatActivity {
                 Log.e(LOG_TAG, e.getMessage());
             }
 
-            createSong(path, songName, songArtist, songAlbum, songGenre);
+            createSong(path, songName, songArtist, songAlbum, songGenre, multiple);
         } else {
             Helpers.getToastHelper(getApplicationContext()).sendToast("That isn't a song, nice try!", "RED");
         }
     }
 
-    private void createSong(Uri path, String songName, String songArtist, String songAlbum, String songGenre) {
+    private void createSong(Uri path, String songName, String songArtist, String songAlbum, String songGenre, boolean multiple) {
         try {
             String realPath = PathUtil.getPath(getApplicationContext(), path);
             songService.createSong(realPath, songName, songArtist, songAlbum, songGenre);
-            Helpers.getToastHelper(getApplicationContext()).sendToast("Added " + songName, "GREEN");
+            if(!multiple)
+                Helpers.getToastHelper(getApplicationContext()).sendToast("Added " + songName, "GREEN");
         } catch (PersistenceException p) {
-            Helpers.getToastHelper(getApplicationContext()).sendToast("Error saving song!", "RED");
+            if(!multiple)
+                Helpers.getToastHelper(getApplicationContext()).sendToast("Error saving song!", "RED");
             Log.e(LOG_TAG, p.getMessage());
         } catch (SongAlreadyExistsException s) {
-            Helpers.getToastHelper(getApplicationContext()).sendToast("Song already exists!", "RED");
+            if(!multiple)
+                Helpers.getToastHelper(getApplicationContext()).sendToast("Song already exists!", "RED");
             Log.e(LOG_TAG, s.getMessage());
         } catch (URISyntaxException e) {
-            Helpers.getToastHelper(getApplicationContext()).sendToast("Could not get the songs path!", "RED");
+            if(!multiple)
+                 Helpers.getToastHelper(getApplicationContext()).sendToast("Could not get the songs path!", "RED");
             Log.e(LOG_TAG, e.getMessage());
         }
     }

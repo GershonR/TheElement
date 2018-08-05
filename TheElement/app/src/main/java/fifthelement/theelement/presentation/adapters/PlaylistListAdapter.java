@@ -14,6 +14,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -67,8 +69,13 @@ public class PlaylistListAdapter extends BaseAdapter {
         final MainActivity activity = (MainActivity)context;
         view = inflater.inflate(R.layout.fragment_list_item, null);
 
-        TextView songName = (TextView) view.findViewById(R.id.primary_string);
-        TextView songCount = (TextView) view.findViewById(R.id.secondary_string);
+        TextView songName = view.findViewById(R.id.primary_string);
+        TextView songCount =  view.findViewById(R.id.secondary_string);
+        FrameLayout.LayoutParams playListLayouSongName = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
+        FrameLayout.LayoutParams playListLayoutSongs = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
+        playListLayoutSongs.topMargin = (int)((30 * context.getResources().getDisplayMetrics().density) + 0.5);
+        songName.setLayoutParams(playListLayouSongName);
+        songCount.setLayoutParams(playListLayoutSongs);
 
         final Playlist playlist = playlists.get(i);
         songName.setText(playlist.getName());

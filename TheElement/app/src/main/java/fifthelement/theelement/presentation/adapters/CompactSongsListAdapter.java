@@ -46,15 +46,8 @@ public class CompactSongsListAdapter extends BaseAdapter {
         final MainActivity activity = (MainActivity)context;
         view = inflater.inflate(R.layout.compact_fragment_list_item, null);
         TextView songName = (TextView) view.findViewById(R.id.primary_string);
-        TextView authorName = (TextView) view.findViewById(R.id.secondary_string);
         final Song printSong = songs.get(i);
-        Author author = printSong.getAuthor();
-        String authors = "";
-        if(author != null) {
-            authors += author.getName();
-        }
         songName.setText(printSong.getName());
-        authorName.setText(authors);
         return view;
     }
 

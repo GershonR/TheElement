@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 
 def versionMajor = 3 // bump for each iteration
-def versionMinor = 3 // bump for each merge
+def versionMinor = 4 // bump for each merge
 def versionPatch = 3 // bump for each hotfix
 def versionBuild = 0 // bump for dogfood builds, changes on your local
 

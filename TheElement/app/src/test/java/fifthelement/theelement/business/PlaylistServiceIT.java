@@ -17,6 +17,7 @@ import fifthelement.theelement.business.exceptions.SongAlreadyExistsException;
 import fifthelement.theelement.business.services.AlbumService;
 import fifthelement.theelement.business.services.AuthorService;
 import fifthelement.theelement.business.services.PlaylistService;
+import fifthelement.theelement.business.services.SongService;
 import fifthelement.theelement.objects.Album;
 import fifthelement.theelement.objects.Author;
 import fifthelement.theelement.objects.Playlist;
@@ -25,6 +26,9 @@ import fifthelement.theelement.persistence.PlaylistPersistence;
 import fifthelement.theelement.persistence.SongPersistence;
 import fifthelement.theelement.persistence.hsqldb.PlaylistPersistenceHSQLDB;
 import fifthelement.theelement.persistence.hsqldb.SongPersistenceHSQLDB;
+import fifthelement.theelement.persistence.stubs.AlbumPersistenceStub;
+import fifthelement.theelement.persistence.stubs.AuthorPersistenceStub;
+import fifthelement.theelement.persistence.stubs.PlaylistPersistenceStub;
 import fifthelement.theelement.utils.TestDatabaseUtil;
 
 public class PlaylistServiceIT {
@@ -36,7 +40,8 @@ public class PlaylistServiceIT {
         this.tempDB = TestDatabaseUtil.copyDB();
         PlaylistPersistence pp = new PlaylistPersistenceHSQLDB(Main.getDBPathName());
         SongPersistence sp = new SongPersistenceHSQLDB(Main.getDBPathName());
-        playlistService = new PlaylistService(pp, sp);
+        playlistService = new PlaylistService(pp, sp, new SongService(sp,
+                new AlbumPersistenceStub(), new AuthorPersistenceStub(), pp));
         try {
             playlistService.insertPlaylist(new Playlist("Test Playlist"));
             playlistService.insertPlaylist(new Playlist("Another Test Playlist"));

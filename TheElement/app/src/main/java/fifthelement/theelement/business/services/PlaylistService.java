@@ -17,15 +17,18 @@ public class PlaylistService {
 
     private PlaylistPersistence playlistPersistence;
     private SongPersistence songPersistence;
+    private SongService songService;
 
     public PlaylistService() {
-        playlistPersistence = Persistence.getPlaylistPersistence();
-        songPersistence = Persistence.getSongPersistence();
+        this.playlistPersistence = Persistence.getPlaylistPersistence();
+        this.songPersistence = Persistence.getSongPersistence();
+        this.songService = Services.getSongService();
     }
 
-    public PlaylistService(PlaylistPersistence playlistPersistence, SongPersistence songPersistence) {
+    public PlaylistService(PlaylistPersistence playlistPersistence, SongPersistence songPersistence, SongService songService) {
         this.playlistPersistence = playlistPersistence;
         this.songPersistence = songPersistence;
+        this.songService = songService;
     }
 
     public Playlist getPlaylistByUUID(UUID uuid) {
@@ -42,7 +45,7 @@ public class PlaylistService {
                 List<Song> updatedSongs = new ArrayList<>();
                 if(songs != null) {
                     for(Song song : songs) {
-                        song = Services.getSongService().getSongByUUID(song.getUUID());
+                        song = songService.getSongByUUID(song.getUUID());
                         updatedSongs.add(song);
                     }
                 }

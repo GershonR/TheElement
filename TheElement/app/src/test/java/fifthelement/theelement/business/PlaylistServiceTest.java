@@ -10,9 +10,12 @@ import java.util.List;
 import java.util.UUID;
 
 import fifthelement.theelement.business.services.PlaylistService;
+import fifthelement.theelement.business.services.SongService;
 import fifthelement.theelement.objects.Playlist;
 import fifthelement.theelement.objects.Song;
 import fifthelement.theelement.persistence.SongPersistence;
+import fifthelement.theelement.persistence.stubs.AlbumPersistenceStub;
+import fifthelement.theelement.persistence.stubs.AuthorPersistenceStub;
 import fifthelement.theelement.persistence.stubs.PlaylistPersistenceStub;
 import fifthelement.theelement.persistence.stubs.SongPersistenceStub;
 
@@ -24,7 +27,9 @@ public class PlaylistServiceTest {
     @Before
     public void setup() {
         songPersistence = new SongPersistenceStub();
-        classUnderTest = new PlaylistService(new PlaylistPersistenceStub(), songPersistence);
+
+        classUnderTest = new PlaylistService(new PlaylistPersistenceStub(), songPersistence, new SongService(songPersistence,
+                new AlbumPersistenceStub(), new AuthorPersistenceStub(), new PlaylistPersistenceStub()));
         classUnderTest.getAllPlaylists().clear();
 
         classUnderTest.insertPlaylist(new Playlist("Thriller"));

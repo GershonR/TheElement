@@ -1,9 +1,7 @@
 package fifthelement.theelement.presentation.fragments;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +12,7 @@ import fifthelement.theelement.R;
 import fifthelement.theelement.application.Helpers;
 import fifthelement.theelement.objects.Song;
 import fifthelement.theelement.presentation.activities.MainActivity;
+import fifthelement.theelement.presentation.helpers.BackHelper;
 
 public class EditSongInfoFragment extends Fragment {
     private static final String LOG_TAG = "EditSongsInfoFragment";
@@ -32,6 +31,11 @@ public class EditSongInfoFragment extends Fragment {
         activity.getSupportActionBar().setTitle("Edit Song");
         activity.getSupportActionBar().setSubtitle("");
 
+        SongInfoFragment songInfoFragment = new SongInfoFragment();
+        songInfoFragment.setSong(song);
+
+        BackHelper.setupBack(activity, songInfoFragment, "SongInfo");
+
         View view = inflater.inflate(R.layout.fragment_edit_song_info, container, false);
 
         songName = (EditText) view.findViewById(R.id.edit_song_info_name);
@@ -46,18 +50,8 @@ public class EditSongInfoFragment extends Fragment {
             public void onClick(View v) {
                 //update song
                 updateSong();
-
-                //display back updated song info page
-                Fragment fragment = null;
-                try{
-                    SongInfoFragment songInfoFragment = SongInfoFragment.newInstance();
-                    songInfoFragment.setSong(song);
-                    fragment = (Fragment) songInfoFragment;
-                }
-                catch (Exception e){
-                    Log.e(LOG_TAG, e.getMessage());
-                }
-                Helpers.getFragmentHelper((MainActivity)getActivity()).createFragment(R.id.flContent, fragment, "EditSong");
+                songInfoFragment.setSong(song);
+                Helpers.getFragmentHelper(activity).createFragment(R.id.flContent, songInfoFragment, "SongInfo");
             }
         });
 

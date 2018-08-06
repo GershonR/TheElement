@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.util.List;
 import java.util.Locale;
 
 import fifthelement.theelement.R;
@@ -19,6 +18,7 @@ import fifthelement.theelement.objects.Album;
 import fifthelement.theelement.objects.Author;
 import fifthelement.theelement.objects.Song;
 import fifthelement.theelement.presentation.activities.MainActivity;
+import fifthelement.theelement.presentation.helpers.BackHelper;
 
 
 public class PlayerStatsFragment extends Fragment {
@@ -40,11 +40,14 @@ public class PlayerStatsFragment extends Fragment {
         activity.getSupportActionBar().setTitle("Player Stats");
         activity.getSupportActionBar().setSubtitle("");
 
+        BackHelper.setupBack(activity, new SettingFragment(), "Settings");
+
         // Inflate the layout for this fragment
         this.view = getView(inflater, container);
         refresh(view);
         return view;
     }
+
 
     private View getView(LayoutInflater inflater, ViewGroup container) {
         return inflater.inflate(R.layout.fragment_player_statistics, container, false);

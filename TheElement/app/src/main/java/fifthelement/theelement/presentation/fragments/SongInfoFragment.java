@@ -7,7 +7,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -16,6 +15,7 @@ import fifthelement.theelement.R;
 import fifthelement.theelement.application.Helpers;
 import fifthelement.theelement.objects.Song;
 import fifthelement.theelement.presentation.activities.MainActivity;
+import fifthelement.theelement.presentation.helpers.BackHelper;
 import fifthelement.theelement.presentation.util.SongUtil;
 
 
@@ -29,6 +29,8 @@ public class SongInfoFragment extends Fragment {
         MainActivity activity = (MainActivity) getActivity();
         activity.getSupportActionBar().setTitle("Song Info");
         activity.getSupportActionBar().setSubtitle("");
+
+        BackHelper.setupBack(activity, new SongListFragment(), "SongList");
 
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_song_info, container, false);
@@ -82,22 +84,6 @@ public class SongInfoFragment extends Fragment {
                     Log.e(LOG_TAG, e.getMessage());
                 }
                 Helpers.getFragmentHelper((MainActivity)getActivity()).createFragment(R.id.flContent, fragment, "EditSong");
-            }
-        });
-
-        Button backButton = view.findViewById(R.id.song_info_back_btn);
-        backButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Fragment fragment = null;
-                Class fragmentClass = SongListFragment.class;
-                try{
-                    fragment = (Fragment) fragmentClass.newInstance();
-                }
-                catch (Exception e){
-                    Log.e(LOG_TAG, e.getMessage());
-                }
-                Helpers.getFragmentHelper((MainActivity)getActivity()).createFragment(R.id.flContent, fragment, "SongList");
             }
         });
 

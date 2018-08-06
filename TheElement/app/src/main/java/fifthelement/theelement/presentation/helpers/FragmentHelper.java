@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.view.inputmethod.InputMethodManager;
 
 public class FragmentHelper {
     AppCompatActivity application;
@@ -18,6 +19,9 @@ public class FragmentHelper {
     public void createFragment(int id, Fragment fragment, String tag) {
         KeyguardManager myKM = (KeyguardManager) application.getSystemService(Context.KEYGUARD_SERVICE);
         PowerManager pm = (PowerManager)application.getSystemService(Context.POWER_SERVICE);
+
+        InputMethodManager inputManager = (InputMethodManager) application.getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputManager.hideSoftInputFromWindow(application.getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
 
         FragmentManager fragmentManager = application.getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();

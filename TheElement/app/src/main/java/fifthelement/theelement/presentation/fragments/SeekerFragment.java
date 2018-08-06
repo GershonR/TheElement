@@ -71,6 +71,8 @@ public class SeekerFragment extends Fragment {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        if(musicService.getCurrentSongPlaying() == null)
+                            return;
                         if(!musicService.isPlaying()) {
                             mPlayButton.setImageResource(R.drawable.ic_play_button);
                             startUpdatingCallbackWithPosition();
@@ -116,6 +118,8 @@ public class SeekerFragment extends Fragment {
 
                     @Override
                     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                        if(musicService.getCurrentSongPlaying() == null)
+                            return;
                         if (fromUser) {
                             userSelectedPosition = progress;
                         }
@@ -123,6 +127,8 @@ public class SeekerFragment extends Fragment {
 
                     @Override
                     public void onStopTrackingTouch(SeekBar seekBar) {
+                        if(musicService.getCurrentSongPlaying() == null)
+                            return;
                         mUserIsSeeking = false;
                         musicService.seekTo(userSelectedPosition);
                         currDurr.setText(SongUtil.getTimeString(userSelectedPosition));

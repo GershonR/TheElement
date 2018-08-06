@@ -59,7 +59,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         ThemeUtil.onActivityCreateSetTheme(this);
         setContentView(R.layout.activity_main);
 
@@ -92,6 +91,8 @@ public class MainActivity extends AppCompatActivity {
         songListService.setCurrentSongsList(songs);
 
         Delagate.mainActivity = this;
+
+        super.onCreate(savedInstanceState);
     }
 
     private void setActionBarTitleAsMarquee(){

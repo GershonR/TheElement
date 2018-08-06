@@ -15,6 +15,7 @@ import android.webkit.MimeTypeMap;
 
 import java.net.URISyntaxException;
 
+import fifthelement.theelement.R;
 import fifthelement.theelement.application.Helpers;
 import fifthelement.theelement.application.Services;
 import fifthelement.theelement.business.exceptions.SongAlreadyExistsException;
@@ -44,6 +45,7 @@ public class AddMusicActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
         songService = Services.getSongService();
         songListService = Services.getSongListService();

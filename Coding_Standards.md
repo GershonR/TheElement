@@ -26,8 +26,7 @@
 				String returnString;
 				
                 statement_that_is-related_to_loop;
-                while (...)
-                {
+                while (...) {
                     statement;
                 }
                 statement;
@@ -35,8 +34,7 @@
 				return returnString;
             }
 			
-            public static int anotherMethod()
-            {
+            public static int anotherMethod() {
                 ...
             }
         }

@@ -135,8 +135,6 @@ public class NotificationService extends Service {
 
         createNotificationDisplay(views, bigViews);
         showNotification(views, bigViews, pendingIntent);
-
-
     }
 
     private void createNotificationDisplay(RemoteViews views, RemoteViews bigViews) {
@@ -178,7 +176,11 @@ public class NotificationService extends Service {
         status.bigContentView = bigViews;
         status.flags = Notification.FLAG_ONGOING_EVENT;
         status.contentIntent = pendingIntent;
-        startForeground(NotificationConstants.NOTIFICATION_ID, status);
+        try {
+            startForeground(NotificationConstants.NOTIFICATION_ID, status);
+        } catch (Exception e) {
+            Log.e(LOG_TAG, e.getMessage());
+        }
     }
 
 

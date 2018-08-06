@@ -9,6 +9,8 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.inputmethod.InputMethodManager;
 
+import fifthelement.theelement.presentation.activities.Delagate;
+
 public class FragmentHelper {
     AppCompatActivity application;
 
@@ -28,7 +30,7 @@ public class FragmentHelper {
         transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         transaction.replace(id, fragment, tag);
 
-        if(myKM.inKeyguardRestrictedInputMode() || !pm.isInteractive()) {
+        if(myKM.inKeyguardRestrictedInputMode() || !pm.isInteractive() || !Delagate.mainActivity.isVisible()) {
             transaction.commitAllowingStateLoss();
         } else {
             transaction.commit();

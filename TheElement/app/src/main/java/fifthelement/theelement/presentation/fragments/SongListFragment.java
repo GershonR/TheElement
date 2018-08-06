@@ -51,8 +51,6 @@ public class SongListFragment extends Fragment {
     private void displayView(LayoutInflater inflater, ViewGroup container) {
         view = inflater.inflate(R.layout.song_list_fragment, container, false);
         recyclerView = (RecyclerView) view.findViewById(R.id.song_list_view);
-        //recyclerView.setScrollingCacheEnabled(false);
-        //recyclerView.setFriction(ViewConfiguration.getScrollFriction() * 2);
 
         refreshAdapter();
 
@@ -85,6 +83,8 @@ public class SongListFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         songListAdapter = new SongsListAdapter(getActivity(), songs);
         recyclerView.setAdapter(songListAdapter);
+        recyclerView.setDrawingCacheEnabled(true);
+
     }
 
     @Override

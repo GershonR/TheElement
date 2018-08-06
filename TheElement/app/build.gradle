@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 def versionMajor = 3 // bump for each iteration
 def versionMinor = 4 // bump for each merge
-def versionPatch = 3 // bump for each hotfix
+def versionPatch = 4 // bump for each hotfix
 def versionBuild = 0 // bump for dogfood builds, changes on your local
 
 android {
@@ -32,6 +32,8 @@ android {
 dependencies {
     implementation 'com.jakewharton.rxbinding2:rxbinding:2.1.1'
     implementation 'com.android.support:recyclerview-v7:27.1.1'
+    implementation 'com.github.bumptech.glide:glide:4.7.1'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.7.1'
     testImplementation 'org.mockito:mockito-core:2.8.9'
     testImplementation 'org.powermock:powermock-module-junit4:1.7.0'
     testImplementation 'org.powermock:powermock-api-mockito2:1.7.0RC2'

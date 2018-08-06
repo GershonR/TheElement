@@ -1,9 +1,6 @@
 package fifthelement.theelement.presentation.adapters;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -27,10 +24,9 @@ import fifthelement.theelement.application.Services;
 import fifthelement.theelement.objects.Author;
 import fifthelement.theelement.objects.Song;
 import fifthelement.theelement.persistence.hsqldb.PersistenceException;
-import fifthelement.theelement.presentation.activities.Delagate;
 import fifthelement.theelement.presentation.activities.MainActivity;
 import fifthelement.theelement.presentation.fragments.SongInfoFragment;
-import fifthelement.theelement.presentation.util.SongUtil;
+import fifthelement.theelement.presentation.tasks.SongAlbumArtTask;
 
 public class SongsListAdapter extends RecyclerView.Adapter<SongsListAdapter.ViewHolder> {
 
@@ -122,8 +118,8 @@ public class SongsListAdapter extends RecyclerView.Adapter<SongsListAdapter.View
         songName.setText(song.getName());
         authorName.setText(authors);
         songOptions(song, songOptions);
-        SongAlbumArtTask asyncTask = new SongAlbumArtTask(albumArt, song);
-        asyncTask.execute();
+        AsyncTask task = new SongAlbumArtTask(context, albumArt, song);
+        task.execute();
     }
 
     private void songOptions(final Song song, ImageButton button) {
@@ -184,30 +180,4 @@ public class SongsListAdapter extends RecyclerView.Adapter<SongsListAdapter.View
     public int getItemCount() {
         return songs.size();
     }
-
-    public class SongAlbumArtTask extends AsyncTask<Object, Object, Object> {
-
-        ImageView albumArt;
-        Song song;
-
-        public SongAlbumArtTask(ImageView albumArt, Song song) {
-            this.albumArt = albumArt;
-            this.song = song;
-        }
-        @Override
-        protected Object doInBackground(Object... params) {
-            if(albumArt != null && song != null) {
-                final Bitmap bm = SongUtil.getSongAlbumArt(context, song);
-                Delagate.mainActivity.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        albumArt.setImageBitmap(bm);
-                    }
-                });
-            }
-            return null;
-
-        }
-    }
-
 }

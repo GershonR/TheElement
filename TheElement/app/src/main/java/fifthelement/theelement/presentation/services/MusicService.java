@@ -41,6 +41,7 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
     private NotificationService.NotificationPlaybackStartStopListener notificationPlaybackListener;
     private SongService songService;
 
+    private boolean playedSong = false;
     private static final String LOG_TAG = "MusicService";
 
     //This function is called when the service is bound, it will return a MusicBinder instance
@@ -121,39 +122,39 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
 
     // This function will attempt to set the media player up asynchronously and play the media.
     public boolean playSongAsync(Song song) {
+        if(song == null)
+            return false;
         reset();
-        if(song != null) {
-            Uri uri = Uri.fromFile(new File(song.getPath()));
-            try {
-                player.setDataSource(getApplication(), uri);
-                player.prepareAsync();
-                currentSongPlaying = song;
-            } catch (Exception e) {
-                Helpers.getToastHelper(getApplicationContext()).sendToast("Invalid Song!", "RED");
-                Log.e(LOG_TAG, e.getMessage());
-                return false;
-            }
-            playerPrepared = false;
-
-            player.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-
-                @Override
-                public void onPrepared(MediaPlayer player) {
-                    playerPrepared = true;
-                    start();
-                    songService.songIsPlayed(currentSongPlaying.getUUID());
-                    Helpers.getToastHelper(getApplicationContext()).sendToast("Now Playing: " + currentSongPlaying.getName());
-                    if(notificationPlaybackListener != null){
-                        notificationPlaybackListener.onSkip();
-                    } else {
-                        startNotificationService();
-                    }
-                }
-
-            });
-            return true;
+        Uri uri = Uri.fromFile(new File(song.getPath()));
+        try {
+            player.setDataSource(getApplication(), uri);
+            player.prepareAsync();
+            currentSongPlaying = song;
+        } catch (Exception e) {
+            Helpers.getToastHelper(getApplicationContext()).sendToast("Invalid Song!", "RED");
+            Log.e(LOG_TAG, e.getMessage());
+            return false;
         }
-        return false;
+        playerPrepared = false;
+
+        player.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+
+            @Override
+            public void onPrepared(MediaPlayer player) {
+                playedSong = true;
+                playerPrepared = true;
+                start();
+                songService.songIsPlayed(currentSongPlaying.getUUID());
+                Helpers.getToastHelper(getApplicationContext()).sendToast("Now Playing: " + currentSongPlaying.getName());
+                if(notificationPlaybackListener != null){
+                    notificationPlaybackListener.onSkip();
+                } else {
+                    startNotificationService();
+                }
+            }
+
+        });
+        return true;
     }
 
     // Start the notification service if it did not exist
@@ -212,6 +213,8 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
 
     // Skips to the next song in the list
     public void skip() {
+        if(!playedSong)
+            return;
         Song currentSong = songListService.getSongAtIndex(songListService.getCurrentSongPlayingIndex());
         if(currentSong != null) {
             songService.songIsSkipped(currentSong.getUUID());
@@ -224,6 +227,8 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
 
     // Skips to the previous song in the list
     public void prev() {
+        if(!playedSong)
+            return;
         Song currentSong = songListService.getSongAtIndex(songListService.getCurrentSongPlayingIndex());
         if(currentSong != null) {
             songService.songIsSkipped(currentSong.getUUID());

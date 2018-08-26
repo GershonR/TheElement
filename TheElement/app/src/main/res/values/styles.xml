@@ -4,6 +4,10 @@
     <attr name="mainColor" format="reference|color" />
     <attr name="accentColor" format="reference|color" />
 
+    <style name="SplashScreen" parent="@android:style/Theme.DeviceDefault.Light.NoActionBar">
+        <item name="android:windowBackground">@drawable/splash_screen</item>
+    </style>
+
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="mainColor">@color/colorPrimary</item>
@@ -26,14 +30,6 @@
         <item name="accentColor">@color/redAccent</item>
 
     </style>
-
-    <style name="ThemeOverlay.AppCompat.navTheme">
-        <!-- Color of text and icon when SELECTED -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-
-        <!-- Background color when SELECTED -->
-        <item name="colorControlHighlight">@color/background_grey</item>
-     </style>
 
     <style name="alert_dialog_custom" parent="@android:style/Theme.Dialog">
         <item name="android:windowNoTitle">true</item>

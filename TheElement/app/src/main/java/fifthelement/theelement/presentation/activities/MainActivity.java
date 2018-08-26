@@ -45,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
     private PlaylistService playlistService;
     private Intent playIntent;
     private boolean musicBound = false;
+    private boolean visible;
     private static final String LOG_TAG = "MainActivity";
 
     public SongService getSongService() {
@@ -59,7 +60,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         ThemeUtil.onActivityCreateSetTheme(this);
         setContentView(R.layout.activity_main);
 
@@ -92,6 +92,8 @@ public class MainActivity extends AppCompatActivity {
         songListService.setCurrentSongsList(songs);
 
         Delagate.mainActivity = this;
+
+        super.onCreate(savedInstanceState);
     }
 
     private void setActionBarTitleAsMarquee(){
@@ -197,6 +199,23 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed(){
         moveTaskToBack(true);
+    }
+
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        visible = false;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        visible = true;
+    }
+
+    public boolean isVisible() {
+        return visible;
     }
 
 }

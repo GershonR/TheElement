@@ -1,15 +1,10 @@
 package fifthelement.theelement.presentation.fragments;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,22 +53,17 @@ public class SettingFragment extends Fragment {
         mainListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if(position == 0) {
-                    selectTheme();
-                }
-                else if(position == 1){
-                    deleteSongsConfirmDialog();
-                }
-                if( position == 2 ) {
-                    System.out.println("Called PlayerStatsFragment");
-                    Fragment fragment = null;
-                    Class fragmentClass = PlayerStatsFragment.class;
-                    try {
-                        fragment = (Fragment) fragmentClass.newInstance();
-                    } catch (Exception e) {
-                        Log.e("PlayerStatsFragment", e.getMessage());
-                    }
-                    Helpers.getFragmentHelper((MainActivity)getActivity()).createFragment(R.id.flContent, fragment, "PlayerStats");
+                switch(position) {
+                    case 0:
+                        selectTheme();
+                    break;
+                    case 1:
+                        PlayerStatsFragment fragment = new PlayerStatsFragment();
+                        Helpers.getFragmentHelper((MainActivity)getActivity()).createFragment(R.id.flContent, fragment, "PlayerStats");
+                    break;
+                    case 2:
+                        deleteSongsConfirmDialog();
+                    break;
                 }
             }
         });
@@ -97,24 +87,29 @@ public class SettingFragment extends Fragment {
     }
 
     private void deleteSongsConfirmDialog(){
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle("Are you sure you want to delete all songs?:")
+        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which){
+                    case DialogInterface.BUTTON_POSITIVE:
+                        SongService songService = Services.getSongService();
+                        SongListService songListService = Services.getSongListService();
+                        songService.clearAllSongs();
+                        songListService.setCurrentSongsList(songService.getSongs());
+                        songListService.setAllSongsList(songService.getSongs());
+                        Services.getMusicService().reset();
+                        getActivity().stopService(new Intent(getActivity(), NotificationService.class));
+                        Helpers.getToastHelper((getActivity()).getApplicationContext()).sendToast("Deleted all songs");
+                        break;
 
-                .setItems(SettingsConstants.YES_NO_OPTIONS, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int clicked) {
-                        if(clicked == 0){
-                            SongService songService = Services.getSongService();
-                            SongListService songListService = Services.getSongListService();
-                            songService.clearAllSongs();
-                            songListService.setCurrentSongsList(songService.getSongs());
-                            songListService.setAllSongsList(songService.getSongs());
-                            Services.getMusicService().reset();
-                            getActivity().stopService(new Intent(getActivity(), NotificationService.class));
-                            Helpers.getToastHelper((getActivity()).getApplicationContext()).sendToast("Deleted all songs");
-                        }
-                    }
-                });
-        builder.create();
-        builder.show();
+                    case DialogInterface.BUTTON_NEGATIVE:
+                        break;
+                }
+            }
+        };
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setMessage("Are you sure you want to delete all songs?").setPositiveButton("Yes", dialogClickListener)
+                .setNegativeButton("No", dialogClickListener).show();
     }
 }

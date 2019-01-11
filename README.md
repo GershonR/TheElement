@@ -10,3 +10,5 @@ Links:
 [Retrospective Document](https://code.cs.umanitoba.ca/comp3350-summer2018/FifthElement/blob/master/RETROSPECTIVE.md)
 
 [Vision Statement](https://code.cs.umanitoba.ca/comp3350-summer2018/FifthElement/blob/master/VISION.md)
+
+![The Element](https://lh3.googleusercontent.com/1Ngx-qBrFUVsX-SBp0MKg2-X_ElRVwWE1TrKD5rFyM-PwT97UGhdSPGZ7gXND5peRS0=w1920-h969-rw "The Element")
